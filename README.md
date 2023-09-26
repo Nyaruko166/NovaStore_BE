@@ -1,2 +1,2 @@
 # NovaStore_BE
-Nova Man Sportwear Clothings Website
+Nova Men's Sportswear Website
