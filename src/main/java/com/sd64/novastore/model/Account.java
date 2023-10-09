@@ -22,8 +22,8 @@ public class Account {
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "BirthDay")
-    private Date birthDay;
+    @Column(name = "Birthday")
+    private Date birthday;
 
     @Column(name = "Email")
     private String email;

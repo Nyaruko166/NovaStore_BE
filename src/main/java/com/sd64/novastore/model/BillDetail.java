@@ -27,7 +27,7 @@ public class BillDetail {
     private BigDecimal price;
 
     @Column(name = "PriceAfter")
-    private String priceAfter;
+    private BigDecimal priceAfter;
 
     @Column(name = "Status")
     private Integer status;

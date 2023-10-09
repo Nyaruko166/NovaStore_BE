@@ -3,6 +3,7 @@ package com.sd64.novastore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Table(name = "CartDetail")
@@ -23,10 +24,10 @@ public class CartDetail {
     private Integer quantity;
 
     @Column(name = "Price")
-    private Integer price;
+    private BigDecimal price;
 
     @Column(name = "PriceAfter")
-    private Integer priceAfter;
+    private BigDecimal priceAfter;
 
     @Column(name = "CreateDate")
     private Date createDate;

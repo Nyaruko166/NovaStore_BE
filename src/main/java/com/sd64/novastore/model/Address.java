@@ -23,7 +23,7 @@ public class Address {
     private String city;
 
     @Column(name = "District")
-    private Date district;
+    private String district;
 
     @Column(name = "Ward")
     private String ward;

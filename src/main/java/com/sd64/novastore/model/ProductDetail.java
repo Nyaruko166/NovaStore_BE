@@ -3,6 +3,7 @@ package com.sd64.novastore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Table(name = "ProductDetail")
@@ -23,10 +24,10 @@ public class ProductDetail {
     private String description;
 
     @Column(name = "Quantity")
-    private String quantity;
+    private Integer quantity;
 
     @Column(name = "Price")
-    private String price;
+    private BigDecimal price;
 
     @Column(name = "CreateDate")
     private Date createDate;
@@ -38,10 +39,6 @@ public class ProductDetail {
     private Integer status;
 
     @ManyToOne
-    @JoinColumn(name = "SizeDetailId", referencedColumnName = "Id")
-    private SizeDetail sizeDetail;
-
-    @ManyToOne
-    @JoinColumn(name = "ColorDetailId", referencedColumnName = "Id")
-    private ColorDetail colorDetail;
+    @JoinColumn(name = "ProductId", referencedColumnName = "Id")
+    private Product product;
 }

@@ -30,7 +30,7 @@ public class Voucher {
     private Integer quantity;
 
     @Column(name = "Type")
-    private Boolean type;
+    private Integer type;
 
     @Column(name = "Value")
     private BigDecimal value;
@@ -39,13 +39,13 @@ public class Voucher {
     private String phoneNumber;
 
     @Column(name = "MinimumPrice")
-    private String minimumPrice;
+    private BigDecimal minimumPrice;
 
     @Column(name = "MaximumDiscount")
-    private Boolean maximumDiscount;
+    private BigDecimal maximumDiscount;
 
     @Column(name = "StartDate")
-    private String startDate;
+    private Date startDate;
 
     @Column(name = "EndDate")
     private Date endDate;
