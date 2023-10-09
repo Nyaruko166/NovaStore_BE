@@ -39,4 +39,8 @@ public class Staff {
 
     @Column(name = "Passsword")
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "RoleId", referencedColumnName = "Id")
+    private Role role;
 }

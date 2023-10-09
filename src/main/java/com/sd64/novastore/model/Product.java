@@ -42,4 +42,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "MaterialId", referencedColumnName = "Id")
     private Material material;
+
+    @ManyToOne
+    @JoinColumn(name = "FormId", referencedColumnName = "Id")
+    private Form form;
 }
