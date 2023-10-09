@@ -34,7 +34,7 @@ public class Staff {
     @Column(name = "PhoneNumber")
     private String phoneNumber;
 
-    @Column(name = "Gender")
+    @Column(name = "Email")
     private String Email;
 
     @Column(name = "Passsword")
