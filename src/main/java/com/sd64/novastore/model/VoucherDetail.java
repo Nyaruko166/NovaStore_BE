@@ -37,7 +37,7 @@ public class VoucherDetail {
 
     @ManyToOne
     @JoinColumn(name = "VoucherId", referencedColumnName = "Id")
-    private VoucherDetail voucherDetail;
+    private Voucher voucher;
 
     @ManyToOne
     @JoinColumn(name = "BillId", referencedColumnName = "Id")
