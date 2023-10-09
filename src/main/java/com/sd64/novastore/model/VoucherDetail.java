@@ -20,10 +20,10 @@ public class VoucherDetail {
     @Column(name = "Id")
     private Integer id;
 
-    @Column(name = "Code")
+    @Column(name = "Price")
     private BigDecimal price;
 
-    @Column(name = "Name")
+    @Column(name = "PriceAfter")
     private BigDecimal priceAfter;
 
     @Column(name = "CreateDate")

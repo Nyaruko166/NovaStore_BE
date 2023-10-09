@@ -24,7 +24,7 @@ public class PromotionDetail {
     private BigDecimal price;
 
     @Column(name = "Name")
-    private Date priceAfter;
+    private BigDecimal priceAfter;
 
     @Column(name = "CreateDate")
     private Date createDate;

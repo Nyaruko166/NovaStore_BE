@@ -30,4 +30,8 @@ public class Image {
 
     @Column(name = "Status")
     private Integer status;
+
+    @ManyToOne
+    @JoinColumn(name = "ProductDetailId", referencedColumnName = "Id")
+    private ProductDetail productDetail;
 }
