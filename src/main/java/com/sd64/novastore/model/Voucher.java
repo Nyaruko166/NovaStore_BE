@@ -35,9 +35,6 @@ public class Voucher {
     @Column(name = "Value")
     private BigDecimal value;
 
-    @Column(name = "PhoneNumber")
-    private String phoneNumber;
-
     @Column(name = "MinimumPrice")
     private BigDecimal minimumPrice;
 

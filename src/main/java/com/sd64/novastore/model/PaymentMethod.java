@@ -3,6 +3,8 @@ package com.sd64.novastore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Table(name = "PaymentMethod")
 @Entity
 @AllArgsConstructor
@@ -19,6 +21,15 @@ public class PaymentMethod {
 
     @Column(name = "Name")
     private String name;
+
+    @Column(name = "Money")
+    private BigDecimal money;
+
+    @Column(name = "Description")
+    private String description;
+
+    @Column(name = "Status")
+    private Integer status;
 
     @ManyToOne
     @JoinColumn(name = "BillId", referencedColumnName = "Id")
