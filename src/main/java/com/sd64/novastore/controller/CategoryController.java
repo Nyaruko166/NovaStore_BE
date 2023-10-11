@@ -25,12 +25,12 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(categoryService.getAll());
     }
 
-    @GetMapping("/getallpt")
+    @GetMapping("/page")
     public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
         return ResponseEntity.ok(categoryService.getAllPT(page).getContent());
     }
@@ -57,5 +57,10 @@ public class CategoryController {
             return ResponseEntity.ok(list);
         }
         return ResponseEntity.ok(categoryService.update(categoryRequest, id));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(categoryService.search(name, page).getContent());
     }
 }

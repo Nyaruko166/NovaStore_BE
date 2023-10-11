@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/size")
 public class SizeController {
 
     @Autowired
@@ -47,5 +49,10 @@ public class SizeController {
         } else {
             return ResponseEntity.ok("Delete Fail");
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(sizeService.search(name, page).getContent());
     }
 }

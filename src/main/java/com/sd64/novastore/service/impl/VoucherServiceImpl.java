@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.repository.VoucherRepository;
 import com.sd64.novastore.request.VoucherRequest;
@@ -22,13 +23,13 @@ public class VoucherServiceImpl implements VoucherService {
 
     @Override
     public List<Voucher> getAll() {
-        return voucherRepository.findAllByStatus(1);
+        return voucherRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<Voucher> getPage(int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return voucherRepository.findAllByStatus(pageable, 1);
+        return voucherRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
@@ -66,5 +67,11 @@ public class VoucherServiceImpl implements VoucherService {
             voucherRepository.save(o);
             return true;
         }).orElse(false);
+    }
+
+    @Override
+    public Page<Voucher> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return voucherRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

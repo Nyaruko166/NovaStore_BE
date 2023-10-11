@@ -16,4 +16,6 @@ public interface AccountService {
     Account update(AccountRequest accountRequest, Integer id);
 
     Account delete(Integer id);
+
+    Page<Account> search(String name, int page);
 }

@@ -3,70 +3,71 @@ GO
 /****** Object:  Database [Nova_Store_DB]    Script Date: 10/10/2023 9:34:05 PM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
+USE [Nova_Store_DB]
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
 EXEC [Nova_Store_DB].[dbo].[sp_fulltext_database] @action = 'enable'
 end
 GO
-ALTER DATABASE [Nova_Store_DB] SET ANSI_NULL_DEFAULT OFF 
+ALTER DATABASE [Nova_Store_DB] SET ANSI_NULL_DEFAULT OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET ANSI_NULLS OFF 
+ALTER DATABASE [Nova_Store_DB] SET ANSI_NULLS OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET ANSI_PADDING OFF 
+ALTER DATABASE [Nova_Store_DB] SET ANSI_PADDING OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET ANSI_WARNINGS OFF 
+ALTER DATABASE [Nova_Store_DB] SET ANSI_WARNINGS OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET ARITHABORT OFF 
+ALTER DATABASE [Nova_Store_DB] SET ARITHABORT OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET AUTO_CLOSE ON 
+ALTER DATABASE [Nova_Store_DB] SET AUTO_CLOSE ON
 GO
-ALTER DATABASE [Nova_Store_DB] SET AUTO_SHRINK OFF 
+ALTER DATABASE [Nova_Store_DB] SET AUTO_SHRINK OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET AUTO_UPDATE_STATISTICS ON 
+ALTER DATABASE [Nova_Store_DB] SET AUTO_UPDATE_STATISTICS ON
 GO
-ALTER DATABASE [Nova_Store_DB] SET CURSOR_CLOSE_ON_COMMIT OFF 
+ALTER DATABASE [Nova_Store_DB] SET CURSOR_CLOSE_ON_COMMIT OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET CURSOR_DEFAULT  GLOBAL 
+ALTER DATABASE [Nova_Store_DB] SET CURSOR_DEFAULT  GLOBAL
 GO
-ALTER DATABASE [Nova_Store_DB] SET CONCAT_NULL_YIELDS_NULL OFF 
+ALTER DATABASE [Nova_Store_DB] SET CONCAT_NULL_YIELDS_NULL OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET NUMERIC_ROUNDABORT OFF 
+ALTER DATABASE [Nova_Store_DB] SET NUMERIC_ROUNDABORT OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET QUOTED_IDENTIFIER OFF 
+ALTER DATABASE [Nova_Store_DB] SET QUOTED_IDENTIFIER OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET RECURSIVE_TRIGGERS OFF 
+ALTER DATABASE [Nova_Store_DB] SET RECURSIVE_TRIGGERS OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET  ENABLE_BROKER 
+ALTER DATABASE [Nova_Store_DB] SET  ENABLE_BROKER
 GO
-ALTER DATABASE [Nova_Store_DB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+ALTER DATABASE [Nova_Store_DB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET DATE_CORRELATION_OPTIMIZATION OFF 
+ALTER DATABASE [Nova_Store_DB] SET DATE_CORRELATION_OPTIMIZATION OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET TRUSTWORTHY OFF 
+ALTER DATABASE [Nova_Store_DB] SET TRUSTWORTHY OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+ALTER DATABASE [Nova_Store_DB] SET ALLOW_SNAPSHOT_ISOLATION OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET PARAMETERIZATION SIMPLE 
+ALTER DATABASE [Nova_Store_DB] SET PARAMETERIZATION SIMPLE
 GO
-ALTER DATABASE [Nova_Store_DB] SET READ_COMMITTED_SNAPSHOT OFF 
+ALTER DATABASE [Nova_Store_DB] SET READ_COMMITTED_SNAPSHOT OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET HONOR_BROKER_PRIORITY OFF 
+ALTER DATABASE [Nova_Store_DB] SET HONOR_BROKER_PRIORITY OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET RECOVERY SIMPLE 
+ALTER DATABASE [Nova_Store_DB] SET RECOVERY SIMPLE
 GO
-ALTER DATABASE [Nova_Store_DB] SET  MULTI_USER 
+ALTER DATABASE [Nova_Store_DB] SET  MULTI_USER
 GO
-ALTER DATABASE [Nova_Store_DB] SET PAGE_VERIFY CHECKSUM  
+ALTER DATABASE [Nova_Store_DB] SET PAGE_VERIFY CHECKSUM
 GO
-ALTER DATABASE [Nova_Store_DB] SET DB_CHAINING OFF 
+ALTER DATABASE [Nova_Store_DB] SET DB_CHAINING OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+ALTER DATABASE [Nova_Store_DB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF )
 GO
-ALTER DATABASE [Nova_Store_DB] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+ALTER DATABASE [Nova_Store_DB] SET TARGET_RECOVERY_TIME = 60 SECONDS
 GO
-ALTER DATABASE [Nova_Store_DB] SET DELAYED_DURABILITY = DISABLED 
+ALTER DATABASE [Nova_Store_DB] SET DELAYED_DURABILITY = DISABLED
 GO
-ALTER DATABASE [Nova_Store_DB] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+ALTER DATABASE [Nova_Store_DB] SET ACCELERATED_DATABASE_RECOVERY = OFF
 GO
 ALTER DATABASE [Nova_Store_DB] SET QUERY_STORE = ON
 GO
@@ -688,5 +689,160 @@ ALTER TABLE [dbo].[VoucherDetail] CHECK CONSTRAINT [FKr9axmg06qxyoncf3f0lt2m4f1]
     GO
     USE [master]
     GO
-ALTER DATABASE [Nova_Store_DB] SET  READ_WRITE 
+ALTER DATABASE [Nova_Store_DB] SET  READ_WRITE
 GO
+
+USE Nova_Store_DB
+
+SELECT * FROM Promotion
+    INSERT INTO Promotion (code, name, Type, Value, StartDate, EndDate, CreateDate, UpdateDate, Status)
+VALUES ('CDCMCM', 'Extremely deep discounts', 1, 200000, '2023-10-10', '2023-11-11', GETDATE(), GETDATE(), 1);
+INSERT INTO Promotion (code, name, Type, Value, StartDate, EndDate, CreateDate, UpdateDate, Status)
+VALUES ('UMLTK', 'Destruction discount', 1, 200000, '2023-10-10', '2023-11-11', GETDATE(), GETDATE(), 1);
+INSERT INTO Promotion (code, name, Type, Value, StartDate, EndDate, CreateDate, UpdateDate, Status)
+VALUES ('ADBTD', 'god of war discount', 1, 200000, '2023-10-10', '2023-11-11', GETDATE(), GETDATE(), 1);
+INSERT INTO Promotion (code, name, Type, Value, StartDate, EndDate, CreateDate, UpdateDate, Status)
+VALUES ('NCDB', 'Disgusting discount', 1, 200000, '2023-10-10', '2023-11-11', GETDATE(), GETDATE(), 1);
+INSERT INTO Promotion (code, name, Type, Value, StartDate, EndDate, CreateDate, UpdateDate, Status)
+VALUES ('123MASK', 'Lord of discounts', 1, 200000, '2023-10-10', '2023-11-11', GETDATE(), GETDATE(), 1);
+INSERT INTO Promotion (code, name, Type, Value, StartDate, EndDate, CreateDate, UpdateDate, Status)
+VALUES ('HIHI12', 'Discount combos', 1, 200000, '2023-10-10', '2023-11-11', GETDATE(), GETDATE(), 1);
+INSERT INTO Promotion (code, name, Type, Value, StartDate, EndDate, CreateDate, UpdateDate, Status)
+VALUES ('AS09J2K', 'Huge promotion', 1, 200000, '2023-10-10', '2023-11-11', GETDATE(), GETDATE(), 1);
+
+SELECT * FROM Brand
+    INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Gucci', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Chanel', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Dior', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Givenchy', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Calvin Klein', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Boss', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Fendi', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Balenciaga', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Luis Vuition', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
+VALUES ('Adidass', GETDATE(), GETDATE(), 1)
+
+
+SELECT * FROM Category
+    INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Kaki', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Jeans', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Trouser', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Polo', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Boxer', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Blazer', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Vest', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Hoodie', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Sport', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (name, CreateDate, UpdateDate, Status)
+VALUES ('Jacket', GETDATE(), GETDATE(), 1)
+
+SELECT * FROM Material
+    INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('100% Nano', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('Cotton', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('Denim', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('Nylon', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('Viscose', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('Wool', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('Linen', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('Syntheic', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('Polyester', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (name, CreateDate, UpdateDate, Status)
+VALUES ('Cotton Spandex', GETDATE(), GETDATE(), 1)
+
+
+SELECT * FROM Form
+    INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Slim', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Slim Crop', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Regular', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Relax', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Loose', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Straight', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Carrot', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Skinny', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Jogger', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (name, CreateDate, UpdateDate, Status)
+VALUES ('Cargo', GETDATE(), GETDATE(), 1)
+
+
+SELECT * FROM Size
+    INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('28', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('29', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('30', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('31', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('32', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('XXL', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('XL', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('L', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('S', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (name, CreateDate, UpdateDate, Status)
+VALUES ('M', GETDATE(), GETDATE(), 1)
+
+
+SELECT * FROM Color
+    INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('Black', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('Red', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('Blue', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('Green', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('Yeallow', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('White', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('Grey', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('Purple', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('Brown', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (name, CreateDate, UpdateDate, Status)
+VALUES ('Orange', GETDATE(), GETDATE(), 1)
+

@@ -17,4 +17,6 @@ public interface RoleService {
     Role update(RoleRequest roleRequest, Integer id);
 
     Boolean delete(Integer id);
+
+    Page<Role> search(String name, int page);
 }

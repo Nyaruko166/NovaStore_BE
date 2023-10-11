@@ -22,13 +22,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> getAll() {
-        return accountRepository.findAllByStatus(1);
+        return accountRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<Account> getAllPT(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return accountRepository.findAllByStatus(pageable, 1);
+        return accountRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
@@ -64,5 +64,11 @@ public class AccountServiceImpl implements AccountService {
             accountRepository.save(account);
             return account;
         }).orElse(null);
+    }
+
+    @Override
+    public Page<Account> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return accountRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.request.BrandRequest;
 import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.repository.BrandRepository;
@@ -21,13 +22,13 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public List<Brand> getAll() {
-        return brandRepository.findAllByStatus(1);
+        return brandRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<Brand> getAllPT(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return brandRepository.findAllByStatus(pageable,1);
+        return brandRepository.findAllByAndStatusOrderByIdDesc(pageable,1);
     }
 
     @Override
@@ -56,5 +57,11 @@ public class BrandServiceImpl implements BrandService {
             brandRepository.save(brand);
             return brand;
         }).orElse(null);
+    }
+
+    @Override
+    public Page<Brand> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return brandRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

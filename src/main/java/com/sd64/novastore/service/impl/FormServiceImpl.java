@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.request.FormRequest;
 import com.sd64.novastore.model.Form;
 import com.sd64.novastore.repository.FormRepository;
@@ -20,13 +21,13 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public List<Form> getAll(){
-        return  formRepository.findAllByStatus(1);
+        return  formRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<Form> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return formRepository.findAllByStatus(pageable, 1);
+        return formRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
@@ -53,5 +54,11 @@ public class FormServiceImpl implements FormService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Page<Form> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return formRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

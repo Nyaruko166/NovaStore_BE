@@ -29,7 +29,7 @@ public class MaterialController {
         return ResponseEntity.ok(materialService.getAll());
     }
 
-    @GetMapping()
+    @GetMapping("/page")
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         return ResponseEntity.ok(materialService.getAll(page).getContent());
     }
@@ -61,5 +61,10 @@ public class MaterialController {
         } else {
             return ResponseEntity.ok("Xoá thất bại");
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(materialService.search(name, page).getContent());
     }
 }

@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.request.ColorRequest;
 import com.sd64.novastore.model.Color;
 import org.springframework.data.domain.Page;
@@ -16,4 +17,6 @@ public interface ColorService {
     Color update(ColorRequest colorRequest, Integer id);
 
     Boolean delete(Integer id);
+
+    Page<Color> search(String name, int page);
 }

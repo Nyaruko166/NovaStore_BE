@@ -16,4 +16,6 @@ public interface BrandService {
     Brand update(BrandRequest brandRequest, Integer id);
 
     Brand delete(Integer id);
+
+    Page<Brand> search(String name, int page);
 }

@@ -49,4 +49,8 @@ public class PromotionController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(promotionService.search(name, page).getContent());
+    }
 }
