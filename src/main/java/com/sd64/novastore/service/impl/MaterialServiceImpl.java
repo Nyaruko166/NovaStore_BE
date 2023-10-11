@@ -1,0 +1,56 @@
+package com.sd64.novastore.service.impl;
+
+import com.sd64.novastore.dto.MaterialRequest;
+import com.sd64.novastore.model.Material;
+import com.sd64.novastore.repository.MaterialRepository;
+import com.sd64.novastore.service.MaterialService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class MaterialServiceImpl implements MaterialService{
+    @Autowired
+    private MaterialRepository materialRepository;
+
+    @Override
+    public List<Material> getAll(){
+        return  materialRepository.findAll();
+    }
+
+    @Override
+    public Page<Material> getAll(Integer page){
+        Pageable pageable = PageRequest.of(page, 5);
+        return materialRepository.findAll(pageable);
+    }
+
+    @Override
+    public Material add(MaterialRequest materialRequest) {
+        Material material = materialRequest.dto(new Material());
+        return materialRepository.save(material);
+    }
+
+    @Override
+    public Material update(MaterialRequest materialRequest, Integer id) {
+        Optional<Material> optional = materialRepository.findById(id);
+        Material material = materialRequest.dto(optional.get());
+        return materialRepository.save(material);
+    }
+
+    @Override
+    public Boolean delete(Integer id) {
+        Optional<Material> optional = materialRepository.findById(id);
+        if (optional.isPresent()){
+            Material material = optional.get();
+            materialRepository.delete(material);
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
