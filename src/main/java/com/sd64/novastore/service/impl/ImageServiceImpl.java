@@ -20,25 +20,25 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<Image> getAll(){
-        return  imageRepository.findAll();
+        return  imageRepository.findAllByStatus(1);
     }
 
     @Override
     public Page<Image> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return imageRepository.findAll(pageable);
+        return imageRepository.findAllByStatus(pageable, 1);
     }
 
     @Override
     public Image add(ImageRequest imageRequest) {
-        Image image = imageRequest.dto(new Image());
+        Image image = imageRequest.map(new Image());
         return imageRepository.save(image);
     }
 
     @Override
     public Image update(ImageRequest imageRequest, Integer id) {
         Optional<Image> optional = imageRepository.findById(id);
-        Image image = imageRequest.dto(optional.get());
+        Image image = imageRequest.map(optional.get());
         return imageRepository.save(image);
     }
 

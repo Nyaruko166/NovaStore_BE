@@ -20,7 +20,7 @@ public class FormRequest {
 
     private Integer status;
 
-    public Form dto(Form form){
+    public Form map(Form form){
         form.setName(this.name);
         form.setCreateDate(this.createDate);
         form.setUpdateDate(this.updateDate);

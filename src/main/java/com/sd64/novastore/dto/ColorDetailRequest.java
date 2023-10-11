@@ -14,7 +14,7 @@ public class ColorDetailRequest {
 
     private Integer productDetailId;
 
-    public ColorDetail dto(ColorDetail colorDetail){
+    public ColorDetail map(ColorDetail colorDetail){
         colorDetail.setColor(Color.builder().id(this.colorId).build());
         colorDetail.setProductDetail(ProductDetail.builder().id(this.productDetailId).build());
         return colorDetail;

@@ -20,25 +20,25 @@ public class MaterialServiceImpl implements MaterialService{
 
     @Override
     public List<Material> getAll(){
-        return  materialRepository.findAll();
+        return  materialRepository.findAllByStatus(1);
     }
 
     @Override
     public Page<Material> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return materialRepository.findAll(pageable);
+        return materialRepository.findAllByStatus(pageable, 1);
     }
 
     @Override
     public Material add(MaterialRequest materialRequest) {
-        Material material = materialRequest.dto(new Material());
+        Material material = materialRequest.map(new Material());
         return materialRepository.save(material);
     }
 
     @Override
     public Material update(MaterialRequest materialRequest, Integer id) {
         Optional<Material> optional = materialRepository.findById(id);
-        Material material = materialRequest.dto(optional.get());
+        Material material = materialRequest.map(optional.get());
         return materialRepository.save(material);
     }
 

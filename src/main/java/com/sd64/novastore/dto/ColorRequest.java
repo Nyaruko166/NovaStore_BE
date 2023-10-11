@@ -20,7 +20,7 @@ public class ColorRequest {
 
     private Integer status;
 
-    public Color dto(Color color){
+    public Color map(Color color){
         color.setName(this.name);
         color.setCreateDate(this.createDate);
         color.setUpdateDate(this.updateDate);

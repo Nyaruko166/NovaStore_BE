@@ -20,25 +20,25 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
 
     @Override
     public List<PaymentMethod> getAll(){
-        return  paymentMethodRepository.findAll();
+        return  paymentMethodRepository.findAllByStatus(1);
     }
 
     @Override
     public Page<PaymentMethod> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return paymentMethodRepository.findAll(pageable);
+        return paymentMethodRepository.findAllByStatus(pageable, 1);
     }
 
     @Override
     public PaymentMethod add(PaymentMethodRequest paymentMethodRequest) {
-        PaymentMethod paymentMethod = paymentMethodRequest.dto(new PaymentMethod());
+        PaymentMethod paymentMethod = paymentMethodRequest.map(new PaymentMethod());
         return paymentMethodRepository.save(paymentMethod);
     }
 
     @Override
     public PaymentMethod update(PaymentMethodRequest paymentMethodRequest, Integer id) {
         Optional<PaymentMethod> optional = paymentMethodRepository.findById(id);
-        PaymentMethod paymentMethod = paymentMethodRequest.dto(optional.get());
+        PaymentMethod paymentMethod = paymentMethodRequest.map(optional.get());
         return paymentMethodRepository.save(paymentMethod);
     }
 

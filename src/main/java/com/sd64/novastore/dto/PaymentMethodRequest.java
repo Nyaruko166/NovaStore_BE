@@ -26,7 +26,7 @@ public class PaymentMethodRequest {
 
     private Integer billId;
 
-    public PaymentMethod dto(PaymentMethod paymentMethod){
+    public PaymentMethod map(PaymentMethod paymentMethod){
         paymentMethod.setName(this.name);
         paymentMethod.setMoney(this.money);
         paymentMethod.setDescription(this.description);

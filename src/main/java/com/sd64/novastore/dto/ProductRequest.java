@@ -33,7 +33,7 @@ public class ProductRequest {
 
     private Integer formId;
 
-    public Product dto(Product product){
+    public Product map(Product product){
         product.setName(this.name);
         product.setCreateDate(this.createDate);
         product.setUpdateDate(this.updateDate);

@@ -20,25 +20,25 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public List<Color> getAll(){
-        return  colorRepository.findAll();
+        return  colorRepository.findAllByStatus(1);
     }
 
     @Override
     public Page<Color> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return colorRepository.findAll(pageable);
+        return colorRepository.findAllByStatus(pageable, 1);
     }
 
     @Override
     public Color add(ColorRequest colorRequest) {
-        Color color = colorRequest.dto(new Color());
+        Color color = colorRequest.map(new Color());
         return colorRepository.save(color);
     }
 
     @Override
     public Color update(ColorRequest colorRequest, Integer id) {
         Optional<Color> optional = colorRepository.findById(id);
-        Color color = colorRequest.dto(optional.get());
+        Color color = colorRequest.map(optional.get());
         return colorRepository.save(color);
     }
 

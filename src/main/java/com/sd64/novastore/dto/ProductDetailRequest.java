@@ -31,7 +31,7 @@ public class ProductDetailRequest {
 
     private Integer productId;
 
-    public ProductDetail dto(ProductDetail productDetail){
+    public ProductDetail map(ProductDetail productDetail){
         productDetail.setDescription(this.description);
         productDetail.setQuantity(this.quantity);
         productDetail.setPrice(this.price);

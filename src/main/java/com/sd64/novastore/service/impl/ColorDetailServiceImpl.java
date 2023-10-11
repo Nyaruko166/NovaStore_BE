@@ -31,14 +31,14 @@ public class ColorDetailServiceImpl implements ColorDetailService {
 
     @Override
     public ColorDetail add(ColorDetailRequest colorDetailRequest) {
-        ColorDetail colorDetail = colorDetailRequest.dto(new ColorDetail());
+        ColorDetail colorDetail = colorDetailRequest.map(new ColorDetail());
         return colorDetailRepository.save(colorDetail);
     }
 
     @Override
     public ColorDetail update(ColorDetailRequest colorDetailRequest, Integer id) {
         Optional<ColorDetail> optional = colorDetailRepository.findById(id);
-        ColorDetail colorDetail = colorDetailRequest.dto(optional.get());
+        ColorDetail colorDetail = colorDetailRequest.map(optional.get());
         return colorDetailRepository.save(colorDetail);
     }
 
