@@ -1,6 +1,6 @@
 package com.sd64.novastore.controller;
 
-import com.sd64.novastore.dto.ColorDetailRequest;
+import com.sd64.novastore.request.ColorDetailRequest;
 import com.sd64.novastore.service.ColorDetailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

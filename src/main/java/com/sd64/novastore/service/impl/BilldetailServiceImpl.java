@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.BillDetailRequest;
+import com.sd64.novastore.request.BillDetailRequest;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.ProductDetail;

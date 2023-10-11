@@ -1,6 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.FormRequest;
+import com.sd64.novastore.request.FormRequest;
 import com.sd64.novastore.model.Form;
 import org.springframework.data.domain.Page;
 

@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.AccountRequest;
+import com.sd64.novastore.request.AccountRequest;
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.repository.AccountRepository;
 import com.sd64.novastore.service.AccountService;

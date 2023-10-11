@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.ProductRequest;
+import com.sd64.novastore.request.ProductRequest;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.repository.ProductRepository;
 import com.sd64.novastore.service.ProductService;

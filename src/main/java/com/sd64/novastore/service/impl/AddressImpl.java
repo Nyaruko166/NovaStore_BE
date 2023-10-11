@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.AddressRequest;
+import com.sd64.novastore.request.AddressRequest;
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Address;
 import com.sd64.novastore.repository.AddressRepository;

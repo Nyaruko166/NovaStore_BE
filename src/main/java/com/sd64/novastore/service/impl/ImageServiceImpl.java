@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.ImageRequest;
+import com.sd64.novastore.request.ImageRequest;
 import com.sd64.novastore.model.Image;
 import com.sd64.novastore.repository.ImageRepository;
 import com.sd64.novastore.service.ImageService;

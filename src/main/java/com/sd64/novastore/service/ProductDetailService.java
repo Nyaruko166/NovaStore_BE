@@ -1,6 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.ProductDetailRequest;
+import com.sd64.novastore.request.ProductDetailRequest;
 import com.sd64.novastore.model.ProductDetail;
 import org.springframework.data.domain.Page;
 

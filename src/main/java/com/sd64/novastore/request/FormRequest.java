@@ -1,4 +1,4 @@
-package com.sd64.novastore.dto;
+package com.sd64.novastore.request;
 
 import com.sd64.novastore.model.Form;
 import jakarta.validation.constraints.NotBlank;

@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.CategoryRequest;
+import com.sd64.novastore.request.CategoryRequest;
 import com.sd64.novastore.model.Category;
 import com.sd64.novastore.repository.CategoryRepository;
 import com.sd64.novastore.service.CategoryService;

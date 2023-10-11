@@ -1,6 +1,6 @@
 package com.sd64.novastore.controller;
 
-import com.sd64.novastore.dto.BillDetailRequest;
+import com.sd64.novastore.request.BillDetailRequest;
 import com.sd64.novastore.service.BillDetailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

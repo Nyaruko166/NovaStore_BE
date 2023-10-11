@@ -1,6 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.BillRequest;
+import com.sd64.novastore.request.BillRequest;
 import com.sd64.novastore.model.Bill;
 import org.springframework.data.domain.Page;
 

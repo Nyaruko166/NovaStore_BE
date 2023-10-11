@@ -1,6 +1,6 @@
 package com.sd64.novastore.controller;
 
-import com.sd64.novastore.dto.PaymentMethodRequest;
+import com.sd64.novastore.request.PaymentMethodRequest;
 import com.sd64.novastore.service.PaymentMethodService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
