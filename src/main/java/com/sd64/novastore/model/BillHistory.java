@@ -37,4 +37,8 @@ public class BillHistory {
     @ManyToOne
     @JoinColumn(name = "BillId", referencedColumnName = "Id")
     private Bill bill;
+
+    @ManyToOne
+    @JoinColumn(name = "AccountId", referencedColumnName = "Id")
+    private Account account;
 }
