@@ -19,4 +19,6 @@ public interface VoucherService {
     Voucher update(VoucherRequest voucherRequest, Integer id);
 
     Boolean delete(Integer id);
+
+    Page<Voucher> search(String name, int page);
 }

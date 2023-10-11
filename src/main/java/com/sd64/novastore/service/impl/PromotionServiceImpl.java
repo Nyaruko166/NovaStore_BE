@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.repository.PromotionRepository;
 import com.sd64.novastore.request.PromotionRequest;
@@ -20,12 +21,12 @@ public class PromotionServiceImpl implements PromotionService {
     private PromotionRepository promotionRepository;
 
     public List<Promotion> getAll() {
-        return promotionRepository.findAllByStatus(1);
+        return promotionRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     public Page<Promotion> getPage(int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return promotionRepository.findAllByStatus(pageable, 1);
+        return promotionRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     public Promotion add(PromotionRequest promotionRequest) {
@@ -58,5 +59,11 @@ public class PromotionServiceImpl implements PromotionService {
             promotionRepository.save(o);
             return true;
         }).orElse(false);
+    }
+
+    @Override
+    public Page<Promotion> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return promotionRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

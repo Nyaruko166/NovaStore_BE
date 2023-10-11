@@ -10,7 +10,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-    List<Category> findAllByStatus(Integer status);
+    List<Category> findAllByAndStatusOrderByIdDesc(Integer status);
 
-    Page<Category> findAllByStatus(Pageable pageable, Integer status);
+    Page<Category> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
+
+    Page<Category> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
+
+
 }

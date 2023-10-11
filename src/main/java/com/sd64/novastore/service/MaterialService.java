@@ -16,4 +16,6 @@ public interface MaterialService {
     Material update(MaterialRequest materialRequest, Integer id);
 
     Boolean delete(Integer id);
+
+    Page<Material> search(String name, int page);
 }

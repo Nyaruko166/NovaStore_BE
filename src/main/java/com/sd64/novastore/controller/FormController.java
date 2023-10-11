@@ -29,7 +29,7 @@ public class FormController {
         return ResponseEntity.ok(formService.getAll());
     }
 
-    @GetMapping()
+    @GetMapping("/page")
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page) {
         return ResponseEntity.ok(formService.getAll(page).getContent());
     }
@@ -57,9 +57,14 @@ public class FormController {
     @PutMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         if (formService.delete(id)) {
-            return ResponseEntity.ok("Xoá thành công");
+            return ResponseEntity.ok("Delete Success");
         } else {
-            return ResponseEntity.ok("Xoá thất bại");
+            return ResponseEntity.ok("Delete Fail");
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(formService.search(name, page).getContent());
     }
 }

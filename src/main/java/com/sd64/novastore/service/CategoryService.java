@@ -16,4 +16,6 @@ public interface CategoryService {
     Category update(CategoryRequest categoryRequest, Integer id);
 
     Category delete(Integer id);
+
+    Page<Category> search(String name, int page);
 }

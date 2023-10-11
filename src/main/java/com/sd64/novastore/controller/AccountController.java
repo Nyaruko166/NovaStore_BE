@@ -25,12 +25,12 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(accountService.getAll());
     }
 
-    @GetMapping("/getallpt")
+    @GetMapping("/page")
     public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
         return ResponseEntity.ok(accountService.getAllPT(page).getContent());
     }
@@ -58,5 +58,10 @@ public class AccountController {
         }
         return ResponseEntity.ok(accountService.update(accountRequest, id));
 
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(accountService.search(name, page).getContent());
     }
 }

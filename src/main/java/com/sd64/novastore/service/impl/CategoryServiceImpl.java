@@ -21,13 +21,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAll() {
-        return categoryRepository.findAllByStatus(1);
+        return categoryRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<Category> getAllPT(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return categoryRepository.findAllByStatus(pageable, 1);
+        return categoryRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
@@ -56,5 +56,11 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.save(category);
             return category;
         }).orElse(null);
+    }
+
+    @Override
+    public Page<Category> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return categoryRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

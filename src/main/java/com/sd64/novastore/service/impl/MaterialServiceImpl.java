@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.request.MaterialRequest;
 import com.sd64.novastore.model.Material;
 import com.sd64.novastore.repository.MaterialRepository;
@@ -20,13 +21,13 @@ public class MaterialServiceImpl implements MaterialService{
 
     @Override
     public List<Material> getAll(){
-        return  materialRepository.findAllByStatus(1);
+        return  materialRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<Material> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return materialRepository.findAllByStatus(pageable, 1);
+        return materialRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
@@ -53,5 +54,11 @@ public class MaterialServiceImpl implements MaterialService{
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Page<Material> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return materialRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

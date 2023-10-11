@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.request.ColorRequest;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.repository.ColorRepository;
@@ -20,13 +21,13 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public List<Color> getAll(){
-        return  colorRepository.findAllByStatus(1);
+        return  colorRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<Color> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return colorRepository.findAllByStatus(pageable, 1);
+        return colorRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
@@ -53,5 +54,11 @@ public class ColorServiceImpl implements ColorService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Page<Color> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return colorRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

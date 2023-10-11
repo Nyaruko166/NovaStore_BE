@@ -1,8 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.model.Role;
 import com.sd64.novastore.model.Size;
-import com.sd64.novastore.request.RoleRequest;
 import com.sd64.novastore.request.SizeRequest;
 import org.springframework.data.domain.Page;
 
@@ -19,4 +17,6 @@ public interface SizeService {
     Size update(SizeRequest sizeRequest, Integer id);
 
     Boolean delete(Integer id);
+
+    Page<Size> search(String name, int page);
 }

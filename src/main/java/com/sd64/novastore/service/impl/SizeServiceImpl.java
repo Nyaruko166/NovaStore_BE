@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Size;
 import com.sd64.novastore.repository.SizeRepository;
 import com.sd64.novastore.request.SizeRequest;
@@ -22,13 +23,13 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public List<Size> getAll() {
-        return sizeRepository.findAllByStatus(1);
+        return sizeRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<Size> getPage(int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return sizeRepository.findAllByStatus(pageable, 1);
+        return sizeRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
@@ -58,5 +59,11 @@ public class SizeServiceImpl implements SizeService {
             sizeRepository.save(o);
             return true;
         }).orElse(false);
+    }
+
+    @Override
+    public Page<Size> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return sizeRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

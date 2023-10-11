@@ -24,12 +24,12 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(brandService.getAll());
     }
 
-    @GetMapping("/getallpt")
+    @GetMapping("/page")
     public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
         return ResponseEntity.ok(brandService.getAllPT(page).getContent());
     }
@@ -56,5 +56,10 @@ public class BrandController {
             return ResponseEntity.ok(list);
         }
         return ResponseEntity.ok(brandService.update(brandRequest, id));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(brandService.search(name, page).getContent());
     }
 }

@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Role;
 import com.sd64.novastore.repository.RoleRepository;
 import com.sd64.novastore.request.RoleRequest;
@@ -21,13 +22,13 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> getAll() {
-        return roleRepository.findAllByStatus(1);
+        return roleRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<Role> getPage(int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return roleRepository.findAllByStatus(pageable, 1);
+        return roleRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
@@ -55,5 +56,11 @@ public class RoleServiceImpl implements RoleService {
             roleRepository.save(o);
             return true;
         }).orElse(false);
+    }
+
+    @Override
+    public Page<Role> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return roleRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
 }

@@ -1,5 +1,6 @@
 package com.sd64.novastore.repository;
 
+import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,9 @@ import java.util.List;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
 
-    List<Role> findAllByStatus(Integer status);
+    List<Role> findAllByAndStatusOrderByIdDesc(Integer status);
 
-    Page<Role> findAllByStatus(Pageable pageable, Integer status);
+    Page<Role> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
+
+    Page<Role> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 }

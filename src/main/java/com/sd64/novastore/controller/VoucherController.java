@@ -48,4 +48,9 @@ public class VoucherController {
             return ResponseEntity.ok("Delete Fail");
         }
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(voucherService.search(name, page).getContent());
+    }
 }

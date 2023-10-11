@@ -10,7 +10,9 @@ import java.util.List;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer> {
-    List<Account> findAllByStatus(Integer status);
+    List<Account> findAllByAndStatusOrderByIdDesc(Integer status);
 
-    Page<Account> findAllByStatus(Pageable pageable, Integer status);
+    Page<Account> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
+
+    Page<Account> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 }

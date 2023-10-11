@@ -17,4 +17,6 @@ public interface PromotionService {
     Promotion update(PromotionRequest promotionRequest, Integer id);
 
     Boolean delete(Integer id);
+
+    Page<Promotion> search(String name, int page);
 }
