@@ -47,7 +47,8 @@ public class ColorServiceImpl implements ColorService {
         Optional<Color> optional = colorRepository.findById(id);
         if (optional.isPresent()){
             Color color = optional.get();
-            colorRepository.delete(color);
+            color.setStatus(0);
+            colorRepository.save(color);
             return true;
         } else {
             return false;

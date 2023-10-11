@@ -47,7 +47,8 @@ public class MaterialServiceImpl implements MaterialService{
         Optional<Material> optional = materialRepository.findById(id);
         if (optional.isPresent()){
             Material material = optional.get();
-            materialRepository.delete(material);
+            material.setStatus(0);
+            materialRepository.save(material);
             return true;
         } else {
             return false;

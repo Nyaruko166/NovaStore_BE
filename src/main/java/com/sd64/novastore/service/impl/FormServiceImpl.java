@@ -47,7 +47,8 @@ public class FormServiceImpl implements FormService {
         Optional<Form> optional = formRepository.findById(id);
         if (optional.isPresent()){
             Form form = optional.get();
-            formRepository.delete(form);
+            form.setStatus(0);
+            formRepository.save(form);
             return true;
         } else {
             return false;
