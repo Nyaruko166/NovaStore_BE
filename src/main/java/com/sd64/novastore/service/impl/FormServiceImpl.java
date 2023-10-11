@@ -20,25 +20,25 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public List<Form> getAll(){
-        return  formRepository.findAll();
+        return  formRepository.findAllByStatus(1);
     }
 
     @Override
     public Page<Form> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return formRepository.findAll(pageable);
+        return formRepository.findAllByStatus(pageable, 1);
     }
 
     @Override
     public Form add(FormRequest formRequest) {
-        Form form = formRequest.dto(new Form());
+        Form form = formRequest.map(new Form());
         return formRepository.save(form);
     }
 
     @Override
     public Form update(FormRequest formRequest, Integer id) {
         Optional<Form> optional = formRepository.findById(id);
-        Form color = formRequest.dto(optional.get());
+        Form color = formRequest.map(optional.get());
         return formRepository.save(color);
     }
 

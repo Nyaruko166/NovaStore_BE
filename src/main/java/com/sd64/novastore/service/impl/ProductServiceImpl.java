@@ -20,25 +20,25 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAll(){
-        return  productRepository.findAll();
+        return  productRepository.findAllByStatus(1);
     }
 
     @Override
     public Page<Product> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return productRepository.findAll(pageable);
+        return productRepository.findAllByStatus(pageable, 1);
     }
 
     @Override
     public Product add(ProductRequest productRequest) {
-        Product product = productRequest.dto(new Product());
+        Product product = productRequest.map(new Product());
         return productRepository.save(product);
     }
 
     @Override
     public Product update(ProductRequest productRequest, Integer id) {
         Optional<Product> optional = productRepository.findById(id);
-        Product product = productRequest.dto(optional.get());
+        Product product = productRequest.map(optional.get());
         return productRepository.save(product);
     }
 

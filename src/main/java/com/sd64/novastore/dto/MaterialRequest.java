@@ -20,7 +20,7 @@ public class MaterialRequest {
 
     private Integer status;
 
-    public Material dto(Material material){
+    public Material map(Material material){
         material.setName(this.name);
         material.setCreateDate(this.createDate);
         material.setUpdateDate(this.updateDate);

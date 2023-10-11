@@ -23,7 +23,7 @@ public class ImageRequest {
 
     private Integer productDetailId;
 
-    public Image dto(Image image){
+    public Image map(Image image){
         image.setName(this.name);
         image.setCreateDate(this.createDate);
         image.setUpdateDate(this.updateDate);
