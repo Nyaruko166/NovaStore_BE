@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.BrandRequest;
+import com.sd64.novastore.request.BrandRequest;
 import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.repository.BrandRepository;
 import com.sd64.novastore.service.BrandService;

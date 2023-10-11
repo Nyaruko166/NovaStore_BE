@@ -1,6 +1,6 @@
 package com.sd64.novastore.controller;
 
-import com.sd64.novastore.dto.ImageRequest;
+import com.sd64.novastore.request.ImageRequest;
 import com.sd64.novastore.service.ImageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

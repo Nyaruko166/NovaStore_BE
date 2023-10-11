@@ -1,6 +1,6 @@
 package com.sd64.novastore.controller;
 
-import com.sd64.novastore.dto.CategoryRequest;
+import com.sd64.novastore.request.CategoryRequest;
 import com.sd64.novastore.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

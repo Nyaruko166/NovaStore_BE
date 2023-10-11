@@ -1,6 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.MaterialRequest;
+import com.sd64.novastore.request.MaterialRequest;
 import com.sd64.novastore.model.Material;
 import org.springframework.data.domain.Page;
 

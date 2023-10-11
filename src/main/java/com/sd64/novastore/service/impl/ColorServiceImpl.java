@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.ColorRequest;
+import com.sd64.novastore.request.ColorRequest;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.repository.ColorRepository;
 import com.sd64.novastore.service.ColorService;

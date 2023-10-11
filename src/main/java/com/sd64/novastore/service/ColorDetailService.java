@@ -1,6 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.ColorDetailRequest;
+import com.sd64.novastore.request.ColorDetailRequest;
 import com.sd64.novastore.model.ColorDetail;
 import org.springframework.data.domain.Page;
 

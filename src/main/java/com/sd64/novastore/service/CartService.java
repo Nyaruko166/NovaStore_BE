@@ -1,6 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.CartRequest;
+import com.sd64.novastore.request.CartRequest;
 import com.sd64.novastore.model.Cart;
 import org.springframework.data.domain.Page;
 

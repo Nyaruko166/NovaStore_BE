@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.PaymentMethodRequest;
+import com.sd64.novastore.request.PaymentMethodRequest;
 import com.sd64.novastore.model.PaymentMethod;
 import com.sd64.novastore.repository.PaymentMethodRepository;
 import com.sd64.novastore.service.PaymentMethodService;

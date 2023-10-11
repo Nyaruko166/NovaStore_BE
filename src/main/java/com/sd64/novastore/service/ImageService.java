@@ -1,6 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.ImageRequest;
+import com.sd64.novastore.request.ImageRequest;
 import com.sd64.novastore.model.Image;
 import org.springframework.data.domain.Page;
 

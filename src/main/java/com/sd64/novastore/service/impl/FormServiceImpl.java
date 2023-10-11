@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.FormRequest;
+import com.sd64.novastore.request.FormRequest;
 import com.sd64.novastore.model.Form;
 import com.sd64.novastore.repository.FormRepository;
 import com.sd64.novastore.service.FormService;

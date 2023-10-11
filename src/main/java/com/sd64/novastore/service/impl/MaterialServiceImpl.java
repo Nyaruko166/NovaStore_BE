@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.MaterialRequest;
+import com.sd64.novastore.request.MaterialRequest;
 import com.sd64.novastore.model.Material;
 import com.sd64.novastore.repository.MaterialRepository;
 import com.sd64.novastore.service.MaterialService;

@@ -1,6 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.BrandRequest;
+import com.sd64.novastore.request.BrandRequest;
 import com.sd64.novastore.model.Brand;
 import org.springframework.data.domain.Page;
 

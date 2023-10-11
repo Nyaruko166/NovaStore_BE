@@ -1,6 +1,6 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.CategoryRequest;
+import com.sd64.novastore.request.CategoryRequest;
 import com.sd64.novastore.model.Category;
 import org.springframework.data.domain.Page;
 
