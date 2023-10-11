@@ -55,7 +55,7 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         if (productService.delete(id)) {
             return ResponseEntity.ok("Xoá thành công");

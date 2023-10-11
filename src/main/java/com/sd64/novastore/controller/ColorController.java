@@ -55,7 +55,7 @@ public class ColorController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         if (colorService.delete(id)) {
             return ResponseEntity.ok("Xoá thành công");

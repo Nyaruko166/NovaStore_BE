@@ -179,6 +179,7 @@ CREATE TABLE [dbo].[BillHistory](
     [UpdateDate] [smalldatetime] NULL,
     [Status] [int] NULL,
     [BillId] [int] NULL,
+    [AccountId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
@@ -584,6 +585,11 @@ ALTER TABLE [dbo].[BillHistory]  WITH CHECK ADD  CONSTRAINT [FKdwtgkov1ar5uki43w
     REFERENCES [dbo].[Bill] ([Id])
     GO
 ALTER TABLE [dbo].[BillHistory] CHECK CONSTRAINT [FKdwtgkov1ar5uki43w7okh9xqi]
+    GO
+ALTER TABLE [dbo].[BillHistory]  WITH CHECK ADD  CONSTRAINT [FKowiek2xkcm34kzm23jlzms92j] FOREIGN KEY([AccountId])
+    REFERENCES [dbo].[Account] ([Id])
+    GO
+ALTER TABLE [dbo].[BillHistory] CHECK CONSTRAINT [FKowiek2xkcm34kzm23jlzms92j]
     GO
 ALTER TABLE [dbo].[Cart]  WITH CHECK ADD  CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i] FOREIGN KEY([AccountId])
     REFERENCES [dbo].[Account] ([Id])

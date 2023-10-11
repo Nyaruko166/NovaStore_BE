@@ -47,7 +47,8 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> optional = productRepository.findById(id);
         if (optional.isPresent()){
             Product product = optional.get();
-            productRepository.delete(product);
+            product.setStatus(0);
+            productRepository.save(product);
             return true;
         } else {
             return false;

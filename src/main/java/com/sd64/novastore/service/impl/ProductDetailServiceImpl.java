@@ -47,7 +47,8 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         Optional<ProductDetail> optional = productDetailRepository.findById(id);
         if (optional.isPresent()){
             ProductDetail productDetail = optional.get();
-            productDetailRepository.delete(productDetail);
+            productDetail.setStatus(0);
+            productDetailRepository.save(productDetail);
             return true;
         } else {
             return false;

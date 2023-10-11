@@ -55,7 +55,7 @@ public class MaterialController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         if (materialService.delete(id)) {
             return ResponseEntity.ok("Xoá thành công");
