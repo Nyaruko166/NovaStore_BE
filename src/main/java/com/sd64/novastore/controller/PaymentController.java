@@ -1,5 +1,6 @@
 package com.sd64.novastore.controller;
 
+import com.sd64.novastore.response.PaymentResponse;
 import com.sd64.novastore.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,9 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.vnpayCreate(req));
     }
 
-//    @GetMapping("/vnpay/return")
-//    ResponseEntity<?> vnpayReturn(
-//            @RequestParam
-//
-//
-//    ) {
-//
-//        return ResponseEntity.ok(null);
-//    }
-//    GetMapping
+    @GetMapping("/vnpay/return")
+    ResponseEntity<?> vnpayReturn(PaymentResponse paymentResponse) {
+
+        return ResponseEntity.ok(paymentResponse);
+    }
 }
