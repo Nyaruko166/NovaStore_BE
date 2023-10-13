@@ -15,15 +15,26 @@ import java.util.*;
 public class PaymentServiceImpl implements PaymentService {
 
     @Override
+    public String zalopayCreate() {
+
+        return null;
+    }
+
+    @Override
     public String vnpayCreate(HttpServletRequest req, Long price) throws UnsupportedEncodingException {
-        String vnp_Version = "2.1.0";
-        String vnp_Command = "pay";
-        String orderType = "other";
+        String vnp_Version = VNPaymentConfig.vnp_Version;
+        String vnp_Command = VNPaymentConfig.vnp_Command;
+        String orderType = VNPaymentConfig.orderType;
+//        String vnp_Version = "2.1.0";
+//        String vnp_Command = "pay";
+//        String orderType = "other";
         long amount = price * 100;
-        String bankCode = "NCB";
+        String bankCode = VNPaymentConfig.bankCode;
+//        String bankCode = "NCB";
 
         String vnp_TxnRef = VNPaymentConfig.getTransactionNumber(8);
-        String vnp_IpAddr = "127.0.0.1";
+        String vnp_IpAddr = VNPaymentConfig.getIpAddress(req);
+//        String vnp_IpAddr = "127.0.0.1";
 
         String vnp_TmnCode = VNPaymentConfig.vnp_TmnCode;
 

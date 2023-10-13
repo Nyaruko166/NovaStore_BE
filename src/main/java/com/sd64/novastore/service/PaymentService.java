@@ -8,4 +8,5 @@ public interface PaymentService {
 
     String vnpayCreate(HttpServletRequest req, Long price) throws UnsupportedEncodingException;
 
+    String zalopayCreate();
 }
