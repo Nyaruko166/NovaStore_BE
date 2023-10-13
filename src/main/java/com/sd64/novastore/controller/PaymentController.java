@@ -21,7 +21,7 @@ public class PaymentController {
     @GetMapping("/vnpay/create-payment")
     ResponseEntity<?> vnpayCreate(HttpServletRequest req) throws UnsupportedEncodingException {
 
-        return ResponseEntity.ok(paymentService.vnpayCreate(req));
+        return ResponseEntity.ok(paymentService.vnpayCreate(req, 1000000L));
     }
 
     @GetMapping("/vnpay/return")

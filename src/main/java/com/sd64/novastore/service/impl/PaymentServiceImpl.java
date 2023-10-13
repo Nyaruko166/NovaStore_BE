@@ -15,11 +15,11 @@ import java.util.*;
 public class PaymentServiceImpl implements PaymentService {
 
     @Override
-    public String vnpayCreate(HttpServletRequest req) throws UnsupportedEncodingException {
+    public String vnpayCreate(HttpServletRequest req, Long price) throws UnsupportedEncodingException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        long amount = 10000 * 100;
+        long amount = price * 100;
         String bankCode = "NCB";
 
         String vnp_TxnRef = VNPaymentConfig.getTransactionNumber(8);
