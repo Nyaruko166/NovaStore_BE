@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class PaymentResponse implements Serializable {
+public class VNPaymentResponse implements Serializable {
 
     private String vnp_ResponseCode;
     private String vnp_CardType;

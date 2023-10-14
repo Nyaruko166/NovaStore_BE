@@ -1,6 +1,9 @@
 package com.sd64.novastore.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.sd64.novastore.config.VNPaymentConfig;
+import com.sd64.novastore.config.ZaloPayConfig;
 import com.sd64.novastore.service.PaymentService;
 import com.sd64.novastore.util.payment.HMACUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +21,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -27,51 +29,39 @@ import java.util.*;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-    private static Map<String, String> config = new HashMap<String, String>() {{
-        put("app_id", "2553");
-        put("key1", "PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL");
-        put("key2", "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf");
-        put("endpoint", "https://sb-openapi.zalopay.vn/v2/create");
-    }};
-
-    public static String getCurrentTimeString(String format) {
-        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT+7"));
-        SimpleDateFormat fmt = new SimpleDateFormat(format);
-        fmt.setCalendar(cal);
-        return fmt.format(cal.getTimeInMillis());
-    }
-
     @Override
-    public String zalopayCreate() throws IOException, URISyntaxException {
-        Random rand = new Random();
-        int random_id = rand.nextInt(1000000);
-        final Map embed_data = new HashMap() {{
-        }};
+    public String zalopayCreate() throws IOException {
 
-        final Map[] item = {
-                new HashMap() {{
-                }}
-        };
+        Gson gson = new Gson();
+        int random_id = new Random().nextInt(1000000);
+
+        JsonObject embed_data = new JsonObject();
+        embed_data.addProperty("redirecturl", "http://localhost:8080/api/payment/zalo/return");
+//        JsonObject item = new JsonObject();
+//        item.addProperty("itemid", "knb");
+//        item.addProperty("itemname", "kim nguyen bao");
+//        item.addProperty("itemprice", "198400");
+//        item.addProperty("itemquantity", 1);
+//        jsonObject.add("item", item);
 
         Map<String, Object> order = new HashMap<String, Object>() {{
-            put("app_id", config.get("app_id"));
-            put("app_trans_id", getCurrentTimeString("yyMMdd") + "_" + random_id); // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
-            put("app_time", System.currentTimeMillis()); // miliseconds
-            put("app_user", "demo");
-            put("amount", 50000);
-            put("description", "Demo - Thanh toan don hang #" + random_id);
+            put("app_id", ZaloPayConfig.appid);
+            put("app_trans_id", ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id); // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+            put("app_time", System.currentTimeMillis()); // milliseconds
+            put("app_user", "Nyaruko166");
+            put("amount", 10000);
+            put("description", "NovaStore - Payment for the order #" + random_id);
             put("bank_code", "");
-            put("item", new JSONObject(item).toString());
-            put("embed_data", new JSONObject(embed_data).toString());
+//            put("item", "[" + item + "]");
+            put("item", "[{}]");
+            put("embed_data", embed_data);
         }};
 
-        // app_id +”|”+ app_trans_id +”|”+ appuser +”|”+ amount +"|" + app_time +”|”+ embed_data +"|" +item
-        String data = order.get("app_id") + "|" + order.get("app_trans_id") + "|" + order.get("app_user") + "|" + order.get("amount")
-                + "|" + order.get("app_time") + "|" + order.get("embed_data") + "|" + order.get("item");
-        order.put("mac", HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, config.get("key1"), data));
+        String data = order.get("app_id") + "|" + order.get("app_trans_id") + "|" + order.get("app_user") + "|" + order.get("amount") + "|" + order.get("app_time") + "|" + order.get("embed_data") + "|" + order.get("item");
+        order.put("mac", HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, ZaloPayConfig.key1, data));
 
         CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost post = new HttpPost(config.get("endpoint"));
+        HttpPost post = new HttpPost(ZaloPayConfig.endpointCreateOrder);
 
         List<NameValuePair> params = new ArrayList<>();
         for (Map.Entry<String, Object> e : order.entrySet()) {
@@ -91,10 +81,7 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         JSONObject result = new JSONObject(resultJsonStr.toString());
-        for (String key : result.keySet()) {
-            System.out.format("%s = %s\n", key, result.get(key));
-        }
-        return null;
+        return result.toString();
     }
 
     @Override
@@ -102,16 +89,11 @@ public class PaymentServiceImpl implements PaymentService {
         String vnp_Version = VNPaymentConfig.vnp_Version;
         String vnp_Command = VNPaymentConfig.vnp_Command;
         String orderType = VNPaymentConfig.orderType;
-//        String vnp_Version = "2.1.0";
-//        String vnp_Command = "pay";
-//        String orderType = "other";
         long amount = price * 100;
         String bankCode = VNPaymentConfig.bankCode;
-//        String bankCode = "NCB";
 
         String vnp_TxnRef = VNPaymentConfig.getTransactionNumber(8);
         String vnp_IpAddr = VNPaymentConfig.getIpAddress(req);
-//        String vnp_IpAddr = "127.0.0.1";
 
         String vnp_TmnCode = VNPaymentConfig.vnp_TmnCode;
 
@@ -155,15 +137,15 @@ public class PaymentServiceImpl implements PaymentService {
         while (itr.hasNext()) {
             String fieldName = (String) itr.next();
             String fieldValue = (String) vnp_Params.get(fieldName);
-            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+            if ((fieldValue != null) && (!fieldValue.isEmpty())) {
                 //Build hash data
                 hashData.append(fieldName);
                 hashData.append('=');
-                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII));
                 //Build query
-                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII));
                 query.append('=');
-                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII));
                 if (itr.hasNext()) {
                     query.append('&');
                     hashData.append('&');
@@ -173,7 +155,6 @@ public class PaymentServiceImpl implements PaymentService {
         String queryUrl = query.toString();
         String vnp_SecureHash = VNPaymentConfig.hmacSHA512(VNPaymentConfig.secretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        String paymentUrl = VNPaymentConfig.vnp_PayUrl + "?" + queryUrl;
-        return paymentUrl;
+        return VNPaymentConfig.vnp_PayUrl + "?" + queryUrl;
     }
 }
