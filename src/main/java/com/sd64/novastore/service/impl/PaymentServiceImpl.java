@@ -1,9 +1,12 @@
 package com.sd64.novastore.service.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sd64.novastore.config.MomoPaymentConfig;
 import com.sd64.novastore.config.VNPaymentConfig;
 import com.sd64.novastore.config.ZaloPayConfig;
+import com.sd64.novastore.request.MomoPaymentRequest;
 import com.sd64.novastore.service.PaymentService;
 import com.sd64.novastore.util.payment.HMACUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,15 +14,17 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -28,10 +33,70 @@ import java.util.*;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
+    Gson gson = new Gson();
+
+    @Override
+    public String MomoPayCreate() throws IOException, URISyntaxException {
+
+        int random_id = new Random().nextInt(1000000);
+
+        MomoPaymentRequest momoPaymentRequest = MomoPaymentRequest.builder()
+                .partnerCode(MomoPaymentConfig.partnerCode)
+                .redirectUrl(MomoPaymentConfig.returnUrl)
+                .ipnUrl(MomoPaymentConfig.ipnUrl)
+                .amount(1000000L)
+                .requestType("captureWallet")
+                .requestId(String.valueOf(random_id))
+                .orderId(String.valueOf(random_id))
+                .orderInfo("NovaStore - Thanh Toan Don Hang #" + random_id)
+                .lang("vi")
+                .extraData("")
+                .build();
+
+        String signature = momoPaymentRequest.signatureGen(MomoPaymentConfig.accessKey, MomoPaymentConfig.secretKey);
+        momoPaymentRequest.setSignature(signature);
+
+        String json = gson.toJson(momoPaymentRequest);
+//        System.out.println(json);
+
+        Map<String, Object> order = new HashMap<String, Object>() {{
+            put("partnerCode", MomoPaymentConfig.partnerCode);
+            put("redirectUrl", MomoPaymentConfig.returnUrl);
+            put("ipnUrl", MomoPaymentConfig.ipnUrl);
+            put("requestType", "captureWallet");
+            put("amount", 1000000);
+            put("requestId", String.valueOf(random_id));
+            put("orderId", String.valueOf(random_id));
+            put("orderInfo", "NovaStore - Thanh Toan Don Hang #" + random_id);
+            put("lang", "vi");
+            put("extraData", "");
+            put("signature", signature);
+        }};
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost post = new HttpPost(MomoPaymentConfig.paymentUrl);
+        StringEntity requestEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
+        post.setEntity(requestEntity);
+
+        // Content-Type: application/x-www-form-urlencoded
+//        post.setEntity(new UrlEncodedFormEntity(params));
+
+
+        CloseableHttpResponse res = client.execute(post);
+        BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
+        StringBuilder resultJsonStr = new StringBuilder();
+        String line;
+
+        while ((line = rd.readLine()) != null) {
+            resultJsonStr.append(line);
+        }
+
+        return resultJsonStr.toString();
+    }
+
     @Override
     public String zalopayCreate() throws IOException {
 
-        Gson gson = new Gson();
         int random_id = new Random().nextInt(1000000);
 
         JsonObject embed_data = new JsonObject();
@@ -49,7 +114,7 @@ public class PaymentServiceImpl implements PaymentService {
             put("app_time", System.currentTimeMillis()); // milliseconds
             put("app_user", "Nyaruko166");
             put("amount", 10000);
-            put("description", "NovaStore - Payment for the order #" + random_id);
+            put("description", "NovaStore - Thanh Toan Don Hang #" + random_id);
             put("bank_code", "");
 //            put("item", "[" + item + "]");
             put("item", "[{}]");

@@ -21,6 +21,12 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
+    @GetMapping("/momo/create-payment")
+    ResponseEntity<?> momoCreate() throws IOException, URISyntaxException {
+
+        return ResponseEntity.ok(paymentService.MomoPayCreate());
+    }
+
     @GetMapping("/vnpay/create-payment")
     ResponseEntity<?> vnpayCreate(HttpServletRequest req) throws UnsupportedEncodingException {
 
