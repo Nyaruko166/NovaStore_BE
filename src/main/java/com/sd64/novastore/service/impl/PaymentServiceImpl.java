@@ -14,7 +14,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -80,8 +79,7 @@ public class PaymentServiceImpl implements PaymentService {
             resultJsonStr.append(line);
         }
 
-        JSONObject result = new JSONObject(resultJsonStr.toString());
-        return result.toString();
+        return resultJsonStr.toString();
     }
 
     @Override
