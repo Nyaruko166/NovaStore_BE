@@ -59,20 +59,6 @@ public class PaymentServiceImpl implements PaymentService {
         String json = gson.toJson(momoPaymentRequest);
 //        System.out.println(json);
 
-        Map<String, Object> order = new HashMap<String, Object>() {{
-            put("partnerCode", MomoPaymentConfig.partnerCode);
-            put("redirectUrl", MomoPaymentConfig.returnUrl);
-            put("ipnUrl", MomoPaymentConfig.ipnUrl);
-            put("requestType", "captureWallet");
-            put("amount", 1000000);
-            put("requestId", String.valueOf(random_id));
-            put("orderId", String.valueOf(random_id));
-            put("orderInfo", "NovaStore - Thanh Toan Don Hang #" + random_id);
-            put("lang", "vi");
-            put("extraData", "");
-            put("signature", signature);
-        }};
-
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(MomoPaymentConfig.paymentUrl);
         StringEntity requestEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
@@ -116,7 +102,6 @@ public class PaymentServiceImpl implements PaymentService {
             put("amount", 10000);
             put("description", "NovaStore - Thanh Toan Don Hang #" + random_id);
             put("bank_code", "");
-//            put("item", "[" + item + "]");
             put("item", "[{}]");
             put("embed_data", embed_data);
         }};
