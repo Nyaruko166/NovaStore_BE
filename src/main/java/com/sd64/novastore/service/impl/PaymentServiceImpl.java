@@ -7,6 +7,7 @@ import com.sd64.novastore.config.MomoPaymentConfig;
 import com.sd64.novastore.config.VNPaymentConfig;
 import com.sd64.novastore.config.ZaloPayConfig;
 import com.sd64.novastore.request.MomoPaymentRequest;
+import com.sd64.novastore.request.ZaloPaymentRequest;
 import com.sd64.novastore.service.PaymentService;
 import com.sd64.novastore.util.payment.HMACUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,7 +49,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .requestType("captureWallet")
                 .requestId(String.valueOf(random_id))
                 .orderId(String.valueOf(random_id))
-                .orderInfo("NovaStore - Thanh Toan Don Hang #" + random_id)
+                .orderInfo("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
                 .lang("vi")
                 .extraData("")
                 .build();
@@ -56,12 +57,12 @@ public class PaymentServiceImpl implements PaymentService {
         String signature = momoPaymentRequest.signatureGen(MomoPaymentConfig.accessKey, MomoPaymentConfig.secretKey);
         momoPaymentRequest.setSignature(signature);
 
-        String json = gson.toJson(momoPaymentRequest);
+        String jsonPost = gson.toJson(momoPaymentRequest);
 //        System.out.println(json);
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(MomoPaymentConfig.paymentUrl);
-        StringEntity requestEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
+        StringEntity requestEntity = new StringEntity(jsonPost, ContentType.APPLICATION_JSON);
         post.setEntity(requestEntity);
 
         // Content-Type: application/x-www-form-urlencoded
@@ -87,6 +88,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         JsonObject embed_data = new JsonObject();
         embed_data.addProperty("redirecturl", "http://localhost:8080/api/payment/zalo/return");
+
 //        JsonObject item = new JsonObject();
 //        item.addProperty("itemid", "knb");
 //        item.addProperty("itemname", "kim nguyen bao");
@@ -105,19 +107,43 @@ public class PaymentServiceImpl implements PaymentService {
             put("item", "[{}]");
             put("embed_data", embed_data);
         }};
+//        ZaloPaymentRequest zaloPaymentRequest = ZaloPaymentRequest.builder()
+//                .app_id(ZaloPayConfig.appid)
+//                .app_trans_id(ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id)
+//                .app_time(String.valueOf(System.currentTimeMillis()))
+//                .app_user("Nyaruko166")
+//                .amount(10000000L)
+//                .description("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
+//                .bank_code("")
+//                .item("[{}]")
+//                .embed_data("{}")
+//                .build();
+//        zaloPaymentRequest.setMac(zaloPaymentRequest.signatureGen(ZaloPayConfig.key1));
+
+//        String jsonPost = gson.toJson(zaloPaymentRequest);
+//
+//        System.out.println(zaloPaymentRequest.getItem());
+//        System.out.println(jsonPost);
 
         String data = order.get("app_id") + "|" + order.get("app_trans_id") + "|" + order.get("app_user") + "|" + order.get("amount") + "|" + order.get("app_time") + "|" + order.get("embed_data") + "|" + order.get("item");
-        order.put("mac", HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, ZaloPayConfig.key1, data));
+        order.put("mac", HMACUtil.HMACSHA256Encode(ZaloPayConfig.key1, data));
+
+//        System.out.println(data);
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(ZaloPayConfig.endpointCreateOrder);
+
+//        StringEntity requestEntity = new StringEntity(jsonPost, ContentType.APPLICATION_JSON);
+//        post.setEntity(requestEntity);
 
         List<NameValuePair> params = new ArrayList<>();
         for (Map.Entry<String, Object> e : order.entrySet()) {
             params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
         }
 
-        // Content-Type: application/x-www-form-urlencoded
+        System.out.println(params);
+
+//        Content - Type:application / x - www - form - urlencoded
         post.setEntity(new UrlEncodedFormEntity(params));
 
         CloseableHttpResponse res = client.execute(post);
@@ -156,7 +182,7 @@ public class PaymentServiceImpl implements PaymentService {
             vnp_Params.put("vnp_BankCode", bankCode);
         }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", "NovaStore - Thanh Toán Đơn Hàng #" + vnp_TxnRef);
         vnp_Params.put("vnp_OrderType", orderType);
 
         String locate = req.getParameter("language");
