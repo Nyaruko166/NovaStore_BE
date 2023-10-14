@@ -6,6 +6,8 @@
 package com.sd64.novastore.util.payment;
 
 
+import com.sd64.novastore.config.ZaloPayConfig;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -85,4 +87,9 @@ public class HMACUtil {
         }
         return HexStringUtil.byteArrayToHexString(hmacEncodeBytes);
     }
+
+    public static String HMACSHA256Encode(String secretKey, String data) {
+        return HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, secretKey, data);
+    }
+
 }
