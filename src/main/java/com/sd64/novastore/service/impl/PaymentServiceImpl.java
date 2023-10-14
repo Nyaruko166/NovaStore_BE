@@ -45,7 +45,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .partnerCode(MomoPaymentConfig.partnerCode)
                 .redirectUrl(MomoPaymentConfig.returnUrl)
                 .ipnUrl(MomoPaymentConfig.ipnUrl)
-                .amount(1000000L)
+                .amount(100000L)
                 .requestType("captureWallet")
                 .requestId(String.valueOf(random_id))
                 .orderId(String.valueOf(random_id))
@@ -102,7 +102,7 @@ public class PaymentServiceImpl implements PaymentService {
             put("app_time", System.currentTimeMillis()); // milliseconds
             put("app_user", "Nyaruko166");
             put("amount", 10000);
-            put("description", "NovaStore - Thanh Toan Don Hang #" + random_id);
+            put("description", "NovaStore - Thanh Toán Đơn Hàng #" + random_id);
             put("bank_code", "");
             put("item", "[{}]");
             put("embed_data", embed_data);
@@ -141,7 +141,7 @@ public class PaymentServiceImpl implements PaymentService {
             params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
         }
 
-        System.out.println(params);
+//        System.out.println(params);
 
 //        Content - Type:application / x - www - form - urlencoded
         post.setEntity(new UrlEncodedFormEntity(params));

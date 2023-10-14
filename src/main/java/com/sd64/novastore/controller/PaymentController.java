@@ -1,5 +1,6 @@
 package com.sd64.novastore.controller;
 
+import com.sd64.novastore.response.MomoPaymentResponse;
 import com.sd64.novastore.response.VNPaymentResponse;
 import com.sd64.novastore.response.ZaloPaymentResponse;
 import com.sd64.novastore.service.PaymentService;
@@ -49,5 +50,11 @@ public class PaymentController {
     ResponseEntity<?> zalopayReturn(ZaloPaymentResponse zaloPaymentResponse) {
 
         return ResponseEntity.ok(zaloPaymentResponse);
+    }
+
+    @GetMapping("/momo/return")
+    ResponseEntity<?> momoReturn(MomoPaymentResponse momoPaymentResponse) {
+
+        return ResponseEntity.ok(momoPaymentResponse);
     }
 }
