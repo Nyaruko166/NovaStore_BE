@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.request.CategoryRequest;
 import com.sd64.novastore.model.Category;
 import com.sd64.novastore.repository.CategoryRepository;
@@ -10,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,37 +26,45 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Page<Category> getAllPT(Integer page) {
+    public Page<Category> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
         return categoryRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
-    public Category add(CategoryRequest categoryRequest) {
-        Category category = categoryRequest.map(new Category());
+    public Category add(Category category) {
+        category.setStatus(1);
+        category.setCreateDate(new java.util.Date());
+        category.setUpdateDate(new java.util.Date());
         return categoryRepository.save(category);
     }
 
     @Override
-    public Category update(CategoryRequest categoryRequest, Integer id) {
-        Optional<Category> categoryOptional = categoryRepository.findById(id);
-        return categoryOptional.map(category -> {
-            category.setName(categoryRequest.getName());
-            category.setCreateDate(Date.valueOf(categoryRequest.getCreateDate()));
-            category.setUpdateDate(Date.valueOf(categoryRequest.getUpdateDate()));
-            category.setStatus(Integer.valueOf(categoryRequest.getStatus()));
+    public Category update(Category category, Integer id) {
+        Optional<Category> optional = categoryRepository.findById(id);
+        if (optional.isPresent()) {
+            Category updateCategory = optional.get();
+            category.setId(id);
+            category.setName(updateCategory.getName());
+            category.setStatus(updateCategory.getStatus());
+            category.setCreateDate(updateCategory.getCreateDate());
+            category.setUpdateDate(new Date());
             return categoryRepository.save(category);
-        }).orElse(null);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Category delete(Integer id) {
-        Optional<Category> categoryOptional = categoryRepository.findById(id);
-        return categoryOptional.map(category -> {
+        Optional<Category> optional = categoryRepository.findById(id);
+        if (optional.isPresent()) {
+            Category category = optional.get();
             category.setStatus(0);
-            categoryRepository.save(category);
-            return category;
-        }).orElse(null);
+            return categoryRepository.save(category);
+        } else {
+            return null;
+        }
     }
 
     @Override

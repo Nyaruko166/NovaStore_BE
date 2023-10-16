@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.request.FormRequest;
 import com.sd64.novastore.model.Form;
@@ -10,13 +11,13 @@ import java.util.List;
 public interface FormService {
     List<Form> getAll();
 
-    Page<Form> getAll(Integer page);
+    Page<Form> getPage(Integer page);
 
-    Form add(FormRequest formRequest);
+    Form add(Form form);
 
-    Form update(FormRequest formRequest, Integer id);
+    Form update(Form form, Integer id);
 
-    Boolean delete(Integer id);
+    Form delete(Integer id);
 
     Page<Form> search(String name, int page);
 }

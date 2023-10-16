@@ -6,7 +6,6 @@ import com.sd64.novastore.model.Form;
 import com.sd64.novastore.model.Material;
 import com.sd64.novastore.model.Product;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,56 +1,66 @@
 package com.sd64.novastore.controller;
 
+import com.sd64.novastore.model.Promotion;
+import com.sd64.novastore.model.Role;
 import com.sd64.novastore.request.PromotionRequest;
 import com.sd64.novastore.service.PromotionService;
+import com.sd64.novastore.service.RoleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/role")
+import java.util.List;
+
+@Controller
+@RequestMapping("/admin/role")
 public class RoleController {
 
     @Autowired
-    private PromotionService promotionService;
+    private RoleService roleService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(promotionService.getAll());
+    public String getAll(Model model) {
+        List<Role> listRole = roleService.getAll();
+        model.addAttribute("listRole", listRole);
+        return "";
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> getPage(@RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(promotionService.getPage(page).getContent());
+    public String getPage(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+        Page<Role> pageRole = roleService.getPage(page);
+        model.addAttribute("pageRole", pageRole.getContent());
+        return "";
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid PromotionRequest promotionRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            String error = bindingResult.getFieldError().getDefaultMessage();
-            return ResponseEntity.ok(error);
-        } else {
-            return ResponseEntity.ok(promotionService.add(promotionRequest));
-        }
+    public String add(@Validated @ModelAttribute("Role") Role role) {
+        roleService.add(role);
+        return "redirect:/admin/role/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody PromotionRequest promotionRequest, @PathVariable Integer id) {
-        return ResponseEntity.ok(promotionService.update(promotionRequest, id));
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Integer id, @Validated @ModelAttribute("Role") Role role) {
+        roleService.update(role, id);
+        return "redirect:/admin/role/page";
     }
 
-    @PutMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        if (promotionService.delete(id)) {
-            return ResponseEntity.ok("Delete Success");
-        } else {
-            return ResponseEntity.ok("Delete Fail");
-        }
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        roleService.delete(id);
+        return "redirect:/admin/role/page";
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(promotionService.search(name, page).getContent());
+    public String search(Model model, @RequestParam(required = false) String nameSearch,
+                         @RequestParam(defaultValue = "0") int page) {
+        Page<Role> listRole = roleService.search(nameSearch, page);
+        model.addAttribute("listRole", listRole.getContent());
+        return "";
     }
 }

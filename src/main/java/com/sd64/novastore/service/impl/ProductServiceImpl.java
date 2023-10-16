@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.dto.ProductDto;
 import com.sd64.novastore.request.ProductRequest;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.repository.ProductRepository;
@@ -19,12 +20,13 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public List<Product> getAll(){
-        return  productRepository.findAllByStatus(1);
+    public Page<ProductDto> getAll(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return productRepository.getAllProduct(pageable);
     }
 
     @Override
-    public Page<Product> getAll(Integer page){
+    public Page<Product> getAll(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
         return productRepository.findAllByStatus(pageable, 1);
     }
@@ -45,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean delete(Integer id) {
         Optional<Product> optional = productRepository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             Product product = optional.get();
             product.setStatus(0);
             productRepository.save(product);

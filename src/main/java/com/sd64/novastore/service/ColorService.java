@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.request.ColorRequest;
 import com.sd64.novastore.model.Color;
@@ -10,13 +11,13 @@ import java.util.List;
 public interface ColorService {
     List<Color> getAll();
 
-    Page<Color> getAll(Integer page);
+    Page<Color> getPage(Integer page);
 
-    Color add(ColorRequest colorRequest);
+    Color add(Color color);
 
-    Color update(ColorRequest colorRequest, Integer id);
+    Color update(Color color, Integer id);
 
-    Boolean delete(Integer id);
+    Color delete(Integer id);
 
     Page<Color> search(String name, int page);
 }

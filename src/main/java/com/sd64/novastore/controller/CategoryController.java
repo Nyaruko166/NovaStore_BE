@@ -1,66 +1,65 @@
 package com.sd64.novastore.controller;
 
+import com.sd64.novastore.model.Brand;
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.request.CategoryRequest;
 import com.sd64.novastore.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/category")
+@Controller
+@RequestMapping("/admin/category")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(categoryService.getAll());
+    public String getAll(Model model) {
+        List<Category> listCategory = categoryService.getAll();
+        model.addAttribute("listCategory", listCategory);
+        return "";
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(categoryService.getAllPT(page).getContent());
+    public String getPage(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+        Page<Category> pageCategory = categoryService.getPage(page);
+        model.addAttribute("pageCategory", pageCategory.getContent());
+        return "";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         return ResponseEntity.ok(categoryService.delete(id));
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid CategoryRequest categoryRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(categoryService.add(categoryRequest));
+    public String add(@Validated @ModelAttribute("Category") Category category) {
+        categoryService.add(category);
+        return "redirect:/admin/category/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid CategoryRequest categoryRequest, @PathVariable Integer id, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(categoryService.update(categoryRequest, id));
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Integer id, @Validated @ModelAttribute("Category") Category category) {
+        categoryService.update(category, id);
+        return "redirect:/admin/category/page";
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(categoryService.search(name, page).getContent());
+    public String search(Model model, @RequestParam(required = false) String nameSearch,
+                         @RequestParam(defaultValue = "0") int page) {
+        Page<Category> listCategory = categoryService.search(nameSearch, page);
+        model.addAttribute("listBrand", listCategory.getContent());
+        return "";
     }
 }

@@ -1,70 +1,65 @@
 package com.sd64.novastore.controller;
 
+import com.sd64.novastore.model.Category;
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.request.ColorRequest;
 import com.sd64.novastore.service.ColorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/color")
+@Controller
+@RequestMapping("/admin/color")
 public class ColorController {
     @Autowired
     private ColorService colorService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(colorService.getAll());
+    public String getAll(Model model) {
+        List<Color> listColor = colorService.getAll();
+        model.addAttribute("listColor", listColor);
+        return "";
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        return ResponseEntity.ok(colorService.getAll(page).getContent());
+    public String getPage(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+        Page<Color> pageColor = colorService.getPage(page);
+        model.addAttribute("pageColor", pageColor.getContent());
+        return "";
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid ColorRequest colorRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        } else {
-            return ResponseEntity.ok(colorService.add(colorRequest));
-        }
+    public String add(@Validated @ModelAttribute("Color") Color color) {
+        colorService.add(color);
+        return "redirect:/admin/color/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody @Valid ColorRequest colorRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        } else {
-            return ResponseEntity.ok(colorService.update(colorRequest, id));
-        }
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Integer id, @Validated @ModelAttribute("Color") Color color) {
+        colorService.update(color, id);
+        return "redirect:/admin/color/page";
     }
 
-    @PutMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        if (colorService.delete(id)) {
-            return ResponseEntity.ok("Xoá thành công");
-        } else {
-            return ResponseEntity.ok("Xoá thất bại");
-        }
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        colorService.delete(id);
+        return "redirect:/admin/color/page";
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(colorService.search(name, page).getContent());
+    public String search(Model model, @RequestParam(required = false) String nameSearch,
+                         @RequestParam(defaultValue = "0") int page) {
+        Page<Color> listColor = colorService.search(nameSearch, page);
+        model.addAttribute("listColor", listColor.getContent());
+        return "";
     }
 }

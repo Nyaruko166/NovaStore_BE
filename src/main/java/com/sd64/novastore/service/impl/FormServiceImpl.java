@@ -1,6 +1,7 @@
 package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.model.Category;
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.request.FormRequest;
 import com.sd64.novastore.model.Form;
 import com.sd64.novastore.repository.FormRepository;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,38 +23,48 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public List<Form> getAll(){
-        return  formRepository.findAllByAndStatusOrderByIdDesc(1);
+        return formRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
-    public Page<Form> getAll(Integer page){
+    public Page<Form> getPage(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
         return formRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
-    public Form add(FormRequest formRequest) {
-        Form form = formRequest.map(new Form());
+    public Form add(Form form) {
+        form.setStatus(1);
+        form.setCreateDate(new java.util.Date());
+        form.setUpdateDate(new java.util.Date());
         return formRepository.save(form);
     }
 
     @Override
-    public Form update(FormRequest formRequest, Integer id) {
+    public Form update(Form form, Integer id) {
         Optional<Form> optional = formRepository.findById(id);
-        Form color = formRequest.map(optional.get());
-        return formRepository.save(color);
+        if (optional.isPresent()) {
+            Form updateForm = optional.get();
+            form.setId(id);
+            form.setName(updateForm.getName());
+            form.setStatus(updateForm.getStatus());
+            form.setCreateDate(updateForm.getCreateDate());
+            form.setUpdateDate(new Date());
+            return formRepository.save(form);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public Boolean delete(Integer id) {
+    public Form delete(Integer id) {
         Optional<Form> optional = formRepository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             Form form = optional.get();
             form.setStatus(0);
-            formRepository.save(form);
-            return true;
+            return formRepository.save(form);
         } else {
-            return false;
+            return null;
         }
     }
 

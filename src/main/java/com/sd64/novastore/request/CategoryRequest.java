@@ -31,9 +31,9 @@ public class CategoryRequest {
 
     public Category map(Category category) {
         category.setName(this.getName());
-        category.setCreateDate(Date.from(Instant.parse(this.getCreateDate())));
-        category.setUpdateDate(Date.from(Instant.parse(this.getUpdateDate())));
-        category.setStatus(Integer.valueOf(this.getStatus()));
+        category.setCreateDate(new Date());
+        category.setUpdateDate(new Date());
+        category.setStatus(1);
         return category;
     }
 }

@@ -1,6 +1,7 @@
 package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.model.Category;
+import com.sd64.novastore.model.Material;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.repository.PromotionRepository;
 import com.sd64.novastore.request.PromotionRequest;
@@ -20,45 +21,51 @@ public class PromotionServiceImpl implements PromotionService {
     @Autowired
     private PromotionRepository promotionRepository;
 
+    @Override
     public List<Promotion> getAll() {
         return promotionRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
-    public Page<Promotion> getPage(int page) {
+    @Override
+    public Page<Promotion> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
         return promotionRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
-    public Promotion add(PromotionRequest promotionRequest) {
-        Promotion promotion = promotionRequest.map(new Promotion());
+    @Override
+    public Promotion add(Promotion promotion) {
+        promotion.setStatus(1);
+        promotion.setCreateDate(new java.util.Date());
+        promotion.setUpdateDate(new java.util.Date());
         return promotionRepository.save(promotion);
     }
 
-    public Promotion update(PromotionRequest promotionRequest, Integer id) {
+    @Override
+    public Promotion update(Promotion promotion, Integer id) {
         Optional<Promotion> optional = promotionRepository.findById(id);
-        return optional.map(o -> {
-            o.setId(id);
-            o.setName(promotionRequest.getName());
-            o.setType(promotionRequest.getType());
-            o.setStatus(promotionRequest.getStatus());
-            o.setUpdateDate(new Date());
-            o.setCode(promotionRequest.getCode());
-            o.setValue(promotionRequest.getValue());
-            o.setEndDate(promotionRequest.getEndDate());
-            o.setStartDate(promotionRequest.getStartDate());
-            o.setCreateDate(promotionRequest.getCreateDate());
-            return promotionRepository.save(o);
-        }).orElse(null);
+        if (optional.isPresent()) {
+            Promotion updatePromotion = optional.get();
+            promotion.setId(id);
+            promotion.setName(updatePromotion.getName());
+            promotion.setStatus(updatePromotion.getStatus());
+            promotion.setCreateDate(updatePromotion.getCreateDate());
+            promotion.setUpdateDate(new Date());
+            return promotionRepository.save(promotion);
+        } else {
+            return null;
+        }
     }
 
-
-    public Boolean delete(Integer id) {
+    @Override
+    public Promotion delete(Integer id) {
         Optional<Promotion> optional = promotionRepository.findById(id);
-        return optional.map(o -> {
-            o.setStatus(0);
-            promotionRepository.save(o);
-            return true;
-        }).orElse(false);
+        if (optional.isPresent()) {
+            Promotion promotion = optional.get();
+            promotion.setStatus(0);
+            return promotionRepository.save(promotion);
+        } else {
+            return null;
+        }
     }
 
     @Override

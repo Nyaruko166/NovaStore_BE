@@ -37,7 +37,7 @@ public class PromotionRequest {
 
     private Date updateDate;
 
-    private Integer status = 1;
+    private Integer status;
 
     public Promotion map(Promotion promotion) {
         promotion.setId(this.getId());
@@ -49,7 +49,7 @@ public class PromotionRequest {
         promotion.setEndDate(this.getEndDate());
         promotion.setCreateDate(new Date());
         promotion.setUpdateDate(new Date());
-        promotion.setStatus(this.getStatus());
+        promotion.setStatus(1);
         return promotion;
     }
 }
