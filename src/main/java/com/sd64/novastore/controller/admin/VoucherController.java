@@ -1,7 +1,7 @@
-package com.sd64.novastore.controller;
+package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.request.PromotionRequest;
-import com.sd64.novastore.service.PromotionService;
+import com.sd64.novastore.request.VoucherRequest;
+import com.sd64.novastore.service.VoucherService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,40 +9,40 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/role")
-public class RoleController {
+@RequestMapping("/voucher")
+public class VoucherController {
 
     @Autowired
-    private PromotionService promotionService;
+    private VoucherService voucherService;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(promotionService.getAll());
+        return ResponseEntity.ok(voucherService.getAll());
     }
 
     @GetMapping("/page")
     public ResponseEntity<?> getPage(@RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(promotionService.getPage(page).getContent());
+        return ResponseEntity.ok(voucherService.getPage(page).getContent());
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid PromotionRequest promotionRequest, BindingResult bindingResult) {
+    public ResponseEntity<?> add(@RequestBody @Valid VoucherRequest voucherRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String error = bindingResult.getFieldError().getDefaultMessage();
             return ResponseEntity.ok(error);
         } else {
-            return ResponseEntity.ok(promotionService.add(promotionRequest));
+            return ResponseEntity.ok(voucherService.add(voucherRequest));
         }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody PromotionRequest promotionRequest, @PathVariable Integer id) {
-        return ResponseEntity.ok(promotionService.update(promotionRequest, id));
+    public ResponseEntity<?> update(@RequestBody VoucherRequest voucherRequest, @PathVariable Integer id) {
+        return ResponseEntity.ok(voucherService.update(voucherRequest, id));
     }
 
     @PutMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        if (promotionService.delete(id)) {
+        if (voucherService.delete(id)) {
             return ResponseEntity.ok("Delete Success");
         } else {
             return ResponseEntity.ok("Delete Fail");
@@ -51,6 +51,6 @@ public class RoleController {
 
     @GetMapping("/search")
     public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(promotionService.search(name, page).getContent());
+        return ResponseEntity.ok(voucherService.search(name, page).getContent());
     }
 }

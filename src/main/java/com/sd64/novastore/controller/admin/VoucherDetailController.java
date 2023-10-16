@@ -1,9 +1,9 @@
-package com.sd64.novastore.controller;
+package com.sd64.novastore.controller.admin;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/promotion-detail")
-public class PromotionDetailController {
+@RequestMapping("/voucher-detail")
+public class VoucherDetailController {
 }

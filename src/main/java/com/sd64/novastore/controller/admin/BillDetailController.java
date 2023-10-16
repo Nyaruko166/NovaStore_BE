@@ -1,4 +1,4 @@
-package com.sd64.novastore.controller;
+package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.request.BillDetailRequest;
 import com.sd64.novastore.service.BillDetailService;
