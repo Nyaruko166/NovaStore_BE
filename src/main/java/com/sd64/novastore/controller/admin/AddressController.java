@@ -1,7 +1,7 @@
-package com.sd64.novastore.controller;
+package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.request.CartDetailRequest;
-import com.sd64.novastore.service.CartDetailService;
+import com.sd64.novastore.request.AddressRequest;
+import com.sd64.novastore.service.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,42 +20,43 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cart_detail")
-public class CartDetailController {
+@RequestMapping("/address")
+public class AddressController {
     @Autowired
-    private CartDetailService cartDetailService;
+    private AddressService addressService;
 
     @GetMapping("/getall")
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(cartDetailService.getAll());
+        return ResponseEntity.ok(addressService.getAll());
     }
 
     @GetMapping("/getallpt")
     public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(cartDetailService.getAllPT(page).getContent());
+        return ResponseEntity.ok(addressService.getAllPT(page).getContent());
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        return ResponseEntity.ok(cartDetailService.delete(id));
+        return ResponseEntity.ok(addressService.delete(id));
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid CartDetailRequest cartDetailRequest, BindingResult result) {
+    public ResponseEntity<?> add(@RequestBody @Valid AddressRequest addressRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             return ResponseEntity.ok(list);
         }
-        return ResponseEntity.ok(cartDetailService.add(cartDetailRequest));
+        return ResponseEntity.ok(addressService.add(addressRequest));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid CartDetailRequest cartDetailRequest, @PathVariable Integer id, BindingResult result) {
+    public ResponseEntity<?> update(@RequestBody @Valid AddressRequest addressRequest, @PathVariable Integer id, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             return ResponseEntity.ok(list);
         }
-        return ResponseEntity.ok(cartDetailService.update(cartDetailRequest, id));
+        return ResponseEntity.ok(addressService.update(addressRequest, id));
+
     }
 }

@@ -1,4 +1,4 @@
-package com.sd64.novastore.controller;
+package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.request.ColorRequest;
 import com.sd64.novastore.service.ColorService;

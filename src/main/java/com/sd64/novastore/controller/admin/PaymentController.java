@@ -1,4 +1,4 @@
-package com.sd64.novastore.controller;
+package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.response.MomoPaymentResponse;
 import com.sd64.novastore.response.VNPaymentResponse;

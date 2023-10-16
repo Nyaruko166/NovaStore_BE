@@ -1,7 +1,7 @@
-package com.sd64.novastore.controller;
+package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.request.CategoryRequest;
-import com.sd64.novastore.service.CategoryService;
+import com.sd64.novastore.request.BillHistoryRequest;
+import com.sd64.novastore.service.BillHistoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,47 +20,43 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/bill_history")
+public class BillHistoryController {
     @Autowired
-    private CategoryService categoryService;
+    private BillHistoryService billHistoryService;
 
-    @GetMapping("/all")
+    @GetMapping("/getall")
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(categoryService.getAll());
+        return ResponseEntity.ok(billHistoryService.getAll());
     }
 
-    @GetMapping("/page")
+    @GetMapping("/getallpt")
     public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(categoryService.getAllPT(page).getContent());
+        return ResponseEntity.ok(billHistoryService.getAllPT(page).getContent());
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        return ResponseEntity.ok(categoryService.delete(id));
+        return ResponseEntity.ok(billHistoryService.delete(id));
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid CategoryRequest categoryRequest, BindingResult result) {
+    public ResponseEntity<?> add(@RequestBody @Valid BillHistoryRequest billHistoryRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             return ResponseEntity.ok(list);
         }
-        return ResponseEntity.ok(categoryService.add(categoryRequest));
+        return ResponseEntity.ok(billHistoryService.add(billHistoryRequest));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid CategoryRequest categoryRequest, @PathVariable Integer id, BindingResult result) {
+    public ResponseEntity<?> update(@RequestBody @Valid BillHistoryRequest billHistoryRequest, @PathVariable Integer id, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             return ResponseEntity.ok(list);
         }
-        return ResponseEntity.ok(categoryService.update(categoryRequest, id));
-    }
+        return ResponseEntity.ok(billHistoryService.update(billHistoryRequest, id));
 
-    @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(categoryService.search(name, page).getContent());
     }
 }

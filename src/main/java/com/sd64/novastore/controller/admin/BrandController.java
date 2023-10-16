@@ -1,7 +1,7 @@
-package com.sd64.novastore.controller;
+package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.request.CartRequest;
-import com.sd64.novastore.service.CartService;
+import com.sd64.novastore.request.BrandRequest;
+import com.sd64.novastore.service.BrandService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,44 +18,48 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
 @RestController
-@RequestMapping("/cart")
-public class CartController {
+@RequestMapping("/brand")
+public class BrandController {
     @Autowired
-    private CartService cartService;
+    private BrandService brandService;
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(cartService.getAll());
+        return ResponseEntity.ok(brandService.getAll());
     }
 
-    @GetMapping("/getallpt")
+    @GetMapping("/page")
     public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(cartService.getAllPT(page).getContent());
+        return ResponseEntity.ok(brandService.getAllPT(page).getContent());
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        return ResponseEntity.ok(cartService.delete(id));
+        return ResponseEntity.ok(brandService.delete(id));
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid CartRequest cartRequest, BindingResult result) {
+    public ResponseEntity<?> add(@RequestBody @Valid BrandRequest brandRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             return ResponseEntity.ok(list);
         }
-        return ResponseEntity.ok(cartService.add(cartRequest));
+        return ResponseEntity.ok(brandService.add(brandRequest));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid CartRequest cartRequest, @PathVariable Integer id, BindingResult result) {
+    public ResponseEntity<?> update(@RequestBody @Valid BrandRequest brandRequest, @PathVariable Integer id, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             return ResponseEntity.ok(list);
         }
-        return ResponseEntity.ok(cartService.update(cartRequest, id));
+        return ResponseEntity.ok(brandService.update(brandRequest, id));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(brandService.search(name, page).getContent());
     }
 }
