@@ -1,13 +1,12 @@
-package com.sd64.novastore.controller;
+package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.request.BillRequest;
-import com.sd64.novastore.service.BillService;
+import com.sd64.novastore.request.AccountRequest;
+import com.sd64.novastore.service.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,44 +18,50 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/bill")
-public class BillController {
+@RequestMapping("/account")
+public class AccountController {
     @Autowired
-    private BillService billService;
+    private AccountService accountService;
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(billService.getAll());
+        return ResponseEntity.ok(accountService.getAll());
     }
 
-    @GetMapping("/getallpt")
+    @GetMapping("/page")
     public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(billService.getAllPT(page).getContent());
+        return ResponseEntity.ok(accountService.getAllPT(page).getContent());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        return ResponseEntity.ok(billService.delete(id));
+        return ResponseEntity.ok(accountService.delete(id));
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid BillRequest billRequest, BindingResult result) {
+    public ResponseEntity<?> add(@RequestBody @Valid AccountRequest accountRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             return ResponseEntity.ok(list);
         }
-        return ResponseEntity.ok(billService.add(billRequest));
+        return ResponseEntity.ok(accountService.add(accountRequest));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid BillRequest billRequest, @PathVariable Integer id, BindingResult result) {
+    public ResponseEntity<?> update(@RequestBody @Valid AccountRequest accountRequest, @PathVariable Integer id, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             return ResponseEntity.ok(list);
         }
-        return ResponseEntity.ok(billService.update(billRequest, id));
+        return ResponseEntity.ok(accountService.update(accountRequest, id));
 
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(accountService.search(name, page).getContent());
     }
 }
