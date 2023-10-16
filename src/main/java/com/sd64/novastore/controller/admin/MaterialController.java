@@ -19,7 +19,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin/material")
-@CrossOrigin
 public class MaterialController {
     @Autowired
     private MaterialService materialService;

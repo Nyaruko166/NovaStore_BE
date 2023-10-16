@@ -29,7 +29,7 @@ public class BrandController {
     public String getPage(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
         Page<Brand> pageBrand = brandService.getPage(page);
         model.addAttribute("pageBrand", pageBrand.getContent());
-        return "";
+        return "admin/brand/brand";
     }
 
     @PostMapping("/delete/{id}")
