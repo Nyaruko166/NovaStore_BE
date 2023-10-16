@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="page_head(title)">
+    <meta charset="UTF-8">
+    <title>[[${title}]]</title>
+    <link rel="apple-touch-icon" th:href="@{apple-icon.png}">
+    <link rel="shortcut icon" th:href="@{/admin/images/favicon.ico}">
+
+    <link rel="stylesheet" th:href="@{/admin/vendors/bootstrap/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/admin/vendors/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/admin/vendors/themify-icons/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/admin/vendors/flag-icon-css/css/flag-icon.min.css}">
+    <link rel="stylesheet" th:href="@{/admin/vendors/selectFX/css/cs-skin-elastic.css}">
+    <link rel="stylesheet" th:href="@{/admin/vendors/jqvmap/dist/jqvmap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/admin/assets/css/style.css}">
+
+    <script th:inline="javascript" th:src="@{/admin/vendors/jquery/dist/jquery.min.js}"></script>
+    <script th:inline="javascript" th:src="@{/admin/vendors/popper.js/dist/umd/popper.min.js}"></script>
+    <script th:inline="javascript" th:src="@{/admin/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+    <script th:inline="javascript" th:src="@{/admin/assets/js/main.js}"></script>
+    <script th:inline="javascript" th:src="@{/admin/vendors/chart.js/dist/Chart.bundle.min.js}"></script>
+    <script th:inline="javascript" th:src="@{/admin/assets/js/dashboard.js}"></script>
+    <script th:inline="javascript" th:src="@{/admin/assets/js/widgets.js}"></script>
+    <script th:inline="javascript" th:src="@{/admin/vendors/jqvmap/dist/jquery.vmap.min.js}"></script>
+    <script th:inline="javascript" th:src="@{/admin/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js}"></script>
+    <script th:inline="javascript" th:src="@{/admin/vendors/jqvmap/dist/maps/jquery.vmap.world.js}"></script>
+    <script th:inline="javascript">
+        /* Bạn có thể giữ nguyên đoạn mã JavaScript này */
+        (function ($) {
+            "use strict";
+
+            jQuery('#vmap').vectorMap({
+                map: 'world_en',
+                backgroundColor: null,
+                color: '#ffffff',
+                hoverOpacity: 0.7,
+                selectedColor: '#1de9b6',
+                enableZoom: true,
+                showTooltip: true,
+                values: sample_data,
+                scaleColors: ['#1de9b6', '#03a9f5'],
+                normalizeFunction: 'polynomial'
+            });
+        })(jQuery);
+    </script>
+
+    <link  th:href='@{https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800}' rel='stylesheet' type='text/css'>
+</head>
+<body>
+
+</body>
+</html>

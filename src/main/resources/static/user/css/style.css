@@ -3770,7 +3770,7 @@ input[type="button"].btn-block {
 }
 
 .custom-range:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 1px #fff, none;
+  box-shadow: 0 0 0 1px #fff ,none;
 }
 
 .custom-range:focus::-moz-range-thumb {

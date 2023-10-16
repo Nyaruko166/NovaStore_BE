@@ -114,7 +114,7 @@ grunt.initConfig( {
 		}
 	},
 	qunit: {
-		files: "test/index.html"
+		files: "test/home.html"
 	},
 	jshint: {
 		options: {
