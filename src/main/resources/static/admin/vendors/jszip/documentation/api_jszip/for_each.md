@@ -30,7 +30,7 @@ file         | ZipObject | the current file. See [ZipObject]({{site.baseurl}}/do
 var zip = new JSZip();
 zip.file("package.json", "...");
 zip.file("lib/index.js", "...");
-zip.file("test/index.html", "...");
+zip.file("test/home.html", "...");
 zip.file("test/asserts/file.js", "...");
 zip.file("test/asserts/generate.js", "...");
 
@@ -39,7 +39,7 @@ zip.folder("test").forEach(function (relativePath, file){
 });
 
 // will display:
-// iterating over index.html
+// iterating over home.html
 // iterating over asserts/
 // iterating over asserts/file.js
 // iterating over asserts/generate.js
