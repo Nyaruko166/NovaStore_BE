@@ -2,7 +2,6 @@ package com.sd64.novastore.request;
 
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Bill;
-import com.sd64.novastore.model.Staff;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -61,7 +60,7 @@ public class BillRequest {
     private String status;
 
 
-    private String staffID;
+    private String customerID;
 
 
     private String accountID;
@@ -83,7 +82,7 @@ public class BillRequest {
         bill.setUpdateDate(Date.from(Instant.parse(this.getUpdateDate())));
         bill.setStatus(Integer.valueOf(this.getStatus()));
         bill.setAccount(Account.builder().id(Integer.valueOf(this.getAccountID())).build());
-        bill.setStaff(Staff.builder().id(Integer.valueOf(this.getStaffID())).build());
+        bill.setCustomerAccount(Account.builder().id(Integer.valueOf(this.getCustomerID())).build());
         return bill;
     }
 }

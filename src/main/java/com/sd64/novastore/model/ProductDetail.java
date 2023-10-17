@@ -20,9 +20,6 @@ public class ProductDetail {
     @Column(name = "Id")
     private Integer id;
 
-    @Column(name = "Description")
-    private String description;
-
     @Column(name = "Quantity")
     private Integer quantity;
 
@@ -41,4 +38,8 @@ public class ProductDetail {
     @ManyToOne
     @JoinColumn(name = "ProductId", referencedColumnName = "Id")
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "SizeId", referencedColumnName = "Id")
+    private Size size;
 }

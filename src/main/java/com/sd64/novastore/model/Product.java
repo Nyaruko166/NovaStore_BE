@@ -22,6 +22,9 @@ public class Product {
     @Column(name = "Name")
     private String name;
 
+    @Column(name = "Description")
+    private String description;
+
     @Column(name = "CreateDate")
     private Date createDate;
 
@@ -46,4 +49,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "FormId", referencedColumnName = "Id")
     private Form form;
+
+    @ManyToOne
+    @JoinColumn(name = "ColorId", referencedColumnName = "Id")
+    private Color color;
 }
