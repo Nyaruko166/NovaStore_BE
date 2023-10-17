@@ -46,7 +46,6 @@ public class AccountServiceImpl implements AccountService {
             account.setEmail(accountRequest.getEmail());
             account.setPhoneNumber(accountRequest.getPhoneNumber());
             account.setPassword(accountRequest.getPassword());
-            account.setGender(Boolean.valueOf(accountRequest.getGender()));
             account.setAvatar(accountRequest.getAvatar());
             account.setCreateDate(Date.valueOf(accountRequest.getCreateDate()));
             account.setUpdateDate(Date.valueOf(accountRequest.getUpdateDate()));

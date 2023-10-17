@@ -66,10 +66,10 @@ public class Bill {
     private Integer status;
 
     @ManyToOne
-    @JoinColumn(name = "StaffId", referencedColumnName = "Id")
-    private Staff staff;
-
-    @ManyToOne
     @JoinColumn(name = "AccountId", referencedColumnName = "Id")
     private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "CustomerId", referencedColumnName = "Id")
+    private Account customerAccount;
 }

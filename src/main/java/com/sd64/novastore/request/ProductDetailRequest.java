@@ -14,9 +14,6 @@ import java.util.Date;
 @Setter
 
 public class ProductDetailRequest {
-    @NotBlank(message = "Mô tả không được để trống")
-    private String description;
-
     @NotNull(message = "Số lượng không được để trống")
     private Integer quantity;
 
@@ -32,7 +29,6 @@ public class ProductDetailRequest {
     private Integer productId;
 
     public ProductDetail map(ProductDetail productDetail){
-        productDetail.setDescription(this.description);
         productDetail.setQuantity(this.quantity);
         productDetail.setPrice(this.price);
         productDetail.setCreateDate(this.createDate);

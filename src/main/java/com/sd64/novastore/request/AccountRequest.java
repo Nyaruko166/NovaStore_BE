@@ -37,10 +37,6 @@ public class AccountRequest {
     @NotBlank(message = "Name khong duoc de trong")
     private String password;
 
-    @NotBlank(message = "Gender khong duoc de trong")
-    private String gender;
-
-
     private String avatar;
 
 //    @PastOrPresent(message = "Ngay createDate nho hon hoac bang ngay hien tai")
@@ -62,7 +58,6 @@ public class AccountRequest {
         account.setEmail(this.getEmail());
         account.setPhoneNumber(this.getPhoneNumber());
         account.setPassword(this.getPassword());
-        account.setGender(Boolean.valueOf(this.getGender()));
         account.setAvatar(this.getAvatar());
         account.setCreateDate(Date.from(Instant.parse(this.getCreateDate())));
         account.setUpdateDate(Date.from(Instant.parse(this.getUpdateDate())));

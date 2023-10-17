@@ -3,6 +3,8 @@ package com.sd64.novastore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @Table(name = "Role")
 @Entity
 @AllArgsConstructor
@@ -19,6 +21,12 @@ public class Role {
 
     @Column(name = "Name")
     private String name;
+
+    @Column(name = "CreateDate")
+    private Date createDate;
+
+    @Column(name = "UpdateDate")
+    private Date updateDate;
 
     @Column(name = "Status")
     private Integer status;

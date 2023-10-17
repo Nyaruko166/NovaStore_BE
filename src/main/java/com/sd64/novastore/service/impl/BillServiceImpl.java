@@ -3,7 +3,6 @@ package com.sd64.novastore.service.impl;
 import com.sd64.novastore.request.BillRequest;
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Bill;
-import com.sd64.novastore.model.Staff;
 import com.sd64.novastore.repository.BillRepository;
 import com.sd64.novastore.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class BillServiceImpl implements BillService {
             bill.setUpdateDate(Date.from(Instant.parse(billRequest.getUpdateDate())));
             bill.setStatus(Integer.valueOf(billRequest.getStatus()));
             bill.setAccount(Account.builder().id(Integer.valueOf(billRequest.getAccountID())).build());
-            bill.setStaff(Staff.builder().id(Integer.valueOf(billRequest.getStaffID())).build());
+            bill.setCustomerAccount(Account.builder().id(Integer.valueOf(billRequest.getCustomerID())).build());
             return billRepository.save(bill);
         }).orElse(null);
     }

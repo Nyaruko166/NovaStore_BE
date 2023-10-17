@@ -34,9 +34,6 @@ public class Account {
     @Column(name = "Password")
     private String password;
 
-    @Column(name = "Gender")
-    private Boolean gender;
-
     @Column(name = "Avatar")
     private String avatar;
 
@@ -48,4 +45,8 @@ public class Account {
 
     @Column(name = "Status")
     private Integer status;
+
+    @ManyToOne
+    @JoinColumn(name = "RoleId", referencedColumnName = "Id")
+    private Role role;
 }
