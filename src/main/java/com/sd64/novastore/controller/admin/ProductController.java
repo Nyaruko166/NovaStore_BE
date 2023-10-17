@@ -5,34 +5,28 @@ import com.sd64.novastore.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/product")
 public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(productService.getAll());
-    }
-
-    @GetMapping()
-    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+    @GetMapping("/page")
+    public ResponseEntity<?> getPage(@RequestParam(defaultValue = "0") int page) {
         return ResponseEntity.ok(productService.getAll(page).getContent());
     }
+
+//    @GetMapping("/page")
+//    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+//        return ResponseEntity.ok(productService.getAll(page).getContent());
+//    }
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody @Valid ProductRequest productRequest, BindingResult result) {

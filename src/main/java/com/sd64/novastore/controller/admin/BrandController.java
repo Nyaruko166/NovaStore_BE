@@ -1,65 +1,59 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.request.BrandRequest;
+import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.service.BrandService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RestController
-@RequestMapping("/brand")
+
+@Controller
+@RequestMapping("/admin/brand")
 public class BrandController {
     @Autowired
     private BrandService brandService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(brandService.getAll());
+    public String getAll(Model model) {
+        List<Brand> listBrand = brandService.getAll();
+        model.addAttribute("listBrand", listBrand);
+        return "";
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(brandService.getAllPT(page).getContent());
+    public String getPage(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+        Page<Brand> pageBrand = brandService.getPage(page);
+        model.addAttribute("pageBrand", pageBrand.getContent());
+        return "admin/brand/brand";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         return ResponseEntity.ok(brandService.delete(id));
     }
 
-
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid BrandRequest brandRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(brandService.add(brandRequest));
+    public String add(@Validated @ModelAttribute("Brand") Brand brand) {
+        brandService.add(brand);
+        return "redirect:/admin/brand/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid BrandRequest brandRequest, @PathVariable Integer id, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(brandService.update(brandRequest, id));
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Integer id, @Validated @ModelAttribute("Brand") Brand brand) {
+        brandService.update(brand, id);
+        return "redirect:/admin/brand/page";
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(brandService.search(name, page).getContent());
+    public String search(Model model, @RequestParam(required = false) String nameSearch,
+                         @RequestParam(defaultValue = "0") int page) {
+        Page<Brand> listBrand = brandService.search(nameSearch, page);
+        model.addAttribute("listBrand", listBrand.getContent());
+        return "";
     }
 }

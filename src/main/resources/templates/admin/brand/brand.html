@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <strong>Brand</strong>
+      </div>
+      <div class="card-body card-block">
+        <form action="/admin/brand/add" method="post" class="form-horizontal">
+          <div class="row form-group">
+            <div class="col col-md-3"><label for="" class=" form-control-label">Brand name</label></div>
+            <div class="col-12 col-md-9"><input type="text" id="" name="name" class="form-control">
+<!--              <small class="form-text text-muted">This is a help text</small>-->
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-sm">
+              <i class="fa fa-dot-circle-o"></i> ADD
+            </button>
+            <button type="reset" class="btn btn-danger btn-sm">
+              <i class="fa fa-ban"></i> Reset
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <strong class="card-title">Table Brand</strong>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Function</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="items:${pageBrand}">
+            <td th:text="${items.id}"></td>
+            <td th:text="${items.name}"></td>
+            <th scope="row"></th>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

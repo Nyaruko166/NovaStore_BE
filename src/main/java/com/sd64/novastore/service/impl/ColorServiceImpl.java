@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,38 +22,48 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public List<Color> getAll(){
-        return  colorRepository.findAllByAndStatusOrderByIdDesc(1);
+        return colorRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
-    public Page<Color> getAll(Integer page){
+    public Page<Color> getPage(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
         return colorRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
-    public Color add(ColorRequest colorRequest) {
-        Color color = colorRequest.map(new Color());
+    public Color add(Color color) {
+        color.setStatus(1);
+        color.setCreateDate(new java.util.Date());
+        color.setUpdateDate(new java.util.Date());
         return colorRepository.save(color);
     }
 
     @Override
-    public Color update(ColorRequest colorRequest, Integer id) {
+    public Color update(Color color, Integer id) {
         Optional<Color> optional = colorRepository.findById(id);
-        Color color = colorRequest.map(optional.get());
-        return colorRepository.save(color);
+        if (optional.isPresent()) {
+            Color updateColor = optional.get();
+            color.setId(id);
+            color.setName(updateColor.getName());
+            color.setStatus(updateColor.getStatus());
+            color.setCreateDate(updateColor.getCreateDate());
+            color.setUpdateDate(new Date());
+            return colorRepository.save(color);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public Boolean delete(Integer id) {
+    public Color delete(Integer id) {
         Optional<Color> optional = colorRepository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             Color color = optional.get();
             color.setStatus(0);
-            colorRepository.save(color);
-            return true;
+            return colorRepository.save(color);
         } else {
-            return false;
+            return null;
         }
     }
 

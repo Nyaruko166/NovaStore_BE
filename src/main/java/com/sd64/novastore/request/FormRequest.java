@@ -21,10 +21,10 @@ public class FormRequest {
     private Integer status;
 
     public Form map(Form form){
-        form.setName(this.name);
-        form.setCreateDate(this.createDate);
-        form.setUpdateDate(this.updateDate);
-        form.setStatus(this.status);
+        form.setName(this.getName());
+        form.setCreateDate(new Date());
+        form.setUpdateDate(new Date());
+        form.setStatus(1);
         return form;
     }
 }

@@ -24,7 +24,7 @@ public class SizeRequest {
     private Integer status = 1;
 
     public Size map(Size size) {
-        return Size.builder().id(this.getId())
+        return size.builder().id(this.getId())
                 .name(this.getName())
                 .createDate(new Date())
                 .updateDate(new Date())

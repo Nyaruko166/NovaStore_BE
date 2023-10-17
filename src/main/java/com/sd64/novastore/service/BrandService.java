@@ -9,11 +9,11 @@ import java.util.List;
 public interface BrandService {
     List<Brand> getAll();
 
-    Page<Brand> getAllPT(Integer page);
+    Page<Brand> getPage(Integer page);
 
-    Brand add(BrandRequest brandRequest);
+    Brand add(Brand brand);
 
-    Brand update(BrandRequest brandRequest, Integer id);
+    Brand update(Brand brand, Integer id);
 
     Brand delete(Integer id);
 

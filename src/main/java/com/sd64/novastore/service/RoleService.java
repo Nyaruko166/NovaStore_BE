@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.Role;
 import com.sd64.novastore.request.RoleRequest;
 import org.springframework.data.domain.Page;
@@ -10,13 +11,13 @@ public interface RoleService {
 
     List<Role> getAll();
 
-    Page<Role> getPage(int page);
+    Page<Role> getPage(Integer page);
 
-    Role add(RoleRequest roleRequest);
+    Role add(Role role);
 
-    Role update(RoleRequest roleRequest, Integer id);
+    Role update(Role role, Integer id);
 
-    Boolean delete(Integer id);
+    Role delete(Integer id);
 
     Page<Role> search(String name, int page);
 }

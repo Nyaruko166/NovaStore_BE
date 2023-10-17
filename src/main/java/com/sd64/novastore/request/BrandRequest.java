@@ -32,9 +32,9 @@ public class BrandRequest {
 
     public Brand map(Brand brand) {
         brand.setName(this.getName());
-        brand.setCreateDate(Date.from(Instant.parse(this.getCreateDate())));
-        brand.setUpdateDate(Date.from(Instant.parse(this.getUpdateDate())));
-        brand.setStatus(Integer.valueOf(this.getStatus()));
+        brand.setCreateDate(new Date());
+        brand.setUpdateDate(new Date());
+        brand.setStatus(1);
         return brand;
     }
 }

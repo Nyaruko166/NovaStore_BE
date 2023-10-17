@@ -43,7 +43,7 @@ public class VoucherRequest {
 
     private Date updateDate;
 
-    private Integer status = 1;
+    private Integer status;
 
     public Voucher map(Voucher voucher) {
         voucher.setId(this.getId());
@@ -52,7 +52,7 @@ public class VoucherRequest {
         voucher.setQuantity(this.getQuantity());
         voucher.setType(this.getType());
         voucher.setValue(this.getValue());
-        voucher.setStatus(this.getStatus());
+        voucher.setStatus(1);
         voucher.setCreateDate(new Date());
         voucher.setUpdateDate(new Date());
         voucher.setEndDate(this.getEndDate());

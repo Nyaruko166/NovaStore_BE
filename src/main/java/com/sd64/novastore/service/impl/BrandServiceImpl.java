@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,37 +26,45 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Page<Brand> getAllPT(Integer page) {
+    public Page<Brand> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
         return brandRepository.findAllByAndStatusOrderByIdDesc(pageable,1);
     }
 
     @Override
-    public Brand add(BrandRequest brandRequest) {
-        Brand brand = brandRequest.map(new Brand());
+    public Brand add(Brand brand) {
+        brand.setStatus(1);
+        brand.setCreateDate(new Date());
+        brand.setUpdateDate(new Date());
         return brandRepository.save(brand);
     }
 
     @Override
-    public Brand update(BrandRequest brandRequest, Integer id) {
-        Optional<Brand> brandOptional = brandRepository.findById(id);
-        return brandOptional.map(brand -> {
-            brand.setName(brandRequest.getName());
-            brand.setCreateDate(Date.valueOf(brandRequest.getCreateDate()));
-            brand.setUpdateDate(Date.valueOf(brandRequest.getUpdateDate()));
-            brand.setStatus(Integer.valueOf(brandRequest.getStatus()));
+    public Brand update(Brand brand, Integer id) {
+        Optional<Brand> optional = brandRepository.findById(id);
+        if (optional.isPresent()) {
+            Brand updateBrand = optional.get();
+            brand.setId(id);
+            brand.setName(updateBrand.getName());
+            brand.setStatus(updateBrand.getStatus());
+            brand.setCreateDate(updateBrand.getCreateDate());
+            brand.setUpdateDate(new Date());
             return brandRepository.save(brand);
-        }).orElse(null);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Brand delete(Integer id) {
-        Optional<Brand> brandOptional = brandRepository.findById(id);
-        return brandOptional.map(brand -> {
+        Optional<Brand> optional = brandRepository.findById(id);
+        if (optional.isPresent()) {
+            Brand brand = optional.get();
             brand.setStatus(0);
-            brandRepository.save(brand);
-            return brand;
-        }).orElse(null);
+            return brandRepository.save(brand);
+        } else {
+            return null;
+        }
     }
 
     @Override

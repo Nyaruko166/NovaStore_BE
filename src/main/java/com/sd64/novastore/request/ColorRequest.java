@@ -21,10 +21,10 @@ public class ColorRequest {
     private Integer status;
 
     public Color map(Color color){
-        color.setName(this.name);
-        color.setCreateDate(this.createDate);
-        color.setUpdateDate(this.updateDate);
-        color.setStatus(this.status);
+        color.setName(this.getName());
+        color.setCreateDate(new Date());
+        color.setUpdateDate(new Date());
+        color.setStatus(1);
         return color;
     }
 }

@@ -21,10 +21,10 @@ public class MaterialRequest {
     private Integer status;
 
     public Material map(Material material){
-        material.setName(this.name);
-        material.setCreateDate(this.createDate);
-        material.setUpdateDate(this.updateDate);
-        material.setStatus(this.status);
+        material.setName(this.getName());
+        material.setCreateDate(new Date());
+        material.setUpdateDate(new Date());
+        material.setStatus(1);
         return material;
     }
 }

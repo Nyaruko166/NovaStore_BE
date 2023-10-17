@@ -1,58 +1,67 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.model.Role;
+import com.sd64.novastore.model.Size;
 import com.sd64.novastore.request.PromotionRequest;
 import com.sd64.novastore.request.SizeRequest;
 import com.sd64.novastore.service.PromotionService;
 import com.sd64.novastore.service.SizeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/size")
+import java.util.List;
+
+@Controller
+@RequestMapping("/admin/size")
 public class SizeController {
 
     @Autowired
     private SizeService sizeService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(sizeService.getAll());
+    public String getAll(Model model) {
+        List<Size> listSize = sizeService.getAll();
+        model.addAttribute("listSize", listSize);
+        return "";
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> getPage(@RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(sizeService.getPage(page).getContent());
+    public String getPage(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+        Page<Size> pageSize = sizeService.getPage(page);
+        model.addAttribute("pageSize", pageSize.getContent());
+        return "";
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid SizeRequest sizeRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            String error = bindingResult.getFieldError().getDefaultMessage();
-            return ResponseEntity.ok(error);
-        } else {
-            return ResponseEntity.ok(sizeService.add(sizeRequest));
-        }
+    public String add(@Validated @ModelAttribute("Size") Size size) {
+        sizeService.add(size);
+        return "redirect:/admin/size/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody SizeRequest sizeRequest, @PathVariable Integer id) {
-        return ResponseEntity.ok(sizeService.update(sizeRequest, id));
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Integer id, @Validated @ModelAttribute("Size") Size size) {
+        sizeService.update(size, id);
+        return "redirect:/admin/size/page";
     }
 
-    @PutMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        if (sizeService.delete(id)) {
-            return ResponseEntity.ok("Delete Success");
-        } else {
-            return ResponseEntity.ok("Delete Fail");
-        }
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        sizeService.delete(id);
+        return "redirect:/admin/size/page";
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(sizeService.search(name, page).getContent());
+    public String search(Model model, @RequestParam(required = false) String nameSearch,
+                         @RequestParam(defaultValue = "0") int page) {
+        Page<Size> listSize = sizeService.search(nameSearch, page);
+        model.addAttribute("listSize", listSize.getContent());
+        return "";
     }
 }

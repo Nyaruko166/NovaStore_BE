@@ -18,9 +18,9 @@ public class RoleRequest {
     private Integer status = 1;
 
     public Role map(Role role) {
-        return Role.builder().id(this.getId())
+        return role.builder().id(this.getId())
                 .name(this.getName())
-                .status(this.getStatus())
+                .status(1)
                 .build();
     }
 }
