@@ -1,5 +1,6 @@
 package com.sd64.novastore.repository;
 
+import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.model.Role;
 import com.sd64.novastore.model.Size;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,8 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
 
     List<Size> findAllByAndStatusOrderByIdDesc(Integer status);
 
-    Page<Size> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
+//    Page<Size> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
 
+    Page<Size> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
     Page<Size> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 }

@@ -28,7 +28,7 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public Page<Color> getPage(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return colorRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
+        return colorRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
     @Override

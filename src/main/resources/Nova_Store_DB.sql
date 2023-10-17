@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [Nova_Store_DB]    Script Date: 10/10/2023 9:34:05 PM ******/
+/****** Object:  Database [Nova_Store_DB]    Script Date: 17/10/2023 22:36:05 PM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]
@@ -86,10 +86,10 @@ CREATE TABLE [dbo].[Account](
     [Email] [varchar](50) NULL,
     [PhoneNumber] [varchar](15) NULL,
     [Password] [varchar](255) NULL,
-    [Birthday] [smalldatetime] NULL,
+    [Birthday] [datetime] NULL,
     [Avatar] [varchar](255) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [RoleId] [int] NULL,
     PRIMARY KEY CLUSTERED
@@ -109,8 +109,8 @@ CREATE TABLE [dbo].[Address](
     [Ward] [nvarchar](50) NULL,
     [District] [nvarchar](50) NULL,
     [City] [nvarchar](50) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [AccountId] [int] NULL,
     PRIMARY KEY CLUSTERED
@@ -130,16 +130,16 @@ CREATE TABLE [dbo].[Bill](
     [Address] [nvarchar](100) NULL,
     [PhoneNumber] [nvarchar](15) NULL,
     [Note] [nvarchar](255) NULL,
-    [OrderDate] [smalldatetime] NULL,
-    [PaymentDate] [smalldatetime] NULL,
-    [ConfirmationDate] [smalldatetime] NULL,
-    [ShippingDate] [smalldatetime] NULL,
-    [ReceivedDate] [smalldatetime] NULL,
-    [CompletionDate] [smalldatetime] NULL,
+    [OrderDate] [datetime] NULL,
+    [PaymentDate] [datetime] NULL,
+    [ConfirmationDate] [datetime] NULL,
+    [ShippingDate] [datetime] NULL,
+    [ReceivedDate] [datetime] NULL,
+    [CompletionDate] [datetime] NULL,
     [ShippingFee] [money] NULL,
     [TotalPrice] [money] NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [AccountId] [int] NULL,
     [CustomerId] [int] NULL,
@@ -176,8 +176,8 @@ CREATE TABLE [dbo].[BillHistory](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
     [Describe] [nvarchar](255) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [BillId] [int] NULL,
     [AccountId] [int] NULL,
@@ -195,8 +195,8 @@ CREATE TABLE [dbo].[BillHistory](
 CREATE TABLE [dbo].[Brand](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -211,7 +211,7 @@ CREATE TABLE [dbo].[Brand](
     GO
 CREATE TABLE [dbo].[Cart](
     [Id] [int] IDENTITY(1,1) NOT NULL,
-    [CreateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
     [AccountId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -228,8 +228,8 @@ CREATE TABLE [dbo].[CartDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Price] [money] NULL,
     [Quantity] [int] NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [CartId] [int] NULL,
     [ProductDetailId] [int] NULL,
@@ -247,8 +247,8 @@ CREATE TABLE [dbo].[CartDetail](
 CREATE TABLE [dbo].[Category](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -264,8 +264,8 @@ CREATE TABLE [dbo].[Category](
 CREATE TABLE [dbo].[Color](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -281,8 +281,8 @@ CREATE TABLE [dbo].[Color](
 CREATE TABLE [dbo].[Form](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -298,8 +298,8 @@ CREATE TABLE [dbo].[Form](
 CREATE TABLE [dbo].[Image](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [varchar](255) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [ProductDetailId] [int] NULL,
     PRIMARY KEY CLUSTERED
@@ -316,8 +316,8 @@ CREATE TABLE [dbo].[Image](
 CREATE TABLE [dbo].[Material](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -352,8 +352,8 @@ CREATE TABLE [dbo].[Product](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
     [Description] [nvarchar](255) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [BrandId] [int] NULL,
     [CategoryId] [int] NULL,
@@ -375,8 +375,8 @@ CREATE TABLE [dbo].[ProductDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Price] [money] NULL,
     [Quantity] [int] NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [ProductId] [int] NULL,
     [SizeId] [int] NULL,
@@ -397,10 +397,10 @@ CREATE TABLE [dbo].[Promotion](
     [Name] [nvarchar](50) NULL,
     [Type] [bit] NULL,
     [Value] [money] NULL,
-    [StartDate] [smalldatetime] NULL,
-    [EndDate] [smalldatetime] NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [StartDate] [datetime] NULL,
+    [EndDate] [datetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -418,8 +418,8 @@ CREATE TABLE [dbo].[PromotionDetail](
     [Name] [nvarchar](50) NULL,
     [Price] [money] NULL,
     [PriceAfter] [money] NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [ProductId] [int] NULL,
     [PromotionId] [int] NULL,
@@ -437,8 +437,8 @@ CREATE TABLE [dbo].[PromotionDetail](
 CREATE TABLE [dbo].[Role](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -454,8 +454,8 @@ CREATE TABLE [dbo].[Role](
 CREATE TABLE [dbo].[Size](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -477,10 +477,10 @@ CREATE TABLE [dbo].[Voucher](
     [Quantity] [int] NULL,
     [MinimumPrice] [money] NULL,
     [MaximumDiscount] [money] NULL,
-    [StartDate] [smalldatetime] NULL,
-    [EndDate] [smalldatetime] NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [StartDate] [datetime] NULL,
+    [EndDate] [datetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -497,8 +497,8 @@ CREATE TABLE [dbo].[VoucherDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Price] [money] NULL,
     [PriceAfter] [money] NULL,
-    [CreateDate] [smalldatetime] NULL,
-    [UpdateDate] [smalldatetime] NULL,
+    [CreateDate] [datetime] NULL,
+    [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [BillId] [int] NULL,
     [VoucherId] [int] NULL,
