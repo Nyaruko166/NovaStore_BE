@@ -46,7 +46,6 @@ public class CartDetailServiceImpl implements CartDetailService {
         return cartDetailOptional.map(cartDetail -> {
             cartDetail.setQuantity(Integer.valueOf(cartDetailRequest.getQuantity()));
             cartDetail.setPrice(BigDecimal.valueOf(Long.parseLong(cartDetailRequest.getPrice())));
-            cartDetail.setPriceAfter(BigDecimal.valueOf(Long.parseLong(cartDetailRequest.getPriceAfter())));
             cartDetail.setCreateDate(Date.from(Instant.parse(cartDetailRequest.getCreateDate())));
             cartDetail.setUpdateDate(Date.from(Instant.parse(cartDetailRequest.getUpdateDate())));
             cartDetail.setStatus(Integer.valueOf(cartDetailRequest.getStatus()));
