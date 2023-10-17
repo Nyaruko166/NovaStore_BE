@@ -20,10 +20,6 @@ public class CartDetailRequest {
     @NotNull(message = "price khong duoc de trong")
     private String price;
 
-    @NotNull(message = "priceAfter khong duoc de trong")
-    private String priceAfter;
-
-
     private String createDate;
 
 
@@ -39,7 +35,6 @@ public class CartDetailRequest {
     public CartDetail map(CartDetail cartDetail) {
         cartDetail.setQuantity(Integer.valueOf(this.getQuantity()));
         cartDetail.setPrice(BigDecimal.valueOf(Long.parseLong(this.getPrice())));
-        cartDetail.setPriceAfter(BigDecimal.valueOf(Long.parseLong(this.getPriceAfter())));
         cartDetail.setCreateDate(Date.from(Instant.parse(this.getCreateDate())));
         cartDetail.setUpdateDate(Date.from(Instant.parse(this.getUpdateDate())));
         cartDetail.setStatus(Integer.valueOf(this.getStatus()));
