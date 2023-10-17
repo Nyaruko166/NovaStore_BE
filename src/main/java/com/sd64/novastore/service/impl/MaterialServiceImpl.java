@@ -29,7 +29,7 @@ public class MaterialServiceImpl implements MaterialService{
     @Override
     public Page<Material> getPage(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return materialRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
+        return materialRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
     @Override

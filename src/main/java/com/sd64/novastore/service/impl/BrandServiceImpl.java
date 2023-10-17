@@ -28,7 +28,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Page<Brand> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return brandRepository.findAllByAndStatusOrderByIdDesc(pageable,1);
+        return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable,1);
     }
 
     @Override

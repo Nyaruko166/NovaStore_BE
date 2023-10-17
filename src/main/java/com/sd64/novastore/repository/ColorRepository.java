@@ -1,5 +1,6 @@
 package com.sd64.novastore.repository;
 
+import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Color;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,8 @@ import java.util.List;
 public interface ColorRepository extends JpaRepository<Color, Integer> {
     List<Color> findAllByAndStatusOrderByIdDesc(Integer status);
 
-    Page<Color> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
+    //    Page<Color> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
+    Page<Color> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
 
     Page<Color> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 }

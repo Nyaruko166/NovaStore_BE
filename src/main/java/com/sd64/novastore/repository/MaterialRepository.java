@@ -1,5 +1,6 @@
 package com.sd64.novastore.repository;
 
+import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.model.Form;
 import com.sd64.novastore.model.Material;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,8 @@ import java.util.List;
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
     List<Material> findAllByAndStatusOrderByIdDesc(Integer status);
 
-    Page<Material> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
+//    Page<Material> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
 
+    Page<Material> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
     Page<Material> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 }

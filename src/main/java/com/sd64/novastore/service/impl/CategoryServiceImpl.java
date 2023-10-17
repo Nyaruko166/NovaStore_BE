@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Page<Category> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return categoryRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
+        return categoryRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
     @Override

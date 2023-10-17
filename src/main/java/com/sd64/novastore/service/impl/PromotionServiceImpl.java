@@ -29,7 +29,7 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public Page<Promotion> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return promotionRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
+        return promotionRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
     @Override

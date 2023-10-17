@@ -14,7 +14,9 @@ import java.util.List;
 public interface BrandRepository extends JpaRepository<Brand, Integer> {
     List<Brand> findAllByAndStatusOrderByIdDesc(Integer status);
 
-    Page<Brand> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
+//    Page<Brand> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
+
+    Page<Brand> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
 
     Page<Brand> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 }

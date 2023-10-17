@@ -29,7 +29,7 @@ public class FormServiceImpl implements FormService {
     @Override
     public Page<Form> getPage(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
-        return formRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
+        return formRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
     @Override

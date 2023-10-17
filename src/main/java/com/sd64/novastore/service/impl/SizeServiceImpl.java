@@ -27,7 +27,7 @@ public class SizeServiceImpl implements SizeService {
     @Override
     public Page<Size> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return sizeRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
+        return sizeRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
     @Override
