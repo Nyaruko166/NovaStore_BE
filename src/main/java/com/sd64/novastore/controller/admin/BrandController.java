@@ -32,9 +32,17 @@ public class BrandController {
         return "admin/brand/brand";
     }
 
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        Brand brand = brandService.detail(id);
+        model.addAttribute("brand", brand);
+        return "/admin/brand/brand-detail";
+    }
+
     @PostMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        return ResponseEntity.ok(brandService.delete(id));
+    public String delete(@PathVariable Integer id) {
+        brandService.delete(id);
+        return "redirect:/admin/brand/page";
     }
 
     @PostMapping("/add")

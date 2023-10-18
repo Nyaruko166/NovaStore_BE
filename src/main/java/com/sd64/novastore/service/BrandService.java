@@ -18,4 +18,6 @@ public interface BrandService {
     Brand delete(Integer id);
 
     Page<Brand> search(String name, int page);
+
+    Brand detail(Integer id);
 }
