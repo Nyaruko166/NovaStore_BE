@@ -25,9 +25,12 @@
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
                             ADD
                         </button>
-                        <button type="button" onclick="clickCancel()" class="btn btn-secondary">
-                            Cancel
-                        </button>
+                        <a href="/admin/brand/page">
+                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
+                                Cancel
+                            </button>
+                        </a>
+
                     </div>
                 </form>
             </div>
@@ -37,13 +40,17 @@
     <br>
     <br>
     <br>
+    <div th:if="${mess}" class="alert alert-success" role="alert">
+        <span th:text="${mess}"></span>
+    </div>
+    </h1>
     <div class="col">
         <div class="card">
             <div class="card-header">
                 <strong class="card-title">Data Record</strong>
             </div>
             <div class="card-body">
-                <table class="table">
+                <table class="table text-center">
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">Id</th>
@@ -55,13 +62,17 @@
                     <tr th:each="items:${pageBrand}">
                         <td th:text="${items.id}"></td>
                         <td th:text="${items.name}"></td>
-                        <td class="d-flex">
-                            <a th:href="@{'/admin/brand/detail/' + ${items.id}}">
-                                <button type="button" class="btn btn-warning">DETAIL</button>
-                            </a>
-                            <form th:action="@{'/admin/brand/delete/' + ${items.id}}" th:method="post">
-                                <button type="submit" class="btn btn-danger">DELETE</button>
-                            </form>
+                        <td class="d-flex justify-content-center">
+                            <div style="margin-right: 10px">
+                                <a th:href="@{'/admin/brand/detail/' + ${items.id}}">
+                                    <button type="button" class="btn btn-warning">DETAIL</button>
+                                </a>
+                            </div>
+                            <div>
+                                <form th:action="@{'/admin/brand/delete/' + ${items.id}}" th:method="post">
+                                    <button type="submit" class="btn btn-danger">DELETE</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
