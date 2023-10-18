@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -46,8 +47,9 @@ public class BrandController {
     }
 
     @PostMapping("/add")
-    public String add(@Validated @ModelAttribute("Brand") Brand brand) {
+    public String add(@Validated @ModelAttribute("Brand") Brand brand, RedirectAttributes redirectAttributes) {
         brandService.add(brand);
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
         return "redirect:/admin/brand/page";
     }
 
