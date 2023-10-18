@@ -45,7 +45,7 @@ public class BrandServiceImpl implements BrandService {
         if (optional.isPresent()) {
             Brand updateBrand = optional.get();
             brand.setId(id);
-            brand.setName(updateBrand.getName());
+            brand.setName(brand.getName());
             brand.setStatus(updateBrand.getStatus());
             brand.setCreateDate(updateBrand.getCreateDate());
             brand.setUpdateDate(new Date());
@@ -71,5 +71,15 @@ public class BrandServiceImpl implements BrandService {
     public Page<Brand> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return brandRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public Brand detail(Integer id) {
+        Optional<Brand> optional = brandRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
     }
 }

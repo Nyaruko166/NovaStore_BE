@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <strong>BRAND</strong>
+      </div>
+      <div class="card-body card-block">
+        <form th:object="${brand}" th:action="@{/admin/brand/update/{id}(id=${brand.id})}" method="post" class="form-horizontal">
+          <div class="row form-group">
+            <div class="col col-md-3"><label for="" class=" form-control-label">Brand name</label></div>
+            <div class="col-12 col-md-9"><input type="text" id="" th:field="*{name}" class="form-control">
+              <!--              <small class="form-text text-muted">This is a help text</small>-->
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+              UPDATE
+            </button>
+            <button type="button" class="btn btn-secondary">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+</div>
+<script>
+  function clickUpdate() {
+    var update = confirm("Bạn có muốn sửa dữ liệu ?")
+    if (update) {
+      document.getElementById('myForm').action = '/admin/brand/update'
+      document.getElementById('myForm').method = 'post'
+      document.getElementById('myForm').submit()
+      alert("Sửa dữ liệu thành công")
+    } else {
+      return null
+    }
+  }
+
+  function clickCancel() {
+    document.getElementById('myForm').action = 'admin/brand/page'
+    document.getElementById('myForm').method = 'get'
+    document.getElementById('myForm').submit()
+  }
+</script>
+</body>
+</html>
