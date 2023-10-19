@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Account</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>ACCOUNT</strong>
+            </div>
+            <div class="card-body card-block">
+                <form th:object="${account}" th:action="@{/admin/account/update/{id}(id=${account.id})}"
+                      method="post" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="name" class=" form-control-label">Account name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="name" th:field="*{name}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="password" class=" form-control-label">Password</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="password" id="password" th:field="*{password}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="birthday" class="form-control-label">Birthday</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="birthday" th:field="*{#dates.format(birthday,'yyyy/MM/dd')}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="email" class=" form-control-label">Email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="email" th:field="*{email}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="phoneNumber" class=" form-control-label">PhoneNumber</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="avatar" class=" form-control-label">Avatar</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="avatar" th:field="*{avatar}" class="form-control">
+                        </div>
+                    </div>
+<!--                    <div class="row form-group">-->
+                    <!--                        <label class=" form-control-label">Status</label>-->
+                    <!--                        <div class="row">-->
+                    <!--                            <div class="col-6">-->
+                    <!--                                <div class="col col-md-3">-->
+                    <!--                                    <div class="custom-control custom-radio">-->
+                    <!--                                        <input type="radio" id="customRadio1" name="customRadio"-->
+                    <!--                                               class="custom-control-input"-->
+                    <!--                                               th:value="1" th:checked="*{status == 1}">-->
+                    <!--                                        <label class="custom-control-label" for="customRadio1">Hoạt Động</label>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="col-6">-->
+                    <!--                                <div class="col-12 col-md-9">-->
+                    <!--                                    <div class="custom-control custom-radio">-->
+                    <!--                                        <input type="radio" id="customRadio2" name="customRadio"-->
+                    <!--                                               class="custom-control-input"-->
+                    <!--                                               th:value="0" th:checked="*{status == 0}">-->
+                    <!--                                        <label class="custom-control-label" for="customRadio2">Ngừng Hoạt Động</label>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-secondary">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+<script>
+    function clickUpdate() {
+        var update = confirm("Bạn có muốn sửa dữ liệu ?")
+        if (update) {
+            document.getElementById('myForm').action = '/admin/brand/update'
+            document.getElementById('myForm').method = 'post'
+            document.getElementById('myForm').submit()
+            alert("Sửa dữ liệu thành công")
+        } else {
+            return null
+        }
+    }
+
+    function clickCancel() {
+        document.getElementById('myForm').action = 'admin/brand/page'
+        document.getElementById('myForm').method = 'get'
+        document.getElementById('myForm').submit()
+    }
+</script>
+</body>
+</html>

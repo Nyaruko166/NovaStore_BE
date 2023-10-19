@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Management</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>ACCOUNT</strong>
+            </div>
+            <!--            Notification-->
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${mess}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card-body card-block">
+                <form action="/admin/account/add" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="name" class=" form-control-label">Account name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="name" name="name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="birthday" class=" form-control-label">Birthday</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker"
+                                 inline="true">
+                                <input placeholder="Choose your Birthday" type="date" id="birthday" class="form-control"
+                                       name="birthday" value="">
+                                <!--                                <label for="birthday">Try me...</label>-->
+                                <!--                                <i class="fas fa-calendar input-prefix"></i>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="email" class=" form-control-label">Email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="email" name="email" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="phoneNumber" class=" form-control-label">PhoneNumber</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="password" class=" form-control-label">Password</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="password" id="password" name="password" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="importFile" class=" form-control-label">Avatar</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="importFile" name="avt"
+                                           accept="image/*" onchange="setFileName()">
+                                    <label class="custom-file-label" for="importFile">Choose
+                                        Avatar</label>
+                                </div>
+                            </div>
+                            <!--                            <input type="text" id="avatar" name="avatar" class="form-control">-->
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Add
+                        </button>
+                        <a href="/admin/account/page">
+                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
+                                Cancel
+                            </button>
+                        </a>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Data Record</strong>
+            </div>
+            <div class="card-body">
+                <table class="table text-center">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Birthday</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">PhoneNumber</th>
+                        <th scope="col">Avatar</th>
+                        <th scope="col">CreateDate</th>
+                        <th scope="col">UpdateDate</th>
+                        <!--                        <th scope="col">Role Name</th>-->
+                        <th scope="col">Function</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="items:${pageAccount}">
+                        <td th:text="${items.id}"></td>
+                        <td th:text="${items.name}"></td>
+                        <td th:text="${#dates.format(items.birthday, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${items.email}"></td>
+                        <td th:text="${items.phoneNumber}"></td>
+                        <td>
+                            <img th:src="@{'/assets/avatars/' + ${items.avatar}}" alt=""
+                                 style="width: 75px;height: 75px">
+                        </td>
+                        <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <!--                        <td th:text="${items.role.name}"></td>-->
+                        <td class="d-flex justify-content-center">
+                            <div style="margin-right: 10px">
+                                <a th:href="@{'/admin/account/detail/' + ${items.id}}">
+                                    <button type="button" class="btn btn-warning">Detail</button>
+                                </a>
+                            </div>
+                            <div>
+                                <form th:action="@{'/admin/account/delete/' + ${items.id}}" th:method="post">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

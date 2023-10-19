@@ -1,67 +1,81 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.model.Account;
+import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.request.AccountRequest;
 import com.sd64.novastore.service.AccountService;
 import jakarta.validation.Valid;
+import org.codehaus.groovy.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 
-@RestController
-@RequestMapping("/account")
+@Controller
+@RequestMapping("/admin/account")
 public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(accountService.getAll());
-    }
+//    @GetMapping("/all")
+//    public String getAll() {
+//        return ;
+//    }
 
     @GetMapping("/page")
-    public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(accountService.getAllPT(page).getContent());
+    public String getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+        Page<Account> pageAccount = accountService.getAllPT(page);
+        model.addAttribute("pageAccount", pageAccount.getContent());
+        return "admin/account/account";
     }
 
-    @PutMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        return ResponseEntity.ok(accountService.delete(id));
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        Account account = accountService.findOne(id);
+        model.addAttribute("account", account);
+        return "/admin/account/account-detail";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
+        accountService.delete(id);
+        return "redirect:/admin/account/page";
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid AccountRequest accountRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(accountService.add(accountRequest));
+    public String add(@ModelAttribute("Account") Account account,
+                      @RequestParam("avt") MultipartFile avt,
+                      RedirectAttributes redirectAttributes) {
+        accountService.add(account, avt);
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
+        return "redirect:/admin/account/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid AccountRequest accountRequest, @PathVariable Integer id, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(accountService.update(accountRequest, id));
-
+    @PostMapping("/update/{id}")
+    public String update(@Validated @ModelAttribute("Account") Account account,
+                         @RequestParam("avt") MultipartFile avt,
+                         @PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        accountService.update(account, avt, id);
+        redirectAttributes.addFlashAttribute("mess", "Update thành công!!");
+        return "redirect:/admin/account/page";
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(accountService.search(name, page).getContent());
-    }
+//    @GetMapping("/search")
+//    public String search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
+//        return ResponseEntity.ok(accountService.search(name, page).getContent());
+//    }
 }

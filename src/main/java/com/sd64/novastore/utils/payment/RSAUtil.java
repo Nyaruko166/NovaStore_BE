@@ -1,4 +1,4 @@
-package com.sd64.novastore.util.payment;
+package com.sd64.novastore.utils.payment;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
