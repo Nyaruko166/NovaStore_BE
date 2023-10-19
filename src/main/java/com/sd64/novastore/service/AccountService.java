@@ -11,9 +11,9 @@ public interface AccountService {
 
     Page<Account> getAllPT(Integer page);
 
-    Account add(AccountRequest accountRequest);
+    Account add(Account account);
 
-    Account update(AccountRequest accountRequest, Integer id);
+    Account update(Account account, Integer id);
 
     Account delete(Integer id);
 

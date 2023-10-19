@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.request.AccountRequest;
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.repository.AccountRepository;
@@ -10,7 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,26 +34,26 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account add(AccountRequest accountRequest) {
-        Account account = accountRequest.map(new Account());
+    public Account add(Account account) {
+        account.setStatus(1);
+        account.setCreateDate(new java.util.Date());
+        account.setUpdateDate(new java.util.Date());
         return accountRepository.save(account);
     }
 
     @Override
-    public Account update(AccountRequest accountRequest, Integer id) {
-        Optional<Account> accountOptional = accountRepository.findById(id);
-        return accountOptional.map(account -> {
-            account.setName(accountRequest.getName());
-            account.setBirthday(Date.valueOf(accountRequest.getBirthday()));
-            account.setEmail(accountRequest.getEmail());
-            account.setPhoneNumber(accountRequest.getPhoneNumber());
-            account.setPassword(accountRequest.getPassword());
-            account.setAvatar(accountRequest.getAvatar());
-            account.setCreateDate(Date.valueOf(accountRequest.getCreateDate()));
-            account.setUpdateDate(Date.valueOf(accountRequest.getUpdateDate()));
-            account.setStatus(Integer.valueOf(accountRequest.getStatus()));
+    public Account update(Account account, Integer id) {
+        Optional<Account> optional = accountRepository.findById(id);
+        if (optional.isPresent()) {
+            Account updateBrand = optional.get();
+            account.setId(id);
+            account.setStatus(updateBrand.getStatus());
+            account.setCreateDate(updateBrand.getCreateDate());
+            account.setUpdateDate(new Date());
             return accountRepository.save(account);
-        }).orElse(null);
+        } else {
+            return null;
+        }
 
     }
 
@@ -59,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
     public Account delete(Integer id) {
         Optional<Account> accountOptional = accountRepository.findById(id);
         return accountOptional.map(account -> {
-             account.setStatus(0);
+            account.setStatus(0);
             accountRepository.save(account);
             return account;
         }).orElse(null);

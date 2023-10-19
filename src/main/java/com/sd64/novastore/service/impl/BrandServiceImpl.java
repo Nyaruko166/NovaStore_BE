@@ -46,7 +46,6 @@ public class BrandServiceImpl implements BrandService {
             Brand updateBrand = optional.get();
             brand.setId(id);
             brand.setName(brand.getName());
-            brand.setStatus(updateBrand.getStatus());
             brand.setCreateDate(updateBrand.getCreateDate());
             brand.setUpdateDate(new Date());
             return brandRepository.save(brand);
