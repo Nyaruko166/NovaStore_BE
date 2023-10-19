@@ -34,6 +34,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account findOne(Integer id) {
+        return accountRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public Account add(Account account) {
         account.setStatus(1);
         account.setCreateDate(new java.util.Date());
@@ -59,12 +64,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account delete(Integer id) {
-        Optional<Account> accountOptional = accountRepository.findById(id);
-        return accountOptional.map(account -> {
+        Optional<Account> optional = accountRepository.findById(id);
+        if (optional.isPresent()) {
+            Account account = optional.get();
             account.setStatus(0);
-            accountRepository.save(account);
-            return account;
-        }).orElse(null);
+            return accountRepository.save(account);
+        } else {
+            return null;
+        }
     }
 
     @Override

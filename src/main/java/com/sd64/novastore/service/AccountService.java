@@ -18,4 +18,6 @@ public interface AccountService {
     Account delete(Integer id);
 
     Page<Account> search(String name, int page);
+
+    Account findOne(Integer id);
 }

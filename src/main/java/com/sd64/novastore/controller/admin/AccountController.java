@@ -37,23 +37,34 @@ public class AccountController {
         return "admin/account/account";
     }
 
-    @PutMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
-        return "";
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        Account account = accountService.findOne(id);
+        model.addAttribute("account", account);
+        return "/admin/account/account-detail";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
+        accountService.delete(id);
+        return "redirect:/admin/account/page";
     }
 
 
     @PostMapping("/add")
-    public String add(@Validated @ModelAttribute("Account") Account account, RedirectAttributes mess) {
+    public String add(@Validated @ModelAttribute("Account") Account account, RedirectAttributes redirectAttributes) {
         accountService.add(account);
-        mess.addFlashAttribute("mess","Thêm thành công!!");
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
         return "redirect:/admin/account/page";
     }
 
-    @PutMapping("/update/{id}")
-    public String update(@RequestBody @Valid AccountRequest accountRequest, @PathVariable Integer id, BindingResult result) {
-        return "";
-
+    @PostMapping("/update/{id}")
+    public String update(@Validated @ModelAttribute("Account") Account account,
+                         @PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        accountService.update(account, id);
+        redirectAttributes.addFlashAttribute("mess", "Update thành công!!");
+        return "redirect:/admin/account/page";
     }
 
 //    @GetMapping("/search")
