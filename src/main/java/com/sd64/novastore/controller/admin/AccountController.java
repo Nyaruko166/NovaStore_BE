@@ -5,17 +5,21 @@ import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.request.AccountRequest;
 import com.sd64.novastore.service.AccountService;
 import jakarta.validation.Valid;
+import org.codehaus.groovy.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -53,16 +57,19 @@ public class AccountController {
 
 
     @PostMapping("/add")
-    public String add(@Validated @ModelAttribute("Account") Account account, RedirectAttributes redirectAttributes) {
-        accountService.add(account);
+    public String add(@ModelAttribute("Account") Account account,
+                      @RequestParam("avt") MultipartFile avt,
+                      RedirectAttributes redirectAttributes) {
+        accountService.add(account, avt);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
         return "redirect:/admin/account/page";
     }
 
     @PostMapping("/update/{id}")
     public String update(@Validated @ModelAttribute("Account") Account account,
+                         @RequestParam("avt") MultipartFile avt,
                          @PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        accountService.update(account, id);
+        accountService.update(account, avt, id);
         redirectAttributes.addFlashAttribute("mess", "Update thành công!!");
         return "redirect:/admin/account/page";
     }

@@ -12,15 +12,16 @@
             <div class="card-header">
                 <strong>ACCOUNT</strong>
             </div>
-<!--            Notification-->
-            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 5px">
+            <!--            Notification-->
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
                 <span th:text="${mess}"></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="card-body card-block">
-                <form action="/admin/account/add" method="post" class="form-horizontal">
+                <form action="/admin/account/add" method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="name" class=" form-control-label">Account name</label>
@@ -34,7 +35,13 @@
                             <label for="birthday" class=" form-control-label">Birthday</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="birthday" name="birthday" class="form-control">
+                            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker"
+                                 inline="true">
+                                <input placeholder="Choose your Birthday" type="date" id="birthday" class="form-control"
+                                       name="birthday" value="">
+                                <!--                                <label for="birthday">Try me...</label>-->
+                                <!--                                <i class="fas fa-calendar input-prefix"></i>-->
+                            </div>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -63,10 +70,18 @@
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="avatar" class=" form-control-label">Avatar</label>
+                            <label for="importFile" class=" form-control-label">Avatar</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="avatar" name="avatar" class="form-control">
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="importFile" name="avt"
+                                           accept="image/*" onchange="setFileName()">
+                                    <label class="custom-file-label" for="importFile">Choose
+                                        Avatar</label>
+                                </div>
+                            </div>
+                            <!--                            <input type="text" id="avatar" name="avatar" class="form-control">-->
                         </div>
                     </div>
                     <div class="card-footer">
@@ -116,19 +131,22 @@
                         <td th:text="${#dates.format(items.birthday, 'dd-MM-yyyy')}"></td>
                         <td th:text="${items.email}"></td>
                         <td th:text="${items.phoneNumber}"></td>
-                        <td th:text="${items.avatar}"></td>
+                        <td>
+                            <img th:src="@{'/assets/avatars/' + ${items.avatar}}" alt=""
+                                 style="width: 75px;height: 75px">
+                        </td>
                         <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                         <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                         <!--                        <td th:text="${items.role.name}"></td>-->
                         <td class="d-flex justify-content-center">
                             <div style="margin-right: 10px">
                                 <a th:href="@{'/admin/account/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-warning">DETAIL</button>
+                                    <button type="button" class="btn btn-warning">Detail</button>
                                 </a>
                             </div>
                             <div>
                                 <form th:action="@{'/admin/account/delete/' + ${items.id}}" th:method="post">
-                                    <button type="submit" class="btn btn-danger">DELETE</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
                         </td>
@@ -139,25 +157,5 @@
         </div>
     </div>
 </div>
-<script>
-    // function clickAdd() {
-    //     debugger
-    //     var add = confirm("Bạn có muốn thêm dữ liệu ?")
-    //     if (add) {
-    //         document.getElementById('myForm').action = '/admin/brand/add'
-    //         document.getElementById('myForm').method = 'post'
-    //         document.getElementById('myForm').submit()
-    //         alert("Thêm dữ liệu thành công")
-    //     } else {
-    //         return null
-    //     }
-    // }
-
-    // function clickCancel() {
-    //     document.getElementById('myForm').action = 'admin/brand/page'
-    //     document.getElementById('myForm').method = 'get'
-    //     document.getElementById('myForm').submit()
-    // }
-</script>
 </body>
 </html>

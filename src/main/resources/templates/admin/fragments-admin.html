@@ -6,7 +6,6 @@
     <link rel="apple-touch-icon" th:href="@{apple-icon.png}">
     <link rel="shortcut icon" th:href="@{/admin/images/favicon.ico}">
 
-
     <link rel="stylesheet" th:href="@{/admin/vendors/bootstrap/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/admin/vendors/font-awesome/css/font-awesome.min.css}">
     <link rel="stylesheet" th:href="@{/admin/vendors/themify-icons/css/themify-icons.css}">
@@ -47,6 +46,12 @@
                 normalizeFunction: 'polynomial'
             });
         })(jQuery);
+
+        function setFileName() {
+            var fileName = document.getElementById("importFile").value.split("\\").pop();
+            document.querySelector(".custom-file-label").textContent = fileName;
+            // alert('ádâdâdâdâd')
+        }
     </script>
 
     <link th:href='@{https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800}' rel='stylesheet'

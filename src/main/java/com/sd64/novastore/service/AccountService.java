@@ -3,6 +3,7 @@ package com.sd64.novastore.service;
 import com.sd64.novastore.request.AccountRequest;
 import com.sd64.novastore.model.Account;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ public interface AccountService {
 
     Page<Account> getAllPT(Integer page);
 
-    Account add(Account account);
+    Account add(Account account, MultipartFile avt);
 
-    Account update(Account account, Integer id);
+    Account update(Account account, MultipartFile avt, Integer id);
 
     Account delete(Integer id);
 
