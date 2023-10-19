@@ -9,7 +9,7 @@ import java.util.List;
 public interface BrandService {
     List<Brand> getAll();
 
-    Page<Brand> getPage(Integer page);
+    Page<Brand> getPage(int page);
 
     Brand add(Brand brand);
 

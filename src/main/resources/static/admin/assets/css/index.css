@@ -1,0 +1,11 @@
+.btn-pagination {
+    background-color: #6c757d;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 50px;
+}

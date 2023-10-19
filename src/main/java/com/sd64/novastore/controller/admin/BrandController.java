@@ -1,12 +1,15 @@
 package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.model.Brand;
+import com.sd64.novastore.request.BrandRequest;
 import com.sd64.novastore.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -27,9 +30,10 @@ public class BrandController {
     }
 
     @GetMapping("/page")
-    public String getPage(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+    public String getPage(@RequestParam(defaultValue = "0") int page, Model model) {
         Page<Brand> pageBrand = brandService.getPage(page);
-        model.addAttribute("pageBrand", pageBrand.getContent());
+        model.addAttribute("pageBrand", pageBrand);
+        model.addAttribute("page", page);
         return "admin/brand/brand";
     }
 
@@ -47,7 +51,8 @@ public class BrandController {
     }
 
     @PostMapping("/add")
-    public String add(@Validated @ModelAttribute("Brand") Brand brand, RedirectAttributes redirectAttributes) {
+    public String add(@Validated @ModelAttribute Brand brand,
+                      RedirectAttributes redirectAttributes) {
         brandService.add(brand);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
         return "redirect:/admin/brand/page";
