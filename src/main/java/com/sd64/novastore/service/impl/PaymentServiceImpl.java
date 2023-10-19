@@ -1,15 +1,13 @@
 package com.sd64.novastore.service.impl;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sd64.novastore.config.MomoPaymentConfig;
 import com.sd64.novastore.config.VNPaymentConfig;
 import com.sd64.novastore.config.ZaloPayConfig;
 import com.sd64.novastore.request.MomoPaymentRequest;
-import com.sd64.novastore.request.ZaloPaymentRequest;
 import com.sd64.novastore.service.PaymentService;
-import com.sd64.novastore.util.payment.HMACUtil;
+import com.sd64.novastore.utils.payment.HMACUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -23,9 +21,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;

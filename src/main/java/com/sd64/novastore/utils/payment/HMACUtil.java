@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sd64.novastore.util.payment;
+package com.sd64.novastore.utils.payment;
 
-
-import com.sd64.novastore.config.ZaloPayConfig;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

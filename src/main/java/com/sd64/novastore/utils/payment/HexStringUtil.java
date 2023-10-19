@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.sd64.novastore.util.payment;
+package com.sd64.novastore.utils.payment;
 
 import java.util.Locale;
 
