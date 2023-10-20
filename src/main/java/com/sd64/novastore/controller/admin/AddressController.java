@@ -1,62 +1,73 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.model.Account;
+import com.sd64.novastore.model.Address;
 import com.sd64.novastore.request.AddressRequest;
+import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.service.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/address")
+@Controller
+@RequestMapping("/admin/address")
 public class AddressController {
+
     @Autowired
     private AddressService addressService;
 
-    @GetMapping("/getall")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(addressService.getAll());
+    @Autowired
+    private AccountService accountService;
+//    @GetMapping("/getall")
+//    public String getAll() {
+//        return ResponseEntity.ok(addressService.getAll());
+//    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        Address address = addressService.getOne(id);
+        List<Account> lstAcc = accountService.getAll();
+        model.addAttribute("address", address);
+        model.addAttribute("lstAcc", lstAcc);
+        return "/admin/address/address-detail";
     }
 
-    @GetMapping("/getallpt")
-    public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(addressService.getAllPT(page).getContent());
+    @GetMapping("/page")
+    public String getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+        Page<Address> page1 = addressService.getAllPT(page);
+        model.addAttribute("page", page1);
+        return "/admin/address/address";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        return ResponseEntity.ok(addressService.delete(id));
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        addressService.delete(id);
+        redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
+        return "redirect:/admin/address/page";
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid AddressRequest addressRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(addressService.add(addressRequest));
+    public String add(@ModelAttribute("Address") Address address, RedirectAttributes redirectAttributes) {
+        addressService.add(address);
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
+        return "redirect:/admin/address/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid AddressRequest addressRequest, @PathVariable Integer id, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(addressService.update(addressRequest, id));
+    @PostMapping("/update/{id}")
+    public String update(@ModelAttribute("Address") Address address, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        addressService.update(address, id);
+        redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
+        return "redirect:/admin/address/page";
 
     }
 }

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Address Management</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>ADDRESS</strong>
+            </div>
+            <!--            Notification-->
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${mess}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card-body card-block">
+                <form action="/admin/address/add" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="city" class=" form-control-label">City</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="city" name="city" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="district" class=" form-control-label">District</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="district" name="district" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="ward" class=" form-control-label">Ward</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="ward" name="ward" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="specificAddress" class=" form-control-label">Specific Address</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="specificAddress" name="specificAddress" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="dropDownList" class=" form-control-label">Account Name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="dropDownList">
+                                <!--                                <option value="0">select option</option>-->
+                                <option th:each="x : ${lstAcc}" th:value="${x.id}" th:text="${x.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Add
+                        </button>
+                        <a href="/admin/address/page">
+                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
+                                Cancel
+                            </button>
+                        </a>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Data Record</strong>
+            </div>
+            <div class="card-body">
+                <table class="table text-center">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Specific Address</th>
+                        <th scope="col">Create Date</th>
+                        <th scope="col">Update Date</th>
+                        <!--                        <th scope="col">Account Name</th>-->
+                        <th scope="col">Function</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="items:${page}">
+                        <td th:text="${items.id}"></td>
+                        <td th:text="${items.ward} + '-' + ${items.district} + '-' + ${items.city}"></td>
+                        <td th:text="${items.specificAddress}"></td>
+                        <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <!--                        <td th:text="${items.role.name}"></td>-->
+                        <td class="d-flex justify-content-center">
+                            <div style="margin-right: 10px">
+                                <a th:href="@{'/admin/address/detail/' + ${items.id}}">
+                                    <button type="button" class="btn btn-warning">Detail</button>
+                                </a>
+                            </div>
+                            <div>
+                                <form th:action="@{'/admin/address/delete/' + ${items.id}}" th:method="post">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

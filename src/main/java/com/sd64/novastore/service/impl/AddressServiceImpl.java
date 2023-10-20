@@ -17,9 +17,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AddressImpl implements AddressService {
+public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
+
     @Override
     public List<Address> getAll() {
         return addressRepository.findAllByStatus(1);
@@ -27,39 +28,44 @@ public class AddressImpl implements AddressService {
 
     @Override
     public Page<Address> getAllPT(Integer page) {
-        Pageable pageable= PageRequest.of(page,5);
-        return addressRepository.findAllByStatus(pageable,1);
+        Pageable pageable = PageRequest.of(page, 5);
+        return addressRepository.findAllByStatus(pageable, 1);
     }
 
     @Override
-    public Address add(AddressRequest addressRequest) {
-        Address address= addressRequest.map(new Address());
+    public Address add(Address address) {
+        address.setStatus(1);
+        address.setCreateDate(new Date());
+        address.setUpdateDate(new Date());
         return addressRepository.save(address);
     }
 
     @Override
-    public Address update(AddressRequest addressRequest, Integer id) {
-        Optional<Address> addressOptional= addressRepository.findById(id);
-        return addressOptional.map(address -> {
-            address.setCity(addressRequest.getCity());
-            address.setDistrict(addressRequest.getDistrict());
-            address.setWard(addressRequest.getWard());
-            address.setSpecificAddress(addressRequest.getSpecificAddress());
-            address.setCreateDate(java.util.Date.from(Instant.parse(addressRequest.getCreateDate())));
-            address.setUpdateDate(Date.from(Instant.parse(addressRequest.getUpdateDate())));
-            address.setStatus(Integer.valueOf(addressRequest.getStatus()));
-            address.setAccount(Account.builder().id(Integer.valueOf(addressRequest.getAccountID())).build());
+    public Address update(Address address, Integer id) {
+        Optional<Address> addressOptional = addressRepository.findById(id);
+        if (addressOptional.isPresent()) {
+            Address oldAddress = addressOptional.get();
+            address.setId(oldAddress.getId());
+            address.setStatus(oldAddress.getStatus());
+            address.setCreateDate(oldAddress.getCreateDate());
+            address.setUpdateDate(new Date());
             return addressRepository.save(address);
-        }).orElse(null);
+        }
+        return null;
     }
 
     @Override
     public Address delete(Integer id) {
-        Optional<Address> addressOptional= addressRepository.findById(id);
+        Optional<Address> addressOptional = addressRepository.findById(id);
         return addressOptional.map(address -> {
             address.setStatus(0);
             addressRepository.save(address);
             return address;
         }).orElse(null);
+    }
+
+    @Override
+    public Address getOne(Integer id) {
+        return addressRepository.findById(id).orElse(null);
     }
 }
