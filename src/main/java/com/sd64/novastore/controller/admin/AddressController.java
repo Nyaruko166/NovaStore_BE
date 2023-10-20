@@ -36,8 +36,8 @@ public class AddressController {
     public String detail(@PathVariable Integer id, Model model) {
         Address address = addressService.getOne(id);
         List<Account> lstAcc = accountService.getAll();
-        model.addAttribute("address", address);
         model.addAttribute("lstAcc", lstAcc);
+        model.addAttribute("address", address);
         return "/admin/address/address-detail";
     }
 
