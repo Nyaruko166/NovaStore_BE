@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -58,13 +59,25 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account update(Account account, MultipartFile avt, Integer id) {
+        String uploadDir = "./src/main/resources/static/assets/avatars/";
+        String fileName = StringUtils.cleanPath(avt.getOriginalFilename());
         Optional<Account> optional = accountRepository.findById(id);
         if (optional.isPresent()) {
             Account updateBrand = optional.get();
+            String oldAvt = updateBrand.getAvatar();
             account.setId(id);
             account.setStatus(updateBrand.getStatus());
             account.setCreateDate(updateBrand.getCreateDate());
             account.setUpdateDate(new Date());
+            if (!avt.isEmpty()) {
+                File fileToDelete = new File(uploadDir + oldAvt);
+                fileToDelete.delete();
+                String avtPath = FileUtil.copyFile(avt, fileName, uploadDir);
+                String anhUrl = FileUtil.rename(avtPath, FileUtil.rmExt(oldAvt));
+                account.setAvatar(anhUrl);
+            }else {
+                account.setAvatar(oldAvt);
+            }
             return accountRepository.save(account);
         } else {
             return null;

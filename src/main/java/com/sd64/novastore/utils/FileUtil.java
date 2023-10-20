@@ -56,4 +56,7 @@ public class FileUtil {
         return "";
     }
 
+    public static String rmExt(String fileName) {
+        return fileName.replaceFirst("[.][^.]+$", "");
+    }
 }

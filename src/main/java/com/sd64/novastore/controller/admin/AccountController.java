@@ -66,7 +66,7 @@ public class AccountController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Validated @ModelAttribute("Account") Account account,
+    public String update(@ModelAttribute("Account") Account account,
                          @RequestParam("avt") MultipartFile avt,
                          @PathVariable Integer id, RedirectAttributes redirectAttributes) {
         accountService.update(account, avt, id);

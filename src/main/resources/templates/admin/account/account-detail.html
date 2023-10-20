@@ -14,7 +14,7 @@
             </div>
             <div class="card-body card-block">
                 <form th:object="${account}" th:action="@{/admin/account/update/{id}(id=${account.id})}"
-                      method="post" class="form-horizontal">
+                      method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="name" class=" form-control-label">Account name</label>
@@ -33,10 +33,16 @@
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="birthday" class="form-control-label">Birthday</label>
+                            <label for="birthday" class=" form-control-label">Birthday</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="birthday" th:field="*{#dates.format(birthday,'yyyy/MM/dd')}" class="form-control">
+                            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker"
+                                 inline="true">
+                                <input placeholder="Choose your Birthday" type="date" id="birthday" class="form-control"
+                                       name="birthday" value="" th:field="*{birthday}">
+                                <!--                                <label for="birthday">Try me...</label>-->
+                                <!--                                <i class="fas fa-calendar input-prefix"></i>-->
+                            </div>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -57,10 +63,18 @@
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="avatar" class=" form-control-label">Avatar</label>
+                            <label for="importFile" class=" form-control-label">Avatar</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="avatar" th:field="*{avatar}" class="form-control">
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="importFile" name="avt"
+                                           accept="image/*" onchange="setFileName()">
+                                    <label class="custom-file-label" for="importFile">Choose
+                                        Avatar</label>
+                                </div>
+                            </div>
+                            <!--                            <input type="text" id="avatar" name="avatar" class="form-control">-->
                         </div>
                     </div>
 <!--                    <div class="row form-group">-->
