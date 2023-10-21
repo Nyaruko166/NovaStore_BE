@@ -2,6 +2,8 @@ package com.sd64.novastore.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,7 +32,7 @@ public class Voucher {
     private Integer quantity;
 
     @Column(name = "Type")
-    private Integer type;
+    private Boolean type;
 
     @Column(name = "Value")
     private BigDecimal value;
@@ -42,9 +44,11 @@ public class Voucher {
     private BigDecimal maximumDiscount;
 
     @Column(name = "StartDate")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date startDate;
 
     @Column(name = "EndDate")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date endDate;
 
     @Column(name = "CreateDate")
