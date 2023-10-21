@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Integer> {
-    List<ProductDetail> findAllByStatus(Integer status);
+    List<ProductDetail> findAllByAndStatusOrderByIdDesc(Integer status);
 
-    Page<ProductDetail> findAllByStatus(Pageable pageable, Integer status);
+    Page<ProductDetail> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
 }

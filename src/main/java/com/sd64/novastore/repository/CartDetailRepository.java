@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface CartDetailRepository extends JpaRepository<CartDetail,Integer> {
-    List<CartDetail> findAllByStatus(Integer status);
+    List<CartDetail> findAllByAndStatusOrderByIdDesc(Integer status);
 
-    Page<CartDetail> findAllByStatus(Pageable pageable, Integer status);
+    Page<CartDetail> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
 }
