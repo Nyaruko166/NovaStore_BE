@@ -1,66 +1,76 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.request.PaymentMethodRequest;
+import com.sd64.novastore.model.Bill;
+import com.sd64.novastore.model.PaymentMethod;
+import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.PaymentMethodService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/payment-method")
+@Controller
+@RequestMapping("/admin/payment-method")
 public class PaymentMethodController {
     @Autowired
     private PaymentMethodService paymentMethodService;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(paymentMethodService.getAll());
-    }
+    @Autowired
+    private BillService billService;
 
-    @GetMapping()
-    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        return ResponseEntity.ok(paymentMethodService.getAll(page).getContent());
+    @GetMapping("/page")
+    public String getAllPagination(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model){
+        Page<PaymentMethod> pagePaymentMethod = paymentMethodService.getAll(page);
+        List<Bill> listBill = billService.getAllBill();
+
+        model.addAttribute("listBill", listBill);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pagePaymentMethod.getTotalPages());
+        model.addAttribute("totalItems", pagePaymentMethod.getTotalElements());
+        model.addAttribute("pagePaymentMethod", pagePaymentMethod.getContent());
+        return "admin/payment-method/payment-method";
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid PaymentMethodRequest paymentMethodRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        } else {
-            return ResponseEntity.ok(paymentMethodService.add(paymentMethodRequest));
-        }
+    public String add(@Validated @ModelAttribute("PaymentMethod") PaymentMethod paymentMethod, RedirectAttributes redirectAttributes){
+        paymentMethodService.add(paymentMethod);
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
+        return "redirect:/admin/payment-method/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody @Valid PaymentMethodRequest paymentMethodRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        } else {
-            return ResponseEntity.ok(paymentMethodService.update(paymentMethodRequest, id));
-        }
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        paymentMethodService.delete(id);
+        redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
+        return "redirect:/admin/payment-method/page";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        if (paymentMethodService.delete(id)) {
-            return ResponseEntity.ok("Xoá thành công");
-        } else {
-            return ResponseEntity.ok("Xoá thất bại");
-        }
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Integer id,
+                         @Validated @ModelAttribute("PaymentMethod") PaymentMethod paymentMethod,
+                         RedirectAttributes redirectAttributes){
+        paymentMethodService.update(paymentMethod, id);
+        redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
+        return "redirect:/admin/payment-method/page";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model){
+        PaymentMethod paymentMethod = paymentMethodService.getOne(id);
+        List<Bill> listBill = billService.getAllBill();
+
+        model.addAttribute("listBill", listBill);
+        model.addAttribute("paymentMethod", paymentMethod);
+        return "admin/payment-method/payment-method-detail";
     }
 }

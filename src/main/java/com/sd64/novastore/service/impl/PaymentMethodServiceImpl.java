@@ -19,38 +19,49 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     private PaymentMethodRepository paymentMethodRepository;
 
     @Override
-    public List<PaymentMethod> getAll(){
-        return  paymentMethodRepository.findAllByStatus(1);
+    public List<PaymentMethod> getAll() {
+        return paymentMethodRepository.findAllByStatusOrderByIdDesc(1);
     }
 
     @Override
-    public Page<PaymentMethod> getAll(Integer page){
+    public Page<PaymentMethod> getAll(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return paymentMethodRepository.findAllByStatus(pageable, 1);
+        return paymentMethodRepository.findAllByStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
-    public PaymentMethod add(PaymentMethodRequest paymentMethodRequest) {
-        PaymentMethod paymentMethod = paymentMethodRequest.map(new PaymentMethod());
+    public PaymentMethod add(PaymentMethod paymentMethod) {
+        paymentMethod.setStatus(1);
         return paymentMethodRepository.save(paymentMethod);
     }
 
     @Override
-    public PaymentMethod update(PaymentMethodRequest paymentMethodRequest, Integer id) {
+    public PaymentMethod update(PaymentMethod paymentMethod, Integer id) {
         Optional<PaymentMethod> optional = paymentMethodRepository.findById(id);
-        PaymentMethod paymentMethod = paymentMethodRequest.map(optional.get());
-        return paymentMethodRepository.save(paymentMethod);
+        if (optional.isPresent()){
+            PaymentMethod oldPaymentMethod = optional.get();
+            paymentMethod.setId(oldPaymentMethod.getId());
+            paymentMethod.setStatus(oldPaymentMethod.getStatus());
+            return paymentMethodRepository.save(paymentMethod);
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public Boolean delete(Integer id) {
+    public PaymentMethod delete(Integer id) {
         Optional<PaymentMethod> optional = paymentMethodRepository.findById(id);
         if (optional.isPresent()){
             PaymentMethod paymentMethod = optional.get();
-            paymentMethodRepository.delete(paymentMethod);
-            return true;
+            paymentMethod.setStatus(0);
+            return paymentMethodRepository.save(paymentMethod);
         } else {
-            return false;
+            return null;
         }
+    }
+
+    @Override
+    public PaymentMethod getOne(Integer id) {
+        return paymentMethodRepository.findById(id).orElse(null);
     }
 }
