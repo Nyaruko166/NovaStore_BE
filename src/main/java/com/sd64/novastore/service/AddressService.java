@@ -11,10 +11,12 @@ public interface AddressService {
 
     Page<Address> getAllPT(Integer page);
 
-    Address add(AddressRequest addressRequest);
+    Address add(Address address);
 
-    Address update(AddressRequest addressRequest, Integer id);
+    Address update(Address address, Integer id);
 
     Address delete(Integer id);
+
+    Address getOne(Integer id);
 
 }

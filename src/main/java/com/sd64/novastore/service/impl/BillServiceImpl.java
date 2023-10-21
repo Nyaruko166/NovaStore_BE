@@ -1,5 +1,7 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.BillDetail;
+import com.sd64.novastore.repository.BillDetailRepository;
 import com.sd64.novastore.request.BillRequest;
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Bill;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Date;
@@ -19,59 +22,91 @@ import java.util.Optional;
 
 @Service
 public class BillServiceImpl implements BillService {
+
     @Autowired
     private BillRepository billRepository;
 
-    @Override
+    @Autowired
+    private BillDetailRepository billDetailRepository;
 
-    public List<Bill> getAll() {
+    @Override
+    public List<Bill> getAllBill() {
         return billRepository.findAllByStatus(1);
     }
 
     @Override
-    public Page<Bill> getAllPT(Integer page) {
+    public Page<Bill> getAllBillPT(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return billRepository.findAllByStatus(pageable,1);
+        return billRepository.findAllByStatus(pageable, 1);
     }
 
     @Override
-    public Bill add(BillRequest billRequest) {
-        Bill bill = billRequest.map(new Bill());
+    public Bill addBill(Bill bill) {
+        bill.setStatus(1);
+        bill.setCreateDate(new Date());
+        bill.setUpdateDate(new Date());
         return billRepository.save(bill);
     }
 
     @Override
-    public Bill update(BillRequest billRequest, Integer id) {
-        Optional<Bill> billOptional = billRepository.findById(id);
-        return billOptional.map(bill -> {
-            bill.setCustomerName(billRequest.getCustomerName());
-            bill.setAddress(billRequest.getAddress());
-            bill.setPhoneNumber(billRequest.getPhoneNumber());
-            bill.setNote(billRequest.getNote());
-            bill.setOrderDate(java.util.Date.from(Instant.parse(billRequest.getOrderDate())));
-            bill.setConfirmationDate(java.util.Date.from(Instant.parse(billRequest.getConfirmationDate())));
-            bill.setShippingDate(java.util.Date.from(Instant.parse(billRequest.getShippingDate())));
-            bill.setReceivedDate(java.util.Date.from(Instant.parse(billRequest.getReceivedDate())));
-            bill.setCompletionDate(java.util.Date.from(Instant.parse(billRequest.getCompletionDate())));
-            bill.setPaymentDate(java.util.Date.from(Instant.parse(billRequest.getPaymentDate())));
-            bill.setShippingFee(BigDecimal.valueOf(Long.parseLong(billRequest.getShippingFee())));
-            bill.setTotalPrice(BigDecimal.valueOf(Long.parseLong(billRequest.getTotalPrice())));
-            bill.setCreateDate(java.util.Date.from(Instant.parse(billRequest.getCreateDate())));
-            bill.setUpdateDate(Date.from(Instant.parse(billRequest.getUpdateDate())));
-            bill.setStatus(Integer.valueOf(billRequest.getStatus()));
-            bill.setAccount(Account.builder().id(Integer.valueOf(billRequest.getAccountID())).build());
-            bill.setCustomerAccount(Account.builder().id(Integer.valueOf(billRequest.getCustomerID())).build());
+    public Bill updateBill(Bill bill, Integer id) {
+        Optional<Bill> optional = billRepository.findById(id);
+        if (optional.isPresent()) {
+            Bill oldBill = optional.get();
+            bill.setId(oldBill.getId());
+            bill.setStatus(oldBill.getStatus());
+            bill.setCreateDate(oldBill.getCreateDate());
+            bill.setUpdateDate(new Date());
             return billRepository.save(bill);
-        }).orElse(null);
+        }
+        return null;
+    }
+
+    @Override
+    public List<BillDetail> getAllBillDetail() {
+        return billDetailRepository.findAllByStatus(1);
+    }
+
+    @Override
+    public Page<BillDetail> getAllBillDetailPT(Integer page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return billDetailRepository.findAllByStatus(pageable, 1);
+    }
+
+    @Override
+    public BillDetail addBillDetail(BillDetail billDetail) {
+        billDetail.setStatus(1);
+        return billDetailRepository.save(billDetail);
+    }
+
+    @Override
+    public BillDetail updateBillDetail(BillDetail billDetail, Integer id) {
+        Optional<BillDetail> optional = billDetailRepository.findById(id);
+        if (optional.isPresent()) {
+            BillDetail oldBillDetail = optional.get();
+            billDetail.setId(oldBillDetail.getId());
+            return billDetailRepository.save(billDetail);
+        }
+        return null;
+    }
+
+    @Override
+    public Bill getOneBill(Integer id) {
+        return billRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public BillDetail getOneBillDetail(Integer id) {
+        return billDetailRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<BillDetail> getLstDetailByBillId(Integer id) {
+        return billDetailRepository.findAllByBill_Id(id);
     }
 
     @Override
     public Bill delete(Integer id) {
-        Optional<Bill> billOptional = billRepository.findById(id);
-        return billOptional.map(bill -> {
-            bill.setStatus(0);
-            billRepository.save(bill);
-            return bill;
-        }).orElse(null);
+        return null;
     }
 }

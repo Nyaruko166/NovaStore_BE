@@ -1,61 +1,72 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.request.CartRequest;
+
+import com.sd64.novastore.model.Account;
+import com.sd64.novastore.model.Cart;
+import com.sd64.novastore.model.CartDetail;
+import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/cart")
+@Controller
+@RequestMapping("/admin/cart")
 public class CartController {
     @Autowired
     private CartService cartService;
-
-    @GetMapping("/getall")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(cartService.getAll());
+    @Autowired
+    private AccountService accountService;
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        Cart cart = cartService.getOne(id);
+        List<Account> accountList = accountService.getAll();
+        model.addAttribute("cart", cart);
+//        model.addAttribute("accountList", accountList);
+        return "/admin/cart/cart-detail";
     }
 
-    @GetMapping("/getallpt")
-    public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(cartService.getAllPT(page).getContent());
+    @GetMapping("/page")
+    public String getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+        Page<Cart> page1 = cartService.getAllCartPT(page);
+        model.addAttribute("page", page1);
+        return "/admin/cart/cart";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        return ResponseEntity.ok(cartService.delete(id));
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        cartService.delete(id);
+        redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
+        return "redirect:/admin/cart/page";
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid CartRequest cartRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(cartService.add(cartRequest));
+    public String add(@ModelAttribute("CartDetail") Cart cart, RedirectAttributes redirectAttributes) {
+        cartService.add(cart);
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
+        return "redirect:/admin/cart/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid CartRequest cartRequest, @PathVariable Integer id, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(cartService.update(cartRequest, id));
+    @PostMapping("/update/{id}")
+    public String update(@ModelAttribute("CartDetail") Cart cart, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        cartService.update(cart, id);
+        redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
+        return "redirect:/admin/cart/page";
+
     }
+
 }

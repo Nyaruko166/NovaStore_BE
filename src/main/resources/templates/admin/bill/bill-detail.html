@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Bill</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>BILL DETAIL</strong>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Data Record</strong>
+            </div>
+            <div class="card-body">
+                <table class="table text-center">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Customer Name</th>
+                        <!--                                <th scope="col">Shipping Fee</th>-->
+                        <!--                                <th scope="col">Total Price</th>-->
+                        <th scope="col">Function</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="items:${page}">
+                        <td th:text="${items.id}"></td>
+                        <td th:text="${items.quantity}"></td>
+                        <td th:text="${items.price}"></td>
+                        <td th:text="${items.bill.customerName}"></td>
+                        <!--                                <td th:text="${items.shippingFee}"></td>-->
+                        <!--                                <td th:text="${items.totalPrice}"></td>-->
+                        <!--                        <td th:text="${items.role.name}"></td>-->
+                        <td class="d-flex justify-content-center">
+                            <div style="margin-right: 10px">
+                                <a th:href="@{/admin/bill/page}">
+                                    <button type="button" class="btn btn-secondary">Back</button>
+                                </a>
+                            </div>
+                            <!--                            <div>-->
+                            <!--                                <form th:action="@{'/admin/bill/delete/' + ${items.id}}" th:method="post">-->
+                            <!--                                    <button type="submit" class="btn btn-danger">Delete</button>-->
+                            <!--                                </form>-->
+                            <!--                            </div>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+</body>
+</html>

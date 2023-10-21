@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, Integer> {
-    List<PaymentMethod> findAllByStatus(Integer status);
+        List<PaymentMethod> findAllByStatusOrderByIdDesc(Integer status);
 
-    Page<PaymentMethod> findAllByStatus(Pageable pageable, Integer status);
+        Page<PaymentMethod> findAllByStatusOrderByIdDesc(Pageable pageable, Integer status);
 }

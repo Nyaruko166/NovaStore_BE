@@ -1,19 +1,24 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.request.CartRequest;
+import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Cart;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface CartService {
-    List<Cart> getAll();
+    List<Cart> getAllCart();
 
-    Page<Cart> getAllPT(Integer page);
+    Page<Cart> getAllCartPT(Integer page);
 
-    Cart add(CartRequest cartRequest);
+    Cart add(Cart cart);
 
-    Cart update(CartRequest cartRequest, Integer id);
+    Cart update(Cart cart, Integer id);
 
     Cart delete(Integer id);
+
+//    Page<Cart> search(String name, int page);
+
+    Cart getOne(Integer id);
+
 }

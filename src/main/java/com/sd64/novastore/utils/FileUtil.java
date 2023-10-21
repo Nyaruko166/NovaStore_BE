@@ -16,7 +16,7 @@ public class FileUtil {
     public static String copyFile(MultipartFile file, String fileName, String uploadPath) {
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
-            uploadDir.mkdir();
+            uploadDir.mkdirs();
         }
         Path path = Paths.get(uploadPath);
         try (InputStream inputStream = file.getInputStream()) {
@@ -56,4 +56,7 @@ public class FileUtil {
         return "";
     }
 
+    public static String rmExt(String fileName) {
+        return fileName.replaceFirst("[.][^.]+$", "");
+    }
 }

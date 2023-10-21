@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart  Management</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>Cart </strong>
+            </div>
+            <!--            Notification-->
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${mess}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card-body card-block">
+                <form action="/admin/cart/add" method="post" class="form-horizontal" enctype="multipart/form-data">
+
+                    <!--                    <div class="row form-group">-->
+                    <!--                        <div class="col col-md-3">-->
+                    <!--                            <label for="dropDownList" class=" form-control-label">Account Name</label>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-12 col-md-9">-->
+                    <!--                            <select class="form-control" id="dropDownList">-->
+                    <!--                                &lt;!&ndash;                                <option value="0">select option</option>&ndash;&gt;-->
+                    <!--                                <option th:each="x : ${lstAcc}" th:value="${x.id}" th:text="${x.name}"></option>-->
+                    <!--                            </select>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Add
+                        </button>
+                        <a href="/admin/cart/page">
+                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
+                                Cancel
+                            </button>
+                        </a>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Data Record</strong>
+            </div>
+            <div class="card-body">
+                <table class="table text-center">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Create Date</th>
+                        <!--                        <th scope="col">Account Name</th>-->
+                        <th scope="col">Function</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="items:${page}">
+                        <td th:text="${items.id}"></td>
+                        <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <!--                        <td th:text="${items.role.name}"></td>-->
+                        <td class="d-flex justify-content-center">
+                            <div style="margin-right: 10px">
+                                <a th:href="@{'/admin/cart/detail/' + ${items.id}}">
+                                    <button type="button" class="btn btn-warning">Detail</button>
+                                </a>
+                            </div>
+                            <div>
+                                <form th:action="@{'/admin/cart/delete/' + ${items.id}}" th:method="post">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

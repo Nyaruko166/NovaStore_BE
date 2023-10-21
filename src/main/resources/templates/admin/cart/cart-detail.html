@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart Detail </title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>Cart Detail</strong>
+            </div>
+            <div class="card-body card-block">
+                <form th:object="${cart}" th:action="@{/admin/cart/update/{id}(id=${cart.id})}"
+                      method="post" class="form-horizontal" enctype="multipart/form-data">
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Update
+                        </button>
+                        <a th:href="@{/admin/cart/page}" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+</body>
+</html>

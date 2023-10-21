@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill History Management</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>Bill History</strong>
+            </div>
+            <!--            Notification-->
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 5px">
+                <span th:text="${mess}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card-body card-block">
+                <form th:action="@{/admin/bill-history/add}" method="post" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="name" class=" form-control-label">Name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="name" name="name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="describe" class=" form-control-label">Describe</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="describe" name="describe" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="bill" class=" form-control-label">Bill</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="bill" name="bill">
+                                <option th:each="bill : ${listBill}" th:value="${bill.id}" th:text="${bill.id}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="account" class=" form-control-label">Account email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="account" name="account">
+                                <option th:each="account : ${listAccount}" th:value="${account.id}"
+                                        th:text="${account.email}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Add
+                        </button>
+                        <a href="/admin/bill-history/page">
+                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
+                                Cancel
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Data Record</strong>
+            </div>
+            <div class="card-body">
+                <table class="table text-center">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Describe</th>
+                        <th scope="col">Create date</th>
+                        <th scope="col">Update date</th>
+                        <th scope="col">Bill</th>
+                        <th scope="col">Account email</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Function</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="items:${pageBillHistory}">
+                        <td th:text="${items.id}"></td>
+                        <td th:text="${items.name}"></td>
+                        <td th:text="${items.describe}"></td>
+                        <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <td th:text="${items.bill.id}"></td>
+                        <td th:text="${items.account.email}"></td>
+                        <td class="d-flex justify-content-center">
+                            <div style="margin-right: 10px">
+                                <a th:href="@{'/admin/bill-history/detail/' + ${items.id}}">
+                                    <button type="button" class="btn btn-warning">DETAIL</button>
+                                </a>
+                            </div>
+                            <div>
+                                <form th:action="@{'/admin/bill-history/delete/' + ${items.id}}" th:method="post">
+                                    <button type="submit" class="btn btn-danger">DELETE</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2<span class="sr-only">(current)</span></a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

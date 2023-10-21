@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart Detail </title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>Cart Detail</strong>
+            </div>
+            <div class="card-body card-block">
+                <form th:object="${cartDetail}" th:action="@{/admin/cart_detail/update/{id}(id=${cartDetail.id})}"
+                      method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="quantity" class=" form-control-label">Quantity</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="quantity" th:field="*{quantity}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="price" class=" form-control-label">Price</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="price" th:field="*{price}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Update
+                        </button>
+                        <a th:href="@{/admin/cart_detail/page}" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+</body>
+</html>

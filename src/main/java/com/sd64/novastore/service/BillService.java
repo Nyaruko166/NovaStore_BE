@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.request.BillRequest;
 import com.sd64.novastore.model.Bill;
 import org.springframework.data.domain.Page;
@@ -7,13 +8,27 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface BillService {
-    List<Bill> getAll();
+    List<Bill> getAllBill();
 
-    Page<Bill> getAllPT(Integer page);
+    Page<Bill> getAllBillPT(Integer page);
 
-    Bill add(BillRequest billRequest);
+    Bill addBill(Bill bill);
 
-    Bill update(BillRequest billRequest, Integer id);
+    Bill updateBill(Bill bill, Integer id);
+
+    List<BillDetail> getAllBillDetail();
+
+    Page<BillDetail> getAllBillDetailPT(Integer page);
+
+    BillDetail addBillDetail(BillDetail billDetail);
+
+    BillDetail updateBillDetail(BillDetail billDetail, Integer id);
+
+    Bill getOneBill(Integer id);
+
+    BillDetail getOneBillDetail(Integer id);
+
+    List<BillDetail> getLstDetailByBillId(Integer id);
 
     Bill delete(Integer id);
 }

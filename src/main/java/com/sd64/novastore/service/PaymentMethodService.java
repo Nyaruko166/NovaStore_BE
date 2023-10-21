@@ -1,6 +1,5 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.request.PaymentMethodRequest;
 import com.sd64.novastore.model.PaymentMethod;
 import org.springframework.data.domain.Page;
 
@@ -11,9 +10,11 @@ public interface PaymentMethodService {
 
     Page<PaymentMethod> getAll(Integer page);
 
-    PaymentMethod add(PaymentMethodRequest paymentMethodRequest);
+    PaymentMethod add(PaymentMethod paymentMethod);
 
-    PaymentMethod update(PaymentMethodRequest paymentMethodRequest, Integer id);
+    PaymentMethod update(PaymentMethod paymentMethod, Integer id);
 
-    Boolean delete(Integer id);
+    PaymentMethod delete(Integer id);
+
+    PaymentMethod getOne(Integer id);
 }

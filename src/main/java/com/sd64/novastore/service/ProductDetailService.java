@@ -1,19 +1,23 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.request.ProductDetailRequest;
+import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.model.Size;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface ProductDetailService {
-    List<ProductDetail> getAll();
+    List<ProductDetail> getAllProductDetail();
 
-    Page<ProductDetail> getAll(Integer page);
+    Page<ProductDetail> getAllPT(Integer page);
 
-    ProductDetail add(ProductDetailRequest productDetailRequest);
+    ProductDetail add(ProductDetail productDetail);
 
-    ProductDetail update(ProductDetailRequest productDetailRequest, Integer id);
+    ProductDetail update(ProductDetail productDetail, Integer id);
 
-    Boolean delete(Integer id);
+    ProductDetail delete(Integer id);
+
+    ProductDetail getOne(Integer id);
+
 }

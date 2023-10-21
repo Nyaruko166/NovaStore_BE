@@ -24,7 +24,7 @@ public class VoucherRequest {
     @NotNull(message = "Quantity cannot be left blank")
     private Integer quantity;
 
-    private Integer type;
+    private Boolean type;
 
     @NotNull(message = "Value cannot be left blank")
     private BigDecimal value;

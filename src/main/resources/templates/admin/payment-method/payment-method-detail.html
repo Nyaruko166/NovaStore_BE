@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Method Management</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>Payment Method</strong>
+            </div>
+            <div class="card-body card-block">
+                <form th:object="${paymentMethod}" th:action="@{/admin/payment-method/update/{id}(id=${paymentMethod.id})}" method="post" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="name" class=" form-control-label">Payment method name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="name" th:value="${paymentMethod.name}" name="name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="money" class=" form-control-label">Money</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="money" th:value="${paymentMethod.money}" name="money" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="description" class=" form-control-label">Description</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="description" th:value="${paymentMethod.description}" name="description" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="bill" class=" form-control-label">Bill</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="bill" name="bill">
+                                <option th:each="bill : ${listBill}" th:value="${bill.id}"
+                                        th:selected="${bill.id == paymentMethod.bill.id}" th:text="${bill.id}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
