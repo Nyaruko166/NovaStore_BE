@@ -45,7 +45,6 @@ public class ColorServiceImpl implements ColorService {
         if (optional.isPresent()) {
             Color updateColor = optional.get();
             color.setId(id);
-            color.setName(updateColor.getName());
             color.setStatus(updateColor.getStatus());
             color.setCreateDate(updateColor.getCreateDate());
             color.setUpdateDate(new Date());
@@ -71,5 +70,15 @@ public class ColorServiceImpl implements ColorService {
     public Page<Color> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return colorRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public Color detail(Integer id) {
+        Optional<Color> optional = colorRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
     }
 }

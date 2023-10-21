@@ -10,13 +10,13 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>BRAND</strong>
+                <strong>COLOR</strong>
             </div>
             <div th:if="${add}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
                 <span th:text="${add}"></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">x</span>
                 </button>
             </div>
             <div th:if="${update}" class="alert alert-success alert-dismissible fade show" role="alert"
@@ -34,9 +34,9 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form id="brandForm" class="form-horizontal">
+                <form id="colorForm" class="form-horizontal">
                     <div class="row form-group">
-                        <div class="col col-md-3"><label class=" form-control-label">Brand name</label></div>
+                        <div class="col col-md-3"><label class="form-control-label">Color name</label></div>
                         <div class="col-12 col-md-9"><input type="text" name="name" class="form-control">
                             <!--              <small class="form-text text-muted">This is a help text</small>-->
                         </div>
@@ -44,24 +44,23 @@
 
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickAdd('brand', 'brandForm')" type="button" class="btn btn-success"><i
+                            <button onclick="clickAdd('color', 'colorForm')" type="button" class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
                                 ADD
                             </button>
-                            <button onclick="clickSearch('brand', 'brandForm')" type="button" class="btn btn-secondary">
+                            <button onclick="clickSearch('color', 'colorForm')" type="button" class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 SEARCH
                             </button>
                         </div>
                         <div class="col-12 col-md-9">
                             <input type="text"
-                                   th:value="${brandNameSearch}" th:name="brandNameSearch"
+                                   th:value="${colorNameSearch}" th:name="colorNameSearch"
                                    class="form-control">
                         </div>
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 
@@ -81,21 +80,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="items:${pageBrand}">
+                    <tr th:each="items:${pageColor}">
                         <td th:text="${items.id}"></td>
                         <td th:text="${items.name}"></td>
                         <td class="d-flex justify-content-center">
                             <div style="margin-right: 10px">
-                                <a th:href="@{'/admin/brand/detail/' + ${items.id}}">
+                                <a th:href="@{'/admin/color/detail/' + ${items.id}}">
                                     <button type="button" class="btn btn-warning">
                                         <i class="fa-solid fa-eye mr-1"></i>DETAIL
                                     </button>
                                 </a>
                             </div>
                             <div>
-                                <form id="brandDelete" th:action="@{'/admin/brand/delete/' + ${items.id}}"
+                                <form id="colorDelete" th:action="@{'/admin/color/delete/' + ${items.id}}"
                                       th:method="post">
-                                    <button onclick="clickDelete('brandDelete')" type="button" class="btn btn-danger">
+                                    <button onclick="clickDelete('colorDelete')" type="button" class="btn btn-danger">
                                         <i class="fa-solid fa-trash mr-1"></i>DELETE
                                     </button>
                                 </form>
@@ -107,23 +106,21 @@
 
                 <!--            Pagination-->
                 <div class="d-flex justify-content-center align-items-center">
-                    <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=${pageBrand.getNumber() - 1}&brandNameSearch=${brandNameSearch}|}">
+                    <div th:if="${pageColor.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                        <a th:href="@{|?page=${pageColor.getNumber() - 1}&colorNameSearch=${colorNameSearch}|}">
                             <i style="color: white" class="fa-solid fa-left-long"></i></a>
                     </div>
                     <div class="btn btn-dark d-flex">
-                        <div th:text="${pageBrand.getNumber() + 1}"></div>
+                        <div th:text="${pageColor.getNumber() + 1}"></div>
                         <span>/</span>
-                        <div th:text="${pageBrand.getTotalPages()}"></div>
+                        <div th:text="${pageColor.getTotalPages()}"></div>
                     </div>
-                    <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}" class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pageBrand.getNumber()+1}&brandNameSearch=${brandNameSearch}|}">
+                    <div th:if="${pageColor.getNumber() + 1 lt pageColor.getTotalPages()}" class="btn btn-dark ml-1">
+                        <a th:href="@{|?page=${pageColor.getNumber()+1}&colorNameSearch=${colorNameSearch}|}">
                             <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>

@@ -46,7 +46,6 @@ public class FormServiceImpl implements FormService {
         if (optional.isPresent()) {
             Form updateForm = optional.get();
             form.setId(id);
-            form.setName(updateForm.getName());
             form.setStatus(updateForm.getStatus());
             form.setCreateDate(updateForm.getCreateDate());
             form.setUpdateDate(new Date());
@@ -72,5 +71,15 @@ public class FormServiceImpl implements FormService {
     public Page<Form> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return formRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public Form detail(Integer id) {
+        Optional<Form> optional = formRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
     }
 }

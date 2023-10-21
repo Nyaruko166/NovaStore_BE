@@ -14,18 +14,19 @@ import java.util.Date;
 @Setter
 
 public class BrandRequest {
-    @NotBlank(message = "Name khong duoc de trong")
+
+    @NotBlank(message = "brand name cannot be left blank")
     private String name;
 
 //    @PastOrPresent(message = "Ngay createDate nho hon hoac bang ngay hien tai")
-    @NotNull(message = "Ngay createDate khong duoc de trong")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private String createDate;
-
-//    @PastOrPresent(message = "Ngay update Date nho hon hoac bang ngay hien tai")
-    @NotNull(message = "Ngay createDate khong duoc de trong")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private String updateDate;
+//    @NotNull(message = "Ngay createDate khong duoc de trong")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    private String createDate;
+//
+////    @PastOrPresent(message = "Ngay update Date nho hon hoac bang ngay hien tai")
+//    @NotNull(message = "Ngay createDate khong duoc de trong")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    private String updateDate;
 
 
     private String status;

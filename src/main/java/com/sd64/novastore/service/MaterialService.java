@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Form;
 import com.sd64.novastore.request.MaterialRequest;
 import com.sd64.novastore.model.Material;
@@ -19,4 +20,6 @@ public interface MaterialService {
     Material delete(Integer id);
 
     Page<Material> search(String name, int page);
+
+    Material detail(Integer id);
 }

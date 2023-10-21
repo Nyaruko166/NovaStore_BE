@@ -44,10 +44,9 @@ public class RoleServiceImpl implements RoleService {
     public Role update(Role role, Integer id) {
         Optional<Role> optional = roleRepository.findById(id);
         if (optional.isPresent()) {
-            Role udpateRole = optional.get();
+            Role updateRole = optional.get();
             role.setId(id);
-            role.setName(udpateRole.getName());
-            role.setStatus(udpateRole.getStatus());
+            role.setStatus(updateRole.getStatus());
             return roleRepository.save(role);
         } else {
             return null;

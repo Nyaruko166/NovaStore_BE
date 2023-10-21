@@ -13,7 +13,9 @@
     <link rel="stylesheet" th:href="@{/admin/vendors/selectFX/css/cs-skin-elastic.css}">
     <link rel="stylesheet" th:href="@{/admin/vendors/jqvmap/dist/jqvmap.min.css}">
 
+    <!--    css-->
     <link rel="stylesheet" th:href="@{/admin/assets/css/style.css}">
+    <link rel="stylesheet" th:href="@{/admin/assets/css/index.css}">
 
     <!--    fontawesome-->
     <script th:src="@{https://kit.fontawesome.com/1943ac9f5b.js}" crossorigin="anonymous"></script>
@@ -51,6 +53,41 @@
             var fileName = document.getElementById("importFile").value.split("\\").pop();
             document.querySelector(".custom-file-label").textContent = fileName;
             // alert('ádâdâdâdâd')
+        }
+
+        function clickAdd(entity, id) {
+            var add = confirm("Bạn có muốn thêm dữ liệu ?")
+            if (add) {
+                document.getElementById(id).action = '/admin/' + entity +'/add'
+                document.getElementById(id).method = 'post'
+                document.getElementById(id).submit()
+            } else {
+                return null
+            }
+        }
+
+        function clickUpdate(id) {
+            var update = confirm("Bạn có muốn sửa dữ liệu ?")
+            if (update) {
+                document.getElementById(id).submit()
+            } else {
+                return null
+            }
+        }
+
+        function clickDelete(id) {
+            var deleted = confirm("Bạn có muốn xóa dữ liệu ?")
+            if (deleted) {
+                document.getElementById(id).submit()
+            } else {
+                return null
+            }
+        }
+
+        function clickSearch(entity, id) {
+            document.getElementById(id).action = '/admin/' + entity +'/search'
+            document.getElementById(id).method = 'get'
+            document.getElementById(id).submit()
         }
     </script>
 

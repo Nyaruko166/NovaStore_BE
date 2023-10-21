@@ -45,7 +45,6 @@ public class CategoryServiceImpl implements CategoryService {
         if (optional.isPresent()) {
             Category updateCategory = optional.get();
             category.setId(id);
-            category.setName(updateCategory.getName());
             category.setStatus(updateCategory.getStatus());
             category.setCreateDate(updateCategory.getCreateDate());
             category.setUpdateDate(new Date());
@@ -71,5 +70,15 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<Category> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return categoryRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public Category detail(Integer id) {
+        Optional<Category> optional = categoryRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
     }
 }

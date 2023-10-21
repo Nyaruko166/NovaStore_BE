@@ -20,4 +20,6 @@ public interface FormService {
     Form delete(Integer id);
 
     Page<Form> search(String name, int page);
+
+    Form detail(Integer id);
 }
