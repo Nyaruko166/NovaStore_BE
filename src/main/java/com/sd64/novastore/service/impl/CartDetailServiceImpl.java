@@ -1,10 +1,9 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.request.CartDetailRequest;
-import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.CartDetail;
-import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.repository.CartDetailRepository;
+import com.sd64.novastore.repository.CartRepository;
+import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.service.CartDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,8 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -23,36 +20,43 @@ public class CartDetailServiceImpl implements CartDetailService {
     @Autowired
     private CartDetailRepository cartDetailRepository;
 
+    @Autowired
+    private CartRepository cartRepository;
+
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
+
     @Override
-    public List<CartDetail> getAll() {
-        return cartDetailRepository.findAllByStatus(1);
+    public List<CartDetail> getAllCartDetail() {
+        return cartDetailRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override
     public Page<CartDetail> getAllPT(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return cartDetailRepository.findAllByStatus(pageable,1);
+        return cartDetailRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
-    public CartDetail add(CartDetailRequest cartDetailRequest) {
-        CartDetail cartDetail = cartDetailRequest.map(new CartDetail());
+    public CartDetail add(CartDetail cartDetail) {
+        cartDetail.setStatus(1);
+        cartDetail.setCreateDate(new java.util.Date());
+        cartDetail.setUpdateDate(new java.util.Date());
         return cartDetailRepository.save(cartDetail);
     }
 
     @Override
-    public CartDetail update(CartDetailRequest cartDetailRequest, Integer id) {
+    public CartDetail update(CartDetail cartDetail, Integer id) {
         Optional<CartDetail> cartDetailOptional = cartDetailRepository.findById(id);
-        return cartDetailOptional.map(cartDetail -> {
-            cartDetail.setQuantity(Integer.valueOf(cartDetailRequest.getQuantity()));
-            cartDetail.setPrice(BigDecimal.valueOf(Long.parseLong(cartDetailRequest.getPrice())));
-            cartDetail.setCreateDate(Date.from(Instant.parse(cartDetailRequest.getCreateDate())));
-            cartDetail.setUpdateDate(Date.from(Instant.parse(cartDetailRequest.getUpdateDate())));
-            cartDetail.setStatus(Integer.valueOf(cartDetailRequest.getStatus()));
-            cartDetail.setCart(Cart.builder().id(Integer.valueOf(cartDetailRequest.getCartId())).build());
-            cartDetail.setProductDetail(ProductDetail.builder().id(Integer.valueOf(cartDetailRequest.getProductDetailId())).build());
+        if (cartDetailOptional.isPresent()) {
+            CartDetail updateCartDetail = cartDetailOptional.get();
+            cartDetail.setId(updateCartDetail.getId());
+            cartDetail.setStatus(updateCartDetail.getStatus());
+            cartDetail.setCreateDate(updateCartDetail.getCreateDate());
+            cartDetail.setUpdateDate(new Date());
             return cartDetailRepository.save(cartDetail);
-        }).orElse(null);
+        }
+        return null;
     }
 
     @Override
@@ -64,4 +68,11 @@ public class CartDetailServiceImpl implements CartDetailService {
             return cartDetail;
         }).orElse(null);
     }
+
+    @Override
+    public CartDetail getOne(Integer id) {
+        return cartDetailRepository.findById(id).orElse(null);
+    }
+
+
 }
