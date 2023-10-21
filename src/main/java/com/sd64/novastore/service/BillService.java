@@ -24,5 +24,11 @@ public interface BillService {
 
     BillDetail updateBillDetail(BillDetail billDetail, Integer id);
 
+    Bill getOneBill(Integer id);
+
+    BillDetail getOneBillDetail(Integer id);
+
+    List<BillDetail> getLstDetailByBillId(Integer id);
+
     Bill delete(Integer id);
 }

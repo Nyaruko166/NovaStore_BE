@@ -91,6 +91,21 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    public Bill getOneBill(Integer id) {
+        return billRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public BillDetail getOneBillDetail(Integer id) {
+        return billDetailRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<BillDetail> getLstDetailByBillId(Integer id) {
+        return billDetailRepository.findAllByBill_Id(id);
+    }
+
+    @Override
     public Bill delete(Integer id) {
         return null;
     }

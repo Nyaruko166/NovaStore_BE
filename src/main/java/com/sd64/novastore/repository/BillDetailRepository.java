@@ -12,5 +12,7 @@ import java.util.List;
 public interface BillDetailRepository extends JpaRepository<BillDetail, Integer> {
     List<BillDetail> findAllByStatus(Integer status);
 
+    List<BillDetail> findAllByBill_Id(Integer id);
+
     Page<BillDetail> findAllByStatus(Pageable pageable, Integer status);
 }
