@@ -12,5 +12,5 @@ import java.util.List;
 public interface BillHistoryRepository extends JpaRepository<BillHistory,Integer> {
     List<BillHistory> findAllByStatus(Integer status);
 
-    Page<BillHistory> findAllByStatus(Pageable pageable, Integer status);
+    Page<BillHistory> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
 }

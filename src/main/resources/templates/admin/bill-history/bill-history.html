@@ -3,14 +3,14 @@
       layout:decorate="~{admin/admin-layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Payment Method Management</title>
+    <title>Bill History Management</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>Payment Method</strong>
+                <strong>Bill History</strong>
             </div>
             <!--            Notification-->
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 5px">
@@ -20,10 +20,10 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form action="/admin/payment-method/add" method="post" class="form-horizontal">
+                <form th:action="@{/admin/bill-history/add}" method="post" class="form-horizontal">
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="name" class=" form-control-label">Payment method name</label>
+                            <label for="name" class=" form-control-label">Name</label>
                         </div>
                         <div class="col-12 col-md-9">
                             <input type="text" id="name" name="name" class="form-control">
@@ -31,18 +31,10 @@
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="money" class=" form-control-label">Money</label>
+                            <label for="describe" class=" form-control-label">Describe</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="money" name="money" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="description" class=" form-control-label">Description</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="description" name="description" class="form-control">
+                            <input type="text" id="describe" name="describe" class="form-control">
                         </div>
                     </div>
                     <div class="row form-group">
@@ -55,11 +47,22 @@
                             </select>
                         </div>
                     </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="account" class=" form-control-label">Account email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="account" name="account">
+                                <option th:each="account : ${listAccount}" th:value="${account.id}"
+                                        th:text="${account.email}"></option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
                             Add
                         </button>
-                        <a href="/admin/payment-method/page">
+                        <a href="/admin/bill-history/page">
                             <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
                                 Cancel
                             </button>
@@ -84,29 +87,32 @@
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Money</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Describe</th>
+                        <th scope="col">Create date</th>
+                        <th scope="col">Update date</th>
                         <th scope="col">Bill</th>
+                        <th scope="col">Account email</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Function</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="items:${pagePaymentMethod}">
+                    <tr th:each="items:${pageBillHistory}">
                         <td th:text="${items.id}"></td>
                         <td th:text="${items.name}"></td>
-                        <td th:text="${items.money}"></td>
-                        <td th:text="${items.description}"></td>
-                        <td th:text="${items.status}"></td>
+                        <td th:text="${items.describe}"></td>
+                        <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                         <td th:text="${items.bill.id}"></td>
+                        <td th:text="${items.account.email}"></td>
                         <td class="d-flex justify-content-center">
                             <div style="margin-right: 10px">
-                                <a th:href="@{'/admin/payment-method/detail/' + ${items.id}}">
+                                <a th:href="@{'/admin/bill-history/detail/' + ${items.id}}">
                                     <button type="button" class="btn btn-warning">DETAIL</button>
                                 </a>
                             </div>
                             <div>
-                                <form th:action="@{'/admin/payment-method/delete/' + ${items.id}}" th:method="post">
+                                <form th:action="@{'/admin/bill-history/delete/' + ${items.id}}" th:method="post">
                                     <button type="submit" class="btn btn-danger">DELETE</button>
                                 </form>
                             </div>

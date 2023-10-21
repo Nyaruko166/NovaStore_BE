@@ -1,62 +1,86 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.request.BillHistoryRequest;
+import com.sd64.novastore.model.Account;
+import com.sd64.novastore.model.Bill;
+import com.sd64.novastore.model.BillHistory;
+import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.service.BillHistoryService;
-import jakarta.validation.Valid;
+import com.sd64.novastore.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/bill_history")
+@Controller
+@RequestMapping("/admin/bill-history")
 public class BillHistoryController {
     @Autowired
     private BillHistoryService billHistoryService;
 
-    @GetMapping("/getall")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(billHistoryService.getAll());
-    }
+    @Autowired
+    private BillService billService;
 
-    @GetMapping("/getallpt")
-    public ResponseEntity<?> getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page) {
-        return ResponseEntity.ok(billHistoryService.getAllPT(page).getContent());
-    }
+    @Autowired
+    private AccountService accountService;
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
-        return ResponseEntity.ok(billHistoryService.delete(id));
-    }
+    @GetMapping("/page")
+    public String getAllPagination(@RequestParam(name = "page", defaultValue = "0") Integer page, Model model){
+        Page<BillHistory> pageBillHistory = billHistoryService.getAll(page);
+        List<Bill> listBill = billService.getAllBill();
+        List<Account> listAccount = accountService.getAll();
 
+        model.addAttribute("listBill", listBill);
+        model.addAttribute("listAccount", listAccount);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pageBillHistory.getTotalPages());
+        model.addAttribute("totalItems", pageBillHistory.getTotalElements());
+        model.addAttribute("pageBillHistory", pageBillHistory.getContent());
+        return "admin/bill-history/bill-history";
+    }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody @Valid BillHistoryRequest billHistoryRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(billHistoryService.add(billHistoryRequest));
+    public String add(@Validated @ModelAttribute("billHistory") BillHistory billHistory,
+                      RedirectAttributes redirectAttributes){
+        billHistoryService.add(billHistory);
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
+        return "redirect:/admin/bill-history/page";
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody @Valid BillHistoryRequest billHistoryRequest, @PathVariable Integer id, BindingResult result) {
-        if (result.hasErrors()) {
-            List<ObjectError> list = result.getAllErrors();
-            return ResponseEntity.ok(list);
-        }
-        return ResponseEntity.ok(billHistoryService.update(billHistoryRequest, id));
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        billHistoryService.delete(id);
+        redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
+        return "redirect:/admin/bill-history/page";
+    }
 
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Integer id,
+                         @Validated @ModelAttribute("billHistory") BillHistory billHistory,
+                         RedirectAttributes redirectAttributes){
+        billHistoryService.update(billHistory, id);
+        redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
+        return "redirect:/admin/bill-history/page";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model){
+        BillHistory billHistory = billHistoryService.getOne(id);
+        List<Bill> listBill = billService.getAllBill();
+        List<Account> listAccount = accountService.getAll();
+
+        model.addAttribute("listBill", listBill);
+        model.addAttribute("listAccount", listAccount);
+        model.addAttribute("billHistory", billHistory);
+        return "admin/bill-history/bill-history-detail";
     }
 }

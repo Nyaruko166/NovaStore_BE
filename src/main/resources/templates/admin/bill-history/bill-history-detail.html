@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill History Management</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>Bill History</strong>
+            </div>
+            <div class="card-body card-block">
+                <form th:object="${billHistory}" th:action="@{/admin/bill-history/update/{id}(id=${billHistory.id})}" method="post" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="name" class=" form-control-label">Name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="name" th:value="${billHistory.name}" name="name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="describe" class=" form-control-label">Describe</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="describe" th:value="${billHistory.describe}" name="describe" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="bill" class=" form-control-label">Bill</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="bill" name="bill">
+                                <option th:each="bill : ${listBill}" th:value="${bill.id}" th:text="${bill.id}"
+                                        th:selected="${bill.id == billHistory.bill.id}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="account" class=" form-control-label">Account email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="account" name="account">
+                                <option th:each="account : ${listAccount}" th:value="${account.id}"
+                                        th:selected="${account.id == billHistory.account.id}"
+                                        th:text="${account.email}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Update
+                        </button>
+                        <a href="/admin/bill-history/page">
+                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
+                                Cancel
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
