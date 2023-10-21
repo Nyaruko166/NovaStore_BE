@@ -46,7 +46,6 @@ public class MaterialServiceImpl implements MaterialService{
         if (optional.isPresent()) {
             Material updateMaterial = optional.get();
             material.setId(id);
-            material.setName(updateMaterial.getName());
             material.setStatus(updateMaterial.getStatus());
             material.setCreateDate(updateMaterial.getCreateDate());
             material.setUpdateDate(new Date());
@@ -72,5 +71,15 @@ public class MaterialServiceImpl implements MaterialService{
     public Page<Material> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return materialRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public Material detail(Integer id) {
+        Optional<Material> optional = materialRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
     }
 }

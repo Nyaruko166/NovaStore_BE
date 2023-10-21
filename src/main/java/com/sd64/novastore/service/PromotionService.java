@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Material;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.request.PromotionRequest;
@@ -20,4 +21,6 @@ public interface PromotionService {
     Promotion delete(Integer id);
 
     Page<Promotion> search(String name, int page);
+
+    Promotion detail(Integer id);
 }

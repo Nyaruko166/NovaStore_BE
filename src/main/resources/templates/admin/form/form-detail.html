@@ -10,27 +10,26 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>BRAND</strong>
+                <strong>FORM</strong>
             </div>
             <div class="card-body card-block">
-                <form id="brandUpdate" th:object="${brand}" th:action="@{/admin/brand/update/{id}(id=${brand.id})}" method="post"
+                <form id="formUpdate" th:object="${form}" th:action="@{/admin/form/update/{id}(id=${form.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
-                        <div class="col col-md-3"><label for="" class=" form-control-label">Brand name</label></div>
+                        <div class="col col-md-3"><label for="" class=" form-control-label">Form name</label></div>
                         <div class="col-12 col-md-9"><input type="text" id="" th:field="*{name}" class="form-control">
                             <!--              <small class="form-text text-muted">This is a help text</small>-->
                         </div>
                     </div>
 
                     <div class="card-footer">
-                        <button onclick="clickUpdate('brandUpdate')" type="button" class="btn btn-primary"><i
+                        <button onclick="clickUpdate('formUpdate')" type="button" class="btn btn-primary"><i
                                 class="fa-solid fa-square-plus"></i>
                             UPDATE
                         </button>
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>

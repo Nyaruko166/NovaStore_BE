@@ -2,18 +2,14 @@ package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Color;
-import com.sd64.novastore.request.ColorRequest;
 import com.sd64.novastore.service.ColorService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -23,43 +19,58 @@ public class ColorController {
     @Autowired
     private ColorService colorService;
 
-    @GetMapping("/all")
-    public String getAll(Model model) {
-        List<Color> listColor = colorService.getAll();
-        model.addAttribute("listColor", listColor);
-        return "";
-    }
+//    @GetMapping("/all")
+//    public String getAll(Model model) {
+//        List<Color> listColor = colorService.getAll();
+//        model.addAttribute("listColor", listColor);
+//        return "";
+//    }
 
     @GetMapping("/page")
-    public String getPage(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+    public String getPage(@RequestParam(defaultValue = "0") Integer page, Model model) {
         Page<Color> pageColor = colorService.getPage(page);
-        model.addAttribute("pageColor", pageColor.getContent());
-        return "";
+        model.addAttribute("pageColor", pageColor);
+        model.addAttribute("page", page);
+        return "admin/color/color";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        Color color = colorService.detail(id);
+        model.addAttribute("color", color);
+        return "/admin/color/color-detail";
     }
 
     @PostMapping("/add")
-    public String add(@Validated @ModelAttribute("Color") Color color) {
+    public String add(@ModelAttribute Color color, RedirectAttributes redirectAttributes) {
         colorService.add(color);
+        redirectAttributes.addFlashAttribute("add", "Thêm thành công");
         return "redirect:/admin/color/page";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id, @Validated @ModelAttribute("Color") Color color) {
+    public String update(@PathVariable Integer id, @Validated @ModelAttribute Color color, RedirectAttributes redirectAttributes) {
         colorService.update(color, id);
+        redirectAttributes.addFlashAttribute("update", "Sửa thành công");
         return "redirect:/admin/color/page";
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         colorService.delete(id);
+        redirectAttributes.addFlashAttribute("delete", "Xóa thành công");
         return "redirect:/admin/color/page";
     }
 
     @GetMapping("/search")
-    public String search(Model model, @RequestParam(required = false) String nameSearch,
+    public String search(Model model, @RequestParam(required = false) String colorNameSearch,
                          @RequestParam(defaultValue = "0") int page) {
-        Page<Color> listColor = colorService.search(nameSearch, page);
-        model.addAttribute("listColor", listColor.getContent());
-        return "";
+        Page<Color> pageColor = colorService.search(colorNameSearch, page);
+        if ("".equals(colorNameSearch) || colorNameSearch.isEmpty()) {
+            return "redirect:/admin/color/page";
+        }
+        model.addAttribute("colorNameSearch", colorNameSearch);
+        model.addAttribute("pageColor", pageColor);
+        return "admin/color/color";
     }
 }

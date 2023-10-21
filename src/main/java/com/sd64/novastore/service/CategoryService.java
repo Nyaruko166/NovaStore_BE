@@ -19,4 +19,6 @@ public interface CategoryService {
     Category delete(Integer id);
 
     Page<Category> search(String name, int page);
+
+    Category detail(Integer id);
 }

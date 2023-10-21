@@ -1,7 +1,5 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.model.Category;
-import com.sd64.novastore.request.BrandRequest;
 import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.repository.BrandRepository;
 import com.sd64.novastore.service.BrandService;
@@ -26,7 +24,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Page<Brand> getPage(int page) {
+    public Page<Brand> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
         return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable,1);
     }
@@ -45,9 +43,9 @@ public class BrandServiceImpl implements BrandService {
         if (optional.isPresent()) {
             Brand updateBrand = optional.get();
             brand.setId(id);
-            brand.setName(brand.getName());
             brand.setCreateDate(updateBrand.getCreateDate());
             brand.setUpdateDate(new Date());
+            brand.setStatus(updateBrand.getStatus());
             return brandRepository.save(brand);
         } else {
             return null;

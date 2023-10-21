@@ -20,4 +20,6 @@ public interface ColorService {
     Color delete(Integer id);
 
     Page<Color> search(String name, int page);
+
+    Color detail(Integer id);
 }

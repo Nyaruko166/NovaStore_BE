@@ -33,8 +33,8 @@ public class SizeServiceImpl implements SizeService {
     @Override
     public Size add(Size size) {
         size.setStatus(1);
-        size.setCreateDate(new java.util.Date());
-        size.setUpdateDate(new java.util.Date());
+        size.setCreateDate(new Date());
+        size.setUpdateDate(new Date());
         return sizeRepository.save(size);
     }
 
@@ -44,7 +44,6 @@ public class SizeServiceImpl implements SizeService {
         if (optional.isPresent()) {
             Size updateSize = optional.get();
             size.setId(id);
-            size.setName(updateSize.getName());
             size.setStatus(updateSize.getStatus());
             size.setCreateDate(updateSize.getCreateDate());
             size.setUpdateDate(new Date());
@@ -70,5 +69,15 @@ public class SizeServiceImpl implements SizeService {
     public Page<Size> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return sizeRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public Size detail(Integer id) {
+        Optional<Size> optional = sizeRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
     }
 }

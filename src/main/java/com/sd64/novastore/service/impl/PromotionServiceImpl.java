@@ -46,7 +46,6 @@ public class PromotionServiceImpl implements PromotionService {
         if (optional.isPresent()) {
             Promotion updatePromotion = optional.get();
             promotion.setId(id);
-            promotion.setName(updatePromotion.getName());
             promotion.setStatus(updatePromotion.getStatus());
             promotion.setCreateDate(updatePromotion.getCreateDate());
             promotion.setUpdateDate(new Date());
@@ -72,5 +71,15 @@ public class PromotionServiceImpl implements PromotionService {
     public Page<Promotion> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return promotionRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public Promotion detail(Integer id) {
+        Optional<Promotion> optional = promotionRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
     }
 }

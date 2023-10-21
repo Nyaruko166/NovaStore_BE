@@ -98,31 +98,8 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
-    <br>
-    <br>
-    <br>
 </div>
-<script>
-    function clickUpdate() {
-        var update = confirm("Bạn có muốn sửa dữ liệu ?")
-        if (update) {
-            document.getElementById('myForm').action = '/admin/brand/update'
-            document.getElementById('myForm').method = 'post'
-            document.getElementById('myForm').submit()
-            alert("Sửa dữ liệu thành công")
-        } else {
-            return null
-        }
-    }
-
-    function clickCancel() {
-        document.getElementById('myForm').action = 'admin/brand/page'
-        document.getElementById('myForm').method = 'get'
-        document.getElementById('myForm').submit()
-    }
-</script>
 </body>
 </html>

@@ -22,15 +22,15 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
 
-    @GetMapping("/all")
-    public String getAll(Model model) {
-        List<Brand> listBrand = brandService.getAll();
-        model.addAttribute("listBrand", listBrand);
-        return "";
-    }
+//    @GetMapping("/all")
+//    public String getAll(Model model) {
+//        List<Brand> listBrand = brandService.getAll();
+//        model.addAttribute("listBrand", listBrand);
+//        return "";
+//    }
 
     @GetMapping("/page")
-    public String getPage(@RequestParam(defaultValue = "0") int page, Model model) {
+    public String getPage(@RequestParam(defaultValue = "0") Integer page, Model model) {
         Page<Brand> pageBrand = brandService.getPage(page);
         model.addAttribute("pageBrand", pageBrand);
         model.addAttribute("page", page);
@@ -45,30 +45,37 @@ public class BrandController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         brandService.delete(id);
+        redirectAttributes.addFlashAttribute("delete", "Xóa thành công");
         return "redirect:/admin/brand/page";
     }
 
     @PostMapping("/add")
-    public String add(@Validated @ModelAttribute Brand brand,
+    public String add( @ModelAttribute Brand brand,
                       RedirectAttributes redirectAttributes) {
         brandService.add(brand);
-        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
+        redirectAttributes.addFlashAttribute("add", "Thêm thành công");
         return "redirect:/admin/brand/page";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id, @Validated @ModelAttribute("Brand") Brand brand) {
+    public String update(@PathVariable Integer id, @ModelAttribute Brand brand,
+                         RedirectAttributes redirectAttributes) {
         brandService.update(brand, id);
+        redirectAttributes.addFlashAttribute("update", "Sửa thành công");
         return "redirect:/admin/brand/page";
     }
 
     @GetMapping("/search")
-    public String search(Model model, @RequestParam(required = false) String nameSearch,
+    public String search(Model model, @RequestParam(required = false) String brandNameSearch,
                          @RequestParam(defaultValue = "0") int page) {
-        Page<Brand> listBrand = brandService.search(nameSearch, page);
-        model.addAttribute("listBrand", listBrand.getContent());
-        return "";
+        Page<Brand> pageBrand = brandService.search(brandNameSearch, page);
+        if ("".equals(brandNameSearch) || brandNameSearch.isEmpty()) {
+            return "redirect:/admin/brand/page";
+        }
+        model.addAttribute("brandNameSearch", brandNameSearch);
+        model.addAttribute("pageBrand", pageBrand);
+        return "admin/brand/brand";
     }
 }
