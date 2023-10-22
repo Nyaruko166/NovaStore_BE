@@ -19,5 +19,7 @@ public interface RoleService {
 
     Role delete(Integer id);
 
+    Role getOne(Integer id);
+
     Page<Role> search(String name, int page);
 }

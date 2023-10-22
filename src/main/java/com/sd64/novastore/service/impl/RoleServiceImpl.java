@@ -37,6 +37,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role add(Role role) {
         role.setStatus(1);
+        role.setCreateDate(new Date());
+        role.setUpdateDate(new Date());
         return roleRepository.save(role);
     }
 
@@ -47,10 +49,16 @@ public class RoleServiceImpl implements RoleService {
             Role updateRole = optional.get();
             role.setId(id);
             role.setStatus(updateRole.getStatus());
+            role.setUpdateDate(new Date());
             return roleRepository.save(role);
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Role getOne(Integer id) {
+        return roleRepository.findById(id).orElse(null);
     }
 
     @Override
