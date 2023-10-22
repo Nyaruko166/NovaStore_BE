@@ -49,6 +49,7 @@ public class RoleServiceImpl implements RoleService {
             Role updateRole = optional.get();
             role.setId(id);
             role.setStatus(updateRole.getStatus());
+            role.setCreateDate(updateRole.getCreateDate());
             role.setUpdateDate(new Date());
             return roleRepository.save(role);
         } else {

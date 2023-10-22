@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Role</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>ROLE</strong>
+            </div>
+            <div class="card-body card-block">
+                <form th:object="${role}" th:action="@{/admin/role/update/{id}(id=${role.id})}"
+                      method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="name" class=" form-control-label">Name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="name" th:field="*{name}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Update
+                        </button>
+                        <a th:href="@{/admin/role/page}" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+</body>
+</html>
