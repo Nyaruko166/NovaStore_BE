@@ -359,7 +359,6 @@ CREATE TABLE [dbo].[Product](
     [CategoryId] [int] NULL,
     [FormId] [int] NULL,
     [MaterialId] [int] NULL,
-    [ColorId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
@@ -380,6 +379,7 @@ CREATE TABLE [dbo].[ProductDetail](
     [Status] [int] NULL,
     [ProductId] [int] NULL,
     [SizeId] [int] NULL,
+    [ColorId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
@@ -593,11 +593,6 @@ ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FKnuw1iwpj73v904j79uc8q
     GO
 ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc]
     GO
-ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y] FOREIGN KEY([ColorId])
-    REFERENCES [dbo].[Color] ([Id])
-    GO
-ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y]
-    GO
 ALTER TABLE [dbo].[ProductDetail]  WITH CHECK ADD  CONSTRAINT [FKik38y3bjry9u05majdn5u3egj] FOREIGN KEY([ProductId])
     REFERENCES [dbo].[Product] ([Id])
     GO
@@ -607,6 +602,11 @@ ALTER TABLE [dbo].[ProductDetail]  WITH CHECK ADD  CONSTRAINT [FK61xkqx42jtcc8we
     REFERENCES [dbo].[Size] ([Id])
     GO
 ALTER TABLE [dbo].[ProductDetail] CHECK CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv]
+    GO
+ALTER TABLE [dbo].[ProductDetail]  WITH CHECK ADD  CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y] FOREIGN KEY([ColorId])
+    REFERENCES [dbo].[Color] ([Id])
+    GO
+ALTER TABLE [dbo].[ProductDetail] CHECK CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y]
     GO
 ALTER TABLE [dbo].[PromotionDetail]  WITH CHECK ADD  CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig] FOREIGN KEY([ProductId])
     REFERENCES [dbo].[Product] ([Id])
