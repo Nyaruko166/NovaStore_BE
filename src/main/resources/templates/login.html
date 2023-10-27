@@ -10,9 +10,14 @@
           type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
           rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="/css/css.css">
+    <!--    <link rel="stylesheet" href="/css/css.css">-->
 </head>
 <body>
+<section class="container">
+    <div th:if="${param.logout}" class="alert alert-success">
+        You have been logged out.
+    </div>
+</section>
 <div class="login-page">
     <div class="container">
         <div class="row">
@@ -24,27 +29,29 @@
                             <div class="form-left h-100 py-5 px-5">
                                 <form action="/login" method="post" class="row g-4">
                                     <div class="col-12">
-                                        <label>Username<span class="text-danger">*</span></label>
+                                        <label for="username">Email<span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-text">
                                                 <i class="fa-solid fa-user"></i>
                                             </div>
                                             <input
+                                                    id="username"
                                                     type="text"
                                                     class="form-control"
-                                                    placeholder="Enter Username"
+                                                    placeholder="Enter Email"
                                                     name="username"
                                             />
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label>Password<span class="text-danger">*</span></label>
+                                        <label for="password">Password<span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-text">
                                                 <i class="fa-solid fa-lock"></i>
                                             </div>
                                             <input
+                                                    id="password"
                                                     type="password"
                                                     class="form-control"
                                                     placeholder="Enter Password"
@@ -67,18 +74,18 @@
                                     </div>
 
                                     <div class="col-sm-6">
-                                        <a href="/quen-mk" class="float-end text-primary"
+                                        <a href="/forget" class="float-end text-primary"
                                         >Quên mật khẩu?</a
                                         >
                                     </div>
 
                                     <div style="text-align: left" class="col-sm-6">
                     <span style="margin-right: 5px">Chưa có tài khoản?</span
-                    ><a href="/dang-ky">Đăng ký</a>
+                    ><a href="/register">Đăng ký</a>
                                     </div>
 
                                     <div class="col-sm-6">
-                                        <a href="/doi-mk" class="float-end text-primary"
+                                        <a href="/change-password" class="float-end text-primary"
                                         >Đổi mật khẩu</a
                                         >
                                     </div>
@@ -108,13 +115,10 @@
         </div>
     </div>
 </div>
-
-<%--<%@include file="../layout/footer.jsp" %>--%>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
-<script src="/js/all.js"></script>
-<script src="/js/v4-shims.js"></script>
+<!--<script src="/js/all.js"></script>-->
+<!--<script src="/js/v4-shims.js"></script>-->
 </body>
 </html>

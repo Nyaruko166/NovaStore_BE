@@ -4,6 +4,7 @@ import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.request.AccountRequest;
 import com.sd64.novastore.service.AccountService;
+import com.sd64.novastore.utils.SecurityUtil;
 import jakarta.validation.Valid;
 import org.codehaus.groovy.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class AccountController {
     public String getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
         Page<Account> pageAccount = accountService.getAllPT(page);
         model.addAttribute("pageAccount", pageAccount.getContent());
+//        System.out.println(SecurityUtil.getSessionUser());
         return "admin/account/account";
     }
 
