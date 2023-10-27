@@ -1,11 +1,7 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.model.Category;
-import com.sd64.novastore.model.Material;
-import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.Role;
 import com.sd64.novastore.repository.RoleRepository;
-import com.sd64.novastore.request.RoleRequest;
 import com.sd64.novastore.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

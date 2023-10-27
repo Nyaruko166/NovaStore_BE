@@ -1,7 +1,5 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.request.AddressRequest;
-import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Address;
 import com.sd64.novastore.repository.AddressRepository;
 import com.sd64.novastore.service.AddressService;
@@ -11,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
