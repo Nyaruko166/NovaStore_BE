@@ -53,7 +53,7 @@ public class SecurityConfig {
                                     .permitAll();
 
                             //Role
-                            req.anyRequest().authenticated();
+                            req.requestMatchers("/admin/**").hasRole("Admin");
                         }
                 );
 
@@ -66,14 +66,6 @@ public class SecurityConfig {
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll());
 
-//        http.authorizeHttpRequests().requestMatchers(new AntPathRequestMatcher("/resources/**"));
-
         return http.build();
     }
-
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().requestMatchers("/admin/**", "/assets/**", "/user/**", "/*.html");
-//    }
-
 }
