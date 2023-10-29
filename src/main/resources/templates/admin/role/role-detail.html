@@ -13,7 +13,7 @@
                 <strong>ROLE</strong>
             </div>
             <div class="card-body card-block">
-                <form th:object="${role}" th:action="@{/admin/role/update/{id}(id=${role.id})}"
+                <form th:object="${role}" th:action="@{/nova/role/update/{id}(id=${role.id})}"
                       method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
@@ -27,7 +27,7 @@
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
                             Update
                         </button>
-                        <a th:href="@{/admin/role/page}" class="btn btn-secondary">
+                        <a th:href="@{/nova/role/page}" class="btn btn-secondary">
                             Cancel
                         </a>
                     </div>

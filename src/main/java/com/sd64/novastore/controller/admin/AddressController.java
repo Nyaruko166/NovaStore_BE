@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/address")
+@RequestMapping("/nova/address")
 public class AddressController {
 
     @Autowired
@@ -43,7 +43,7 @@ public class AddressController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         addressService.delete(id);
         redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
-        return "redirect:/admin/address/page";
+        return "redirect:/nova/address/page";
     }
 
 
@@ -51,14 +51,14 @@ public class AddressController {
     public String add(@ModelAttribute("Address") Address address, RedirectAttributes redirectAttributes) {
         addressService.add(address);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
-        return "redirect:/admin/address/page";
+        return "redirect:/nova/address/page";
     }
 
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("Address") Address address, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
         addressService.update(address, id);
         redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
-        return "redirect:/admin/address/page";
+        return "redirect:/nova/address/page";
 
     }
 }

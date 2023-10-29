@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/admin/role")
+@RequestMapping("/nova/role")
 public class RoleController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class RoleController {
     public String add(@ModelAttribute("Role") Role role, RedirectAttributes redirectAttributes) {
         roleService.add(role);
         redirectAttributes.addFlashAttribute("mess", "Thêm Thành Công!!");
-        return "redirect:/admin/role/page";
+        return "redirect:/nova/role/page";
     }
 
     @PostMapping("/update/{id}")
@@ -35,14 +35,14 @@ public class RoleController {
                          RedirectAttributes redirectAttributes) {
         roleService.update(role, id);
         redirectAttributes.addFlashAttribute("mess", "Sửa Thành Công!!");
-        return "redirect:/admin/role/page";
+        return "redirect:/nova/role/page";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         roleService.delete(id);
         redirectAttributes.addFlashAttribute("mess", "Xoá Thành Công!!");
-        return "redirect:/admin/role/page";
+        return "redirect:/nova/role/page";
     }
 
     @GetMapping("/detail/{id}")

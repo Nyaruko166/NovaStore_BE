@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/bill")
+@RequestMapping("/nova/bill")
 public class BillController {
 
     @Autowired

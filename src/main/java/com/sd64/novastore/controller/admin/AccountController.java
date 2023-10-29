@@ -25,7 +25,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/admin/account")
+@RequestMapping("/nova/account")
 public class AccountController {
     @Autowired
     private AccountService accountService;
@@ -39,7 +39,7 @@ public class AccountController {
     public String getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
         Page<Account> pageAccount = accountService.getAllPT(page);
         model.addAttribute("pageAccount", pageAccount.getContent());
-//        System.out.println(SecurityUtil.getSessionUser());
+        System.out.println(SecurityUtil.getSessionUser());
         return "admin/account/account";
     }
 
@@ -54,7 +54,7 @@ public class AccountController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
         accountService.delete(id);
-        return "redirect:/admin/account/page";
+        return "redirect:/nova/account/page";
     }
 
 
@@ -64,7 +64,7 @@ public class AccountController {
                       RedirectAttributes redirectAttributes) {
         accountService.add(account, avt);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
-        return "redirect:/admin/account/page";
+        return "redirect:/nova/account/page";
     }
 
     @PostMapping("/update/{id}")
@@ -73,7 +73,7 @@ public class AccountController {
                          @PathVariable Integer id, RedirectAttributes redirectAttributes) {
         accountService.update(account, avt, id);
         redirectAttributes.addFlashAttribute("mess", "Update thành công!!");
-        return "redirect:/admin/account/page";
+        return "redirect:/nova/account/page";
     }
 
 //    @GetMapping("/search")

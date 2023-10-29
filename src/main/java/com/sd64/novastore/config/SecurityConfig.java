@@ -45,27 +45,30 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> {
-                            //resources exclude
-                            req.requestMatchers("/login", "/register", "/admin/account/page",
-                                            "/css/**", "/js/**", "/*.html", "/assets/**")
-                                    .permitAll();
-
-                            //Role
-                            req.requestMatchers("/admin/**").hasRole("Admin");
-                        }
-                );
 
         http.formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/admin/account/page")
+                        .defaultSuccessUrl("/nova/account/page")
                         .loginProcessingUrl("/login")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll());
 
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(req ->
+                        {
+                            //Allowing Resources
+                            req.requestMatchers("/*.css", "/*.js", "/assets/**", "/admin/**", "/user/**")
+                                    .permitAll();
+
+                            //Testing purpose
+                            req.requestMatchers("/nova/account/page", "/login", "/register").permitAll();
+
+                            //Role base authority
+                            req.requestMatchers("/nova/**").hasAuthority("Admin");
+                        }
+                );
         return http.build();
     }
 }
