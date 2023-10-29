@@ -66,7 +66,8 @@ public class SecurityConfig {
                             req.requestMatchers("/nova/account/**", "/login", "/register").permitAll();
 
                             //Role base authority
-                            req.requestMatchers("/nova/**").hasAuthority("Admin");
+                            req.requestMatchers("/nova/**").hasAuthority("Admin")
+                                    .anyRequest().permitAll();
                         }
                 );
         return http.build();
