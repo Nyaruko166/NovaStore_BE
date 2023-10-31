@@ -355,6 +355,7 @@ CREATE TABLE [dbo].[Product](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
     [Description] [nvarchar](255) NULL,
+    [Price] [money] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
@@ -375,7 +376,6 @@ CREATE TABLE [dbo].[Product](
     GO
 CREATE TABLE [dbo].[ProductDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Price] [money] NULL,
     [Quantity] [int] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
