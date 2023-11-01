@@ -2,8 +2,6 @@ package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.repository.BillDetailRepository;
-import com.sd64.novastore.request.BillRequest;
-import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.repository.BillRepository;
 import com.sd64.novastore.service.BillService;
@@ -13,9 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

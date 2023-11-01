@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Account> getAll() {
@@ -46,6 +50,8 @@ public class AccountServiceImpl implements AccountService {
         account.setStatus(1);
         account.setCreateDate(new java.util.Date());
         account.setUpdateDate(new java.util.Date());
+        String rawPassword = account.getPassword();
+        account.setPassword(passwordEncoder.encode(rawPassword));
         Account accountLasted = accountRepository.save(account);
         String uid = "uid_" + accountLasted.getId();
         String avtPath = FileUtil.copyFile(avt, fileName, uploadDir);
@@ -75,7 +81,7 @@ public class AccountServiceImpl implements AccountService {
                 String avtPath = FileUtil.copyFile(avt, fileName, uploadDir);
                 String anhUrl = FileUtil.rename(avtPath, FileUtil.rmExt(oldAvt));
                 account.setAvatar(anhUrl);
-            }else {
+            } else {
                 account.setAvatar(oldAvt);
             }
             return accountRepository.save(account);

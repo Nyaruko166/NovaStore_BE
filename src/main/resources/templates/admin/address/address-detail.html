@@ -13,7 +13,7 @@
                 <strong>ADDRESS</strong>
             </div>
             <div class="card-body card-block">
-                <form th:object="${address}" th:action="@{/admin/address/update/{id}(id=${address.id})}"
+                <form th:object="${address}" th:action="@{/nova/address/update/{id}(id=${address.id})}"
                       method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
@@ -51,7 +51,7 @@
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
                             Update
                         </button>
-                        <a th:href="@{/admin/address/page}" class="btn btn-secondary">
+                        <a th:href="@{/nova/address/page}" class="btn btn-secondary">
                             Cancel
                         </a>
                     </div>

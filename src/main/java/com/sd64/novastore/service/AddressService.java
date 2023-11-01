@@ -1,6 +1,5 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.request.AddressRequest;
 import com.sd64.novastore.model.Address;
 import org.springframework.data.domain.Page;
 

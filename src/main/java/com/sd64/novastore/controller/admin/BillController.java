@@ -12,16 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/bill")
+@RequestMapping("/nova/bill")
 public class BillController {
 
     @Autowired
     private BillService billService;
-
-//    @GetMapping("/getall")
-//    public String getAll() {
-//        return String.ok(billService.getAll());
-//    }
 
     @GetMapping("/page")
     public String getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page,

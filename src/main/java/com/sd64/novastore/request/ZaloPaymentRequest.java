@@ -1,5 +1,7 @@
 package com.sd64.novastore.request;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.sd64.novastore.config.ZaloPayConfig;
 import com.sd64.novastore.utils.payment.HMACUtil;
 import lombok.*;
@@ -18,8 +20,8 @@ public class ZaloPaymentRequest {
     private Long amount;
     private String description;
     private String bank_code;
-    private String item;
-    private String embed_data;
+    private JsonArray item;
+    private JsonObject embed_data;
     private String mac;
 
     public String signatureGen(String secretKey) {

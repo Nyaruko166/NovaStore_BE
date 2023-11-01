@@ -13,7 +13,7 @@
                 <strong>ACCOUNT</strong>
             </div>
             <div class="card-body card-block">
-                <form th:object="${account}" th:action="@{/admin/account/update/{id}(id=${account.id})}"
+                <form th:object="${account}" th:action="@{/nova/account/update/{id}(id=${account.id})}"
                       method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">

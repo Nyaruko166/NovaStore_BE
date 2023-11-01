@@ -21,7 +21,7 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form action="/admin/account/add" method="post" class="form-horizontal" enctype="multipart/form-data">
+                <form action="/nova/account/add" method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="name" class=" form-control-label">Account name</label>
@@ -88,7 +88,7 @@
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
                             Add
                         </button>
-                        <a href="/admin/account/page">
+                        <a href="/nova/account/page">
                             <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
                                 Cancel
                             </button>
@@ -140,12 +140,12 @@
                         <!--                        <td th:text="${items.role.name}"></td>-->
                         <td class="d-flex justify-content-center">
                             <div style="margin-right: 10px">
-                                <a th:href="@{'/admin/account/detail/' + ${items.id}}">
+                                <a th:href="@{'/nova/account/detail/' + ${items.id}}">
                                     <button type="button" class="btn btn-warning">Detail</button>
                                 </a>
                             </div>
                             <div>
-                                <form th:action="@{'/admin/account/delete/' + ${items.id}}" th:method="post">
+                                <form th:action="@{'/nova/account/delete/' + ${items.id}}" th:method="post">
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
