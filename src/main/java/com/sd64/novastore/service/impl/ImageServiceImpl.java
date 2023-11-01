@@ -1,6 +1,5 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.request.ImageRequest;
 import com.sd64.novastore.model.Image;
 import com.sd64.novastore.repository.ImageRepository;
 import com.sd64.novastore.service.ImageService;
@@ -10,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,22 +24,32 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Page<Image> getAll(Integer page){
+    public Page<Image> getPage(Integer page){
         Pageable pageable = PageRequest.of(page, 5);
         return imageRepository.findAllByStatus(pageable, 1);
     }
 
     @Override
-    public Image add(ImageRequest imageRequest) {
-        Image image = imageRequest.map(new Image());
+    public Image add(Image image) {
+        image.setStatus(1);
+        image.setCreateDate(new Date());
+        image.setUpdateDate(new Date());
         return imageRepository.save(image);
     }
 
     @Override
-    public Image update(ImageRequest imageRequest, Integer id) {
+    public Image update(Image image, Integer id) {
         Optional<Image> optional = imageRepository.findById(id);
-        Image image = imageRequest.map(optional.get());
-        return imageRepository.save(image);
+        if (optional.isPresent()) {
+            Image updateImage = optional.get();
+            image.setId(id);
+            image.setStatus(updateImage.getStatus());
+            image.setCreateDate(updateImage.getCreateDate());
+            image.setUpdateDate(new Date());
+            return imageRepository.save(image);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -53,4 +63,19 @@ public class ImageServiceImpl implements ImageService {
             return false;
         }
     }
+
+    public Image detail(Integer id) {
+        Optional<Image> optional = imageRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
+    }
+
+//    @Override
+//    public Page<Image> search(String name, int page) {
+//        Pageable pageable = PageRequest.of(page, 5);
+//        return imageRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+//    }
 }

@@ -12,25 +12,11 @@
             <div class="card-header">
                 <strong>BRAND</strong>
             </div>
-            <div th:if="${add}" class="alert alert-success alert-dismissible fade show" role="alert"
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
-                <span th:text="${add}"></span>
+                <span th:text="${mess}"></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div th:if="${update}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${update}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
-            </div>
-            <div th:if="${delete}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${delete}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
                 </button>
             </div>
             <div class="card-body card-block">
@@ -48,13 +34,18 @@
                                     class="fa-solid fa-square-plus"></i>
                                 ADD
                             </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card-footer d-flex">
+                        <div>
                             <button onclick="clickSearch('brand', 'brandForm')" type="button" class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 SEARCH
                             </button>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text"
+                            <input type="text" placeholder="Search by name..."
                                    th:value="${brandNameSearch}" th:name="brandNameSearch"
                                    class="form-control">
                         </div>
@@ -86,14 +77,14 @@
                         <td th:text="${items.name}"></td>
                         <td class="d-flex justify-content-center">
                             <div style="margin-right: 10px">
-                                <a th:href="@{'/admin/brand/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-warning">
-                                        <i class="fa-solid fa-eye mr-1"></i>DETAIL
+                                <a th:href="@{'/nova/brand/detail/' + ${items.id}}">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="fa-solid fa-pen mr-1"></i>UPDATE
                                     </button>
                                 </a>
                             </div>
                             <div>
-                                <form id="brandDelete" th:action="@{'/admin/brand/delete/' + ${items.id}}"
+                                <form id="brandDelete" th:action="@{'/nova/brand/delete/' + ${items.id}}"
                                       th:method="post">
                                     <button onclick="clickDelete('brandDelete')" type="button" class="btn btn-danger">
                                         <i class="fa-solid fa-trash mr-1"></i>DELETE
@@ -108,6 +99,10 @@
                 <!--            Pagination-->
                 <div class="d-flex justify-content-center align-items-center">
                     <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                        <a th:href="@{|?page=0&brandNameSearch=${brandNameSearch}|}">
+                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                    </div>
+                    <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
                         <a th:href="@{|?page=${pageBrand.getNumber() - 1}&brandNameSearch=${brandNameSearch}|}">
                             <i style="color: white" class="fa-solid fa-left-long"></i></a>
                     </div>
@@ -119,6 +114,10 @@
                     <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}" class="btn btn-dark ml-1">
                         <a th:href="@{|?page=${pageBrand.getNumber()+1}&brandNameSearch=${brandNameSearch}|}">
                             <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                    </div>
+                    <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}" class="btn btn-dark ml-1">
+                        <a th:href="@{|?page=${pageBrand.getTotalPages()-1}&brandNameSearch=${brandNameSearch}|}">
+                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                     </div>
                 </div>
             </div>

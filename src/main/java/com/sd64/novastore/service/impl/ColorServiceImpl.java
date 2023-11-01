@@ -1,7 +1,5 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.model.Category;
-import com.sd64.novastore.request.ColorRequest;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.repository.ColorRepository;
 import com.sd64.novastore.service.ColorService;
@@ -22,7 +20,7 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public List<Color> getAll(){
-        return colorRepository.findAllByAndStatusOrderByIdDesc(1);
+        return colorRepository.findAllByStatusOrderByUpdateDateDesc(1);
     }
 
     @Override

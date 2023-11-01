@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Size;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,10 +35,15 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public ProductDetail add(ProductDetail productDetail) {
+    public ProductDetail add(Integer productId, Integer quantity, Integer sizeId, Integer colorId) {
+        ProductDetail productDetail = new ProductDetail();
         productDetail.setStatus(1);
         productDetail.setCreateDate(new java.util.Date());
         productDetail.setUpdateDate(new java.util.Date());
+        productDetail.setProduct(Product.builder().id(productId).build());
+        productDetail.setQuantity(quantity);
+        productDetail.setSize(Size.builder().id(sizeId).build());
+        productDetail.setColor(Color.builder().id(colorId).build());
         return productDetailRepository.save(productDetail);
     }
 
@@ -69,5 +76,9 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return productDetailRepository.findById(id).orElse(null);
     }
 
-
+    @Override
+    public Page<ProductDetail> getProductDetailByProductId(int page, Integer productId) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return productDetailRepository.getAllProductDetailByProduct_IdAndStatusOrderByUpdateDateDesc(pageable, productId, 1);
+    }
 }

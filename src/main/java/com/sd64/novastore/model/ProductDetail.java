@@ -23,9 +23,6 @@ public class ProductDetail {
     @Column(name = "Quantity")
     private Integer quantity;
 
-    @Column(name = "Price")
-    private BigDecimal price;
-
     @Column(name = "CreateDate")
     private Date createDate;
 
@@ -42,4 +39,8 @@ public class ProductDetail {
     @ManyToOne
     @JoinColumn(name = "SizeId", referencedColumnName = "Id")
     private Size size;
+
+    @ManyToOne
+    @JoinColumn(name = "ColorId", referencedColumnName = "Id")
+    private Color color;
 }

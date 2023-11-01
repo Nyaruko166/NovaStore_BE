@@ -1,8 +1,5 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.model.Category;
-import com.sd64.novastore.model.Form;
-import com.sd64.novastore.request.MaterialRequest;
 import com.sd64.novastore.model.Material;
 import com.sd64.novastore.repository.MaterialRepository;
 import com.sd64.novastore.service.MaterialService;
@@ -20,6 +17,11 @@ import java.util.Optional;
 public class MaterialServiceImpl implements MaterialService{
     @Autowired
     private MaterialRepository materialRepository;
+
+    @Override
+    public List<Material> getAllDefault() {
+        return materialRepository.findAll();
+    }
 
     @Override
     public List<Material> getAll(){

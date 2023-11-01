@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [Nova_Store_DB]    Script Date: 17/10/2023 22:36:05 PM ******/
+/****** Object:  Database [Nova_Store_DB]    Script Date: 31/10/2023 22:26:05 PM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]
@@ -137,12 +137,15 @@ CREATE TABLE [dbo].[Bill](
     [ReceivedDate] [datetime] NULL,
     [CompletionDate] [datetime] NULL,
     [ShippingFee] [money] NULL,
+    [Price] [money] NULL,
+    [DiscountAmount] [money] NULL,
     [TotalPrice] [money] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [AccountId] [int] NULL,
     [CustomerId] [int] NULL,
+    [VoucherId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
@@ -352,6 +355,7 @@ CREATE TABLE [dbo].[Product](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
     [Description] [nvarchar](255) NULL,
+    [Price] [money] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
@@ -359,7 +363,6 @@ CREATE TABLE [dbo].[Product](
     [CategoryId] [int] NULL,
     [FormId] [int] NULL,
     [MaterialId] [int] NULL,
-    [ColorId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
@@ -373,13 +376,13 @@ CREATE TABLE [dbo].[Product](
     GO
 CREATE TABLE [dbo].[ProductDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Price] [money] NULL,
     [Quantity] [int] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
     [ProductId] [int] NULL,
     [SizeId] [int] NULL,
+    [ColorId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
@@ -416,8 +419,6 @@ CREATE TABLE [dbo].[Promotion](
 CREATE TABLE [dbo].[PromotionDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
-    [Price] [money] NULL,
-    [PriceAfter] [money] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
@@ -488,26 +489,6 @@ CREATE TABLE [dbo].[Voucher](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
-/****** Object:  Table [dbo].[VoucherDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[VoucherDetail](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Price] [money] NULL,
-    [PriceAfter] [money] NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
-    [BillId] [int] NULL,
-    [VoucherId] [int] NULL,
-    PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
 ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [FKi9xmahyh65di7x2wn5fvt8lv3] FOREIGN KEY([RoleId])
     REFERENCES [dbo].[Role] ([Id])
     GO
@@ -527,6 +508,11 @@ ALTER TABLE [dbo].[Bill]  WITH CHECK ADD  CONSTRAINT [FKdlpt4y8nuurj83nht236onfi
     REFERENCES [dbo].[Account] ([Id])
     GO
 ALTER TABLE [dbo].[Bill] CHECK CONSTRAINT [FKdlpt4y8nuurj83nht236onfi6]
+    GO
+ALTER TABLE [dbo].[Bill]  WITH CHECK ADD  CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob] FOREIGN KEY([VoucherId])
+    REFERENCES [dbo].[Voucher] ([Id])
+    GO
+ALTER TABLE [dbo].[Bill] CHECK CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob]
     GO
 ALTER TABLE [dbo].[BillDetail]  WITH CHECK ADD  CONSTRAINT [FK8sw1tfhht3q5xtdsyoe0r7jfd] FOREIGN KEY([BillId])
     REFERENCES [dbo].[Bill] ([Id])
@@ -593,11 +579,6 @@ ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FKnuw1iwpj73v904j79uc8q
     GO
 ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc]
     GO
-ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y] FOREIGN KEY([ColorId])
-    REFERENCES [dbo].[Color] ([Id])
-    GO
-ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y]
-    GO
 ALTER TABLE [dbo].[ProductDetail]  WITH CHECK ADD  CONSTRAINT [FKik38y3bjry9u05majdn5u3egj] FOREIGN KEY([ProductId])
     REFERENCES [dbo].[Product] ([Id])
     GO
@@ -608,6 +589,11 @@ ALTER TABLE [dbo].[ProductDetail]  WITH CHECK ADD  CONSTRAINT [FK61xkqx42jtcc8we
     GO
 ALTER TABLE [dbo].[ProductDetail] CHECK CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv]
     GO
+ALTER TABLE [dbo].[ProductDetail]  WITH CHECK ADD  CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y] FOREIGN KEY([ColorId])
+    REFERENCES [dbo].[Color] ([Id])
+    GO
+ALTER TABLE [dbo].[ProductDetail] CHECK CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y]
+    GO
 ALTER TABLE [dbo].[PromotionDetail]  WITH CHECK ADD  CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig] FOREIGN KEY([ProductId])
     REFERENCES [dbo].[Product] ([Id])
     GO
@@ -617,16 +603,6 @@ ALTER TABLE [dbo].[PromotionDetail]  WITH CHECK ADD  CONSTRAINT [FKos6ftbatvw4mk
     REFERENCES [dbo].[Promotion] ([Id])
     GO
 ALTER TABLE [dbo].[PromotionDetail] CHECK CONSTRAINT [FKos6ftbatvw4mk81km7xpkds5i]
-    GO
-ALTER TABLE [dbo].[VoucherDetail]  WITH CHECK ADD  CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob] FOREIGN KEY([VoucherId])
-    REFERENCES [dbo].[Voucher] ([Id])
-    GO
-ALTER TABLE [dbo].[VoucherDetail] CHECK CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob]
-    GO
-ALTER TABLE [dbo].[VoucherDetail]  WITH CHECK ADD  CONSTRAINT [FKr9axmg06qxyoncf3f0lt2m4f1] FOREIGN KEY([BillId])
-    REFERENCES [dbo].[Bill] ([Id])
-    GO
-ALTER TABLE [dbo].[VoucherDetail] CHECK CONSTRAINT [FKr9axmg06qxyoncf3f0lt2m4f1]
     GO
     USE [master]
     GO
