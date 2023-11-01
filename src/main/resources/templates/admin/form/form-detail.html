@@ -10,10 +10,10 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>FORM</strong>
+                <strong>FORM UPDATE</strong>
             </div>
             <div class="card-body card-block">
-                <form id="formUpdate" th:object="${form}" th:action="@{/admin/form/update/{id}(id=${form.id})}" method="post"
+                <form id="formUpdate" th:object="${form}" th:action="@{/nova/form/update/{id}(id=${form.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
                         <div class="col col-md-3"><label for="" class=" form-control-label">Form name</label></div>
@@ -23,8 +23,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button onclick="clickUpdate('formUpdate')" type="button" class="btn btn-primary"><i
-                                class="fa-solid fa-square-plus"></i>
+                        <button onclick="clickUpdate('formUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
                             UPDATE
                         </button>
                     </div>

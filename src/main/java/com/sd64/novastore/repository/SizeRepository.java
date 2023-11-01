@@ -13,10 +13,15 @@ import java.util.List;
 @Repository
 public interface SizeRepository extends JpaRepository<Size, Integer> {
 
-    List<Size> findAllByAndStatusOrderByIdDesc(Integer status);
+//    List<Size> findAllByAndStatusOrderByIdDesc(Integer status);
 
 //    Page<Size> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
 
+    List<Size> findAllByStatusOrderByUpdateDateDesc(Integer status);
+
+    // Pagination
     Page<Size> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
+
+    //Search
     Page<Size> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 }

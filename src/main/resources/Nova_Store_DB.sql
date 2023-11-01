@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [Nova_Store_DB]    Script Date: 17/10/2023 22:36:05 PM ******/
+/****** Object:  Database [Nova_Store_DB]    Script Date: 31/10/2023 22:26:05 PM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]

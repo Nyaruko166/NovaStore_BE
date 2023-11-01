@@ -1,27 +1,18 @@
 package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.model.Account;
-import com.sd64.novastore.model.Brand;
-import com.sd64.novastore.request.AccountRequest;
 import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.utils.SecurityUtil;
 import jakarta.validation.Valid;
 import org.codehaus.groovy.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Date;
-import java.util.List;
 
 
 @Controller

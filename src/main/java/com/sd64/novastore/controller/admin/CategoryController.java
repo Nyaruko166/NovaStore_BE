@@ -1,6 +1,5 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.model.Category;
 import com.sd64.novastore.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,20 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 
 @Controller
-@RequestMapping("/admin/category")
+@RequestMapping("/nova/category")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
-
-//    @GetMapping("/all")
-//    public String getAll(Model model) {
-//        List<Category> listCategory = categoryService.getAll();
-//        model.addAttribute("listCategory", listCategory);
-//        return "";
-//    }
 
     @GetMapping("/page")
     public String getPage(@RequestParam(defaultValue = "0") int page, Model model) {
@@ -43,23 +34,23 @@ public class CategoryController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         categoryService.delete(id);
-        redirectAttributes.addFlashAttribute("delete", "Xóa thành công");
-        return "redirect:/admin/category/page";
+        redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
+        return "redirect:/nova/category/page";
     }
 
 
     @PostMapping("/add")
     public String add(@ModelAttribute Category category, RedirectAttributes redirectAttributes) {
         categoryService.add(category);
-        redirectAttributes.addFlashAttribute("add", "Thêm thành công");
-        return "redirect:/admin/category/page";
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
+        return "redirect:/nova/category/page";
     }
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable Integer id, @ModelAttribute Category category, RedirectAttributes redirectAttributes) {
         categoryService.update(category, id);
-        redirectAttributes.addFlashAttribute("update", "Sửa thành công");
-        return "redirect:/admin/category/page";
+        redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
+        return "redirect:/nova/category/page";
     }
 
     @GetMapping("/search")
@@ -67,7 +58,7 @@ public class CategoryController {
                          @RequestParam(defaultValue = "0") int page) {
         Page<Category> pageCategory = categoryService.search(categoryNameSearch, page);
         if ("".equals(categoryNameSearch) || categoryNameSearch.isEmpty()) {
-            return "redirect:/admin/category/page";
+            return "redirect:/nova/category/page";
         }
         model.addAttribute("categoryNameSearch", categoryNameSearch);
         model.addAttribute("pageCategory", pageCategory);

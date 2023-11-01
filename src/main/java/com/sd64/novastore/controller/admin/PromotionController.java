@@ -1,31 +1,22 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.model.Material;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/promotion")
+@RequestMapping("/nova/promotion")
 public class PromotionController {
 
     @Autowired
     private PromotionService promotionService;
-
-//    @GetMapping("/all")
-//    public String getAll(Model model) {
-//        List<Promotion> listPromotion = promotionService.getAll();
-//        model.addAttribute("listPromotion", listPromotion);
-//        return "";
-//    }
 
     @GetMapping("/page")
     public String getPage(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
@@ -45,22 +36,22 @@ public class PromotionController {
     @PostMapping("/add")
     public String add(@ModelAttribute Promotion promotion, RedirectAttributes redirectAttributes) {
         promotionService.add(promotion);
-        redirectAttributes.addFlashAttribute("add", "Thêm thành công");
-        return "redirect:/admin/promotion/page";
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
+        return "redirect:/nova/promotion/page";
     }
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable Integer id, @ModelAttribute Promotion promotion, RedirectAttributes redirectAttributes) {
         promotionService.update(promotion, id);
-        redirectAttributes.addFlashAttribute("update", "Sửa thành công");
-        return "redirect:/admin/promotion/page";
+        redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
+        return "redirect:/nova/promotion/page";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         promotionService.delete(id);
-        redirectAttributes.addFlashAttribute("delete", "Xóa thành công");
-        return "redirect:/admin/promotion/page";
+        redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
+        return "redirect:/nova/promotion/page";
     }
 
     @GetMapping("/search")
@@ -68,7 +59,7 @@ public class PromotionController {
                          @RequestParam(defaultValue = "0") int page) {
         Page<Promotion> pagePromotion = promotionService.search(promotionNameSearch, page);
         if ("".equals(promotionNameSearch) || promotionNameSearch.isEmpty()) {
-            return "redirect:/admin/promotion/page";
+            return "redirect:/nova/promotion/page";
         }
         model.addAttribute("promotionNameSearch", promotionNameSearch);
         model.addAttribute("pagePromotion", pagePromotion);

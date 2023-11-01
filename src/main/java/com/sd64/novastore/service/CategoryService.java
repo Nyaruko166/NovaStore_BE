@@ -1,7 +1,5 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.model.Brand;
-import com.sd64.novastore.request.CategoryRequest;
 import com.sd64.novastore.model.Category;
 import org.springframework.data.domain.Page;
 
@@ -9,6 +7,8 @@ import java.util.List;
 
 public interface CategoryService {
     List<Category> getAll();
+
+    List<Category> getAllDefault();
 
     Page<Category> getPage(Integer page);
 

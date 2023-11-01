@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>Product Detail</strong>
+                <strong>Product Detail UPDATE</strong>
             </div>
             <div class="card-body card-block">
                 <form th:object="${productDetail}" th:action="@{/admin/product_detail/update/{id}(id=${productDetail.id})}"
@@ -20,7 +20,7 @@
                             <label for="quantity" class=" form-control-label">Quantity</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="quantity" th:field="*{quantity}" class="form-control">
+                            <input type="text" id="quantity" class="form-control">
                         </div>
                     </div>
                     <div class="row form-group">
@@ -28,7 +28,7 @@
                             <label for="price" class=" form-control-label">Price</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="price" th:field="*{price}" class="form-control">
+                            <input type="text" id="price"  class="form-control">
                         </div>
                     </div>
                     <div class="card-footer">

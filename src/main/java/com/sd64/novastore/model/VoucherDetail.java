@@ -36,10 +36,6 @@ public class VoucherDetail {
     private Integer status;
 
     @ManyToOne
-    @JoinColumn(name = "VoucherId", referencedColumnName = "Id")
-    private Voucher voucher;
-
-    @ManyToOne
     @JoinColumn(name = "BillId", referencedColumnName = "Id")
     private Bill bill;
 }
