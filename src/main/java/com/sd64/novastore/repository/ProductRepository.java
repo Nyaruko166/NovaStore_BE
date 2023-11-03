@@ -2,6 +2,7 @@ package com.sd64.novastore.repository;
 
 import com.sd64.novastore.dto.ProductDto;
 import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.PromotionDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    List<Product> findAllByStatus(Integer status);
+    List<Product> findAllByAndStatusOrderByIdDesc(Integer status);
 
     Page<Product> findAllByStatus(Pageable pageable, Integer status);
 

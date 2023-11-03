@@ -13,7 +13,7 @@
         <strong>Voucher</strong>
       </div>
       <div class="card-body card-block">
-        <form th:object="${voucher}" th:action="@{/admin/voucher/update/{id}(id=${voucher.id})}" method="post" class="form-horizontal">
+        <form th:object="${voucher}" th:action="@{/nova/voucher/update/{id}(id=${voucher.id})}" method="post" class="form-horizontal">
           <div class="row form-group">
             <div class="col col-md-3">
               <label for="code" class=" form-control-label">Code</label>

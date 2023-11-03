@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
+    List<Product> getAll();
+    Page<Product> getAll(Integer page);
     Page<ProductDto> getAll(int page);
 
 //    Page<Product> getAll(Integer page);

@@ -43,7 +43,7 @@ public class PromotionRequest {
         promotion.setId(this.getId());
         promotion.setCode(this.getCode());
         promotion.setName(this.getName());
-        promotion.setType(this.getType());
+//        promotion.setType(this.getType());
         promotion.setValue(this.getValue());
         promotion.setStartDate(this.getStartDate());
         promotion.setEndDate(this.getEndDate());
