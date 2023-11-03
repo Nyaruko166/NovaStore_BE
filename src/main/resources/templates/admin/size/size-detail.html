@@ -10,10 +10,10 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>SIZE</strong>
+                <strong>SIZE UPDATE</strong>
             </div>
             <div class="card-body card-block">
-                <form id="sizeUpdate" th:object="${size}" th:action="@{/admin/size/update/{id}(id=${size.id})}" method="post"
+                <form id="sizeUpdate" th:object="${size}" th:action="@{/nova/size/update/{id}(id=${size.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
                         <div class="col col-md-3"><label for="" class=" form-control-label">Size name</label></div>
@@ -23,8 +23,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button onclick="clickUpdate('sizeUpdate')" type="button" class="btn btn-primary"><i
-                                class="fa-solid fa-square-plus"></i>
+                        <button onclick="clickUpdate('sizeUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
                             UPDATE
                         </button>
                     </div>

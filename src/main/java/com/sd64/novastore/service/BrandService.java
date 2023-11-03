@@ -1,6 +1,5 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.request.BrandRequest;
 import com.sd64.novastore.model.Brand;
 import org.springframework.data.domain.Page;
 
@@ -8,6 +7,8 @@ import java.util.List;
 
 public interface BrandService {
     List<Brand> getAll();
+
+    List<Brand> getAllDefault();
 
     Page<Brand> getPage(Integer page);
 

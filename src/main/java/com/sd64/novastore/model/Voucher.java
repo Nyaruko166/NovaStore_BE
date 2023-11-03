@@ -59,4 +59,8 @@ public class Voucher {
 
     @Column(name = "Status")
     private Integer status;
+
+    @ManyToOne
+    @JoinColumn(name = "BillId", referencedColumnName = "Id")
+    private Bill bill;
 }

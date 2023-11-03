@@ -10,10 +10,10 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>COLOR</strong>
+                <strong>COLOR UPDATE</strong>
             </div>
             <div class="card-body card-block">
-                <form id="colorUpdate" th:object="${color}" th:action="@{/admin/color/update/{id}(id=${color.id})}" method="post"
+                <form id="colorUpdate" th:object="${color}" th:action="@{/nova/color/update/{id}(id=${color.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
                         <div class="col col-md-3"><label for="" class=" form-control-label">Color name</label></div>
@@ -23,8 +23,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button onclick="clickUpdate('colorUpdate')" type="button" class="btn btn-primary"><i
-                                class="fa-solid fa-square-plus"></i>
+                        <button onclick="clickUpdate('colorUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
                             UPDATE
                         </button>
                     </div>

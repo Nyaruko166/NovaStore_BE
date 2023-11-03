@@ -58,7 +58,7 @@
         function clickAdd(entity, id) {
             var add = confirm("Bạn có muốn thêm dữ liệu ?")
             if (add) {
-                document.getElementById(id).action = '/admin/' + entity +'/add'
+                document.getElementById(id).action = '/nova/' + entity +'/add'
                 document.getElementById(id).method = 'post'
                 document.getElementById(id).submit()
             } else {
@@ -85,7 +85,8 @@
         }
 
         function clickSearch(entity, id) {
-            document.getElementById(id).action = '/admin/' + entity +'/search'
+            debugger
+            document.getElementById(id).action = '/nova/' + entity +'/search'
             document.getElementById(id).method = 'get'
             document.getElementById(id).submit()
         }

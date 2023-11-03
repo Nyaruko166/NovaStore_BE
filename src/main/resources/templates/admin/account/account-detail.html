@@ -77,38 +77,25 @@
                             <!--                            <input type="text" id="avatar" name="avatar" class="form-control">-->
                         </div>
                     </div>
-                    <!--                    <div class="row form-group">-->
-                    <!--                        <label class=" form-control-label">Status</label>-->
-                    <!--                        <div class="row">-->
-                    <!--                            <div class="col-6">-->
-                    <!--                                <div class="col col-md-3">-->
-                    <!--                                    <div class="custom-control custom-radio">-->
-                    <!--                                        <input type="radio" id="customRadio1" name="customRadio"-->
-                    <!--                                               class="custom-control-input"-->
-                    <!--                                               th:value="1" th:checked="*{status == 1}">-->
-                    <!--                                        <label class="custom-control-label" for="customRadio1">Hoạt Động</label>-->
-                    <!--                                    </div>-->
-                    <!--                                </div>-->
-                    <!--                            </div>-->
-                    <!--                            <div class="col-6">-->
-                    <!--                                <div class="col-12 col-md-9">-->
-                    <!--                                    <div class="custom-control custom-radio">-->
-                    <!--                                        <input type="radio" id="customRadio2" name="customRadio"-->
-                    <!--                                               class="custom-control-input"-->
-                    <!--                                               th:value="0" th:checked="*{status == 0}">-->
-                    <!--                                        <label class="custom-control-label" for="customRadio2">Ngừng Hoạt Động</label>-->
-                    <!--                                    </div>-->
-                    <!--                                </div>-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
+                    <div class="form-group row">
+                        <div class="col col-md-3">
+                            <label class="form-control-label" for="roleId">Role</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select id="roleId" class="form-control" name="roleId">
+<!--                                <option value="">Select option</option>-->
+                                <option th:value="${x.id}" th:each="x: ${lstRole}"
+                                        th:text="${x.name}" th:selected="(*{role.id} == ${x.id})"></option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
                             Update
                         </button>
-                        <button type="button" class="btn btn-secondary">
+                        <a href="/nova/account/page" class="btn btn-secondary">
                             Cancel
-                        </button>
+                        </a>
                     </div>
                 </form>
             </div>

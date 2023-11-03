@@ -1,6 +1,7 @@
 package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.model.Account;
+import com.sd64.novastore.model.Role;
 import com.sd64.novastore.repository.AccountRepository;
 import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.utils.FileUtil;
@@ -20,6 +21,8 @@ import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
+
+    private final String uploadDir = "./src/main/resources/static/assets/avatars/";
 
     @Autowired
     private AccountRepository accountRepository;
@@ -44,10 +47,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account add(Account account, MultipartFile avt) {
-        String uploadDir = "./src/main/resources/static/assets/avatars/";
+    public Account add(Account account, MultipartFile avt, Integer roleId) {
         String fileName = StringUtils.cleanPath(avt.getOriginalFilename());
         account.setStatus(1);
+        account.setRole(Role.builder().id(roleId).build());
         account.setCreateDate(new java.util.Date());
         account.setUpdateDate(new java.util.Date());
         String rawPassword = account.getPassword();
@@ -64,16 +67,22 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account update(Account account, MultipartFile avt, Integer id) {
-        String uploadDir = "./src/main/resources/static/assets/avatars/";
+    public Account update(Account account, MultipartFile avt, Integer roleId, Integer id) {
         String fileName = StringUtils.cleanPath(avt.getOriginalFilename());
         Optional<Account> optional = accountRepository.findById(id);
         if (optional.isPresent()) {
-            Account updateBrand = optional.get();
-            String oldAvt = updateBrand.getAvatar();
+            Account updateAccount = optional.get();
+            String oldAvt = updateAccount.getAvatar();
             account.setId(id);
-            account.setStatus(updateBrand.getStatus());
-            account.setCreateDate(updateBrand.getCreateDate());
+            account.setStatus(updateAccount.getStatus());
+            if (account.getPassword().isBlank()) {
+                account.setPassword(updateAccount.getPassword());
+            } else {
+                String rawPassword = account.getPassword();
+                account.setPassword(passwordEncoder.encode(rawPassword));
+            }
+            account.setRole(Role.builder().id(roleId).build());
+            account.setCreateDate(updateAccount.getCreateDate());
             account.setUpdateDate(new Date());
             if (!avt.isEmpty()) {
                 File fileToDelete = new File(uploadDir + oldAvt);

@@ -21,7 +21,7 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public List<Size> getAll() {
-        return sizeRepository.findAllByAndStatusOrderByIdDesc(1);
+        return sizeRepository.findAllByStatusOrderByUpdateDateDesc(1);
     }
 
     @Override

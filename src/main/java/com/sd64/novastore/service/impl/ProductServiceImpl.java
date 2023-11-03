@@ -1,8 +1,7 @@
 package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.dto.ProductDto;
-import com.sd64.novastore.request.ProductRequest;
-import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.*;
 import com.sd64.novastore.repository.ProductRepository;
 import com.sd64.novastore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -26,34 +26,60 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getAll(Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return productRepository.findAllByStatus(pageable, 1);
-    }
-
-    @Override
-    public Product add(ProductRequest productRequest) {
-        Product product = productRequest.map(new Product());
+    public Product add(String productName, String description, BigDecimal price, Integer materialId, Integer categoryId,
+                       Integer brandId, Integer formId) {
+        Product product = new Product();
+        product.setName(productName);
+        product.setStatus(1);
+        product.setDescription(description);
+        product.setCreateDate(new Date());
+        product.setUpdateDate(new Date());
+        product.setPrice(price);
+        product.setMaterial(Material.builder().id(materialId).build());
+        product.setCategory(Category.builder().id(categoryId).build());
+        product.setBrand(Brand.builder().id(brandId).build());
+        product.setForm(Form.builder().id(formId).build());
         return productRepository.save(product);
     }
 
     @Override
-    public Product update(ProductRequest productRequest, Integer id) {
-        Optional<Product> optional = productRepository.findById(id);
-        Product product = productRequest.map(optional.get());
+    public Product update(Integer id, String productName, String description, BigDecimal price, Integer materialId,
+                          Integer categoryId, Integer brandId, Integer formId) {
+        Product product = new Product();
+        product.setId(id);
+        product.setName(productName);
+        product.setStatus(1);
+        product.setDescription(description);
+        product.setCreateDate(new Date());
+        product.setUpdateDate(new Date());
+        product.setPrice(price);
+        product.setMaterial(Material.builder().id(materialId).build());
+        product.setCategory(Category.builder().id(categoryId).build());
+        product.setBrand(Brand.builder().id(brandId).build());
+        product.setForm(Form.builder().id(formId).build());
         return productRepository.save(product);
     }
 
     @Override
-    public Boolean delete(Integer id) {
+    public Product delete(Integer id) {
         Optional<Product> optional = productRepository.findById(id);
         if (optional.isPresent()) {
             Product product = optional.get();
             product.setStatus(0);
-            productRepository.save(product);
-            return true;
+            return productRepository.save(product);
         } else {
-            return false;
+            return null;
         }
+    }
+
+    @Override
+    public Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, BigDecimal priceMin, BigDecimal priceMax, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return productRepository.search(pageable, brandId, categoryId, formId, materialId, productName, description, priceMin, priceMax);
+    }
+
+    @Override
+    public Product getOne(Integer id) {
+        return productRepository.findById(id).orElse(null);
     }
 }

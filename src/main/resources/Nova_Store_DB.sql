@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [Nova_Store_DB]    Script Date: 17/10/2023 22:36:05 PM ******/
+/****** Object:  Database [Nova_Store_DB]    Script Date: 31/10/2023 22:26:05 PM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]
@@ -355,6 +355,7 @@ CREATE TABLE [dbo].[Product](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] [nvarchar](50) NULL,
     [Description] [nvarchar](255) NULL,
+    [Price] [money] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
@@ -375,7 +376,6 @@ CREATE TABLE [dbo].[Product](
     GO
 CREATE TABLE [dbo].[ProductDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Price] [money] NULL,
     [Quantity] [int] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,

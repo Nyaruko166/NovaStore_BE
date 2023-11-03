@@ -1,7 +1,5 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.model.Brand;
-import com.sd64.novastore.request.CategoryRequest;
 import com.sd64.novastore.model.Category;
 import com.sd64.novastore.repository.CategoryRepository;
 import com.sd64.novastore.service.CategoryService;
@@ -19,6 +17,11 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Override
+    public List<Category> getAllDefault() {
+        return categoryRepository.findAll();
+    }
 
     @Override
     public List<Category> getAll() {

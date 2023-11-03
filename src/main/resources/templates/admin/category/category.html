@@ -12,27 +12,14 @@
             <div class="card-header">
                 <strong>CATEGORY</strong>
             </div>
-            <div th:if="${add}" class="alert alert-success alert-dismissible fade show" role="alert"
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
-                <span th:text="${add}"></span>
+                <span th:text="${mess}"></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">x</span>
                 </button>
             </div>
-            <div th:if="${update}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${update}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
-            </div>
-            <div th:if="${delete}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${delete}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
-            </div>
+
             <div class="card-body card-block">
                 <form id="categoryForm" class="form-horizontal">
                     <div class="row form-group">
@@ -48,13 +35,19 @@
                                     class="fa-solid fa-square-plus"></i>
                                 ADD
                             </button>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="card-footer d-flex">
+                        <div>
                             <button onclick="clickSearch('category', 'categoryForm')" type="button" class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 SEARCH
                             </button>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text"
+                            <input type="text" placeholder="Search by name..."
                                    th:value="${categoryNameSearch}" th:name="categoryNameSearch"
                                    class="form-control">
                         </div>
@@ -85,14 +78,14 @@
                         <td th:text="${items.name}"></td>
                         <td class="d-flex justify-content-center">
                             <div style="margin-right: 10px">
-                                <a th:href="@{'/admin/category/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-warning">
-                                        <i class="fa-solid fa-eye mr-1"></i>DETAIL
+                                <a th:href="@{'/nova/category/detail/' + ${items.id}}">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="fa-solid fa-pen mr-1"></i>UPDATE
                                     </button>
                                 </a>
                             </div>
                             <div>
-                                <form id="categoryDelete" th:action="@{'/admin/category/delete/' + ${items.id}}"
+                                <form id="categoryDelete" th:action="@{'/nova/category/delete/' + ${items.id}}"
                                       th:method="post">
                                     <button onclick="clickDelete('categoryDelete')" type="button" class="btn btn-danger">
                                         <i class="fa-solid fa-trash mr-1"></i>DELETE
@@ -107,6 +100,10 @@
                 <!--            Pagination-->
                 <div class="d-flex justify-content-center align-items-center">
                     <div th:if="${pageCategory.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                        <a th:href="@{|?page=0&categoryNameSearch=${categoryNameSearch}|}">
+                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                    </div>
+                    <div th:if="${pageCategory.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
                         <a th:href="@{|?page=${pageCategory.getNumber() - 1}&categoryNameSearch=${categoryNameSearch}|}">
                             <i style="color: white" class="fa-solid fa-left-long"></i></a>
                     </div>
@@ -118,6 +115,10 @@
                     <div th:if="${pageCategory.getNumber() + 1 lt pageCategory.getTotalPages()}" class="btn btn-dark ml-1">
                         <a th:href="@{|?page=${pageCategory.getNumber()+1}&categoryNameSearch=${categoryNameSearch}|}">
                             <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                    </div>
+                    <div th:if="${pageCategory.getNumber() + 1 lt pageCategory.getTotalPages()}" class="btn btn-dark ml-1">
+                        <a th:href="@{|?page=${pageCategory.getTotalPages()-1}&categoryNameSearch=${categoryNameSearch}|}">
+                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                     </div>
                 </div>
             </div>

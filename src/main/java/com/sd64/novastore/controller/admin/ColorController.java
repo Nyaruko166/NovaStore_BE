@@ -14,17 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/color")
+@RequestMapping("/nova/color")
 public class ColorController {
     @Autowired
     private ColorService colorService;
-
-//    @GetMapping("/all")
-//    public String getAll(Model model) {
-//        List<Color> listColor = colorService.getAll();
-//        model.addAttribute("listColor", listColor);
-//        return "";
-//    }
 
     @GetMapping("/page")
     public String getPage(@RequestParam(defaultValue = "0") Integer page, Model model) {
@@ -44,22 +37,22 @@ public class ColorController {
     @PostMapping("/add")
     public String add(@ModelAttribute Color color, RedirectAttributes redirectAttributes) {
         colorService.add(color);
-        redirectAttributes.addFlashAttribute("add", "Thêm thành công");
-        return "redirect:/admin/color/page";
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
+        return "redirect:/nova/color/page";
     }
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable Integer id, @Validated @ModelAttribute Color color, RedirectAttributes redirectAttributes) {
         colorService.update(color, id);
-        redirectAttributes.addFlashAttribute("update", "Sửa thành công");
-        return "redirect:/admin/color/page";
+        redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
+        return "redirect:/nova/color/page";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         colorService.delete(id);
-        redirectAttributes.addFlashAttribute("delete", "Xóa thành công");
-        return "redirect:/admin/color/page";
+        redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
+        return "redirect:/nova/color/page";
     }
 
     @GetMapping("/search")
@@ -67,7 +60,7 @@ public class ColorController {
                          @RequestParam(defaultValue = "0") int page) {
         Page<Color> pageColor = colorService.search(colorNameSearch, page);
         if ("".equals(colorNameSearch) || colorNameSearch.isEmpty()) {
-            return "redirect:/admin/color/page";
+            return "redirect:/nova/color/page";
         }
         model.addAttribute("colorNameSearch", colorNameSearch);
         model.addAttribute("pageColor", pageColor);

@@ -1,20 +1,26 @@
 package com.sd64.novastore.service;
 
 import com.sd64.novastore.dto.ProductDto;
-import com.sd64.novastore.model.Promotion;
-import com.sd64.novastore.request.ProductRequest;
 import com.sd64.novastore.model.Product;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
     List<Product> getAll();
     Page<Product> getAll(Integer page);
+    Page<ProductDto> getAll(int page);
 
-    Product add(ProductRequest productRequest);
+//    Page<Product> getAll(Integer page);
 
-    Product update(ProductRequest productRequest, Integer id);
+    Product add(String productName, String description, BigDecimal price, Integer materialId, Integer categoryId, Integer brandId, Integer formId);
 
-    Boolean delete(Integer id);
+    Product update(Integer id, String productName, String description, BigDecimal price, Integer materialId, Integer categoryId, Integer brandId, Integer formId);
+
+    Product delete(Integer id);
+
+    Product getOne(Integer id);
+
+    Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, BigDecimal priceMin, BigDecimal priceMax, int page);
 }

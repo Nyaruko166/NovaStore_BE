@@ -13,17 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/form")
+@RequestMapping("/nova/form")
 public class FormController {
     @Autowired
     private FormService formService;
-
-//    @GetMapping("/all")
-//    public String getAll(Model model) {
-//        List<Form> listForm = formService.getAll();
-//        model.addAttribute("listForm", listForm);
-//        return "";
-//    }
 
     @GetMapping("/page")
     public String getPage(@RequestParam(defaultValue = "0") Integer page, Model model) {
@@ -43,22 +36,22 @@ public class FormController {
     @PostMapping("/add")
     public String add(@ModelAttribute Form form, RedirectAttributes redirectAttributes) {
         formService.add(form);
-        redirectAttributes.addFlashAttribute("add", "Thêm thành công");
-        return "redirect:/admin/form/page";
+        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
+        return "redirect:/nova/form/page";
     }
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable Integer id, @Validated @ModelAttribute Form form, RedirectAttributes redirectAttributes) {
         formService.update(form, id);
-        redirectAttributes.addFlashAttribute("update", "Sửa thành công");
-        return "redirect:/admin/form/page";
+        redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
+        return "redirect:/nova/form/page";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         formService.delete(id);
-        redirectAttributes.addFlashAttribute("delete", "Xóa thành công");
-        return "redirect:/admin/form/page";
+        redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
+        return "redirect:/nova/form/page";
     }
 
     @GetMapping("/search")
@@ -66,7 +59,7 @@ public class FormController {
                          @RequestParam(defaultValue = "0") int page) {
         Page<Form> pageForm = formService.search(formNameSearch, page);
         if ("".equals(formNameSearch) || formNameSearch.isEmpty()) {
-            return "redirect:/admin/form/page";
+            return "redirect:/nova/form/page";
         }
         model.addAttribute("formNameSearch", formNameSearch);
         model.addAttribute("pageForm", pageForm);
