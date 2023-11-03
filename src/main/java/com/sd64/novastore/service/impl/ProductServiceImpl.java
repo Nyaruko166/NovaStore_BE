@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,7 +23,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAll() {
-        return productRepository.findAllByAndStatusOrderByIdDesc(1);
+        return null;
+    }
+
+    @Override
+    public Page<Product> getAll(Integer page) {
+        return null;
+    }
+
+    @Override
+    public Page<ProductDto> getAll(int page) {
+        return null;
     }
 
     @Override
