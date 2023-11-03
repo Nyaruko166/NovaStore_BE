@@ -19,10 +19,10 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+
     @Override
-    public Page<ProductDto> getAll(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return productRepository.getAllProduct(pageable);
+    public List<Product> getAll() {
+        return productRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override

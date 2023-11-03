@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Voucher Detail</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>Voucher Detail</strong>
+            </div>
+            <div class="card-body card-block">
+                <form th:object="${voucherDetail}"
+                      th:action="@{/admin/voucher_detail/update/{id}(id=${voucherDetail.id})}"
+                      method="post" class="form-horizontal" enctype="multipart/form-data">
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="price" class=" form-control-label">Price</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="price" th:field="*{price}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="priceAfter" class=" form-control-label">Price After</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="priceAfter" th:field="*{priceAfter}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label class=" form-control-label">Voucher</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="voucher" name="voucher">
+                                <option th:each="voucher : ${voucherList}" th:value="${voucher.id}"
+                                        th:selected="${voucher.id == voucherDetail.voucher.id}"
+                                        th:text="${voucher.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label class=" form-control-label">Bill</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" id="bill" name="bill">
+                                <option th:each="bill : ${billList}" th:value="${bill.id}"
+                                        th:selected="${bill.id == voucherDetail.bill.id}"
+                                        th:text="${bill.customerName}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                            Update
+                        </button>
+                        <a th:href="@{/admin/voucher_detail/page}" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+</body>
+</html>
