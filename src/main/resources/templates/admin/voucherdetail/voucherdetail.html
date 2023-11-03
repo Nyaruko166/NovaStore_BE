@@ -21,7 +21,7 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form action="/admin/voucher_detail/add" method="post" class="form-horizontal"
+                <form action="/nova/voucher_detail/add" method="post" class="form-horizontal"
                       enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a th:href="@{/admin/voucher/page}">
+                        <a th:href="@{/nova/voucher/page}">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
                                 Change Voucher
                             </button>
@@ -125,12 +125,12 @@
                         <td th:text="${items.bill.customerName}"></td>
                         <td class="d-flex justify-content-center">
                             <div style="margin-right: 10px">
-                                <a th:href="@{'/admin/voucher_detail/detail/' + ${items.id}}">
+                                <a th:href="@{'/nova/voucher_detail/detail/' + ${items.id}}">
                                     <button type="button" class="btn btn-warning">Detail</button>
                                 </a>
                             </div>
                             <div>
-                                <form th:action="@{'/admin/voucher_detail/delete/' + ${items.id}}" th:method="post">
+                                <form th:action="@{'/nova/voucher_detail/delete/' + ${items.id}}" th:method="post">
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </div>

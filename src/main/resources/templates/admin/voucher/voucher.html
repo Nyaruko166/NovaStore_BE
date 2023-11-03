@@ -20,7 +20,7 @@
         </button>
       </div>
       <div class="card-body card-block">
-        <form th:action="@{/admin/voucher/add}" method="post" class="form-horizontal">
+        <form th:action="@{/nova/voucher/add}" method="post" class="form-horizontal">
           <div class="row form-group">
             <div class="col col-md-3">
               <label for="code" class=" form-control-label">Code</label>
@@ -112,7 +112,7 @@
             <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
               Add
             </button>
-            <a href="/admin/voucher/page">
+            <a href="/nova/voucher/page">
               <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
                 Cancel
               </button>
@@ -168,12 +168,12 @@
             <td th:text="${items.status}"></td>
             <td class="d-flex justify-content-center">
               <div style="margin-right: 10px">
-                <a th:href="@{'/admin/voucher/detail/' + ${items.id}}">
+                <a th:href="@{'/nova/voucher/detail/' + ${items.id}}">
                   <button type="button" class="btn btn-warning">DETAIL</button>
                 </a>
               </div>
               <div>
-                <form th:action="@{'/admin/voucher/delete/' + ${items.id}}" th:method="post">
+                <form th:action="@{'/nova/voucher/delete/' + ${items.id}}" th:method="post">
                   <button type="submit" class="btn btn-danger">DELETE</button>
                 </form>
               </div>

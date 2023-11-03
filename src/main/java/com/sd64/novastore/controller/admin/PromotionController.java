@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/admin/promotion")
+@RequestMapping("/nova/promotion")
 public class PromotionController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class PromotionController {
     public String add(@Validated @ModelAttribute("promotion") Promotion promotion, RedirectAttributes redirectAttributes) {
         promotionService.add(promotion);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
-        return "redirect:/admin/promotion/page";
+        return "redirect:/nova/promotion/page";
     }
 
     @PostMapping("/update/{id}")
@@ -46,14 +46,14 @@ public class PromotionController {
                          RedirectAttributes redirectAttributes) {
         promotionService.update(promotion, id);
         redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
-        return "redirect:/admin/promotion/page";
+        return "redirect:/nova/promotion/page";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         promotionService.delete(id);
         redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
-        return "redirect:/admin/promotion/page";
+        return "redirect:/nova/promotion/page";
     }
 
     @GetMapping("/detail/{id}")

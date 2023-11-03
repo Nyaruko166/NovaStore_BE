@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/voucher_detail")
+@RequestMapping("/nova/voucher_detail")
 public class VoucherDetailController {
     @Autowired
     private VoucherDetailService voucherDetailService;
@@ -61,7 +61,7 @@ public class VoucherDetailController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         voucherDetailService.delete(id);
         redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
-        return "redirect:/admin/voucher_detail/page";
+        return "redirect:/nova/voucher_detail/page";
     }
 
 
@@ -69,13 +69,13 @@ public class VoucherDetailController {
     public String add(@ModelAttribute("VoucherDetail") VoucherDetail voucherDetail, RedirectAttributes redirectAttributes) {
         voucherDetailService.add(voucherDetail);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
-        return "redirect:/admin/voucher_detail/page";
+        return "redirect:/nova/voucher_detail/page";
     }
 
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("VoucherDetail") VoucherDetail voucherDetail, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
         voucherDetailService.update(voucherDetail, id);
         redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
-        return "redirect:/admin/voucher_detail/page";
+        return "redirect:/nova/voucher_detail/page";
     }
 }

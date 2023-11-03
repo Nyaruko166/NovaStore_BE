@@ -50,7 +50,4 @@ public class Product {
     @JoinColumn(name = "FormId", referencedColumnName = "Id")
     private Form form;
 
-    @ManyToOne
-    @JoinColumn(name = "ColorId", referencedColumnName = "Id")
-    private Color color;
 }

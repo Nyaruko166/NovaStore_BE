@@ -21,7 +21,7 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form action="/admin/promotion_detail/add" method="post" class="form-horizontal"
+                <form action="/nova/promotion_detail/add" method="post" class="form-horizontal"
                       enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a th:href="@{/admin/promotion/page}">
+                        <a th:href="@{/nova/promotion/page}">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
                                 Change Promotion
                             </button>
@@ -70,7 +70,7 @@
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
                             Add
                         </button>
-                        <a href="/admin/promotion_detail/page">
+                        <a href="/nova/promotion_detail/page">
                             <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
                                 Cancel
                             </button>
@@ -115,12 +115,12 @@
                         <!--                        <td th:text="${items.role.name}"></td>-->
                         <td class="d-flex justify-content-center">
                             <div style="margin-right: 10px">
-                                <a th:href="@{'/admin/promotion_detail/detail/' + ${items.id}}">
+                                <a th:href="@{'/nova/promotion_detail/detail/' + ${items.id}}">
                                     <button type="button" class="btn btn-warning">Detail</button>
                                 </a>
                             </div>
                             <div>
-                                <form th:action="@{'/admin/promotion_detail/delete/' + ${items.id}}" th:method="post">
+                                <form th:action="@{'/nova/promotion_detail/delete/' + ${items.id}}" th:method="post">
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </div>

@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/promotion_detail")
+@RequestMapping("/nova/promotion_detail")
 public class PromotionDetailController {
     @Autowired
     private PromotionDetailService promotionDetailService;
@@ -62,7 +62,7 @@ public class PromotionDetailController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         promotionDetailService.delete(id);
         redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
-        return "redirect:/admin/promotion_detail/page";
+        return "redirect:/nova/promotion_detail/page";
     }
 
 
@@ -70,14 +70,14 @@ public class PromotionDetailController {
     public String add( @ModelAttribute("PromotionDetail") PromotionDetail promotionDetail, RedirectAttributes redirectAttributes) {
         promotionDetailService.add(promotionDetail);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
-        return "redirect:/admin/promotion_detail/page";
+        return "redirect:/nova/promotion_detail/page";
     }
 
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("PromotionDetail") PromotionDetail promotionDetail, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
         promotionDetailService.update(promotionDetail, id);
         redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
-        return "redirect:/admin/promotion_detail/page";
+        return "redirect:/nova/promotion_detail/page";
 
     }
 }
