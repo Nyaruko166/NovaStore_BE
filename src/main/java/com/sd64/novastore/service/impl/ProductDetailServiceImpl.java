@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.dto.ProductDetailDto;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
@@ -48,14 +49,17 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public ProductDetail update(ProductDetail productDetail, Integer id) {
+    public ProductDetail update(Integer id, Integer productId, Integer quantity, Integer sizeId, Integer colorId) {
         Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(id);
         if (productDetailOptional.isPresent()) {
-            ProductDetail updateProductDetail = productDetailOptional.get();
-            productDetail.setId(updateProductDetail.getId());
-            productDetail.setStatus(updateProductDetail.getStatus());
-            productDetail.setCreateDate(updateProductDetail.getCreateDate());
+            ProductDetail productDetail = productDetailOptional.get();
+            productDetail.setId(productDetail.getId());
+            productDetail.setStatus(productDetail.getStatus());
+            productDetail.setCreateDate(productDetail.getCreateDate());
             productDetail.setUpdateDate(new Date());
+            productDetail.setProduct(Product.builder().id(productId).build());
+            productDetail.setColor(Color.builder().id(colorId).build());
+            productDetail.setSize(Size.builder().id(sizeId).build());
             return productDetailRepository.save(productDetail);
         }
         return null;
@@ -63,12 +67,13 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Override
     public ProductDetail delete(Integer id) {
-        Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(id);
-        return productDetailOptional.map(productDetail -> {
-            productDetail.setStatus(0);
-            productDetailRepository.save(productDetail);
-            return productDetail;
-        }).orElse(null);
+        Optional<ProductDetail> optional = productDetailRepository.findById(id);
+        if (optional.isPresent()) {
+            optional.get().setStatus(0);
+            return productDetailRepository.save(optional.get());
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -80,5 +85,11 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     public Page<ProductDetail> getProductDetailByProductId(int page, Integer productId) {
         Pageable pageable = PageRequest.of(page, 5);
         return productDetailRepository.getAllProductDetailByProduct_IdAndStatusOrderByUpdateDateDesc(pageable, productId, 1);
+    }
+
+    @Override
+    public Page<ProductDetailDto> getProductBySizeIdAndColorId(int page, Integer productId, Integer quantity, Integer sizeId, Integer colorId) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return productDetailRepository.getProductBySizeIdAndColorId(pageable, productId, quantity, sizeId, colorId);
     }
 }

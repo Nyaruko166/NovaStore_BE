@@ -3,35 +3,30 @@
       layout:decorate="~{admin/admin-layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Cart Detail </title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>PRODUCT DETAIL ADD</strong>
+                <strong>PRODUCT DETAIL UPDATE</strong>
             </div>
             <div class="card-body card-block">
-                <form id="productDetailAdd" th:object="${product}" class="form-horizontal">
-                    <div class="form-group row">
-<!--                        <label class="col-sm-2 col-form-label">Product name</label>-->
-                        <div class="col-sm-10">
-                            <input type="hidden" class="form-control" th:value="${product.id}" name="productId">
-                        </div>
-                    </div>
+                <form id="productDetailUpdate" th:object="${productDetail}" th:action="@{/nova/product-detail/update/{id}(id=${productDetail.id})}"
+                      method="post" class="form-horizontal" enctype="multipart/form-data">
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Product Name</label>
+                        <!--                        <label class="col-sm-2 col-form-label">Product name</label>-->
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" th:value="*{name}" disabled>
+                            <input type="hidden" class="form-control" th:value="*{product.id}" name="productId">
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Quantity</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="quantity">
+                            <input type="text" class="form-control" name="quantity" th:value="*{quantity}">
                         </div>
                     </div>
 
@@ -40,7 +35,7 @@
                         <div class="col-sm-10">
                             <select class="form-control" name="sizeId">
                                 <option th:value="${size.id}" th:each="size: ${listSize}"
-                                        th:text="${size.name}"></option>
+                                        th:text="${size.name}" th:selected="(*{size.id} == ${size.id})"></option>
                             </select>
                         </div>
                     </div>
@@ -50,17 +45,14 @@
                         <div class="col-sm-10">
                             <select class="form-control" name="colorId">
                                 <option th:value="${color.id}" th:each="color: ${listColor}"
-                                        th:text="${color.name}"></option>
+                                        th:text="${color.name}" th:selected="(*{color.id} == ${color.id})"></option>
                             </select>
                         </div>
                     </div>
-                    <div class="card-footer d-flex">
-                        <div>
-                            <button onclick="clickAdd('product-detail', 'productDetailAdd')" type="button" class="btn btn-success"><i
-                                    class="fa-solid fa-square-plus"></i>
-                                ADD
-                            </button>
-                        </div>
+                    <div class="card-footer">
+                        <button onclick="clickUpdate('productDetailUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
+                            UPDATE
+                        </button>
                     </div>
                 </form>
             </div>

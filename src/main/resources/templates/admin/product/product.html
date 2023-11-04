@@ -22,106 +22,109 @@
 
             <div class="card-body card-block">
                 <form id="productForm" class="form-horizontal">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Product name</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" th:name="productName" th:value="${productName}">
+                    <div class="card-footer d-flex">
+                        <div>
+                            <a href="/nova/product/view-add">
+                                <button type="button" class="btn btn-success"><i
+                                        class="fa-solid fa-square-plus"></i>
+                                    ADD
+                                </button>
+                            </a>
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Description</label>
-                        <div class="col-sm-10">
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>Product Name</label>
+                            <input type="text" class="form-control" th:name="productName" th:value="${productName}">
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Description</label>
                             <input type="text" class="form-control" th:name="description" th:value="${description}">
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Price Min</label>
-                        <div class="col-sm-10">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>Price Min</label>
                             <input type="number" class="form-control" th:name="priceMin" th:value="${priceMin == 0 ? '' : priceMin}">
                         </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Price Max</label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control"  th:name="priceMax" th:value="${priceMax == 2147483647 ? '' : priceMax}">
+                        <div class="form-group col-6">
+                            <label>Price Max</label>
+                            <input type="number" class="form-control" th:name="priceMax" th:value="${priceMax == 2147483647 ? '' : priceMax}">
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Material</label>
-                        <div th:if="${materialId} == null" class="col-sm-10">
-                            <select class="form-control" name="materialId">
-                                <option value="">Select option</option>
-                                <option th:value="${material.id}" th:each="material: ${listMaterial}"
-                                        th:text="${material.name}"></option>
-                            </select>
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Material</label>
+                            <div th:if="${materialId} == null">
+                                <select class="form-control" name="materialId">
+                                    <option value="">Select option</option>
+                                    <option th:value="${material.id}" th:each="material: ${listMaterial}"
+                                            th:text="${material.name}"></option>
+                                </select>
+                            </div>
+                            <div th:if="${materialId} != null">
+                                <select class="form-control" name="materialId">
+                                    <option value="">Select option</option>
+                                    <option th:value="${material.id}" th:each="material: ${listMaterial}"
+                                            th:text="${material.name}" th:selected="${materialId == material.id}"></option>
+                                </select>
+                            </div>
                         </div>
-                        <div th:if="${materialId} != null " class="col-sm-10">
-                            <select class="form-control" name="materialId">
-                                <option value="">Select option</option>
-                                <option th:value="${material.id}" th:each="material: ${listMaterial}"
-                                        th:text="${material.name}" th:selected="${materialId == material.id}"></option>
-                            </select>
+                        <div class="col-3">
+                            <label>Category</label>
+                            <div th:if="${categoryId} == null">
+                                <select class="form-control" name="categoryId">
+                                    <option value="">Select option</option>
+                                    <option th:value="${category.id}" th:each="category: ${listCategory}"
+                                            th:text="${category.name}"></option>
+                                </select>
+                            </div>
+                            <div th:if="${categoryId} != null">
+                                <select class="form-control" name="categoryId">
+                                    <option value="">Select option</option>
+                                    <option th:value="${category.id}" th:each="category: ${listCategory}"
+                                            th:text="${category.name}" th:selected="${categoryId == category.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label>Brand</label>
+                            <div th:if="${brandId} == null">
+                                <select class="form-control" name="brandId">
+                                    <option value="">Select option</option>
+                                    <option th:value="${brand.id}" th:each="brand: ${listBrand}"
+                                            th:text="${brand.name}"></option>
+                                </select>
+                            </div>
+                            <div th:if="${brandId} != null">
+                                <select class="form-control" name="brandId">
+                                    <option value="">Select option</option>
+                                    <option th:value="${brand.id}" th:each="brand: ${listBrand}"
+                                            th:text="${brand.name}" th:selected="${brandId == brand.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label >Form</label>
+                            <div th:if="${formId} == null">
+                                <select class="form-control" name="formId">
+                                    <option value="">Select option</option>
+                                    <option th:value="${form.id}" th:each="form: ${listForm}"
+                                            th:text="${form.name}"></option>
+                                </select>
+                            </div>
+                            <div th:if="${formId} != null">
+                                <select class="form-control" name="formId">
+                                    <option value="">Select option</option>
+                                    <option th:value="${form.id}" th:each="form: ${listForm}"
+                                            th:text="${form.name}" th:selected="${formId == form.id}"></option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Category</label>
-                        <div th:if="${categoryId} == null" class="col-sm-10">
-                            <select class="form-control" name="categoryId">
-                                <option value="">Select option</option>
-                                <option th:value="${category.id}" th:each="category: ${listCategory}"
-                                        th:text="${category.name}"></option>
-                            </select>
-                        </div>
-                        <div th:if="${categoryId} != null " class="col-sm-10">
-                            <select class="form-control" name="categoryId">
-                                <option value="">Select option</option>
-                                <option th:value="${category.id}" th:each="category: ${listCategory}"
-                                        th:text="${category.name}" th:selected="${categoryId == category.id}"></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Brand</label>
-                        <div th:if="${brandId} == null" class="col-sm-10">
-                            <select class="form-control" name="brandId">
-                                <option value="">Select option</option>
-                                <option th:value="${brand.id}" th:each="brand: ${listBrand}"
-                                        th:text="${brand.name}"></option>
-                            </select>
-                        </div>
-                        <div th:if="${brandId} != null " class="col-sm-10">
-                            <select class="form-control" name="brandId">
-                                <option value="">Select option</option>
-                                <option th:value="${brand.id}" th:each="brand: ${listBrand}"
-                                        th:text="${brand.name}" th:selected="${brandId == brand.id}"></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Form</label>
-                        <div th:if="${formId} == null" class="col-sm-10">
-                            <select class="form-control" name="formId">
-                                <option value="">Select option</option>
-                                <option th:value="${form.id}" th:each="form: ${listForm}"
-                                        th:text="${form.name}"></option>
-                            </select>
-                        </div>
-                        <div th:if="${formId} != null " class="col-sm-10">
-                            <select class="form-control" name="formId">
-                                <option value="">Select option</option>
-                                <option th:value="${form.id}" th:each="form: ${listForm}"
-                                        th:text="${form.name}" th:selected="${formId == form.id}"></option>
-                            </select>
-                        </div>
-                    </div>
-
+                    <br>
                     <div class="card-footer d-flex">
                         <div>
                             <button onclick="clickSearch('product', 'productForm')" type="button"
@@ -132,17 +135,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="card-footer d-flex">
-                        <div>
-                            <a href="/nova/product/view-add">
-                                <button type="button" class="btn btn-success"><i
-                                        class="fa-solid fa-square-plus"></i>
-                                    ADD
-                                </button>
-                            </a>
-                        </div>
 
-                    </div>
                 </form>
             </div>
         </div>
