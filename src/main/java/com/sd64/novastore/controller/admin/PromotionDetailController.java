@@ -1,5 +1,6 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
 import com.sd64.novastore.service.ProductService;
@@ -21,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/promotion_detail")
+@RequestMapping("/nova/promotion_detail")
 public class PromotionDetailController {
     @Autowired
     private PromotionDetailService promotionDetailService;
@@ -35,18 +36,25 @@ public class PromotionDetailController {
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable Integer id, Model model) {
         PromotionDetail promotionDetail = promotionDetailService.getOne(id);
-//        List<Promotion> promotionList = promotionService.getAll();
-//        List<Product> productList = productService.getAll();
         model.addAttribute("promotionDetail", promotionDetail);
-//        model.addAttribute("promotionList", promotionList);
-//        model.addAttribute("productList", productList);
+        List<Promotion> promotionList = promotionService.getAll();
+        List<Product> productList = productService.getAll();
+        model.addAttribute("promotionList", promotionList);
+        model.addAttribute("productList", productList);
         return "/admin/promotiondetail/promotiondetail-detail";
     }
 
     @GetMapping("/page")
     public String getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
         Page<PromotionDetail> page1 = promotionDetailService.getAllPT(page);
-        model.addAttribute("page", page1);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", page1.getTotalPages());
+        model.addAttribute("totalItems", page1.getTotalElements());
+        model.addAttribute("page", page1.getContent());
+        List<Promotion> promotionList = promotionService.getAll();
+        List<Product> productList = productService.getAll();
+        model.addAttribute("promotionList", promotionList);
+        model.addAttribute("productList", productList);
         return "/admin/promotiondetail/promotiondetail";
     }
 
@@ -54,22 +62,22 @@ public class PromotionDetailController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         promotionDetailService.delete(id);
         redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
-        return "redirect:/admin/promotion_detail/page";
+        return "redirect:/nova/promotion_detail/page";
     }
 
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("PromotionDetail") PromotionDetail promotionDetail, RedirectAttributes redirectAttributes) {
+    public String add( @ModelAttribute("PromotionDetail") PromotionDetail promotionDetail, RedirectAttributes redirectAttributes) {
         promotionDetailService.add(promotionDetail);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
-        return "redirect:/admin/promotion_detail/page";
+        return "redirect:/nova/promotion_detail/page";
     }
 
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("PromotionDetail") PromotionDetail promotionDetail, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
         promotionDetailService.update(promotionDetail, id);
         redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
-        return "redirect:/admin/promotion_detail/page";
+        return "redirect:/nova/promotion_detail/page";
 
     }
 }

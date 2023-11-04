@@ -54,7 +54,7 @@
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="phoneNumber" class=" form-control-label">PhoneNumber</label>
+                            <label for="phoneNumber" class=" form-control-label">Phone Number</label>
                         </div>
                         <div class="col-12 col-md-9">
                             <input type="text" id="phoneNumber" name="phoneNumber" class="form-control">
@@ -62,10 +62,22 @@
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="password" class=" form-control-label">Password</label>
+                            <label for="password" class="form-control-label">Password</label>
                         </div>
                         <div class="col-12 col-md-9">
                             <input type="password" id="password" name="password" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col col-md-3">
+                            <label class="form-control-label" for="roleId">Role</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select id="roleId" class="form-control" name="roleId">
+                                <option value="">Select option</option>
+                                <option th:value="${x.id}" th:each="x: ${lstRole}"
+                                        th:text="${x.name}"></option>
+                            </select>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -112,22 +124,21 @@
                 <table class="table text-center">
                     <thead class="thead-dark">
                     <tr>
-                        <th scope="col">Id</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Birthday</th>
                         <th scope="col">Email</th>
-                        <th scope="col">PhoneNumber</th>
+                        <th scope="col">Phone Number</th>
                         <th scope="col">Avatar</th>
                         <th scope="col">CreateDate</th>
                         <th scope="col">UpdateDate</th>
-                        <!--                        <th scope="col">Role Name</th>-->
                         <th scope="col">Function</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="items:${pageAccount}">
-                        <td th:text="${items.id}"></td>
                         <td th:text="${items.name}"></td>
+                        <td th:text="${items.role.name}"></td>
                         <td th:text="${#dates.format(items.birthday, 'dd-MM-yyyy')}"></td>
                         <td th:text="${items.email}"></td>
                         <td th:text="${items.phoneNumber}"></td>

@@ -3,6 +3,7 @@ package com.sd64.novastore.service.impl;
 import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Material;
 import com.sd64.novastore.model.Promotion;
+import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.repository.PromotionRepository;
 import com.sd64.novastore.request.PromotionRequest;
 import com.sd64.novastore.service.PromotionService;
@@ -21,34 +22,35 @@ public class PromotionServiceImpl implements PromotionService {
     @Autowired
     private PromotionRepository promotionRepository;
 
+
     @Override
     public List<Promotion> getAll() {
-        return promotionRepository.findAllByAndStatusOrderByIdDesc(1);
+        return promotionRepository.findAllByStatusOrderByIdDesc(1);
     }
 
     @Override
-    public Page<Promotion> getPage(Integer page) {
+    public Page<Promotion> getAllPT(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return promotionRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
+        return promotionRepository.findAllByStatusOrderByIdDesc(pageable, 1);
     }
 
     @Override
     public Promotion add(Promotion promotion) {
+        promotion.setCreateDate(new Date());
+        promotion.setUpdateDate(new Date());
         promotion.setStatus(1);
-        promotion.setCreateDate(new java.util.Date());
-        promotion.setUpdateDate(new java.util.Date());
         return promotionRepository.save(promotion);
     }
 
     @Override
     public Promotion update(Promotion promotion, Integer id) {
         Optional<Promotion> optional = promotionRepository.findById(id);
-        if (optional.isPresent()) {
-            Promotion updatePromotion = optional.get();
-            promotion.setId(id);
-            promotion.setStatus(updatePromotion.getStatus());
-            promotion.setCreateDate(updatePromotion.getCreateDate());
+        if (optional.isPresent()){
+            Promotion oldPromotion = optional.get();
+            promotion.setId(oldPromotion.getId());
+            promotion.setCreateDate(oldPromotion.getCreateDate());
             promotion.setUpdateDate(new Date());
+            promotion.setStatus(oldPromotion.getStatus());
             return promotionRepository.save(promotion);
         } else {
             return null;
@@ -58,7 +60,7 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public Promotion delete(Integer id) {
         Optional<Promotion> optional = promotionRepository.findById(id);
-        if (optional.isPresent()) {
+        if (optional.isPresent()){
             Promotion promotion = optional.get();
             promotion.setStatus(0);
             return promotionRepository.save(promotion);
@@ -68,18 +70,7 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public Page<Promotion> search(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return promotionRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
-    }
-
-    @Override
-    public Promotion detail(Integer id) {
-        Optional<Promotion> optional = promotionRepository.findById(id);
-        if (optional.isPresent()) {
-            return optional.get();
-        } else {
-            return null;
-        }
+    public Promotion getOne(Integer id) {
+        return promotionRepository.findById(id).orElse(null);
     }
 }

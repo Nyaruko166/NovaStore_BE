@@ -3,14 +3,14 @@
       layout:decorate="~{admin/admin-layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Promotion detail Management</title>
+    <title>Voucher Detail Management</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>Promotion detail</strong>
+                <strong>Voucher Detail</strong>
             </div>
             <!--            Notification-->
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
@@ -21,47 +21,57 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form action="/nova/promotion_detail/add" method="post" class="form-horizontal"
+                <form action="/nova/voucher_detail/add" method="post" class="form-horizontal"
                       enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="name" class=" form-control-label">Name</label>
+                            <label for="price" class=" form-control-label">Price</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="name" name="name" class="form-control">
+                            <input type="text" id="price" name="price" class="form-control">
                         </div>
                     </div>
 
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label class=" form-control-label">Product Name</label>
+                            <label for="priceAfter" class=" form-control-label">PriceAfter</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <select class="form-control"  name="product">
-                                <option th:each="x : ${productList}" th:value="${x.id}" th:text="${x.name}"></option>
+                            <input type="text" id="priceAfter" name="priceAfter" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label class=" form-control-label">Voucher Name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select class="form-control" name="voucher">
+                                <option th:each="x : ${voucherList}" th:value="${x.id}" th:text="${x.name}"></option>
                             </select>
                         </div>
                     </div>
 
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label class=" form-control-label">Promotion Name</label>
+                            <label class=" form-control-label">Bill Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <select class="form-control"  name="promotion">
-                                <option th:each="x : ${promotionList}" th:value="${x.id}" th:text="${x.name}"></option>
+                            <select class="form-control" name="bill">
+                                <option th:each="x : ${billList}" th:value="${x.id}"
+                                        th:text="${x.customerName}"></option>
                             </select>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a th:href="@{/nova/promotion/page}">
+                        <a th:href="@{/nova/voucher/page}">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
-                                Change Promotion
+                                Change Voucher
                             </button>
                         </a>
-                        <a th:href="@{/nova/product/page}">
+                        <a th:href="@{/nova/bill/page}">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
-                                Change Product
+                                Change Bill
                             </button>
                         </a>
                     </div>
@@ -70,7 +80,7 @@
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
                             Add
                         </button>
-                        <a href="/nova/promotion_detail/page">
+                        <a href="/admin/voucher_detail/page">
                             <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
                                 Cancel
                             </button>
@@ -95,32 +105,32 @@
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Promotion Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Price After</th>
                         <th scope="col">Create Date</th>
                         <th scope="col">Update Date</th>
-                        <!--                        <th scope="col">Account Name</th>-->
+                        <th scope="col">Voucher Name</th>
+                        <th scope="col">Bill Name</th>
                         <th scope="col">Function</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="items:${page}">
                         <td th:text="${items.id}"></td>
-                        <td th:text="${items.name}"></td>
-                        <td th:text="${items.product.name}"></td>
-                        <td th:text="${items.promotion.name}"></td>
+                        <td th:text="${items.price}"></td>
+                        <td th:text="${items.priceAfter}"></td>
                         <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                         <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                        <!--                        <td th:text="${items.role.name}"></td>-->
+                        <td th:text="${items.voucher.name}"></td>
+                        <td th:text="${items.bill.customerName}"></td>
                         <td class="d-flex justify-content-center">
                             <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/promotion_detail/detail/' + ${items.id}}">
+                                <a th:href="@{'/nova/voucher_detail/detail/' + ${items.id}}">
                                     <button type="button" class="btn btn-warning">Detail</button>
                                 </a>
                             </div>
                             <div>
-                                <form th:action="@{'/nova/promotion_detail/delete/' + ${items.id}}" th:method="post">
+                                <form th:action="@{'/nova/voucher_detail/delete/' + ${items.id}}" th:method="post">
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </div>

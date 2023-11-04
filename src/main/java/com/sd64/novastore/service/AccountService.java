@@ -12,9 +12,9 @@ public interface AccountService {
 
     Page<Account> getAllPT(Integer page);
 
-    Account add(Account account, MultipartFile avt);
+    Account add(Account account, MultipartFile avt, Integer roleId);
 
-    Account update(Account account, MultipartFile avt, Integer id);
+    Account update(Account account, MultipartFile avt, Integer roleId, Integer id);
 
     Account delete(Integer id);
 

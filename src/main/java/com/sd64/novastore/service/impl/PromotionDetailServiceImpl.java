@@ -3,7 +3,9 @@ package com.sd64.novastore.service.impl;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
+import com.sd64.novastore.repository.ProductRepository;
 import com.sd64.novastore.repository.PromotionDetailRepository;
+import com.sd64.novastore.repository.PromotionRepository;
 import com.sd64.novastore.service.PromotionDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +21,6 @@ import java.util.Optional;
 public class PromotionDetailServiceImpl implements PromotionDetailService {
     @Autowired
     private PromotionDetailRepository promotionDetailRepository;
-
     @Override
     public List<PromotionDetail> getAllPromotionDetail() {
         return promotionDetailRepository.findAllByAndStatusOrderByIdDesc(1);

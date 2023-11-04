@@ -20,12 +20,6 @@ public class PromotionDetail {
     @Column(name = "Id")
     private Integer id;
 
-    @Column(name = "Price")
-    private BigDecimal price;
-
-    @Column(name = "PriceAfter")
-    private BigDecimal priceAfter;
-
     @Column(name = "Name")
     private String name;
 
