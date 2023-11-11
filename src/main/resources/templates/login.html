@@ -15,7 +15,10 @@
 <body>
 <section class="container">
     <div th:if="${param.logout}" class="alert alert-success">
-        You have been logged out.
+        Bạn đã đăng xuất.
+    </div>
+    <div th:if="${param.error}" class="alert alert-warning">
+        Email hoặc mật khẩu không khớp!!
     </div>
 </section>
 <div class="login-page">
