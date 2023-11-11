@@ -1,22 +1,23 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.dto.Impl.ProductDetailDtoImpl;
 import com.sd64.novastore.dto.ProductDetailDto;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Size;
 import com.sd64.novastore.repository.ProductDetailRepository;
+import com.sd64.novastore.response.ProductDetailSearchResponse;
 import com.sd64.novastore.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductDetailServiceImpl implements ProductDetailService {
@@ -53,9 +54,10 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(id);
         if (productDetailOptional.isPresent()) {
             ProductDetail productDetail = productDetailOptional.get();
-            productDetail.setId(productDetail.getId());
+            productDetail.setId(id);
             productDetail.setStatus(productDetail.getStatus());
             productDetail.setCreateDate(productDetail.getCreateDate());
+            productDetail.setQuantity(quantity);
             productDetail.setUpdateDate(new Date());
             productDetail.setProduct(Product.builder().id(productId).build());
             productDetail.setColor(Color.builder().id(colorId).build());
@@ -88,8 +90,34 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public Page<ProductDetailDto> getProductBySizeIdAndColorId(int page, Integer productId, Integer quantity, Integer sizeId, Integer colorId) {
+    public Page<ProductDetailSearchResponse> getProductBySizeIdAndColorId(int page, Integer productId, Integer sizeId, Integer colorId) {
         Pageable pageable = PageRequest.of(page, 5);
-        return productDetailRepository.getProductBySizeIdAndColorId(pageable, productId, quantity, sizeId, colorId);
+
+        var pageProductDetailDto = productDetailRepository.getProductBySizeIdAndColorId(productId, sizeId, colorId, pageable)
+                .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
+        long totalElements = productDetailRepository.getProductBySizeIdAndColorId(productId, sizeId, colorId).stream().count();
+        return new PageImpl(pageProductDetailDto, pageable, totalElements);
+    }
+
+    public int calculateTotalPages(int totalElemets, int elementsPerpage) {
+        int totalPage = totalElemets / elementsPerpage;
+        if (totalElemets % elementsPerpage != 0) {
+            totalPage++;
+        }
+        return totalPage;
+    }
+
+    @Override
+    public int getTotalPage(int page, Integer productId, Integer sizeId, Integer colorId) {
+        Pageable pageable = PageRequest.of(page, 5);
+        var pageProductDetailDto = productDetailRepository.getProductBySizeIdAndColorId(productId, sizeId, colorId, pageable)
+                .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
+        int totalElemets = pageProductDetailDto.size();
+        int elementsPerpage = 5;
+        int totalPage = totalElemets / elementsPerpage;
+        if (totalElemets % elementsPerpage != 0) {
+            totalPage++;
+        }
+        return totalPage;
     }
 }

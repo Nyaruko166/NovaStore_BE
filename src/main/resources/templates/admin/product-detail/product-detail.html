@@ -31,6 +31,11 @@
                                     ADD
                                 </button>
                             </a>
+                            <a href="/nova/product/page">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO PRODUCT
+                                </button>
+                            </a>
                         </div>
                     </div>
                     <br>
@@ -42,45 +47,74 @@
                             <label>Product Name</label>
                             <input type="text" class="form-control" th:value="*{name}" disabled>
                         </div>
-                        <div class="form-group col-6">
-                            <label>Quantity</label>
-                            <input type="number" class="form-control" name="quantity" th:value="${quantity}">
-                        </div>
+
                     </div>
 
                     <div class="row">
                         <div class="col-6">
                             <label>Size</label>
-                            <div th:if="${sizeId == null}">
-                                <select class="form-control" name="sizeId">
-                                    <option th:value="null">Select option</option>
-                                    <option th:value="${size.id}" th:each="size: ${listSize}"
-                                            th:text="${size.name}"></option>
-                                </select>
+                            <div th:if="${sizeId == null}" class="d-flex w-100 justify-content-between">
+                                <div class="w-90">
+                                    <select class="form-control" name="sizeId">
+                                        <option th:value="null">Select option</option>
+                                        <option th:value="${size.id}" th:each="size: ${listSize}"
+                                                th:text="${size.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-10 d-flex justify-content-end">
+                                    <a href="/nova/size/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
-                            <div th:if="${sizeId != null}">
-                                <select class="form-control" name="sizeId">
-                                    <option th:value="null">Select option</option>
-                                    <option th:value="${size.id}" th:each="size: ${listSize}"
-                                            th:text="${size.name}" th:selected="${sizeId == size.id}"></option>
-                                </select>
+                            <div th:if="${sizeId != null}" class="d-flex w-100 justify-content-between">
+                                <div class="w-90">
+                                    <select class="form-control" name="sizeId">
+                                        <option th:value="null">Select option</option>
+                                        <option th:value="${size.id}" th:each="size: ${listSize}"
+                                                th:text="${size.name}" th:selected="${sizeId == size.id}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-10 d-flex justify-content-end">
+                                    <a href="/nova/size/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <label>Color</label>
-                            <div th:if="${colorId == null}">
-                                <select class="form-control" name="colorId">
-                                    <option th:value="null">Select option</option>
-                                    <option th:value="${color.id}" th:each="color: ${listColor}"
-                                            th:text="${color.name}"></option>
-                                </select>
+                            <div th:if="${colorId == null}" class="d-flex w-100 justify-content-between">
+                                <div class="w-90">
+                                    <select class="form-control" name="colorId">
+                                        <option th:value="null">Select option</option>
+                                        <option th:value="${color.id}" th:each="color: ${listColor}"
+                                                th:text="${color.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-10 d-flex justify-content-end">
+                                    <a href="/nova/color/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
-                            <div th:if="${colorId != null}">
-                                <select class="form-control" name="colorId">
-                                    <option th:value="null">Select option</option>
-                                    <option th:value="${color.id}" th:each="color: ${listColor}"
-                                            th:text="${color.name}" th:selected="${colorId == color.id}"></option>
-                                </select>
+                            <div th:if="${colorId != null}" class="d-flex w-100 justify-content-between">
+                                <div class="w-90">
+                                    <select class="form-control" name="colorId">
+                                        <option th:value="null">Select option</option>
+                                        <option th:value="${color.id}" th:each="color: ${listColor}"
+                                                th:text="${color.name}" th:selected="${colorId == color.id}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-10 d-flex justify-content-end">
+                                    <a href="/nova/color/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -103,82 +137,89 @@
     </h1>
     <div class="col">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Data Record</strong>
+            <div class="card-header" th:if="${pageProductDetail.isEmpty()}">
+                <strong class="card-title">NOT FOUND ANY RECORD</strong>
             </div>
-            <div class="card-body">
-                <table class="table text-center">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Size</th>
-                        <th scope="col">Color</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Function</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="items:${pageProductDetail}">
-                        <td th:text="${items.id + 'qưeqwe'}"></td>
-                        <td th:text="${items.quantity}"></td>
-                        <td th:text="${items.size.name}"></td>
-                        <td th:text="${items.color.name}"></td>
-                        <td>
-                            <a th:href="@{'/nova/image/' + ${items.id}}">
-                                <button type="button" class="btn btn-primary"><i class="fa-solid fa-image mr-1"></i>IMAGE
-                                </button>
-                            </a>
-                        </td>
-                        <td class="d-flex justify-content-center">
-                            <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/product-detail/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-info">
-                                        <i class="fa-solid fa-pen mr-1"></i>UPDATE
-                                    </button>
-                                </a>
-                            </div>
-                            <div>
-                                <form id="productDetailDelete"
-                                      th:action="@{'/nova/product-detail/delete/' + ${items.id}}"
-                                      th:method="post">
-                                    <button onclick="clickDelete('productDetailDelete')" type="button"
-                                            class="btn btn-danger">
-                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div th:if="${not pageProductDetail.isEmpty()}">
+                <div class="card-header">
+                    <strong>FOUND</strong>
+                    <strong class="card-title" th:text="${pageProductDetail.getTotalElements()}"></strong>
+                    <strong class="card-title"> RECORD</strong>
+                </div>
+                <div class="card-body">
+                    <form id="productDetailDelete">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Function</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pageProductDetail}">
+                                <td th:text="${items.id}"></td>
+                                <td th:text="${items.quantity}"></td>
+                                <td th:text="${items.sizeName}"></td>
+                                <td th:text="${items.colorName}"></td>
+                                <td>
+                                    <a th:href="@{'/nova/product-detail/' + ${items.id} + '/image'}">
+                                        <button type="button" class="btn btn-primary"><i
+                                                class="fa-solid fa-image mr-1"></i>IMAGE
+                                        </button>
+                                    </a>
+                                </td>
+                                <td class="d-flex justify-content-center">
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/product-detail/detail/' + ${items.id}}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <button th:onclick="clickDelete('product-detail', 'productDetailDelete', [[${items.id}]])"
+                                                type="button" class="btn btn-danger">
+                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
 
-                <!--            Pagination-->
-                <!--                <div class="d-flex justify-content-center align-items-center">-->
-                <!--                    <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-dark mr-1">-->
-                <!--                        <a th:href="@{|?page=0&productName=${productName}&materialId=${materialId}&categoryId=${categoryId}&brandId=${brandId}&formId=${formId}|}">-->
-                <!--                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>-->
-                <!--                    </div>-->
-                <!--                    <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-dark mr-1">-->
-                <!--                        <a th:href="@{|?page=${pageProduct.getNumber() - 1}&productName=${productName}&materialId=${materialId}&categoryId=${categoryId}&brandId=${brandId}&formId=${formId}|}">-->
-                <!--                            <i style="color: white" class="fa-solid fa-left-long"></i></a>-->
-                <!--                    </div>-->
-                <!--                    <div class="btn btn-dark d-flex">-->
-                <!--                        <div th:text="${pageProduct.getNumber() + 1}"></div>-->
-                <!--                        <span>/</span>-->
-                <!--                        <div th:text="${pageProduct.getTotalPages()}"></div>-->
-                <!--                    </div>-->
-                <!--                    <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}"-->
-                <!--                         class="btn btn-dark ml-1">-->
-                <!--                        <a th:href="@{|?page=${pageProduct.getNumber()+1}&productName=${productName}&materialId=${materialId}&categoryId=${categoryId}&brandId=${brandId}&formId=${formId}|}">-->
-                <!--                            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>-->
-                <!--                    </div>-->
-                <!--                    <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}"-->
-                <!--                         class="btn btn-dark ml-1">-->
-                <!--                        <a th:href="@{|?page=${pageProduct.getTotalPages()-1}&productName=${productName}&materialId=${materialId}&categoryId=${categoryId}&brandId=${brandId}&formId=${formId}|}">-->
-                <!--                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>-->
-                <!--                    </div>-->
-                <!--                </div>-->
+                    <!--                                Pagination-->
+                    <div class="d-flex justify-content-center align-items-center">
+<!--                        <p th:text="${pageProductDetail.getNumber()}"></p>-->
+                        <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageProductDetail.getNumber() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-dark d-flex">
+                            <div th:text="${pageProductDetail.getNumber() + 1}"></div>
+                            <span>/</span>
+                            <div th:text="${pageProductDetail.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageProductDetail.getNumber()+1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageProductDetail.getTotalPages() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -18,5 +18,5 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     Page<Category> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
     Page<Category> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 
-
+    Category findByName(String name);
 }

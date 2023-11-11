@@ -3,7 +3,9 @@ package com.sd64.novastore.service;
 import com.sd64.novastore.dto.ProductDto;
 import com.sd64.novastore.model.Product;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -23,4 +25,6 @@ public interface ProductService {
     Product getOne(Integer id);
 
     Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, BigDecimal priceMin, BigDecimal priceMax, int page);
+
+    Boolean importExcelProduct(MultipartFile file) throws IOException;
 }

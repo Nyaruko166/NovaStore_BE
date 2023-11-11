@@ -34,6 +34,11 @@
                                     class="fa-solid fa-square-plus"></i>
                                 ADD
                             </button>
+                            <a href="/nova/product/page">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO PRODUCT
+                                </button>
+                            </a>
                         </div>
                     </div>
                     <br>
@@ -59,70 +64,76 @@
     </h1>
     <div class="col">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Data Record</strong>
+            <div class="card-header" th:if="${pageBrand.isEmpty()}">
+                <strong class="card-title">NOT FOUND ANY RECORD</strong>
             </div>
-            <div class="card-body">
-                <table class="table text-center">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Function</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="items:${pageBrand}">
-                        <td th:text="${items.id}"></td>
-                        <td th:text="${items.name}"></td>
-                        <td class="d-flex justify-content-center">
-                            <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/brand/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-info">
-                                        <i class="fa-solid fa-pen mr-1"></i>UPDATE
-                                    </button>
-                                </a>
-                            </div>
-                            <div>
-                                <form id="brandDelete" th:action="@{'/nova/brand/delete/' + ${items.id}}"
-                                      th:method="post">
-                                    <button onclick="clickDelete('brandDelete')" type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div th:if="${not pageBrand.isEmpty()}">
+                <div class="card-header">
+                    <strong>FOUND</strong>
+                    <strong class="card-title" th:text="${pageBrand.getTotalElements()}"></strong>
+                    <strong class="card-title"> RECORD</strong>
+                </div>
+                <div class="card-body">
+                    <form id="brandDelete">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Function</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pageBrand}">
+                                <td th:text="${items.id}"></td>
+                                <td th:text="${items.name}"></td>
+                                <td class="d-flex justify-content-center">
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/brand/detail/' + ${items.id}}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <button th:onclick="clickDelete('brand', 'brandDelete', [[${items.id}]])"
+                                                type="button" class="btn btn-danger">
+                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
 
-                <!--            Pagination-->
-                <div class="d-flex justify-content-center align-items-center">
-                    <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=0&brandNameSearch=${brandNameSearch}|}">
-                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
-                    </div>
-                    <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=${pageBrand.getNumber() - 1}&brandNameSearch=${brandNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-left-long"></i></a>
-                    </div>
-                    <div class="btn btn-dark d-flex">
-                        <div th:text="${pageBrand.getNumber() + 1}"></div>
-                        <span>/</span>
-                        <div th:text="${pageBrand.getTotalPages()}"></div>
-                    </div>
-                    <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}" class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pageBrand.getNumber()+1}&brandNameSearch=${brandNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
-                    </div>
-                    <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}" class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pageBrand.getTotalPages()-1}&brandNameSearch=${brandNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+
+                    <!--            Pagination-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0&brandNameSearch=${brandNameSearch}|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageBrand.getNumber() - 1}&brandNameSearch=${brandNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-dark d-flex">
+                            <div th:text="${pageBrand.getNumber() + 1}"></div>
+                            <span>/</span>
+                            <div th:text="${pageBrand.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}" class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageBrand.getNumber()+1}&brandNameSearch=${brandNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}" class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageBrand.getTotalPages()-1}&brandNameSearch=${brandNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>

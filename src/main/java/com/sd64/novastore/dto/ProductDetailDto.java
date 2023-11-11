@@ -10,7 +10,4 @@ public interface ProductDetailDto {
 
     String getColorName();
 
-    Integer getImageId();
-
-
 }

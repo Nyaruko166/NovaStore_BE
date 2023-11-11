@@ -31,16 +31,23 @@
                     <br>
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickAdd('material', 'materialForm')" type="button" class="btn btn-success"><i
+                            <button onclick="clickAdd('material', 'materialForm')" type="button"
+                                    class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
                                 ADD
                             </button>
+                            <a href="/nova/product/page">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO PRODUCT
+                                </button>
+                            </a>
                         </div>
                     </div>
                     <br>
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickSearch('material', 'materialForm')" type="button" class="btn btn-secondary">
+                            <button onclick="clickSearch('material', 'materialForm')" type="button"
+                                    class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 SEARCH
                             </button>
@@ -59,65 +66,75 @@
     </h1>
     <div class="col">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Data Record</strong>
+            <div class="card-header" th:if="${pageMaterial.isEmpty()}">
+                <strong class="card-title">NOT FOUND ANY RECORD</strong>
             </div>
-            <div class="card-body">
-                <table class="table text-center">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Function</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="items:${pageMaterial}">
-                        <td th:text="${items.id}"></td>
-                        <td th:text="${items.name}"></td>
-                        <td class="d-flex justify-content-center">
-                            <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/material/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-info">
-                                        <i class="fa-solid fa-pen mr-1"></i>UPDATE
-                                    </button>
-                                </a>
-                            </div>
-                            <div>
-                                <form id="materialDelete" th:action="@{'/nova/material/delete/' + ${items.id}}"
-                                      th:method="post">
-                                    <button onclick="clickDelete('materialDelete')" type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div th:if="${not pageMaterial.isEmpty()}">
+                <div class="card-header">
+                    <strong>FOUND</strong>
+                    <strong class="card-title" th:text="${pageMaterial.getTotalElements()}"></strong>
+                    <strong class="card-title"> RECORD</strong>
+                </div>
+                <div class="card-body">
+                    <form id="materialDelete">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Function</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pageMaterial}">
+                                <td th:text="${items.id}"></td>
+                                <td th:text="${items.name}"></td>
+                                <td class="d-flex justify-content-center">
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/material/detail/' + ${items.id}}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <button th:onclick="clickDelete('material', 'materialDelete', [[${items.id}]])"
+                                                type="button" class="btn btn-danger">
+                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
 
-                <!--            Pagination-->
-                <div class="d-flex justify-content-center align-items-center">
-                    <div th:if="${pageMaterial.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=0&materialNameSearch=${materialNameSearch}|}">
-                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
-                    </div>
-                    <div th:if="${pageMaterial.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=${pageMaterial.getNumber() - 1}&materialNameSearch=${materialNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-left-long"></i></a>
-                    </div>
-                    <div class="btn btn-dark d-flex">
-                        <div th:text="${pageMaterial.getNumber() + 1}"></div>
-                        <span>/</span>
-                        <div th:text="${pageMaterial.getTotalPages()}"></div>
-                    </div>
-                    <div th:if="${pageMaterial.getNumber() + 1 lt pageMaterial.getTotalPages()}" class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pageMaterial.getNumber()+1}&materialNameSearch=${materialNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
-                    </div>
-                    <div th:if="${pageMaterial.getNumber() + 1 lt pageMaterial.getTotalPages()}" class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pageMaterial.getTotalPages()-1}&materialNameSearch=${materialNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+
+                    <!--            Pagination-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div th:if="${pageMaterial.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0&materialNameSearch=${materialNameSearch}|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pageMaterial.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageMaterial.getNumber() - 1}&materialNameSearch=${materialNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-dark d-flex">
+                            <div th:text="${pageMaterial.getNumber() + 1}"></div>
+                            <span>/</span>
+                            <div th:text="${pageMaterial.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pageMaterial.getNumber() + 1 lt pageMaterial.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageMaterial.getNumber()+1}&materialNameSearch=${materialNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pageMaterial.getNumber() + 1 lt pageMaterial.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageMaterial.getTotalPages()-1}&materialNameSearch=${materialNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>

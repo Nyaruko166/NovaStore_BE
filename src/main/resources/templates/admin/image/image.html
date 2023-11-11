@@ -21,7 +21,7 @@
             </div>
             <div class="card-body card-block">
                 <form id="imageForm" th:object="${productDetail}" class="form-horizontal" enctype="multipart/form-data">
-                    <input type="number" class="form-control" name="productDetailId" th:value="*{id}">
+                    <input type="hidden" class="form-control" name="productDetailId" th:value="*{id}">
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="importFileProduct" class=" form-control-label">Image</label>
@@ -35,9 +35,8 @@
                                     <label class="custom-file-label" for="importFileProduct">Choose
                                         Image</label>
                                 </div>
-
                                 <script th:inline="javascript">
-                                    document.querySelector("#importFileProduct").addEventListener("change", function(event) {
+                                    document.querySelector("#importFileProduct").addEventListener("change", function (event) {
                                         uploadFile(event);
                                     });
                                 </script>
@@ -52,22 +51,14 @@
                                     class="fa-solid fa-square-plus"></i>
                                 ADD
                             </button>
+                            <a th:href="@{'/nova/product-detail/' + *{product.id}}">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO PRODUCT DETAIL
+                                </button>
+                            </a>
                         </div>
                     </div>
                     <br>
-                    <div class="card-footer d-flex">
-                        <div>
-                            <button onclick="clickSearch('form', 'formForm')" type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                SEARCH
-                            </button>
-                        </div>
-<!--                        <div class="col-12 col-md-9">-->
-<!--                            <input type="text" placeholder="Search by name..."-->
-<!--                                   th:value="${formNameSearch}" th:name="formNameSearch"-->
-<!--                                   class="form-control">-->
-<!--                        </div>-->
-                    </div>
                 </form>
             </div>
         </div>
@@ -76,70 +67,79 @@
     </h1>
     <div class="col">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Data Record</strong>
+            <div class="card-header" th:if="${pageImage.isEmpty()}">
+                <strong class="card-title">NOT FOUND ANY RECORD</strong>
             </div>
-            <div class="card-body">
-                <table class="table text-center">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Function</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="items:${pageImage}">
-                        <td th:text="${items.id}"></td>
-                        <td>
-                            <img th:src="@{'/image/' + ${items.id}}" alt=""
-                                 style="width: 75px;height: 75px">
-                        </td>
-                        <td class="d-flex justify-content-center">
-                            <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/image/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-info">
-                                        <i class="fa-solid fa-pen mr-1"></i>UPDATE
-                                    </button>
-                                </a>
-                            </div>
-                            <div>
-                                <form id="formDelete" th:action="@{'/nova/image/delete/' + ${items.id}}"
-                                      th:method="post">
-                                    <button onclick="clickDelete('formDelete')" type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div th:if="${not pageImage.isEmpty()}">
+                <div class="card-header">
+                    <strong>FOUND</strong>
+                    <strong class="card-title" th:text="${pageImage.getTotalElements()}"></strong>
+                    <strong class="card-title"> RECORD</strong>
+                </div>
+                <div class="card-body">
+                    <form id="imageDelete">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Function</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pageImage}">
+                                <td th:text="${items.id}"></td>
+                                <td>
+                                    <img th:src="@{'/image/' + ${items.id}}" alt=""
+                                         style="width: 75px;height: 75px">
+                                </td>
+                                <td class="d-flex justify-content-center">
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/image/detail/' + ${items.id}}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <button th:onclick="clickDelete('image', 'imageDelete', [[${items.id}]])"
+                                                type="button" class="btn btn-danger">
+                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
 
-                <!--            Pagination-->
-<!--                <div class="d-flex justify-content-center align-items-center">-->
-<!--                    <div th:if="${pageForm.getNumber() + 1 > 1}" class="btn btn-dark mr-1">-->
-<!--                        <a th:href="@{|?page=0&formNameSearch=${formNameSearch}|}">-->
-<!--                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>-->
-<!--                    </div>-->
-<!--                    <div th:if="${pageForm.getNumber() + 1 > 1}" class="btn btn-dark mr-1">-->
-<!--                        <a th:href="@{|?page=${pageForm.getNumber() - 1}&formNameSearch=${formNameSearch}|}">-->
-<!--                            <i style="color: white" class="fa-solid fa-left-long"></i></a>-->
-<!--                    </div>-->
-<!--                    <div class="btn btn-dark d-flex">-->
-<!--                        <div th:text="${pageForm.getNumber() + 1}"></div>-->
-<!--                        <span>/</span>-->
-<!--                        <div th:text="${pageForm.getTotalPages()}"></div>-->
-<!--                    </div>-->
-<!--                    <div th:if="${pageForm.getNumber() + 1 lt pageForm.getTotalPages()}" class="btn btn-dark ml-1">-->
-<!--                        <a th:href="@{|?page=${pageForm.getNumber()+1}&formNameSearch=${formNameSearch}|}">-->
-<!--                            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>-->
-<!--                    </div>-->
-<!--                    <div th:if="${pageForm.getNumber() + 1 lt pageForm.getTotalPages()}" class="btn btn-dark ml-1">-->
-<!--                        <a th:href="@{|?page=${pageForm.getTotalPages()-1}&formNameSearch=${formNameSearch}|}">-->
-<!--                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>-->
-<!--                    </div>-->
-<!--                </div>-->
+                    <!--            Pagination-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div th:if="${pageImage.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pageImage.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageImage.getNumber() - 1}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-dark d-flex">
+                            <div th:text="${pageImage.getNumber() + 1}"></div>
+                            <span>/</span>
+                            <div th:text="${pageImage.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pageImage.getNumber() + 1 lt pageImage.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageImage.getNumber()+1}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pageImage.getNumber() + 1 lt pageImage.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageImage.getTotalPages()-1}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

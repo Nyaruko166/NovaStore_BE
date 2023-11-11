@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/nova/image")
+@RequestMapping("/nova")
 public class ImageController {
     @Autowired
     private ImageService imageService;
@@ -32,7 +32,7 @@ public class ImageController {
 //        return "admin/image/image";
 //    }
 
-    @GetMapping("/{productDetailId}")
+    @GetMapping("/product-detail/{productDetailId}/image")
     public String getImage(@PathVariable Integer productDetailId,
                            Model model,
                            @RequestParam(defaultValue = "0") int page) {
@@ -44,13 +44,37 @@ public class ImageController {
         return "admin/image/image";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/image/add")
     public String add(@RequestParam(required = false) Integer productDetailId,
                       @RequestParam List<MultipartFile> images,
                       RedirectAttributes redirectAttributes) {
         imageService.add(productDetailId, images);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
-        return "redirect:/nova/image/" + productDetailId;
+        return "redirect:/nova/product-detail/" + productDetailId + "/image";
     }
 
+    @PostMapping("/image/update/{id}")
+    public String update(@PathVariable Integer id,
+                         @RequestParam(required = false) Integer productDetailId,
+                         @RequestParam MultipartFile image,
+                         RedirectAttributes redirectAttributes) {
+        imageService.update(id, productDetailId, image);
+        redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
+        return "redirect:/nova/product-detail/" + productDetailId + "/image";
+    }
+
+    @GetMapping("/image/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        Image image = imageService.detail(id);
+        model.addAttribute("imageDetail", image);
+        return "admin/image/image-detail";
+    }
+
+    @PostMapping("/image/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        Integer productDetailId = imageService.getProductDetailByIdImage(id);
+        imageService.delete(id);
+        redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
+        return "redirect:/nova/product-detail/" + productDetailId + "/image";
+    }
 }

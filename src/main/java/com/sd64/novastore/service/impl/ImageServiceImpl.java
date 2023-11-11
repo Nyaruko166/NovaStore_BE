@@ -3,6 +3,7 @@ package com.sd64.novastore.service.impl;
 import com.sd64.novastore.model.Image;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.repository.ImageRepository;
+import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.service.ImageService;
 import com.sd64.novastore.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,9 @@ import java.util.Optional;
 public class ImageServiceImpl implements ImageService {
     @Autowired
     private ImageRepository imageRepository;
+
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
 
     @Override
     public List<Image> getAll(){
@@ -63,29 +67,39 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image update(Image image, Integer id) {
+    public void update(Integer id, Integer productDetailId, MultipartFile image) {
         Optional<Image> optional = imageRepository.findById(id);
         if (optional.isPresent()) {
+            String uploadDir = "./src/main/resources/static/assets/product/";
+            String fileName = image.getOriginalFilename();
             Image updateImage = optional.get();
-            image.setId(id);
-            image.setStatus(updateImage.getStatus());
-            image.setCreateDate(updateImage.getCreateDate());
-            image.setUpdateDate(new Date());
-            return imageRepository.save(image);
-        } else {
-            return null;
+            updateImage.setId(id);
+            updateImage.setStatus(updateImage.getStatus());
+            updateImage.setCreateDate(updateImage.getCreateDate());
+            updateImage.setUpdateDate(new Date());
+            updateImage.setProductDetail(ProductDetail.builder().id(productDetailId).build());
+            String uid = "uid_" + updateImage.getId();
+            String extension = FileUtil.getFileExtension(fileName);
+            String newFileName = uid+ "." + extension;
+            FileUtil.copyFile(image, newFileName, uploadDir);
         }
     }
 
     @Override
-    public Boolean delete(Integer id) {
+    public Integer getProductDetailByIdImage(Integer imageId) {
+        Integer productDetailId = imageRepository.findById(imageId).get().getProductDetail().getId();
+        return productDetailId;
+    }
+
+    @Override
+    public Image delete(Integer id) {
         Optional<Image> optional = imageRepository.findById(id);
         if (optional.isPresent()){
             Image image = optional.get();
-            imageRepository.delete(image);
-            return true;
+            image.setStatus(0);
+            return imageRepository.save(image);
         } else {
-            return false;
+            return null;
         }
     }
 
@@ -135,6 +149,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
 
+    @Override
     public Image detail(Integer id) {
         Optional<Image> optional = imageRepository.findById(id);
         if (optional.isPresent()) {

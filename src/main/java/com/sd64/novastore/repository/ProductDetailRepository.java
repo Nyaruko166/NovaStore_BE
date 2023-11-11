@@ -41,17 +41,31 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
     @Query(value = "SELECT pd.id as id," +
             " pd.quantity as quantity," +
             " s.name as sizeName," +
-            " c.name as colorName," +
-            " i.id as imageId FROM ProductDetail pd \n" +
+            " c.name as colorName" +
+            " FROM ProductDetail pd \n" +
             "INNER JOIN Size s ON s.id = pd.size.id \n " +
             "INNER JOIN Color c ON c.id = pd.color.id \n " +
             "INNER JOIN Product p ON p.id = pd.product.id \n" +
-            "INNER JOIN Image i ON i.productDetail.id = pd.id \n" +
             "WHERE p.id =:productId \n" +
-            "AND (pd.quantity IS NULL OR pd.quantity =:quantity) " +
-            "AND (s.id IS NULL OR s.id =:sizeId)\n" +
-            "AND (c.id IS NULL OR c.id =:colorId)\n" +
+            "AND ( s.id =:sizeId OR :sizeId IS NULL )\n" +
+            "AND ( c.id =:colorId OR :colorId IS NULL)\n" +
             "AND pd.status = 1\n " +
             "ORDER BY pd.updateDate DESC")
-    Page<ProductDetailDto> getProductBySizeIdAndColorId(Pageable pageable,Integer productId, Integer quantity, Integer sizeId, Integer colorId);
+    Page<ProductDetailDto> getProductBySizeIdAndColorId(Integer productId, Integer sizeId, Integer colorId, Pageable pageable);
+
+
+    @Query(value = "SELECT pd.id as id," +
+            " pd.quantity as quantity," +
+            " s.name as sizeName," +
+            " c.name as colorName" +
+            " FROM ProductDetail pd \n" +
+            "INNER JOIN Size s ON s.id = pd.size.id \n " +
+            "INNER JOIN Color c ON c.id = pd.color.id \n " +
+            "INNER JOIN Product p ON p.id = pd.product.id \n" +
+            "WHERE p.id =:productId \n" +
+            "AND ( s.id =:sizeId OR :sizeId IS NULL )\n" +
+            "AND ( c.id =:colorId OR :colorId IS NULL)\n" +
+            "AND pd.status = 1\n " +
+            "ORDER BY pd.updateDate DESC")
+    List<ProductDetailDto> getProductBySizeIdAndColorId(Integer productId, Integer sizeId, Integer colorId);
 }

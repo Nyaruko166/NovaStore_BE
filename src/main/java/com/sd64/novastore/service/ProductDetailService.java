@@ -1,7 +1,9 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.dto.Impl.ProductDetailDtoImpl;
 import com.sd64.novastore.dto.ProductDetailDto;
 import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.response.ProductDetailSearchResponse;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
@@ -22,6 +24,8 @@ public interface ProductDetailService {
 
     Page<ProductDetail> getProductDetailByProductId(int page, Integer productId);
 
-    Page<ProductDetailDto> getProductBySizeIdAndColorId(int page, Integer productId, Integer quantity, Integer sizeId, Integer colorId);
+    Page<ProductDetailSearchResponse> getProductBySizeIdAndColorId(int page, Integer productId, Integer sizeId, Integer colorId);
+
+    int getTotalPage(int page, Integer productId, Integer sizeId, Integer colorId);
 
 }

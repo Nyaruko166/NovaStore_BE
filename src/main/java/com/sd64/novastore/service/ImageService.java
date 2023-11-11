@@ -13,9 +13,13 @@ public interface ImageService {
 
     void add(Integer productDetailId, List<MultipartFile> images);
 
-    Image update(Image image, Integer id);
+    void update(Integer id, Integer productDetailId, MultipartFile image);
 
-    Boolean delete(Integer id);
+    Integer getProductDetailByIdImage(Integer imageId);
+
+    Image delete(Integer id);
 
     byte[] get(Integer imageId);
+
+    Image detail(Integer id);
 }
