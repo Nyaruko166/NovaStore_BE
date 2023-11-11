@@ -55,9 +55,36 @@
             // alert('ádâdâdâdâd')
         }
 
+        function uploadFile(e) {
+            let fileName = document.getElementById("importFileProduct").value.split("\\").pop();
+            document.querySelector(".custom-file-label").textContent = fileName;
+            const files = e.target.files
+            const previewImagesContainer = document.getElementById('preview-image-files');
+            previewImagesContainer.innerHTML = ''
+            const imageUrls = Array.from(files).map(function(file) {
+                return URL.createObjectURL(file);
+            });
+
+            loadImages(imageUrls, previewImagesContainer);
+        }
+
+        function loadImages(imageUrls, previewImagesContainer) {
+            for (let i = 0; i < imageUrls.length; i++) {
+                const imageUrl = imageUrls[i];
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.classList.add('img-fluid');
+                img.style.width = '100px';
+                img.style.height = '100px';
+                previewImagesContainer.appendChild(img);
+            }
+        }
+
         function clickAdd(entity, id) {
             var add = confirm("Bạn có muốn thêm dữ liệu ?")
             if (add) {
+                debugger
                 document.getElementById(id).action = '/nova/' + entity +'/add'
                 document.getElementById(id).method = 'post'
                 document.getElementById(id).submit()
@@ -75,9 +102,22 @@
             }
         }
 
-        function clickDelete(id) {
+        function clickDelete(entity, id, entityId) {
             var deleted = confirm("Bạn có muốn xóa dữ liệu ?")
             if (deleted) {
+                document.getElementById(id).action = '/nova/' + entity + "/delete/" + entityId
+                document.getElementById(id).method = 'post'
+                document.getElementById(id).submit()
+            } else {
+                return null
+            }
+        }
+
+        function importExcel(id) {
+            let excel = confirm("Bạn có muốn thêm file excel ?")
+            if (excel) {
+                console.log('binh tinh')
+                document.getElementById(id).method = 'post'
                 document.getElementById(id).submit()
             } else {
                 return null
@@ -85,7 +125,6 @@
         }
 
         function clickSearch(entity, id) {
-            debugger
             document.getElementById(id).action = '/nova/' + entity +'/search'
             document.getElementById(id).method = 'get'
             document.getElementById(id).submit()

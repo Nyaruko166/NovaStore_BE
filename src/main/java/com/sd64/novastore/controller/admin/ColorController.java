@@ -1,6 +1,5 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.service.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;

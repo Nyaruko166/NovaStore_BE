@@ -8,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -157,5 +159,16 @@ public class ProductController {
         model.addAttribute("priceMin", priceMin);
         model.addAttribute("priceMax", priceMax);
         return "admin/product/product";
+    }
+
+    @PostMapping("/excel")
+    public String importExcel(Model model, @RequestParam MultipartFile excelFile) throws IOException {
+        if (productService.importExcelProduct(excelFile)) {
+            model.addAttribute("mess", "Thêm dữ liệu excel thành công");
+            return "redirect:/nova/product/page";
+        } else {
+            model.addAttribute("error", "Dữ liệu sai định dạng");
+            return "admin/product/product";
+        }
     }
 }

@@ -18,4 +18,6 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
 
     Page<Material> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
     Page<Material> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
+
+    Material findByName(String name);
 }
