@@ -91,14 +91,23 @@
         if (button.hasClass('btn-plus')) {
             var newVal = parseFloat(oldValue) + 1;
         } else {
-            if (oldValue > 0) {
+            if (oldValue > 1) {
                 var newVal = parseFloat(oldValue) - 1;
             } else {
-                newVal = 0;
+                newVal = oldValue;
             }
         }
         button.parent().parent().find('input').val(newVal);
     });
-    
+
+    $('.form-san-pham form').on('submit', function(e) {
+        if (!$("input[name='size']:checked").val() || !$("input[name='color']:checked").val()) {
+            $("#error-message").text('Vui lòng chọn cả kích cỡ và màu sắc!');
+            e.preventDefault(); // ngăn chặn việc gửi form
+        } else {
+            $("#error-message").text(''); // xóa thông báo lỗi nếu không có lỗi
+        }
+    });
+
 })(jQuery);
 
