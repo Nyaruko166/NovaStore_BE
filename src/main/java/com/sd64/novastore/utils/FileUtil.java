@@ -59,4 +59,12 @@ public class FileUtil {
     public static String rmExt(String fileName) {
         return fileName.replaceFirst("[.][^.]+$", "");
     }
+
+    public static String getFileExtension(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex != -1 && lastDotIndex < fileName.length() - 1) {
+            return fileName.substring(lastDotIndex + 1);
+        }
+        return "";
+    }
 }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>IMAGE UPDATE</strong>
+            </div>
+            <div class="card-body card-block">
+                <form id="imageUpdate" th:object="${imageDetail}" th:action="@{/nova/image/update/{id}(id=*{id})}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <input type="hidden" class="form-control" name="productDetailId" th:value="*{productDetail.id}">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="importFileProduct" class=" form-control-label">Image</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="importFileProduct" name="image"
+                                           accept="image/png, image/jpg, image/jpeg">
+                                    <label class="custom-file-label" for="importFileProduct">Choose
+                                        Image</label>
+                                </div>
+                                <script th:inline="javascript">
+                                    document.querySelector("#importFileProduct").addEventListener("change", function(event) {
+                                        uploadFile(event);
+                                    });
+                                </script>
+                            </div>
+                            <div id="preview-image-files">
+                                <img th:src="@{'/image/' + *{id}}" alt=""
+                                style="max-width: 75px; max-height: 100px">
+                            </div>
+                            <!--                            <input type="text" id="avatar" name="avatar" class="form-control">-->
+                        </div>
+                    </div>
+<!--                    <div class="row mb-2 ml-1" id="preview-image-files"></div>-->
+                    <div class="card-footer d-flex">
+                        <div>
+                            <button onclick="clickUpdate('imageUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
+                                UPDATE
+                            </button>
+                            <a th:href="@{|/nova/image/*{productDetail.id}|}">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO IMAGE
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

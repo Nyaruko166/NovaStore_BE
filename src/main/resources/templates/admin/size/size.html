@@ -34,6 +34,11 @@
                                     class="fa-solid fa-square-plus"></i>
                                 ADD
                             </button>
+                            <a th:href="@{|/nova/product/|}">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO PRODUCT DETAIL
+                                </button>
+                            </a>
                         </div>
                     </div>
                     <br>
@@ -58,70 +63,81 @@
     </h1>
     <div class="col">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Data Record</strong>
-            </div>
-            <div class="card-body">
-                <table class="table text-center">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Function</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="items:${pageSize}">
-                        <td th:text="${items.id}"></td>
-                        <td th:text="${items.name}"></td>
-                        <td class="d-flex justify-content-center">
-                            <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/size/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-info">
-                                        <i class="fa-solid fa-pen mr-1"></i>UPDATE
-                                    </button>
-                                </a>
-                            </div>
-                            <div>
-                                <form id="sizeDelete" th:action="@{'/nova/size/delete/' + ${items.id}}"
-                                      th:method="post">
-                                    <button onclick="clickDelete('sizeDelete')" type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="card">
+                <div class="card-header" th:if="${pageSize.isEmpty()}">
+                    <strong class="card-title">NOT FOUND ANY RECORD</strong>
+                </div>
+                <div th:if="${not pageSize.isEmpty()}">
+                    <div class="card-header">
+                        <strong>FOUND</strong>
+                        <strong class="card-title" th:text="${pageSize.getTotalElements()}"></strong>
+                        <strong class="card-title"> RECORD</strong>
+                    </div>
+                    <div class="card-body">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Function</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pageSize}">
+                                <td th:text="${items.id}"></td>
+                                <td th:text="${items.name}"></td>
+                                <td class="d-flex justify-content-center">
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/size/detail/' + ${items.id}}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <form id="sizeDelete" th:action="@{'/nova/size/delete/' + ${items.id}}"
+                                              th:method="post">
+                                            <button onclick="clickDelete('sizeDelete')" type="button"
+                                                    class="btn btn-danger">
+                                                <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-                <!--            Pagination-->
-                <div class="d-flex justify-content-center align-items-center">
-                    <div th:if="${pageSize.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=0&sizeNameSearch=${sizeNameSearch}|}">
-                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
-                    </div>
-                    <div th:if="${pageSize.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=${pageSize.getNumber() - 1}&sizeNameSearch=${sizeNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-left-long"></i></a>
-                    </div>
-                    <div class="btn btn-dark d-flex">
-                        <div th:text="${pageSize.getNumber() + 1}"></div>
-                        <span>/</span>
-                        <div th:text="${pageSize.getTotalPages()}"></div>
-                    </div>
-                    <div th:if="${pageSize.getNumber() + 1 lt pageSize.getTotalPages()}" class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pageSize.getNumber()+1}&sizeNameSearch=${sizeNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
-                    </div>
-                    <div th:if="${pageSize.getNumber() + 1 lt pageSize.getTotalPages()}" class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pageSize.getTotalPages()-1}&sizeNameSearch=${sizeNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        <!--            Pagination-->
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div th:if="${pageSize.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                                <a th:href="@{|?page=0&sizeNameSearch=${sizeNameSearch}|}">
+                                    </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                            </div>
+                            <div th:if="${pageSize.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                                <a th:href="@{|?page=${pageSize.getNumber() - 1}&sizeNameSearch=${sizeNameSearch}|}">
+                                    <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                            </div>
+                            <div class="btn btn-dark d-flex">
+                                <div th:text="${pageSize.getNumber() + 1}"></div>
+                                <span>/</span>
+                                <div th:text="${pageSize.getTotalPages()}"></div>
+                            </div>
+                            <div th:if="${pageSize.getNumber() + 1 lt pageSize.getTotalPages()}"
+                                 class="btn btn-dark ml-1">
+                                <a th:href="@{|?page=${pageSize.getNumber()+1}&sizeNameSearch=${sizeNameSearch}|}">
+                                    <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                            </div>
+                            <div th:if="${pageSize.getNumber() + 1 lt pageSize.getTotalPages()}"
+                                 class="btn btn-dark ml-1">
+                                <a th:href="@{|?page=${pageSize.getTotalPages()-1}&sizeNameSearch=${sizeNameSearch}|}">
+                                    <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>
