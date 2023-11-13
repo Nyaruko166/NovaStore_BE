@@ -3,12 +3,14 @@ package com.sd64.novastore.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "Cart")
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -19,11 +21,23 @@ public class Cart {
     @Column(name = "Id")
     private Integer id;
 
-    @Column(name = "CreateDate")
-    private Date createDate;
-
-    @ManyToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AccountId", referencedColumnName = "Id")
-    private Account account;
+    private Customer customer;
+
+    @Column(name = "TotalPrice")
+    private BigDecimal totalPrice;
+
+    @Column(name = "TotalItems")
+    private Integer totalItems;
+
+    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "cart")
+    private Set<CartDetail> cartDetails;
+
+    public Cart(){
+        this.cartDetails = new HashSet<>();
+        this.totalItems = 0;
+        this.totalPrice = BigDecimal.valueOf(0);
+    }
 
 }

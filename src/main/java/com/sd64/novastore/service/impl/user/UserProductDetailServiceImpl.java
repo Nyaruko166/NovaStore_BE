@@ -26,4 +26,9 @@ public class UserProductDetailServiceImpl implements UserProductDetailService {
     public ProductDetail getProductDetailById(Integer id) {
         return userProductDetailRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public ProductDetail getProductDetail(Integer productId, Integer sizeId, Integer colorId) {
+        return userProductDetailRepository.getProductDetail(productId, sizeId, colorId);
+    }
 }

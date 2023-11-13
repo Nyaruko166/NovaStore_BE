@@ -49,9 +49,9 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a th:href="@{/}" class="btn border">
+                <a th:href="@{/cart}" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge" th:text="${session.totalItems == null} ? '0' : ${session.totalItems}"></span>
                 </a>
             </div>
         </div>
@@ -117,8 +117,8 @@
                             <a th:href="@{user/contact.html}" class="nav-item nav-link">Liên hệ</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
-                            <a th:href="@{/}" class="nav-item nav-link">Đăng nhập</a>
-                            <a th:href="@{/}" class="nav-item nav-link">Đăng ký</a>
+                            <a th:if="${session.username == null}" th:href="@{/login}" class="nav-item nav-link">Đăng nhập</a>
+                            <a th:if="${session.username == null}" th:href="@{/login}" class="nav-item nav-link">Đăng ký</a>
                         </div>
                     </div>
                 </nav>
