@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.Voucher;
 import org.springframework.data.domain.Page;
 
@@ -18,4 +19,5 @@ public interface VoucherService {
     Voucher delete(Integer id);
 
     Voucher getOne(Integer id);
+    Page<Voucher> search(String name, int page);
 }

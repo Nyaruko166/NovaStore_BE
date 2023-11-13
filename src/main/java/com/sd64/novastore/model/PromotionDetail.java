@@ -1,6 +1,8 @@
 package com.sd64.novastore.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -20,6 +22,8 @@ public class PromotionDetail {
     @Column(name = "Id")
     private Integer id;
 
+    @NotBlank(message = "Name Khong duoc de trong")
+    @Size(max = 50, message = "Code khong duoc vuot qua 50 ky tu")
     @Column(name = "Name")
     private String name;
 

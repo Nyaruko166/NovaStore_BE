@@ -6,10 +6,12 @@ import com.sd64.novastore.model.PromotionDetail;
 import com.sd64.novastore.service.ProductService;
 import com.sd64.novastore.service.PromotionDetailService;
 import com.sd64.novastore.service.PromotionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,12 +47,10 @@ public class PromotionDetailController {
     }
 
     @GetMapping("/page")
-    public String getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
-        Page<PromotionDetail> page1 = promotionDetailService.getAllPT(page);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", page1.getTotalPages());
-        model.addAttribute("totalItems", page1.getTotalElements());
-        model.addAttribute("page", page1.getContent());
+    public String getAllPT(@ModelAttribute("promotionDetail") PromotionDetail promotionDetail,@RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+        Page<PromotionDetail> pagePromotionDetail = promotionDetailService.getAllPT(page);
+        model.addAttribute("pagePromotionDetail", pagePromotionDetail);
+        model.addAttribute("page", page);
         List<Promotion> promotionList = promotionService.getAll();
         List<Product> productList = productService.getAll();
         model.addAttribute("promotionList", promotionList);
@@ -67,17 +67,48 @@ public class PromotionDetailController {
 
 
     @PostMapping("/add")
-    public String add( @ModelAttribute("PromotionDetail") PromotionDetail promotionDetail, RedirectAttributes redirectAttributes) {
+    public String add(Model model, @Valid @ModelAttribute("promotionDetail") PromotionDetail promotionDetail, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+        if (bindingResult.hasErrors()) {
+            Page<PromotionDetail> page1 = promotionDetailService.getAllPT(page);
+            model.addAttribute("page1", page1);
+            model.addAttribute("page", page);
+            List<Promotion> promotionList = promotionService.getAll();
+            List<Product> productList = productService.getAll();
+            model.addAttribute("promotionList", promotionList);
+            model.addAttribute("productList", productList);
+            return "/admin/promotiondetail/promotiondetail";
+        }
         promotionDetailService.add(promotionDetail);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
         return "redirect:/nova/promotion_detail/page";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@ModelAttribute("PromotionDetail") PromotionDetail promotionDetail, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String update(Model model,@Valid @ModelAttribute("promotionDetail") PromotionDetail promotionDetail, BindingResult bindingResult, @PathVariable Integer id, RedirectAttributes redirectAttributes,@RequestParam(name = "page", defaultValue = "0") Integer page) {
+        if (bindingResult.hasErrors()) {
+            Page<PromotionDetail> page1 = promotionDetailService.getAllPT(page);
+            model.addAttribute("page1", page1);
+            model.addAttribute("page", page);
+            List<Promotion> promotionList = promotionService.getAll();
+            List<Product> productList = productService.getAll();
+            model.addAttribute("promotionList", promotionList);
+            model.addAttribute("productList", productList);
+            return "/admin/promotiondetail/promotiondetail-detail";
+        }
         promotionDetailService.update(promotionDetail, id);
         redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
         return "redirect:/nova/promotion_detail/page";
 
+    }
+    @GetMapping("/search")
+    public String search(@ModelAttribute("promotionDetail") PromotionDetail promotionDetail,Model model, @RequestParam(required = false) String promotiondetailSearch,
+                         @RequestParam(defaultValue = "0") int page) {
+        Page<PromotionDetail> pagePromotionDetail = promotionDetailService.search(promotiondetailSearch, page);
+        if ("".equals(promotiondetailSearch) || promotiondetailSearch.isEmpty()) {
+            return "redirect:/nova/promotion_detail/page";
+        }
+        model.addAttribute("promotiondetailSearch", promotiondetailSearch);
+        model.addAttribute("pagePromotionDetail", pagePromotionDetail);
+        return "/admin/promotiondetail/promotiondetail";
     }
 }

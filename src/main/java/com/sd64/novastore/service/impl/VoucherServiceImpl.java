@@ -68,4 +68,10 @@ public class VoucherServiceImpl implements VoucherService {
     public Voucher getOne(Integer id) {
         return voucherRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Page<Voucher> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return voucherRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
 }
