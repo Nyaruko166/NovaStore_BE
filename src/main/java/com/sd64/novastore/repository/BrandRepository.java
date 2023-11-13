@@ -19,4 +19,6 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
     Page<Brand> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
 
     Page<Brand> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
+
+    Brand findByName(String name);
 }

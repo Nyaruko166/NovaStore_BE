@@ -18,4 +18,6 @@ public interface FormRepository extends JpaRepository<Form, Integer> {
 
     Page<Form> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
     Page<Form> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
+
+    Form findByName(String name);
 }

@@ -1,5 +1,6 @@
 package com.sd64.novastore.model;
 
+import com.sd64.novastore.enums.ImageType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,4 +35,8 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "ProductDetailId", referencedColumnName = "Id")
     private ProductDetail productDetail;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ImageType")
+    private ImageType imageType = ImageType.FILE;
 }

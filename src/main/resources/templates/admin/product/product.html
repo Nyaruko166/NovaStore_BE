@@ -12,116 +12,211 @@
             <div class="card-header">
                 <strong>PRODUCT</strong>
             </div>
-                  <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
-                       style="margin: 5px">
-                    <span th:text="${mess}"></span>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">x</span>
-                    </button>
-                  </div>
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${mess}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
 
             <div class="card-body card-block">
+                <div class="card-footer d-flex">
+                    <div>
+                        <a href="/nova/product/view-add">
+                            <button type="button" class="btn btn-success"><i
+                                    class="fa-solid fa-square-plus"></i>
+                                ADD
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <br>
+                <form id="productExcel" enctype="multipart/form-data" action="/nova/product/excel" >
+                    <div class="card-footer">
+                        <div class="custom-file">
+                            <input type="file" id="importFile" name="excelFile"
+                                   accept=".xls, .xlsx" onchange="setFileName()">
+                            <label class="custom-file-label" for="importFile">Choose
+                                File Excel</label>
+                        </div>
+                        <div class="mt-1">
+                            <button type="button" onclick="importExcel('productExcel')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i>
+                                IMPORT
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
                 <form id="productForm" class="form-horizontal">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Product name</label>
-                        <div class="col-sm-10">
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>Product Name</label>
                             <input type="text" class="form-control" th:name="productName" th:value="${productName}">
                         </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Description</label>
-                        <div class="col-sm-10">
+                        <div class="form-group col-6">
+                            <label>Description</label>
                             <input type="text" class="form-control" th:name="description" th:value="${description}">
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Price Min</label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" th:name="priceMin" th:value="${priceMin == 0 ? '' : priceMin}">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>Price Min</label>
+                            <input type="number" class="form-control" th:name="priceMin"
+                                   th:value="${priceMin == 0 ? '' : priceMin}">
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Price Max</label>
+                            <input type="number" class="form-control" th:name="priceMax"
+                                   th:value="${priceMax == 2147483647 ? '' : priceMax}">
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Price Max</label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control"  th:name="priceMax" th:value="${priceMax == 2147483647 ? '' : priceMax}">
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Material</label>
+                            <div th:if="${materialId} == null" class="w-100 d-flex justify-content-between">
+                                <div class="w-80">
+                                    <select class="form-control" name="materialId">
+                                        <option value="">Select option</option>
+                                        <option th:value="${material.id}" th:each="material: ${listMaterial}"
+                                                th:text="${material.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-20 d-flex justify-content-end">
+                                    <a href="/nova/material/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div th:if="${materialId} != null" class="w-100 d-flex justify-content-between">
+                                <div class="w-80">
+                                    <select class="form-control" name="materialId">
+                                        <option value="">Select option</option>
+                                        <option th:value="${material.id}" th:each="material: ${listMaterial}"
+                                                th:text="${material.name}"
+                                                th:selected="${materialId == material.id}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-20 d-flex justify-content-end">
+                                    <a href="/nova/material/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label>Category</label>
+                            <div th:if="${categoryId} == null" class="w-100 d-flex justify-content-between">
+                                <div class="w-80">
+                                    <select class="form-control" name="categoryId">
+                                        <option value="">Select option</option>
+                                        <option th:value="${category.id}" th:each="category: ${listCategory}"
+                                                th:text="${category.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-20 d-flex justify-content-end">
+                                    <a href="/nova/category/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div th:if="${categoryId} != null" class="w-100 d-flex justify-content-between">
+                                <div class="w-80">
+                                    <select class="form-control" name="categoryId">
+                                        <option value="">Select option</option>
+                                        <option th:value="${category.id}" th:each="category: ${listCategory}"
+                                                th:text="${category.name}"
+                                                th:selected="${categoryId == category.id}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-20 d-flex justify-content-end">
+                                    <a href="/nova/category/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label>Brand</label>
+                            <div th:if="${brandId} == null" class="w-100 d-flex justify-content-between">
+                                <div class="w-80">
+                                    <select class="form-control" name="brandId">
+                                        <option value="">Select option</option>
+                                        <option th:value="${brand.id}" th:each="brand: ${listBrand}"
+                                                th:text="${brand.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-20 d-flex justify-content-end">
+                                    <a href="/nova/brand/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div th:if="${brandId} != null" class="w-100 d-flex justify-content-between">
+                                <div class="w-80">
+                                    <select class="form-control" name="brandId">
+                                        <option value="">Select option</option>
+                                        <option th:value="${brand.id}" th:each="brand: ${listBrand}"
+                                                th:text="${brand.name}" th:selected="${brandId == brand.id}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-20 d-flex justify-content-end">
+                                    <a href="/nova/brand/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label>Form</label>
+                            <div th:if="${formId} == null" class="w-100 d-flex justify-content-between">
+                                <div class="w-80">
+                                    <select class="form-control" name="formId">
+                                        <option value="">Select option</option>
+                                        <option th:value="${form.id}" th:each="form: ${listForm}"
+                                                th:text="${form.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-20 d-flex justify-content-end">
+                                    <a href="/nova/form/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div th:if="${formId} != null" class="w-100 d-flex justify-content-between">
+                                <div class="w-80">
+                                    <select class="form-control" name="formId">
+                                        <option value="">Select option</option>
+                                        <option th:value="${form.id}" th:each="form: ${listForm}"
+                                                th:text="${form.name}" th:selected="${formId == form.id}"></option>
+                                    </select>
+                                </div>
+                                <div class="w-20 d-flex justify-content-center">
+                                    <a href="/nova/form/page">
+                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Material</label>
-                        <div th:if="${materialId} == null" class="col-sm-10">
-                            <select class="form-control" name="materialId">
-                                <option value="">Select option</option>
-                                <option th:value="${material.id}" th:each="material: ${listMaterial}"
-                                        th:text="${material.name}"></option>
-                            </select>
-                        </div>
-                        <div th:if="${materialId} != null " class="col-sm-10">
-                            <select class="form-control" name="materialId">
-                                <option value="">Select option</option>
-                                <option th:value="${material.id}" th:each="material: ${listMaterial}"
-                                        th:text="${material.name}" th:selected="${materialId == material.id}"></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Category</label>
-                        <div th:if="${categoryId} == null" class="col-sm-10">
-                            <select class="form-control" name="categoryId">
-                                <option value="">Select option</option>
-                                <option th:value="${category.id}" th:each="category: ${listCategory}"
-                                        th:text="${category.name}"></option>
-                            </select>
-                        </div>
-                        <div th:if="${categoryId} != null " class="col-sm-10">
-                            <select class="form-control" name="categoryId">
-                                <option value="">Select option</option>
-                                <option th:value="${category.id}" th:each="category: ${listCategory}"
-                                        th:text="${category.name}" th:selected="${categoryId == category.id}"></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Brand</label>
-                        <div th:if="${brandId} == null" class="col-sm-10">
-                            <select class="form-control" name="brandId">
-                                <option value="">Select option</option>
-                                <option th:value="${brand.id}" th:each="brand: ${listBrand}"
-                                        th:text="${brand.name}"></option>
-                            </select>
-                        </div>
-                        <div th:if="${brandId} != null " class="col-sm-10">
-                            <select class="form-control" name="brandId">
-                                <option value="">Select option</option>
-                                <option th:value="${brand.id}" th:each="brand: ${listBrand}"
-                                        th:text="${brand.name}" th:selected="${brandId == brand.id}"></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Form</label>
-                        <div th:if="${formId} == null" class="col-sm-10">
-                            <select class="form-control" name="formId">
-                                <option value="">Select option</option>
-                                <option th:value="${form.id}" th:each="form: ${listForm}"
-                                        th:text="${form.name}"></option>
-                            </select>
-                        </div>
-                        <div th:if="${formId} != null " class="col-sm-10">
-                            <select class="form-control" name="formId">
-                                <option value="">Select option</option>
-                                <option th:value="${form.id}" th:each="form: ${listForm}"
-                                        th:text="${form.name}" th:selected="${formId == form.id}"></option>
-                            </select>
-                        </div>
-                    </div>
-
+                    <br>
                     <div class="card-footer d-flex">
                         <div>
                             <button onclick="clickSearch('product', 'productForm')" type="button"
@@ -132,17 +227,6 @@
                         </div>
                     </div>
                     <br>
-                    <div class="card-footer d-flex">
-                        <div>
-                            <a href="/nova/product/view-add">
-                                <button type="button" class="btn btn-success"><i
-                                        class="fa-solid fa-square-plus"></i>
-                                    ADD
-                                </button>
-                            </a>
-                        </div>
-
-                    </div>
                 </form>
             </div>
         </div>
@@ -151,86 +235,93 @@
     </h1>
     <div class="col">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Data Record</strong>
+            <div class="card-header" th:if="${pageProduct.isEmpty()}">
+                <strong class="card-title">NOT FOUND ANY RECORD</strong>
             </div>
-            <div class="card-body">
-                <table class="table text-center">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Material</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Form</th>
-                        <th scope="col">Function</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="items:${pageProduct}">
-                        <td th:text="${items.id}"></td>
-                        <td th:text="${items.name}"></td>
-                        <td th:text="${items.description}"></td>
-                        <td th:text="${#numbers.formatDecimal(items.price, 0, 'COMMA', 0, 'POINT')}"></td>
-                        <td th:text="${items.brandName}"></td>
-                        <td th:text="${items.materialName}"></td>
-                        <td th:text="${items.categoryName}"></td>
-                        <td th:text="${items.formName}"></td>
-                        <td class="d-flex justify-content-center">
-                            <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/product-detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-warning">
-                                        <i class="fa-solid fa-eye mr-1"></i>DETAIL
-                                    </button>
-                                </a>
-                            </div>
-                            <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/product/view-update/' + ${items.id}}">
-                                    <button type="button" class="btn btn-info">
-                                        <i class="fa-solid fa-pen mr-1"></i>UPDATE
-                                    </button>
-                                </a>
-                            </div>
-                            <div>
-                                <form id="productDelete" th:action="@{'/nova/product/delete/' + ${items.id}}"
-                                      th:method="post">
-                                    <button onclick="clickDelete('productDelete')" type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div th:if="${not pageProduct.isEmpty()}">
+                <div class="card-header">
+                    <strong>FOUND</strong>
+                    <strong class="card-title" th:text="${pageProduct.getTotalElements()}"></strong>
+                    <strong class="card-title"> RECORD</strong>
+                </div>
+                <div class="card-body">
+                    <form id="productDelete">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Brand</th>
+                                <th scope="col">Material</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Form</th>
+                                <th scope="col">Function</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pageProduct}">
+                                <td th:text="${items.id}"></td>
+                                <td th:text="${items.name}"></td>
+                                <td th:text="${items.description}"></td>
+                                <td th:text="${#numbers.formatDecimal(items.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                                <td th:text="${items.brandName}"></td>
+                                <td th:text="${items.materialName}"></td>
+                                <td th:text="${items.categoryName}"></td>
+                                <td th:text="${items.formName}"></td>
+                                <td class="d-flex justify-content-center">
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/product/' + ${items.id} + '/product-detail'}">
+                                            <button type="button" class="btn btn-warning">
+                                                <i class="fa-solid fa-eye mr-1"></i>DETAIL
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/product/view-update/' + ${items.id}}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <button th:onclick="clickDelete('product', 'productDelete', [[${items.id}]])"
+                                                type="button" class="btn btn-danger">
+                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
 
-                <!--            Pagination-->
-                <div class="d-flex justify-content-center align-items-center">
-                    <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=0&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
-                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
-                    </div>
-                    <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=${pageProduct.getNumber() - 1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
-                            <i style="color: white" class="fa-solid fa-left-long"></i></a>
-                    </div>
-                    <div class="btn btn-dark d-flex">
-                        <div th:text="${pageProduct.getNumber() + 1}"></div>
-                        <span>/</span>
-                        <div th:text="${pageProduct.getTotalPages()}"></div>
-                    </div>
-                    <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}"
-                         class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pageProduct.getNumber()+1}&productName=${productName == null ? '' : productName }&materialId=${materialId== null ? '' : materialId}&categoryId=${categoryId== null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
-                            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
-                    </div>
-                    <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}"
-                         class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pageProduct.getTotalPages()-1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
-                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                    <!--                    Pagination-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageProduct.getNumber() - 1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-dark d-flex">
+                            <div th:text="${pageProduct.getNumber() + 1}"></div>
+                            <span>/</span>
+                            <div th:text="${pageProduct.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageProduct.getNumber()+1}&productName=${productName == null ? '' : productName }&materialId=${materialId== null ? '' : materialId}&categoryId=${categoryId== null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageProduct.getTotalPages()-1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
