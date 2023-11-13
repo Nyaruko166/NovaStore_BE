@@ -1,5 +1,6 @@
 package com.sd64.novastore.repository;
 
+import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.model.Promotion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,6 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
     List<Promotion> findAllByStatusOrderByIdDesc(Integer status);
 
     Page<Promotion> findAllByStatusOrderByIdDesc(Pageable pageable, Integer status);
+
+    Page<Promotion> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 }

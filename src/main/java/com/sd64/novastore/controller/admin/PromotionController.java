@@ -2,11 +2,12 @@ package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.service.PromotionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,27 +24,36 @@ public class PromotionController {
     private PromotionService promotionService;
 
     @GetMapping("/page")
-    public String getAllPagination(@RequestParam(name = "page", defaultValue = "0") Integer page,
+    public String getAllPagination(@ModelAttribute("promotion") Promotion promotion, @RequestParam(name = "page", defaultValue = "0") Integer page,
                                    Model model) {
         Page<Promotion> pagePromotion = promotionService.getAllPT(page);
-
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", pagePromotion.getTotalPages());
-        model.addAttribute("totalItems", pagePromotion.getTotalElements());
-        model.addAttribute("pagePromotion", pagePromotion.getContent());
+        model.addAttribute("pagePromotion", pagePromotion);
+        model.addAttribute("page", page);
         return "admin/promotion/promotion";
     }
 
     @PostMapping("/add")
-    public String add(@Validated @ModelAttribute("promotion") Promotion promotion, RedirectAttributes redirectAttributes) {
+    public String add(Model model, @Valid @ModelAttribute("promotion") Promotion promotion, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+        if (bindingResult.hasErrors()) {
+            Page<Promotion> pagePromotion = promotionService.getAllPT(page);
+            model.addAttribute("pagePromotion", pagePromotion);
+            model.addAttribute("page", page);
+            return "admin/promotion/promotion";
+        }
         promotionService.add(promotion);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
         return "redirect:/nova/promotion/page";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Validated @PathVariable Integer id, @ModelAttribute("promotion") Promotion promotion,
+    public String update(Model model, @Valid @ModelAttribute("promotion") Promotion promotion, BindingResult bindingResult, @PathVariable Integer id, @RequestParam(name = "page", defaultValue = "0") Integer page,
                          RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            Page<Promotion> pagePromotion = promotionService.getAllPT(page);
+            model.addAttribute("pagePromotion", pagePromotion);
+            model.addAttribute("page", page);
+            return "admin/promotion/promotion-detail";
+        }
         promotionService.update(promotion, id);
         redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
         return "redirect:/nova/promotion/page";
@@ -61,5 +71,17 @@ public class PromotionController {
         Promotion promotion = promotionService.getOne(id);
         model.addAttribute("promotion", promotion);
         return "admin/promotion/promotion-detail";
+    }
+
+    @GetMapping("/search")
+    public String search( @ModelAttribute("promotion") Promotion promotion,Model model, @RequestParam(required = false) String promotionNameSearch,
+                         @RequestParam(defaultValue = "0") int page) {
+        Page<Promotion> pagePromotion = promotionService.search(promotionNameSearch, page);
+        if ("".equals(promotionNameSearch) || promotionNameSearch.isEmpty()) {
+            return "redirect:/nova/promotion/page";
+        }
+        model.addAttribute("promotionNameSearch", promotionNameSearch);
+        model.addAttribute("pagePromotion", pagePromotion);
+        return "admin/promotion/promotion";
     }
 }
