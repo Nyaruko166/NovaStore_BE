@@ -26,20 +26,11 @@ public class CartDetail {
     @Column(name = "Price")
     private BigDecimal price;
 
-    @Column(name = "CreateDate")
-    private Date createDate;
-
-    @Column(name = "UpdateDate")
-    private Date updateDate;
-
-    @Column(name = "Status")
-    private Integer status;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "CartId", referencedColumnName = "Id")
     private Cart cart;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ProductDetailId", referencedColumnName = "Id")
     private ProductDetail productDetail;
 }

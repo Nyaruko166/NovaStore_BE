@@ -10,4 +10,6 @@ public interface UserProductDetailService {
     Integer getProductDetailId(Integer productId, Integer sizeId, Integer colorId);
 
     ProductDetail getProductDetailById(Integer id);
+
+    ProductDetail getProductDetail(Integer productId, Integer sizeId, Integer colorId);
 }

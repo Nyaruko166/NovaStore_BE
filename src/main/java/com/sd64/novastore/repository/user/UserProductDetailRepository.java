@@ -15,4 +15,7 @@ public interface UserProductDetailRepository extends JpaRepository<ProductDetail
 
     @Query(value = "SELECT Id FROM ProductDetail WHERE Status = 1 AND ProductId = :productId AND SizeId = :sizeId AND ColorId = :colorId", nativeQuery = true)
     Integer getProductDetailId(@Param("productId") Integer productId, @Param("sizeId") Integer sizeId, @Param("colorId") Integer colorId);
+
+    @Query("SELECT pd FROM ProductDetail pd WHERE pd.product.id = :productId AND pd.size.id = :sizeId AND pd.color.id = :colorId")
+    ProductDetail getProductDetail(@Param("productId") Integer productId, @Param("sizeId") Integer sizeId, @Param("colorId") Integer colorId);
 }
