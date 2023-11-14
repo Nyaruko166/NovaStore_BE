@@ -34,7 +34,7 @@ public class AuthController {
         String body = mailUtil.confirmMailTemplate
                 ("occho1666@gmail.com", confirmCode, mailConfig.company, mailConfig.contact);
 
-        mailUtil.sendEmail("occho1666@gmail.com", "123", body);
+        mailUtil.sendEmail("occho1666@gmail.com", mailConfig.confirmMail, body);
 
         return "access-denied";
     }

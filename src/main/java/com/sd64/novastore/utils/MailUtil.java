@@ -32,12 +32,14 @@ public class MailUtil {
 
     public void sendEmail(
             String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromMail);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        emailSender.send(message);
+        new Thread(() -> {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromMail);
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(body);
+            emailSender.send(message);
+        }).start();
     }
 
 }
