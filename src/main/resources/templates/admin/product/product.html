@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>PRODUCT</strong>
+                <strong>SẢN PHẨM</strong>
             </div>
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -33,7 +33,7 @@
                         <a href="/nova/product/view-add">
                             <button type="button" class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
-                                ADD
+                                THÊM
                             </button>
                         </a>
                     </div>
@@ -44,12 +44,11 @@
                         <div class="custom-file">
                             <input type="file" id="importFile" name="excelFile"
                                    accept=".xls, .xlsx" onchange="setFileName()">
-                            <label class="custom-file-label" for="importFile">Choose
-                                File Excel</label>
+                            <label class="custom-file-label" for="importFile">Chọn tệp excel</label>
                         </div>
                         <div class="mt-1">
                             <button type="button" onclick="importExcel('productExcel')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i>
-                                IMPORT
+                                EXCEL
                             </button>
                         </div>
 
@@ -59,34 +58,61 @@
                     <br>
                     <div class="row">
                         <div class="form-group col-6">
-                            <label>Product Name</label>
+                            <label class="font-weight-bold">Tên sản phẩm</label>
                             <input type="text" class="form-control" th:name="productName" th:value="${productName}">
                         </div>
                         <div class="form-group col-6">
-                            <label>Description</label>
+                            <label class="font-weight-bold">Mô tả</label>
                             <input type="text" class="form-control" th:name="description" th:value="${description}">
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-6">
-                            <label>Price Min</label>
-                            <input type="number" class="form-control" th:name="priceMin"
-                                   th:value="${priceMin == 0 ? '' : priceMin}">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold">Giá từ</label>
+                                <small class="" style="color: red" id="error"></small>
+                            </div>
+                            <input type="number" class="form-control" th:name="priceMin" id="priceMin"
+                                   th:value="${priceMin == 0 ? '' : priceMin}" oninput="onInputText('error')">
                         </div>
                         <div class="form-group col-6">
-                            <label>Price Max</label>
-                            <input type="number" class="form-control" th:name="priceMax"
+                            <label class="font-weight-bold">Đến giá</label>
+                            <input type="number" class="form-control" th:name="priceMax" id="priceMax"
                                    th:value="${priceMax == 2147483647 ? '' : priceMax}">
                         </div>
                     </div>
+                    <script th:inline="javascript">
 
+                        checkPrice = () => {
+                            let priceMin = document.getElementById('priceMin').value
+                            let priceMax = document.getElementById('priceMax').value
+                            debugger
+                            if (priceMin < 0 || priceMax < 0) {
+                                document.getElementById('error').innerHTML = `Giá phải là số dương`
+                                return false;
+                            }
+                            if (Number(priceMax) < Number(priceMin)) {
+                                document.getElementById('error').innerHTML = `Giá bắt đầu phải nhỏ hơn giá kết thúc`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        function clickSearch(entity, id) {
+                            if (checkPrice()) {
+                                document.getElementById(id).action = '/nova/' + entity +'/search'
+                                document.getElementById(id).method = 'get'
+                                document.getElementById(id).submit()
+                            }
+                        }
+                    </script>
                     <div class="row">
                         <div class="col-3">
-                            <label>Material</label>
+                            <label class="font-weight-bold">Chất liệu</label>
                             <div th:if="${materialId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="materialId">
-                                        <option value="">Select option</option>
+                                        <option value="">Lựa chọn</option>
                                         <option th:value="${material.id}" th:each="material: ${listMaterial}"
                                                 th:text="${material.name}"></option>
                                     </select>
@@ -101,7 +127,7 @@
                             <div th:if="${materialId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="materialId">
-                                        <option value="">Select option</option>
+                                        <option value="">Lựa chọn</option>
                                         <option th:value="${material.id}" th:each="material: ${listMaterial}"
                                                 th:text="${material.name}"
                                                 th:selected="${materialId == material.id}"></option>
@@ -116,11 +142,11 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <label>Category</label>
+                            <label class="font-weight-bold">Loại sản phẩm</label>
                             <div th:if="${categoryId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="categoryId">
-                                        <option value="">Select option</option>
+                                        <option value="">Lựa chọn</option>
                                         <option th:value="${category.id}" th:each="category: ${listCategory}"
                                                 th:text="${category.name}"></option>
                                     </select>
@@ -135,7 +161,7 @@
                             <div th:if="${categoryId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="categoryId">
-                                        <option value="">Select option</option>
+                                        <option value="">Lựa chọn</option>
                                         <option th:value="${category.id}" th:each="category: ${listCategory}"
                                                 th:text="${category.name}"
                                                 th:selected="${categoryId == category.id}"></option>
@@ -150,11 +176,11 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <label>Brand</label>
+                            <label class="font-weight-bold">Thương hiệu</label>
                             <div th:if="${brandId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="brandId">
-                                        <option value="">Select option</option>
+                                        <option value="">Lựa chọn</option>
                                         <option th:value="${brand.id}" th:each="brand: ${listBrand}"
                                                 th:text="${brand.name}"></option>
                                     </select>
@@ -169,7 +195,7 @@
                             <div th:if="${brandId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="brandId">
-                                        <option value="">Select option</option>
+                                        <option value="">Lựa chọn</option>
                                         <option th:value="${brand.id}" th:each="brand: ${listBrand}"
                                                 th:text="${brand.name}" th:selected="${brandId == brand.id}"></option>
                                     </select>
@@ -183,11 +209,11 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <label>Form</label>
+                            <label class="font-weight-bold">Kiểu dáng</label>
                             <div th:if="${formId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="formId">
-                                        <option value="">Select option</option>
+                                        <option value="">Lựa chọn</option>
                                         <option th:value="${form.id}" th:each="form: ${listForm}"
                                                 th:text="${form.name}"></option>
                                     </select>
@@ -202,7 +228,7 @@
                             <div th:if="${formId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="formId">
-                                        <option value="">Select option</option>
+                                        <option value="">Lựa chọn</option>
                                         <option th:value="${form.id}" th:each="form: ${listForm}"
                                                 th:text="${form.name}" th:selected="${formId == form.id}"></option>
                                     </select>
@@ -222,7 +248,7 @@
                             <button onclick="clickSearch('product', 'productForm')" type="button"
                                     class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
-                                SEARCH
+                                TÌM KIẾM
                             </button>
                         </div>
                     </div>
@@ -236,28 +262,28 @@
     <div class="col">
         <div class="card">
             <div class="card-header" th:if="${pageProduct.isEmpty()}">
-                <strong class="card-title">NOT FOUND ANY RECORD</strong>
+                <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
             </div>
             <div th:if="${not pageProduct.isEmpty()}">
                 <div class="card-header">
-                    <strong>FOUND</strong>
+                    <strong>CÓ</strong>
                     <strong class="card-title" th:text="${pageProduct.getTotalElements()}"></strong>
-                    <strong class="card-title"> RECORD</strong>
+                    <strong class="card-title"> BẢN GHI</strong>
                 </div>
                 <div class="card-body">
                     <form id="productDelete">
                         <table class="table text-center">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Brand</th>
-                                <th scope="col">Material</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Form</th>
-                                <th scope="col">Function</th>
+                                <th scope="col">Mã sản phẩm</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Mô tả</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Thương hiệu</th>
+                                <th scope="col">Chất liệu</th>
+                                <th scope="col">Loại sản phẩm</th>
+                                <th scope="col">Kiểu dáng</th>
+                                <th scope="col">Chức năng</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -274,21 +300,21 @@
                                     <div style="margin-right: 10px">
                                         <a th:href="@{'/nova/product/' + ${items.id} + '/product-detail'}">
                                             <button type="button" class="btn btn-warning">
-                                                <i class="fa-solid fa-eye mr-1"></i>DETAIL
+                                                <i class="fa-solid fa-eye mr-1"></i>CHI TIẾT
                                             </button>
                                         </a>
                                     </div>
                                     <div style="margin-right: 10px">
                                         <a th:href="@{'/nova/product/view-update/' + ${items.id}}">
                                             <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                                <i class="fa-solid fa-pen mr-1"></i>SỬA
                                             </button>
                                         </a>
                                     </div>
                                     <div>
                                         <button th:onclick="clickDelete('product', 'productDelete', [[${items.id}]])"
                                                 type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                            <i class="fa-solid fa-trash mr-1"></i>XÓA
                                         </button>
                                     </div>
                                 </td>

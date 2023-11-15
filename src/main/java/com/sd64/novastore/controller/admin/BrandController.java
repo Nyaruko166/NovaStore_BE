@@ -2,10 +2,12 @@ package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.service.BrandService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,8 +40,10 @@ public class BrandController {
     }
 
     @PostMapping("/add")
-    public String add( @ModelAttribute Brand brand,
-                      RedirectAttributes redirectAttributes) {
+    public String add(@Valid @ModelAttribute Brand brand,
+                      BindingResult bindingResult,
+                      RedirectAttributes redirectAttributes,
+                      Model model) {
         brandService.add(brand);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
         return "redirect:/nova/brand/page";

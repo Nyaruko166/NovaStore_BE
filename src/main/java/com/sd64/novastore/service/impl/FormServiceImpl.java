@@ -19,13 +19,8 @@ public class FormServiceImpl implements FormService {
     private FormRepository formRepository;
 
     @Override
-    public List<Form> getAllDefault(){
-        return formRepository.findAll();
-    }
-
-    @Override
     public List<Form> getAll(){
-        return formRepository.findAllByAndStatusOrderByIdDesc(1);
+        return formRepository.findAllByStatusOrderByUpdateDateDesc(1);
     }
 
     @Override

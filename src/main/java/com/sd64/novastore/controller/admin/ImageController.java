@@ -49,7 +49,7 @@ public class ImageController {
                       @RequestParam List<MultipartFile> images,
                       RedirectAttributes redirectAttributes) {
         imageService.add(productDetailId, images);
-        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
+        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
         return "redirect:/nova/product-detail/" + productDetailId + "/image";
     }
 

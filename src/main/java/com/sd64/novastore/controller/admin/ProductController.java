@@ -38,10 +38,10 @@ public class ProductController {
     public String getPage(@RequestParam(defaultValue = "0") int page, Model model) {
         Page<ProductDto> pageProductDto = productService.getAll(page);
         model.addAttribute("pageProduct", pageProductDto);
-        List<Material> listMaterial = materialService.getAllDefault();
-        List<Category> listCategory = categoryService.getAllDefault();
-        List<Form> listForm = formService.getAllDefault();
-        List<Brand> listBrand = brandService.getAllDefault();
+        List<Material> listMaterial = materialService.getAll();
+        List<Category> listCategory = categoryService.getAll();
+        List<Form> listForm = formService.getAll();
+        List<Brand> listBrand = brandService.getAll();
         model.addAttribute("listMaterial", listMaterial);
         model.addAttribute("listCategory", listCategory);
         model.addAttribute("listForm", listForm);
@@ -53,10 +53,10 @@ public class ProductController {
     public String viewAdd (Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
-        List<Material> listMaterial = materialService.getAllDefault();
-        List<Category> listCategory = categoryService.getAllDefault();
-        List<Form> listForm = formService.getAllDefault();
-        List<Brand> listBrand = brandService.getAllDefault();
+        List<Material> listMaterial = materialService.getAll();
+        List<Category> listCategory = categoryService.getAll();
+        List<Form> listForm = formService.getAll();
+        List<Brand> listBrand = brandService.getAll();
         model.addAttribute("listMaterial", listMaterial);
         model.addAttribute("listCategory", listCategory);
         model.addAttribute("listForm", listForm);
@@ -83,10 +83,10 @@ public class ProductController {
     public String viewUpdate(@PathVariable Integer id, Model model) {
         Product product = productService.getOne(id);
         model.addAttribute("productUpdate", product);
-        List<Material> listMaterial = materialService.getAllDefault();
-        List<Category> listCategory = categoryService.getAllDefault();
-        List<Form> listForm = formService.getAllDefault();
-        List<Brand> listBrand = brandService.getAllDefault();
+        List<Material> listMaterial = materialService.getAll();
+        List<Category> listCategory = categoryService.getAll();
+        List<Form> listForm = formService.getAll();
+        List<Brand> listBrand = brandService.getAll();
         model.addAttribute("listMaterial", listMaterial);
         model.addAttribute("listCategory", listCategory);
         model.addAttribute("listForm", listForm);
@@ -144,10 +144,10 @@ public class ProductController {
         model.addAttribute("pageProduct", pageProductDto);
         model.addAttribute("productName", productName);
         model.addAttribute("description", description);
-        List<Material> listMaterial = materialService.getAllDefault();
-        List<Category> listCategory = categoryService.getAllDefault();
-        List<Form> listForm = formService.getAllDefault();
-        List<Brand> listBrand = brandService.getAllDefault();
+        List<Material> listMaterial = materialService.getAll();
+        List<Category> listCategory = categoryService.getAll();
+        List<Form> listForm = formService.getAll();
+        List<Brand> listBrand = brandService.getAll();
         model.addAttribute("listMaterial", listMaterial);
         model.addAttribute("listCategory", listCategory);
         model.addAttribute("listForm", listForm);

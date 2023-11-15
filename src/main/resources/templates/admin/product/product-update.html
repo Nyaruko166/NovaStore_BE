@@ -10,26 +10,26 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>PRODUCT UPDATE</strong>
+                <strong>CẬP NHẬT SẢN PHẨM</strong>
             </div>
             <div class="card-body card-block">
                 <form id="productUpdate" th:object="${productUpdate}" th:action="@{/nova/product/update/{id}(id=*{id})}" method="post" class="form-horizontal">
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Product name</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="name" th:value="*{name}">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Description</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Mô tả</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="description" th:value="*{description}">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Price</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Giá</label>
                         <div class="col-sm-10">
                             <input type="number" class="form-control" name="price"
                                    th:value="*{#numbers.formatDecimal(price, 0, 'COMMA', 0, 'POINT')}">
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Material</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Chất liệu</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="materialId">
                                 <option th:value="${material.id}" th:each="material: ${listMaterial}"
@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Category</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Loại sản phẩm</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="categoryId" >
                                 <option th:value="${category.id}" th:each="category: ${listCategory}"
@@ -57,7 +57,7 @@
                     </div>
 
                     <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Brand</label>
+                        <label class="col-sm-2 col-form-label">Thương hiệu</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="brandId">
                                 <option th:value="${brand.id}" th:each="brand: ${listBrand}"
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Form</label>
+                        <label class="col-sm-2 col-form-label">Kiểu dáng</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="formId">
                                 <option th:value="${form.id}" th:each="form: ${listForm}"
@@ -79,7 +79,7 @@
                     <div class="card-footer d-flex">
                         <div>
                             <button onclick="clickUpdate('productUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
-                                UPDATE
+                                SỬA
                             </button>
                         </div>
                     </div>

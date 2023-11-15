@@ -10,21 +10,23 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>SIZE UPDATE</strong>
+                <strong>CẬP NHẬT KÍCH CỠ</strong>
             </div>
             <div class="card-body card-block">
                 <form id="sizeUpdate" th:object="${size}" th:action="@{/nova/size/update/{id}(id=${size.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
-                        <div class="col col-md-3"><label for="" class=" form-control-label">Size name</label></div>
-                        <div class="col-12 col-md-9"><input type="text" id="" th:field="*{name}" class="form-control">
-                            <!--              <small class="form-text text-muted">This is a help text</small>-->
+                        <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Kích cỡ</label></div>
+                        <div class="col-12 col-md-9"><input type="text" id="name" th:field="*{name}" class="form-control"
+                                                            oninput="onInputText('errorName')">
+                            <small class="" style="color: red"
+                                   id="errorName" ></small>
                         </div>
                     </div>
 
                     <div class="card-footer">
-                        <button onclick="clickUpdate('sizeUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
-                            UPDATE
+                        <button onclick="clickUpdate('sizeUpdate', 'name', 'errorName')" type="button" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
+                            SỬA
                         </button>
                     </div>
                 </form>

@@ -13,3 +13,12 @@
 .w-10 {
     width: 10%;
 }
+
+.border-search {
+    background-color: #f0f3f5 !important;
+    display: flex;
+    height: 70px;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 5px;
+}

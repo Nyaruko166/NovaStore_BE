@@ -19,13 +19,8 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> getAllDefault() {
-        return categoryRepository.findAll();
-    }
-
-    @Override
     public List<Category> getAll() {
-        return categoryRepository.findAllByAndStatusOrderByIdDesc(1);
+        return categoryRepository.findAllByStatusOrderByUpdateDateDesc(1);
     }
 
     @Override
