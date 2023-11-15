@@ -19,13 +19,8 @@ public class MaterialServiceImpl implements MaterialService{
     private MaterialRepository materialRepository;
 
     @Override
-    public List<Material> getAllDefault() {
-        return materialRepository.findAll();
-    }
-
-    @Override
     public List<Material> getAll(){
-        return  materialRepository.findAllByAndStatusOrderByIdDesc(1);
+        return  materialRepository.findAllByStatusOrderByUpdateDateDesc(1);
     }
 
     @Override

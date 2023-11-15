@@ -19,13 +19,8 @@ public class BrandServiceImpl implements BrandService {
     private BrandRepository brandRepository;
 
     @Override
-    public List<Brand> getAllDefault() {
-        return brandRepository.findAll();
-    }
-
-    @Override
     public List<Brand> getAll() {
-        return brandRepository.findAllByAndStatusOrderByIdDesc(1);
+        return brandRepository.findAllByStatusOrderByUpdateDateDesc(1);
     }
 
     @Override

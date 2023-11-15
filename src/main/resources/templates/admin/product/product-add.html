@@ -10,33 +10,39 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>PRODUCT ADD</strong>
+                <strong>THÊM SẢN PHẨM</strong>
             </div>
             <div class="card-body card-block">
                 <form id="productAdd" th:object="${product}" class="form-horizontal">
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Product Name</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="name"  >
+                            <input type="text" class="form-control" name="name" id="name" oninput="onInputText('errorName')">
+                            <small class="" style="color: red"
+                                   id="errorName" ></small>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Description</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Mô tả</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="description" >
+                            <input type="text" class="form-control" name="description" id="description" oninput="onInputText('errorDescription')">
+                            <small class="" style="color: red"
+                                   id="errorDescription" ></small>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Price</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Giá</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" name="price" >
+                            <input type="number" class="form-control" name="price" id="price" oninput="onInputText('errorPrice')">
+                            <small class="" style="color: red"
+                                   id="errorPrice" ></small>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Material</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Chất liệu</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="materialId">
                                 <option th:value="${material.id}" th:each="material: ${listMaterial}"
@@ -46,7 +52,7 @@
                     </div>
 
                     <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Category</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Loại sản phẩm</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="categoryId">
                                 <option th:value="${category.id}" th:each="category: ${listCategory}"
@@ -56,7 +62,7 @@
                     </div>
 
                     <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Brand</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Thương hiệu</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="brandId">
                                 <option th:value="${brand.id}" th:each="brand: ${listBrand}"
@@ -67,7 +73,7 @@
                     </div>
 
                     <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Form</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Kiểu dáng</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="formId">
                                 <option th:value="${form.id}" th:each="form: ${listForm}"
@@ -81,10 +87,68 @@
                         <div>
                             <button onclick="clickAdd('product', 'productAdd')" type="button" class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
-                                ADD
+                                THÊM
                             </button>
                         </div>
                     </div>
+                    <script th:inline="javascript">
+                        checkName = () => {
+                            let isName = document.getElementById('name').value
+                            if (isName.trim() === '') {
+                                document.getElementById('errorName').innerHTML = `Chưa nhập tên`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        checkDescription = () => {
+                            let isDescription = document.getElementById('description').value
+                            if (isDescription.trim() === '') {
+                                document.getElementById('errorDescription').innerHTML = `Chưa nhập mô tả`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        checkPrice = () => {
+                            let isPrice = document.getElementById('price').value
+                            if (isPrice.trim() === '') {
+                                document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`
+                                return false;
+                            }
+                            if (isPrice < 0) {
+                                document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn 0`
+                                return false;
+                            }
+                            if (isPrice > 2147483647) {
+                                document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        validate = () => {
+                            let isName = checkName();
+                            let isDescription = checkDescription();
+                            let isPrice = checkPrice();
+                            if (isName === true && isDescription === true && isPrice === true) {
+                                return true;
+                            }
+                        }
+
+                        clickAdd = (entity, id) => {
+                            if (validate()) {
+                                let add = confirm("Bạn có muốn thêm dữ liệu ?")
+                                if (add) {
+                                    document.getElementById(id).action = '/nova/' + entity + '/add'
+                                    document.getElementById(id).method = 'post'
+                                    document.getElementById(id).submit()
+                                } else {
+                                    return null
+                                }
+                            }
+                        }
+                    </script>
                 </form>
             </div>
         </div>

@@ -21,36 +21,37 @@
             </div>
             <div class="card-body card-block">
                 <form id="sizeForm" class="form-horizontal">
-                    <div class="row form-group">
-                        <div class="col col-md-3"><label class="form-control-label">Size name</label></div>
-                        <div class="col-12 col-md-9"><input type="text" name="name" class="form-control">
-                            <!--              <small class="form-text text-muted">This is a help text</small>-->
+                    <div class="card-footer">
+                        <div class="row form-group">
+                            <div class="col col-md-3"><label class="font-weight-bold form-control-label">Kích cỡ</label></div>
+                            <div class="col-12 col-md-9"><input type="text" name="name" class="form-control"
+                                                                oninput="onInputText('errorName')">
+                                <small class="" style="color: red"
+                                       id="errorName" ></small>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="card-footer d-flex">
                         <div>
                             <button onclick="clickAdd('size', 'sizeForm')" type="button" class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
-                                ADD
+                                THÊM
                             </button>
                             <a th:href="@{|/nova/product/|}">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO PRODUCT DETAIL
+                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM CHI TIẾT
                                 </button>
                             </a>
                         </div>
                     </div>
                     <br>
-                    <div class="card-footer d-flex">
-                        <div>
+                    <div class="border-search">
+                        <div class="col-md-3">
                             <button onclick="clickSearch('size', 'sizeForm')" type="button" class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
-                                SEARCH
+                                TÌM KIẾM
                             </button>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" placeholder="Search by name..."
+                        <div class="col-md-9" >
+                            <input type="text" placeholder="Nhập kích cỡ..."
                                    th:value="${sizeNameSearch}" th:name="sizeNameSearch"
                                    class="form-control">
                         </div>
@@ -59,13 +60,14 @@
             </div>
         </div>
     </div>
+</div>
 
     </h1>
     <div class="col">
         <div class="card">
             <div class="card">
                 <div class="card-header" th:if="${pageSize.isEmpty()}">
-                    <strong class="card-title">NOT FOUND ANY RECORD</strong>
+                    <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
                 </div>
                 <div th:if="${not pageSize.isEmpty()}">
                     <div class="card-header">
@@ -78,8 +80,8 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Function</th>
+                                <th scope="col">Kích cỡ</th>
+                                <th scope="col">Chức năng</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -90,7 +92,7 @@
                                     <div style="margin-right: 10px">
                                         <a th:href="@{'/nova/size/detail/' + ${items.id}}">
                                             <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                                <i class="fa-solid fa-pen mr-1"></i>SỬA
                                             </button>
                                         </a>
                                     </div>
@@ -99,7 +101,7 @@
                                               th:method="post">
                                             <button onclick="clickDelete('sizeDelete')" type="button"
                                                     class="btn btn-danger">
-                                                <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                                <i class="fa-solid fa-trash mr-1"></i>XÓA
                                             </button>
                                         </form>
                                     </div>

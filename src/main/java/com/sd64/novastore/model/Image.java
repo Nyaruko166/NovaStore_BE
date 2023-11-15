@@ -36,7 +36,7 @@ public class Image {
     @JoinColumn(name = "ProductDetailId", referencedColumnName = "Id")
     private ProductDetail productDetail;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ImageType")
-    private ImageType imageType = ImageType.FILE;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "ImageType")
+//    private ImageType imageType = ImageType.FILE;
 }

@@ -10,22 +10,21 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>IMAGE UPDATE</strong>
+                <strong>CẬP NHẬT ẢNH</strong>
             </div>
             <div class="card-body card-block">
                 <form id="imageUpdate" th:object="${imageDetail}" th:action="@{/nova/image/update/{id}(id=*{id})}" method="post" class="form-horizontal" enctype="multipart/form-data">
                     <input type="hidden" class="form-control" name="productDetailId" th:value="*{productDetail.id}">
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="importFileProduct" class=" form-control-label">Image</label>
+                            <label for="importFileProduct" class="font-weight-bold  form-control-label">Ảnh</label>
                         </div>
                         <div class="col-12 col-md-9">
                             <div class="input-group mb-3">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="importFileProduct" name="image"
                                            accept="image/png, image/jpg, image/jpeg">
-                                    <label class="custom-file-label" for="importFileProduct">Choose
-                                        Image</label>
+                                    <label class="custom-file-label" for="importFileProduct">Chọn ảnh</label>
                                 </div>
                                 <script th:inline="javascript">
                                     document.querySelector("#importFileProduct").addEventListener("change", function(event) {
@@ -44,11 +43,11 @@
                     <div class="card-footer d-flex">
                         <div>
                             <button onclick="clickUpdate('imageUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
-                                UPDATE
+                                SỬA
                             </button>
                             <a th:href="@{|/nova/image/*{productDetail.id}|}">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO IMAGE
+                                        class="fa-solid fa-circle-left mr-1"></i> ẢNH
                                 </button>
                             </a>
                         </div>

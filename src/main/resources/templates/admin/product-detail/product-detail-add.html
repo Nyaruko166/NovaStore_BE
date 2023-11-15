@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>PRODUCT DETAIL ADD</strong>
+                <strong>THÊM SẢN PHẨM CHI TIẾT</strong>
             </div>
             <div class="card-body card-block">
                 <form id="productDetailAdd" th:object="${product}" class="form-horizontal">
@@ -22,21 +22,21 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Product Name</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm chi tiết</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" th:value="*{name}" disabled>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Quantity</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Số lượng</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="quantity">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Size</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Kích cỡ</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="sizeId">
                                 <option th:value="${size.id}" th:each="size: ${listSize}"
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Color</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Màu sắc</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="colorId">
                                 <option th:value="${color.id}" th:each="color: ${listColor}"
@@ -58,7 +58,7 @@
                         <div>
                             <button onclick="clickAdd('product-detail', 'productDetailAdd')" type="button" class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
-                                ADD
+                                THÊM
                             </button>
                         </div>
                     </div>

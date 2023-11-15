@@ -30,6 +30,7 @@
     <script th:inline="javascript" th:src="@{/admin/vendors/jqvmap/dist/jquery.vmap.min.js}"></script>
     <script th:inline="javascript" th:src="@{/admin/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js}"></script>
     <script th:inline="javascript" th:src="@{/admin/vendors/jqvmap/dist/maps/jquery.vmap.world.js}"></script>
+    <script th:inline="javascript" th:src="@{https://unpkg.com/sweetalert/dist/sweetalert.min.js}"></script>
     <script th:inline="javascript">
         /* Bạn có thể giữ nguyên đoạn mã JavaScript này */
         (function ($) {
@@ -61,7 +62,7 @@
             const files = e.target.files
             const previewImagesContainer = document.getElementById('preview-image-files');
             previewImagesContainer.innerHTML = ''
-            const imageUrls = Array.from(files).map(function(file) {
+            const imageUrls = Array.from(files).map(function (file) {
                 return URL.createObjectURL(file);
             });
 
@@ -81,36 +82,89 @@
             }
         }
 
-        function clickAdd(entity, id) {
-            var add = confirm("Bạn có muốn thêm dữ liệu ?")
-            if (add) {
-                debugger
-                document.getElementById(id).action = '/nova/' + entity +'/add'
-                document.getElementById(id).method = 'post'
-                document.getElementById(id).submit()
-            } else {
-                return null
+        onInputText = (id) => {
+            document.getElementById(id).innerHTML = ''
+        }
+
+        checkName = (name, errorName) => {
+            let isName = document.getElementById(name).value
+            debugger
+            if (isName.trim() === '') {
+                document.getElementById(errorName).innerHTML = `Chưa nhập tên`
+                return false;
+            }
+            return true;
+        }
+
+        function clickAdd(entity, id, name, errorName) {
+            if (checkName(name, errorName)) {
+                swal({
+                    title: "Thêm dữ liệu",
+                    text: "Bạn có muốn thêm dữ liệu không ?",
+                    icon: "warning",
+                    buttons: ["Không", "Có"],
+                    dangerMode: true,
+                    closeOnClickOutside: false,
+                }).then((add) => {
+                    if (add) {
+                        document.getElementById(id).action = '/nova/' + entity + '/add'
+                        document.getElementById(id).method = 'post'
+                        document.getElementById(id).submit()
+                        // swal("Thêm dữ liệu thành công", {
+                        //     icon: "success",
+                        // })
+                    }
+                });
             }
         }
 
-        function clickUpdate(id) {
-            var update = confirm("Bạn có muốn sửa dữ liệu ?")
-            if (update) {
-                document.getElementById(id).submit()
-            } else {
-                return null
+        function validateFile(id, errorName) {
+            let fileInput = document.getElementById(id);
+            let file = fileInput.files;
+            debugger
+            if (file.length === 0) {
+                document.getElementById(errorName).innerHTML = `Vui lòng chọn ảnh`
+                return false;
+            }
+            if (file[0].size > 1024 * 1024) {
+                document.getElementById(errorName).innerHTML = `Kích thước file không vượt quá 1MB`
+                return false;
+            }
+            return true;
+        }
+
+        function clickUpdate(id, name, errorName) {
+            if (checkName(name, errorName)) {
+                swal({
+                    title: "Sửa dữ liệu",
+                    text: "Bạn có muốn sửa dữ liệu không ?",
+                    icon: "warning",
+                    buttons: ["Không", "Có"],
+                    dangerMode: true,
+                    closeOnClickOutside: false,
+                }).then((update) => {
+                    if (update) {
+                        document.getElementById(id).submit()
+                    }
+                });
             }
         }
 
         function clickDelete(entity, id, entityId) {
-            var deleted = confirm("Bạn có muốn xóa dữ liệu ?")
-            if (deleted) {
-                document.getElementById(id).action = '/nova/' + entity + "/delete/" + entityId
-                document.getElementById(id).method = 'post'
-                document.getElementById(id).submit()
-            } else {
-                return null
-            }
+            swal({
+                title: "Xóa dữ liệu",
+                text: "Bạn có muốn xóa dữ liệu không ?",
+                icon: "warning",
+                buttons: ["Không", "Có"],
+                dangerMode: true,
+                closeOnClickOutside: false,
+            }).then((deleted) => {
+                if (deleted) {
+                    document.getElementById(id).action = '/nova/' + entity + "/delete/" + entityId
+                    document.getElementById(id).method = 'post'
+                    document.getElementById(id).submit()
+                }
+            });
         }
 
         function importExcel(id) {
@@ -125,10 +179,11 @@
         }
 
         function clickSearch(entity, id) {
-            document.getElementById(id).action = '/nova/' + entity +'/search'
+            document.getElementById(id).action = '/nova/' + entity + '/search'
             document.getElementById(id).method = 'get'
             document.getElementById(id).submit()
         }
+
     </script>
 
     <link th:href='@{https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800}' rel='stylesheet'
