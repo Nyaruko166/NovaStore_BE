@@ -21,14 +21,16 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form action="/nova/promotion_detail/add" method="post" class="form-horizontal"
+                <form id="promotionDetailForm" th:action="@{/nova/promotion_detail/add}" th:object="${promotionDetail}"  method="post" class="form-horizontal"
                       enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="name" class=" form-control-label">Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="name" name="name" class="form-control">
+                            <input type="text"  id="name" name="name" th:field="*{name}" class="form-control">
+                            <br>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                         </div>
                     </div>
 
@@ -66,16 +68,26 @@
                         </a>
                     </div>
 
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
-                            Add
-                        </button>
-                        <a href="/nova/promotion_detail/page">
-                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
-                                Cancel
+                    <div class="card-footer d-flex">
+                        <div>
+                            <button onclick="clickAdd('promotionDetail', 'promotionDetail')" type="button" class="btn btn-success"><i
+                                    class="fa-solid fa-square-plus"></i>
+                                ADD
                             </button>
-                        </a>
-
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex">
+                        <div>
+                            <button onclick="clickSearch('promotionDetail', 'promotionDetailForm')" type="button" class="btn btn-secondary">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                SEARCH
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="Search by name..."
+                                   th:value="${promotiondetailSearch}" th:name="promotiondetailSearch"
+                                   class="form-control">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -105,7 +117,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="items:${page}">
+                    <tr th:each="items:${pagePromotionDetail}">
                         <td th:text="${items.id}"></td>
                         <td th:text="${items.name}"></td>
                         <td th:text="${items.product.name}"></td>
@@ -120,14 +132,40 @@
                                 </a>
                             </div>
                             <div>
-                                <form th:action="@{'/nova/promotion_detail/delete/' + ${items.id}}" th:method="post">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                <form id="promotionDetailUpdate" th:action="@{'/nova/promotion_detail/delete/' + ${items.id}}"
+                                      th:method="post">
+                                    <button onclick="clickDelete('promotionDetailUpdate')" type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                    </button>
                                 </form>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-center align-items-center">
+                    <div th:if="${pagePromotionDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                        <a th:href="@{|?page=0&promotiondetailSearch=${promotiondetailSearch}|}">
+                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                    </div>
+                    <div th:if="${pagePromotionDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                        <a th:href="@{|?page=${pagePromotionDetail.getNumber() - 1}&promotiondetailSearch=${promotionNameSearch}|}">
+                            <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                    </div>
+                    <div class="btn btn-dark d-flex">
+                        <div th:text="${pagePromotionDetail.getNumber() + 1}"></div>
+                        <span>/</span>
+                        <div th:text="${pagePromotionDetail.getTotalPages()}"></div>
+                    </div>
+                    <div th:if="${pagePromotionDetail.getNumber() + 1 lt pagePromotionDetail.getTotalPages()}" class="btn btn-dark ml-1">
+                        <a th:href="@{|?page=${pagePromotionDetail.getNumber()+1}&promotiondetailSearch=${promotiondetailSearch}|}">
+                            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                    </div>
+                    <div th:if="${pagePromotionDetail.getNumber() + 1 lt pagePromotionDetail.getTotalPages()}" class="btn btn-dark ml-1">
+                        <a th:href="@{|?page=${pagePromotionDetail.getTotalPages()-1}&promotiondetailSearch=${promotiondetailSearch}|}">
+                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

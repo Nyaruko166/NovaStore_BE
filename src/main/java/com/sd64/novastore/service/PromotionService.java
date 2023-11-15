@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.model.Promotion;
 import org.springframework.data.domain.Page;
 
@@ -18,4 +19,6 @@ public interface PromotionService {
     Promotion delete(Integer id);
 
     Promotion getOne(Integer id);
+
+    Page<Promotion> search(String name, int page);
 }

@@ -20,13 +20,15 @@
         </button>
       </div>
       <div class="card-body card-block">
-        <form th:action="@{/nova/voucher/add}" method="post" class="form-horizontal">
+        <form id="voucherForm" th:action="@{/nova/voucher/add}"  th:object="${voucher}"  method="post" class="form-horizontal">
           <div class="row form-group">
             <div class="col col-md-3">
               <label for="code" class=" form-control-label">Code</label>
             </div>
             <div class="col-12 col-md-9">
-              <input type="text" id="code" name="code" class="form-control">
+              <input type="text"  id="code" name="code" th:field="*{code}" class="form-control">
+              <br>
+              <div class="alert alert-warning" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
             </div>
           </div>
           <div class="row form-group">
@@ -34,7 +36,9 @@
               <label for="name" class=" form-control-label">Name</label>
             </div>
             <div class="col-12 col-md-9">
-              <input type="text" id="name" name="name" class="form-control">
+              <input type="text"  id="name" name="name" th:field="*{name}" class="form-control">
+              <br>
+              <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
             </div>
           </div>
           <div class="row form-group">
@@ -42,7 +46,9 @@
               <label for="quantity" class=" form-control-label">Quantity</label>
             </div>
             <div class="col-12 col-md-9">
-              <input type="number" id="quantity" name="quantity" class="form-control">
+              <input type="number" id="quantity" th:field="*{quantity}" name="quantity" class="form-control">
+              <br>
+              <div class="alert alert-warning" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
             </div>
           </div>
           <div class="row form-group">
@@ -65,7 +71,9 @@
               <label for="value" class=" form-control-label">Value</label>
             </div>
             <div class="col-12 col-md-9">
-              <input type="number" id="value" name="value" class="form-control">
+              <input type="number"  id="value" name="value" th:field="*{value}" class="form-control">
+              <br>
+              <div class="alert alert-warning" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
             </div>
           </div>
           <div class="row form-group">
@@ -73,7 +81,9 @@
               <label for="minimumPrice" class=" form-control-label">Minimum price</label>
             </div>
             <div class="col-12 col-md-9">
-              <input type="number" id="minimumPrice" name="minimumPrice" class="form-control">
+              <input type="number" id="minimumPrice" th:field="*{minimumPrice}" name="minimumPrice" class="form-control">
+              <br>
+              <div class="alert alert-warning" th:if="${#fields.hasErrors('minimumPrice')}" th:errors="*{minimumPrice}"></div>
             </div>
           </div>
           <div class="row form-group">
@@ -81,7 +91,9 @@
               <label for="maximumDiscount" class=" form-control-label">Maximum discount</label>
             </div>
             <div class="col-12 col-md-9">
-              <input type="number" id="maximumDiscount" name="maximumDiscount" class="form-control">
+              <input type="number" id="maximumDiscount" th:field="*{maximumDiscount}" name="maximumDiscount" class="form-control">
+              <br>
+              <div class="alert alert-warning" th:if="${#fields.hasErrors('maximumDiscount')}" th:errors="*{maximumDiscount}"></div>
             </div>
           </div>
           <div class="row form-group">
@@ -91,8 +103,11 @@
             <div class="col-12 col-md-9">
               <div id="start-date-picker" class="md-form md-outline input-with-post-icon datepicker"
                    inline="true">
-                <input placeholder="Choose start date" type="datetime-local" id="startDate" class="form-control"
+                <input placeholder="Choose start date"  th:field="*{startDate}" type="datetime-local" id="startDate"
+                       class="form-control"
                        name="startDate">
+                <br>
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
               </div>
             </div>
           </div>
@@ -103,20 +118,32 @@
             <div class="col-12 col-md-9">
               <div id="end-date-picker" class="md-form md-outline input-with-post-icon datepicker"
                    inline="true">
-                <input placeholder="Choose end date" type="datetime-local" id="endDate" class="form-control"
+                <input placeholder="Choose end date" th:field="*{endDate}" type="datetime-local" id="endDate"
+                       class="form-control"
                        name="endDate">
+                <br>
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
               </div>
             </div>
           </div>
           <div class="card-footer">
-            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
-              Add
+            <button onclick="clickAdd('voucher', 'voucherForm')" type="button" class="btn btn-success"><i
+                    class="fa-solid fa-square-plus"></i>
+              ADD
             </button>
-            <a href="/nova/voucher/page">
-              <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
-                Cancel
+          </div>
+          <div class="card-footer d-flex">
+            <div>
+              <button onclick="clickSearch('voucher', 'voucherForm')" type="button" class="btn btn-secondary">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                SEARCH
               </button>
-            </a>
+            </div>
+            <div class="col-12 col-md-9">
+              <input type="text" placeholder="Search by name..."
+                     th:value="${voucherNameSearch}" th:name="voucherNameSearch"
+                     class="form-control">
+            </div>
           </div>
         </form>
       </div>
@@ -173,23 +200,41 @@
                 </a>
               </div>
               <div>
-                <form th:action="@{'/nova/voucher/delete/' + ${items.id}}" th:method="post">
-                  <button type="submit" class="btn btn-danger">DELETE</button>
+                <form id="voucherDelete" th:action="@{'/nova/voucher/delete/' + ${items.id}}"
+                      th:method="post">
+                  <button onclick="clickDelete('voucherDelete')" type="button" class="btn btn-danger">
+                    <i class="fa-solid fa-trash mr-1"></i>DELETE
+                  </button>
                 </form>
               </div>
+
             </td>
           </tr>
           </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2<span class="sr-only">(current)</span></a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-          </ul>
-        </nav>
+        <div class="d-flex justify-content-center align-items-center">
+          <div th:if="${pageVoucher.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+            <a th:href="@{|?page=0&voucherNameSearch=${voucherNameSearch}|}">
+              </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+          </div>
+          <div th:if="${pageVoucher.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+            <a th:href="@{|?page=${pageVoucher.getNumber() - 1}&voucherNameSearch=${voucherNameSearch}|}">
+              <i style="color: white" class="fa-solid fa-left-long"></i></a>
+          </div>
+          <div class="btn btn-dark d-flex">
+            <div th:text="${pageVoucher.getNumber() + 1}"></div>
+            <span>/</span>
+            <div th:text="${pageVoucher.getTotalPages()}"></div>
+          </div>
+          <div th:if="${pageVoucher.getNumber() + 1 lt pageVoucher.getTotalPages()}" class="btn btn-dark ml-1">
+            <a th:href="@{|?page=${pageVoucher.getNumber()+1}&voucherNameSearch=${voucherNameSearch}|}">
+              <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+          </div>
+          <div th:if="${pageVoucher.getNumber() + 1 lt pageVoucher.getTotalPages()}" class="btn btn-dark ml-1">
+            <a th:href="@{|?page=${pageVoucher.getTotalPages()-1}&voucherNameSearch=${voucherNameSearch}|}">
+              <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

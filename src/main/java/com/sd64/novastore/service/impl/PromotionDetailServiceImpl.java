@@ -69,4 +69,10 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
         return promotionDetailRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public Page<PromotionDetail> search(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return promotionDetailRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
 }

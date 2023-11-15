@@ -21,13 +21,15 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form th:action="@{/nova/promotion/add}" method="post" class="form-horizontal">
+                <form  id="promotionForm" th:action="@{/nova/promotion/add}" th:object="${promotion}"  method="post" class="form-horizontal">
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="code" class=" form-control-label">Code</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="code" name="code" class="form-control">
+                            <input type="text"  id="code" name="code" th:field="*{code}" class="form-control">
+                            <br>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -35,7 +37,9 @@
                             <label for="name" class=" form-control-label">Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="name" name="name" class="form-control">
+                            <input type="text"  id="name" name="name" th:field="*{name}" class="form-control">
+                            <br>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -60,7 +64,9 @@
                             <label for="value" class=" form-control-label">Value</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="number" id="value" name="value" class="form-control">
+                            <input type="number"  id="value" name="value" th:field="*{value}" class="form-control">
+                            <br>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
                         </div>
                     </div>
 
@@ -71,9 +77,11 @@
                         <div class="col-12 col-md-9">
                             <div id="start-date-picker" class="md-form md-outline input-with-post-icon datepicker"
                                  inline="true">
-                                <input placeholder="Choose start date" type="datetime-local" id="startDate"
+                                <input placeholder="Choose start date"  th:field="*{startDate}" type="datetime-local" id="startDate"
                                        class="form-control"
                                        name="startDate">
+                                <br>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
                             </div>
                         </div>
                     </div>
@@ -84,22 +92,43 @@
                         <div class="col-12 col-md-9">
                             <div id="end-date-picker" class="md-form md-outline input-with-post-icon datepicker"
                                  inline="true">
-                                <input placeholder="Choose end date" type="datetime-local" id="endDate"
+                                <input placeholder="Choose end date" th:field="*{endDate}" type="datetime-local" id="endDate"
                                        class="form-control"
                                        name="endDate">
+                                <br>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
                             </div>
                         </div>
                     </div>
-
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
-                            Add
-                        </button>
-                        <a href="/nova/promotion/page">
-                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
-                                Cancel
+                        <a th:href="@{/nova/promotion_detail/page}">
+                            <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
+                                Change PromotionDetail
                             </button>
                         </a>
+                    </div>
+
+                    <div class="card-footer d-flex">
+                        <div>
+                            <button onclick="clickAdd('promotion', 'promotionForm')" type="button" class="btn btn-success"><i
+                                    class="fa-solid fa-square-plus"></i>
+                                ADD
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card-footer d-flex">
+                        <div>
+                            <button onclick="clickSearch('promotion', 'promotionForm')" type="button" class="btn btn-secondary">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                SEARCH
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="Search by name..."
+                                   th:value="${promotionNameSearch}" th:name="promotionNameSearch"
+                                   class="form-control">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -149,24 +178,40 @@
                                 </a>
                             </div>
                             <div>
-                                <form th:action="@{'/nova/promotion/delete/' + ${items.id}}" th:method="post">
-                                    <button type="submit" class="btn btn-danger">DELETE</button>
+                                <form id="promotionDelete" th:action="@{'/nova/promotion/delete/' + ${items.id}}"
+                                      th:method="post">
+                                    <button onclick="clickDelete('promotionDelete')" type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                    </button>
                                 </form>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2<span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
+                <div class="d-flex justify-content-center align-items-center">
+                    <div th:if="${pagePromotion.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                        <a th:href="@{|?page=0&promotionNameSearch=${promotionNameSearch}|}">
+                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                    </div>
+                    <div th:if="${pagePromotion.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                        <a th:href="@{|?page=${pagePromotion.getNumber() - 1}&promotionNameSearch=${promotionNameSearch}|}">
+                            <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                    </div>
+                    <div class="btn btn-dark d-flex">
+                        <div th:text="${pagePromotion.getNumber() + 1}"></div>
+                        <span>/</span>
+                        <div th:text="${pagePromotion.getTotalPages()}"></div>
+                    </div>
+                    <div th:if="${pagePromotion.getNumber() + 1 lt pagePromotion.getTotalPages()}" class="btn btn-dark ml-1">
+                        <a th:href="@{|?page=${pagePromotion.getNumber()+1}&promotionNameSearch=${promotionNameSearch}|}">
+                            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                    </div>
+                    <div th:if="${pagePromotion.getNumber() + 1 lt pagePromotion.getTotalPages()}" class="btn btn-dark ml-1">
+                        <a th:href="@{|?page=${pagePromotion.getTotalPages()-1}&promotionNameSearch=${promotionNameSearch}|}">
+                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

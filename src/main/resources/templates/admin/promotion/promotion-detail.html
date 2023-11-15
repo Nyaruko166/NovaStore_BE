@@ -13,7 +13,7 @@
                 <strong>Promotion</strong>
             </div>
             <div class="card-body card-block">
-                <form th:object="${promotion}" th:action="@{/nova/promotion/update/{id}(id=${promotion.id})}"
+                <form  id="promotionUpdate" th:object="${promotion}" th:action="@{/nova/promotion/update/{id}(id=${promotion.id})}"
                       method="post" class="form-horizontal">
                     <div class="row form-group">
                         <div class="col col-md-3">
@@ -21,6 +21,8 @@
                         </div>
                         <div class="col-12 col-md-9">
                             <input type="text" id="code" th:field="*{code}" class="form-control">
+                            <br>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -29,6 +31,8 @@
                         </div>
                         <div class="col-12 col-md-9">
                             <input type="text" id="name" th:field="*{name}" class="form-control">
+                            <br>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -54,6 +58,8 @@
                         </div>
                         <div class="col-12 col-md-9">
                             <input type="number" id="value" th:field="*{value}" class="form-control">
+                            <br>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
                         </div>
                     </div>
 
@@ -67,6 +73,8 @@
                                 <input placeholder="Choose start date" type="datetime-local" id="startDate"
                                        class="form-control"
                                        th:field="*{startDate}">
+                                <br>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
                             </div>
                         </div>
                     </div>
@@ -80,15 +88,14 @@
                                 <input placeholder="Choose end date" type="datetime-local" id="endDate"
                                        class="form-control"
                                        th:field="*{endDate}">
+                                <br>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
-                            Update
-                        </button>
-                        <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
-                            Cancel
+                        <button onclick="clickUpdate('promotionUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
+                            UPDATE
                         </button>
                     </div>
                 </form>

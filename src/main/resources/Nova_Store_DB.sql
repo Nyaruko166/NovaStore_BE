@@ -304,7 +304,7 @@ CREATE TABLE [dbo].[Image](
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
-    [ProductDetailId] [int] NULL,
+    [ProductId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
@@ -353,6 +353,7 @@ CREATE TABLE [dbo].[PaymentMethod](
     GO
 CREATE TABLE [dbo].[Product](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Code] [varchar](50) UNIQUE,
     [Name] [nvarchar](50) NULL,
     [Description] [nvarchar](255) NULL,
     [Price] [money] NULL,
@@ -376,6 +377,7 @@ CREATE TABLE [dbo].[Product](
     GO
 CREATE TABLE [dbo].[ProductDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Code] [varchar](50) UNIQUE,
     [Quantity] [int] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
@@ -549,8 +551,8 @@ ALTER TABLE [dbo].[CartDetail]  WITH CHECK ADD  CONSTRAINT [FKepuvpwbykpahqt0gag
     GO
 ALTER TABLE [dbo].[CartDetail] CHECK CONSTRAINT [FKepuvpwbykpahqt0gagvvdqoyn]
     GO
-ALTER TABLE [dbo].[Image]  WITH CHECK ADD  CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c] FOREIGN KEY([ProductDetailId])
-    REFERENCES [dbo].[ProductDetail] ([Id])
+ALTER TABLE [dbo].[Image]  WITH CHECK ADD  CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c] FOREIGN KEY([ProductId])
+    REFERENCES [dbo].[Product] ([Id])
     GO
 ALTER TABLE [dbo].[Image] CHECK CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c]
     GO

@@ -19,5 +19,5 @@ public interface PromotionDetailService {
     PromotionDetail delete(Integer id);
 
     PromotionDetail getOne(Integer id);
-
+    Page<PromotionDetail> search(String name, int page);
 }
