@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/user/fragments::head}">
+</head>
+
+<body>
+<div th:replace="~{/user/fragments::header}"></div>
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Đơn hàng chi tiết</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Đơn hàng chi tiết</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- Cart Start -->
+<div class="container-fluid pt-5">
+    <div th:if="${check}">
+        <h4 class="text-center" style="color: darkslategray" th:text="${check}"><i
+                class="text-info font-weight-bold text-center"></i></h4>
+    </div>
+    <div class="row px-xl-5">
+        <div class="col-lg-12 table-responsive mb-5">
+            <table class="table table-bordered text-center mb-0">
+                <thead class="bg-secondary text-dark">
+                <tr>
+                    <th>Đơn hàng</th>
+                    <th>Ngày đặt hàng</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái đơn hàng</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody class="align-middle">
+                <tr th:each="order : ${orders}">
+                    <td class="align-middle" th:text="${order.id}"></td>
+                    <td class="align-middle"
+                        th:text="${#dates.format(order.orderDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                    <td class="align-middle"
+                        th:text="'₫' + ${#numbers.formatDecimal(order.totalPrice, 1, 'COMMA', 0, 'POINT')}"></td>
+                    <td class="align-middle">
+                        <span th:switch="${order.status}">
+                            <span th:case="10">Chờ xác nhận</span>
+                            <span th:case="0">Đã huỷ</span>
+                            <span th:case="2">Đang giao hàng</span>
+                            <span th:case="1">Đã giao hàng thành công</span>
+                        </span>
+                    </td>
+                    <td class="align-middle">
+                        <a class="btn btn-sm btn-primary"
+                           th:href="@{'/order-detail/' + ${order.id}}">Xem chi tiết</a>
+                        <a class="btn btn-sm btn-danger" th:href="@{'/cancel-order/' + ${order.id}}" th:if="${order.status == 10}">Huỷ</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Cart End -->
+
+<div th:replace="~{/user/fragments::footer}"></div>
+
+<div th:replace="~{/user/fragments::script}"></div>
+
+</body>
+
+</html>

@@ -18,4 +18,8 @@ public interface AddressService {
 
     Address getOne(Integer id);
 
+    Address findAccountDefaultAddress(Integer AccountId);
+
+    List<Address> findAccountAddress(Integer AccountId);
+
 }

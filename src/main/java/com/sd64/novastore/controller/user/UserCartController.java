@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,6 +45,9 @@ public class UserCartController {
             model.addAttribute("cart", cart);
             session.setAttribute("totalItems", cart.getTotalItems());
         }
+        if (cart.getCartDetails().isEmpty()){
+            model.addAttribute("check", "Giỏ hàng của bạn đang trống");
+        }
         return "/user/cart";
     }
 
@@ -64,5 +69,34 @@ public class UserCartController {
         redirectAttributes.addFlashAttribute("mess", "Thêm giỏ hàng thành công!");
         String redirectUrl = String.format("redirect:/product-detail/%d", productId);
         return redirectUrl;
+    }
+
+    @RequestMapping(value = "/update-cart", method = RequestMethod.POST, params = "action=update")
+    public String updateCart(@RequestParam("id") Integer id,
+                             @RequestParam("quantity") Integer quantity,
+                             Principal principal,
+                             HttpSession session){
+        if (principal == null){
+            return "redirect:/login";
+        }
+        ProductDetail productDetail = userProductDetailService.getProductDetailById(id);
+        String email = principal.getName();
+        Cart cart = cartService.updateCart(productDetail, quantity, email);
+        session.setAttribute("totalItems", cart.getTotalItems());
+        return "redirect:/cart";
+    }
+
+    @RequestMapping(value = "/update-cart", method = RequestMethod.POST, params = "action=delete")
+    public String deleteItem(@RequestParam("id") Integer id,
+                             Principal principal,
+                             HttpSession session){
+        if (principal == null){
+            return "redirect:/login";
+        }
+        ProductDetail productDetail = userProductDetailService.getProductDetailById(id);
+        String email = principal.getName();
+        Cart cart = cartService.removeFromCart(productDetail, email);
+        session.setAttribute("totalItems", cart.getTotalItems());
+        return "redirect:/cart";
     }
 }

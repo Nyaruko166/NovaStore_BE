@@ -29,11 +29,11 @@ public class BillDetail {
     @Column(name = "Status")
     private Integer status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "BillId", referencedColumnName = "Id")
     private Bill bill;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ProductDetailId", referencedColumnName = "Id")
     private ProductDetail productDetail;
 }

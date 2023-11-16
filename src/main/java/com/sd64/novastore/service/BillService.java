@@ -2,6 +2,7 @@ package com.sd64.novastore.service;
 
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Bill;
+import com.sd64.novastore.model.Cart;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -30,4 +31,12 @@ public interface BillService {
     List<BillDetail> getLstDetailByBillId(Integer id);
 
     Bill delete(Integer id);
+
+    Bill placeOrder(Cart cart, String address, String payment);
+
+    List<Bill> getNoConfirmOrders(Integer customerId);
+
+    List<Bill> getAllOrders(Integer customerId);
+
+    Bill cancelOrder(Integer billId);
 }
