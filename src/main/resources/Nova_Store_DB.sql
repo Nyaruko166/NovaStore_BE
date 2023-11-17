@@ -214,7 +214,8 @@ CREATE TABLE [dbo].[Brand](
     GO
 CREATE TABLE [dbo].[Cart](
     [Id] [int] IDENTITY(1,1) NOT NULL,
-    [CreateDate] [datetime] NULL,
+    [TotalPrice] [money] NULL,
+    [TotalItems] [int] NULL,
     [AccountId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
@@ -231,9 +232,6 @@ CREATE TABLE [dbo].[CartDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Price] [money] NULL,
     [Quantity] [int] NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
     [CartId] [int] NULL,
     [ProductDetailId] [int] NULL,
     PRIMARY KEY CLUSTERED
