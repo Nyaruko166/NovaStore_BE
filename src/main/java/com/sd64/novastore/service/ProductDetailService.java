@@ -14,7 +14,7 @@ public interface ProductDetailService {
 
     Page<ProductDetail> getAllPT(Integer page);
 
-    ProductDetail add(Integer productId, Integer quantity, Integer sizeId, Integer colorId);
+    Boolean add(Integer productId, String code, Integer quantity, Integer sizeId, Integer colorId);
 
     ProductDetail update(Integer id, Integer productId, Integer quantity, Integer sizeId, Integer colorId);
 

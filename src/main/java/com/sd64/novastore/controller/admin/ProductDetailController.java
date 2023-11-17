@@ -71,13 +71,18 @@ public class ProductDetailController {
 
     @PostMapping("/product-detail/add")
     public String add(@RequestParam Integer productId,
+                      @RequestParam String code,
                       @RequestParam Integer quantity,
                       @RequestParam Integer sizeId,
                       @RequestParam Integer colorId,
                       RedirectAttributes redirectAttributes) {
-        productDetailService.add(productId, quantity, sizeId, colorId);
-        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành cồng");
-        return "redirect:/nova/product/" + productId + "/product-detail";
+        if (productDetailService.add(productId, code, quantity, sizeId, colorId)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành cồng");
+            return "redirect:/nova/product/" + productId + "/product-detail";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Mã chi tiết đã tồn tại, Thêm dữ liệu thất bại");
+            return "redirect:/nova/product/" + productId + "/product-detail";
+        }
     }
 
     @GetMapping("/product-detail/detail/{id}")

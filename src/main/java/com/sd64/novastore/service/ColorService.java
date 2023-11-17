@@ -10,9 +10,9 @@ public interface ColorService {
 
     Page<Color> getPage(Integer page);
 
-    Color add(Color color);
+    Color add(String name);
 
-    Color update(Color color, Integer id);
+    Color update(Integer id, String name);
 
     Color delete(Integer id);
 

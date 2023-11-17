@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class ProductDetailSearchResponse {
     private Integer id;
+    private String code;
     private Integer quantity;
     private String sizeName;
     private String colorName;

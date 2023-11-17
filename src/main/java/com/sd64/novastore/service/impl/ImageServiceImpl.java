@@ -1,6 +1,7 @@
 package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.model.Image;
+import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.repository.ImageRepository;
 import com.sd64.novastore.repository.ProductDetailRepository;
@@ -39,14 +40,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Page<Image> getImageByProductDetail(int page, Integer productDetailId){
+    public Page<Image> getImageByProductDetail(int page, Integer productId){
         Pageable pageable = PageRequest.of(page, 5);
-        return imageRepository.getAllImageByProductDetail_IdAndStatusOrderByUpdateDateDesc(pageable, productDetailId, 1);
+        return imageRepository.getAllImageByProduct_IdAndStatusOrderByUpdateDateDesc(pageable, productId, 1);
     }
 
     @Override
-    public void add(Integer productDetailId, List<MultipartFile> images) {
-        log.info("Start upload image, product id = {}, images = {}", productDetailId, images);
+    public void add(Integer productId, List<MultipartFile> images) {
+        log.info("Start upload image, product id = {}, images = {}", productId, images);
         String uploadDir = "./src/main/resources/static/assets/product/";
         for (var image: images) {
             String fileName = image.getOriginalFilename();
@@ -54,7 +55,7 @@ public class ImageServiceImpl implements ImageService {
             imageAdd.setStatus(1);
             imageAdd.setCreateDate(new Date());
             imageAdd.setUpdateDate(new Date());
-            imageAdd.setProductDetail(ProductDetail.builder().id(productDetailId).build());
+            imageAdd.setProduct(Product.builder().id(productId).build());
             Image imageLasted = imageRepository.save(imageAdd);
             String uid = "uid_" + imageLasted.getId();
             String avtPath = FileUtil.copyFile(image, fileName, uploadDir);
@@ -67,7 +68,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void update(Integer id, Integer productDetailId, MultipartFile image) {
+    public void update(Integer id, Integer productId, MultipartFile image) {
         Optional<Image> optional = imageRepository.findById(id);
         if (optional.isPresent()) {
             String uploadDir = "./src/main/resources/static/assets/product/";
@@ -77,7 +78,7 @@ public class ImageServiceImpl implements ImageService {
             updateImage.setStatus(updateImage.getStatus());
             updateImage.setCreateDate(updateImage.getCreateDate());
             updateImage.setUpdateDate(new Date());
-            updateImage.setProductDetail(ProductDetail.builder().id(productDetailId).build());
+            updateImage.setProduct(Product.builder().id(productId).build());
             String uid = "uid_" + updateImage.getId();
             String extension = FileUtil.getFileExtension(fileName);
             String newFileName = uid+ "." + extension;
@@ -87,8 +88,8 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Integer getProductDetailByIdImage(Integer imageId) {
-        Integer productDetailId = imageRepository.findById(imageId).get().getProductDetail().getId();
-        return productDetailId;
+        Integer productId = imageRepository.findById(imageId).get().getProduct().getId();
+        return productId;
     }
 
     @Override

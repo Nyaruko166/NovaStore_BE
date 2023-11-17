@@ -82,22 +82,22 @@
             }
         }
 
-        onInputText = (id) => {
-            document.getElementById(id).innerHTML = ''
+        onInputText = (idError) => {
+            document.getElementById(idError).innerHTML = ''
         }
 
-        checkName = (name, errorName) => {
-            let isName = document.getElementById(name).value
+        checkName = (idInput, errorName, text) => {
+            let isName = document.getElementById(idInput).value
             debugger
             if (isName.trim() === '') {
-                document.getElementById(errorName).innerHTML = `Chưa nhập tên`
+                document.getElementById(errorName).innerHTML = `Chưa nhập ${text}`
                 return false;
             }
             return true;
         }
 
-        function clickAdd(entity, id, name, errorName) {
-            if (checkName(name, errorName)) {
+        function clickAdd(entity, idForm, idInput, errorName, text) {
+            if (checkName(idInput, errorName, text)) {
                 swal({
                     title: "Thêm dữ liệu",
                     text: "Bạn có muốn thêm dữ liệu không ?",
@@ -107,9 +107,9 @@
                     closeOnClickOutside: false,
                 }).then((add) => {
                     if (add) {
-                        document.getElementById(id).action = '/nova/' + entity + '/add'
-                        document.getElementById(id).method = 'post'
-                        document.getElementById(id).submit()
+                        document.getElementById(idForm).action = '/nova/' + entity + '/add'
+                        document.getElementById(idForm).method = 'post'
+                        document.getElementById(idForm).submit()
                         // swal("Thêm dữ liệu thành công", {
                         //     icon: "success",
                         // })
@@ -118,23 +118,25 @@
             }
         }
 
-        function validateFile(id, errorName) {
-            let fileInput = document.getElementById(id);
+        function validateFile(idInputFile, errorName) {
+            let fileInput = document.getElementById(idInputFile);
             let file = fileInput.files;
             debugger
             if (file.length === 0) {
-                document.getElementById(errorName).innerHTML = `Vui lòng chọn ảnh`
+                document.getElementById(errorName).innerHTML = `Vui lòng chọn file`
                 return false;
             }
-            if (file[0].size > 1024 * 1024) {
-                document.getElementById(errorName).innerHTML = `Kích thước file không vượt quá 1MB`
-                return false;
+            for (let i = 0; i < file.length; i++) {
+                if (file[i].size > 1024 * 1024) {
+                    document.getElementById(errorName).innerHTML = `Kích thước từng file không vượt quá 1MB`
+                    return false;
+                }
             }
             return true;
         }
 
-        function clickUpdate(id, name, errorName) {
-            if (checkName(name, errorName)) {
+        function clickUpdate(idForm, idInput, errorName) {
+            if (checkName(idInput, errorName)) {
                 swal({
                     title: "Sửa dữ liệu",
                     text: "Bạn có muốn sửa dữ liệu không ?",
@@ -144,13 +146,13 @@
                     closeOnClickOutside: false,
                 }).then((update) => {
                     if (update) {
-                        document.getElementById(id).submit()
+                        document.getElementById(idForm).submit()
                     }
                 });
             }
         }
 
-        function clickDelete(entity, id, entityId) {
+        function clickDelete(entity, idForm, idDelete) {
             swal({
                 title: "Xóa dữ liệu",
                 text: "Bạn có muốn xóa dữ liệu không ?",
@@ -160,21 +162,28 @@
                 closeOnClickOutside: false,
             }).then((deleted) => {
                 if (deleted) {
-                    document.getElementById(id).action = '/nova/' + entity + "/delete/" + entityId
-                    document.getElementById(id).method = 'post'
-                    document.getElementById(id).submit()
+                    document.getElementById(idForm).action = '/nova/' + entity + "/delete/" + idDelete
+                    document.getElementById(idForm).method = 'post'
+                    document.getElementById(idForm).submit()
                 }
             });
         }
 
-        function importExcel(id) {
-            let excel = confirm("Bạn có muốn thêm file excel ?")
-            if (excel) {
-                console.log('binh tinh')
-                document.getElementById(id).method = 'post'
-                document.getElementById(id).submit()
-            } else {
-                return null
+        function importExcel(id, name, error) {
+            if (validateFile(name, error)) {
+                swal({
+                    title: "Thêm dữ liệu Excel",
+                    text: "Bạn có muốn thêm dữ liệu excel không ?",
+                    icon: "warning",
+                    buttons: ["Không", "Có"],
+                    dangerMode: true,
+                    closeOnClickOutside: false,
+                }).then((update) => {
+                    if (update) {
+                        document.getElementById(id).method = 'post'
+                        document.getElementById(id).submit()
+                    }
+                });
             }
         }
 

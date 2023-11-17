@@ -6,6 +6,8 @@ public interface ProductDto {
 
     Integer getId();
 
+    String getCode();
+
     String getName();
 
     String getDescription();
@@ -19,5 +21,7 @@ public interface ProductDto {
     String getMaterialName();
 
     String getFormName();
+
+    Integer getImageId();
 
 }

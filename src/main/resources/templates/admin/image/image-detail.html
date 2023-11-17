@@ -13,45 +13,85 @@
                 <strong>CẬP NHẬT ẢNH</strong>
             </div>
             <div class="card-body card-block">
-                <form id="imageUpdate" th:object="${imageDetail}" th:action="@{/nova/image/update/{id}(id=*{id})}" method="post" class="form-horizontal" enctype="multipart/form-data">
-                    <input type="hidden" class="form-control" name="productDetailId" th:value="*{productDetail.id}">
+                <form id="imageUpdate" th:object="${imageDetail}" th:action="@{/nova/image/update/{id}(id=*{id})}"
+                      method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <input type="hidden" class="form-control" name="productId" th:value="*{product.id}">
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="importFileProduct" class="font-weight-bold  form-control-label">Ảnh</label>
                         </div>
                         <div class="col-12 col-md-9">
                             <div class="input-group mb-3">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="importFileProduct" name="image"
-                                           accept="image/png, image/jpg, image/jpeg">
-                                    <label class="custom-file-label" for="importFileProduct">Chọn ảnh</label>
+                                <div class="w-100">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="importFileProduct" name="image"
+                                               accept="image/png, image/jpg, image/jpeg">
+                                        <label class="custom-file-label" for="importFileProduct">Chọn ảnh</label>
+                                    </div>
+                                    <div>
+                                        <small class="" style="color: red" id="errorName"></small>
+                                    </div>
                                 </div>
                                 <script th:inline="javascript">
-                                    document.querySelector("#importFileProduct").addEventListener("change", function(event) {
+                                    document.querySelector("#importFileProduct").addEventListener("change", function (event) {
                                         uploadFile(event);
                                     });
                                 </script>
                             </div>
                             <div id="preview-image-files">
                                 <img th:src="@{'/image/' + *{id}}" alt=""
-                                style="max-width: 75px; max-height: 100px">
+                                     style="max-width: 75px; max-height: 100px">
                             </div>
                             <!--                            <input type="text" id="avatar" name="avatar" class="form-control">-->
                         </div>
                     </div>
-<!--                    <div class="row mb-2 ml-1" id="preview-image-files"></div>-->
+                    <!--                    <div class="row mb-2 ml-1" id="preview-image-files"></div>-->
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickUpdate('imageUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
+                            <button onclick="updateImageFile()" type="button" class="btn btn-info"><i
+                                    class="fa-solid fa-pen mr-1"></i>
                                 SỬA
                             </button>
-                            <a th:href="@{|/nova/image/*{productDetail.id}|}">
+                            <script>
+                                validateUpdateFile = () => {
+                                    debugger
+                                    let image = document.getElementById('importFileProduct')
+                                    let file = image.files
+                                    for (let i = 0; i < file.length; i++) {
+                                        if (file[i].size > 1024 * 1024) {
+                                            document.getElementById('errorName').innerHTML = `Kích thước từng file không vượt quá 1MB`
+                                            return false;
+                                        }
+                                    }
+                                    return true;
+                                }
+
+                                updateImageFile = () => {
+                                    debugger
+                                    if (validateUpdateFile()) {
+                                        swal({
+                                            title: "Sửa dữ liệu",
+                                            text: "Bạn có muốn sửa dữ liệu không ?",
+                                            icon: "warning",
+                                            buttons: ["Không", "Có"],
+                                            dangerMode: true,
+                                            closeOnClickOutside: false,
+                                        }).then((update) => {
+                                            if (update) {
+                                                document.getElementById('imageUpdate').submit()
+                                            }
+                                        });
+                                    }
+                                }
+                            </script>
+                            <a th:href="@{|/nova/product/*{product.id}/image|}">
                                 <button type="button" class="btn btn-warning"><i
                                         class="fa-solid fa-circle-left mr-1"></i> ẢNH
                                 </button>
                             </a>
                         </div>
                     </div>
+
                     <br>
                 </form>
             </div>

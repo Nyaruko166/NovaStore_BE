@@ -20,6 +20,9 @@ public class ProductDetail {
     @Column(name = "Id")
     private Integer id;
 
+    @Column(name = "Code")
+    private String code;
+
     @Column(name = "Quantity")
     private Integer quantity;
 

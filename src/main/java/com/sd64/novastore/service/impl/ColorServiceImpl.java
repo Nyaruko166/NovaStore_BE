@@ -30,7 +30,9 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public Color add(Color color) {
+    public Color add(String name) {
+        Color color = new Color();
+        color.setName(name);
         color.setStatus(1);
         color.setCreateDate(new java.util.Date());
         color.setUpdateDate(new java.util.Date());
@@ -38,15 +40,16 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public Color update(Color color, Integer id) {
+    public Color update(Integer id, String name) {
         Optional<Color> optional = colorRepository.findById(id);
         if (optional.isPresent()) {
             Color updateColor = optional.get();
-            color.setId(id);
-            color.setStatus(updateColor.getStatus());
-            color.setCreateDate(updateColor.getCreateDate());
-            color.setUpdateDate(new Date());
-            return colorRepository.save(color);
+            updateColor.setId(id);
+            updateColor.setName(name);
+            updateColor.setStatus(updateColor.getStatus());
+            updateColor.setCreateDate(updateColor.getCreateDate());
+            updateColor.setUpdateDate(new Date());
+            return colorRepository.save(updateColor);
         } else {
             return null;
         }

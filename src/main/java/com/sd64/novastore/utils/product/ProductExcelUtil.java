@@ -2,10 +2,8 @@ package com.sd64.novastore.utils.product;
 
 
 import com.sd64.novastore.model.*;
-import com.sd64.novastore.repository.BrandRepository;
-import com.sd64.novastore.repository.CategoryRepository;
-import com.sd64.novastore.repository.FormRepository;
-import com.sd64.novastore.repository.MaterialRepository;
+import com.sd64.novastore.repository.*;
+import com.sd64.novastore.service.ProductService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -33,52 +31,93 @@ public class ProductExcelUtil {
     @Autowired
     private FormRepository formRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     public Boolean isValidExcel(MultipartFile file) {
         return Objects.equals(file.getContentType(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     }
 
-    public List<Product> getProductFromExcel(String path) throws IOException {
-        String name = "";
-        String description = "";
-        BigDecimal price = null;
-        Category category = new Category();
-        Brand brand = new Brand();
-        Material material = new Material();
-        Form form = new Form();
-
+    public String getProductFromExcel(String path) throws IOException {
         List<Product> listProduct = new ArrayList<>();
         FileInputStream fileInputStream = new FileInputStream(path);
         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
         XSSFSheet xssfSheet = workbook.getSheetAt(0);
 
         int rowIndex = 0;
-        for (Row row : xssfSheet) {
-            if (rowIndex == 0) {
-                rowIndex++;
-                continue;
-            }
-            Iterator<Cell> cellIterator = row.iterator();
-            int cellIndex = 0;
-            while (cellIterator.hasNext()) {
-                Cell cell = cellIterator.next();
-                switch (cellIndex) {
-                    case 0 -> name = cell.getStringCellValue();
-                    case 1 -> description = cell.getStringCellValue();
-                    case 2 -> price = BigDecimal.valueOf(cell.getNumericCellValue());
-                    case 3 -> brand = brandRepository.findByName(cell.getStringCellValue());
-                    case 4 -> material = materialRepository.findByName(cell.getStringCellValue());
-                    case 5 -> category = categoryRepository.findByName(cell.getStringCellValue());
-                    case 6 -> form = formRepository.findByName(cell.getStringCellValue());
-                    default -> {}
+        try {
+            for (Row row : xssfSheet) {
+                if (rowIndex == 0) {
+                    rowIndex++;
+                    continue;
                 }
-                cellIndex++;
+                Iterator<Cell> cellIterator = row.iterator();
+                int cellIndex = 0;
+                Product product = new Product();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    switch (cellIndex) {
+                        case 0:
+                            Optional<Product> optionalProduct = productRepository.findAllByCode(cell.getStringCellValue());
+                            if (optionalProduct.isPresent()) {
+                                workbook.close();
+                                fileInputStream.close();
+                                File file = new File(path);
+                                file.delete();
+                                return "Trùng mã";
+                            }
+                            product.setCode(cell.getStringCellValue());
+                            break;
+                        case 1:
+                            product.setName(cell.getStringCellValue());
+                            break;
+                        case 2:
+                            product.setDescription(cell.getStringCellValue());
+                            break;
+                        case 3:
+                            product.setPrice(BigDecimal.valueOf(cell.getNumericCellValue()));
+                            break;
+                        case 4:
+                            product.setBrand(brandRepository.findByName(cell.getStringCellValue()));
+                            break;
+                        case 5:
+                            product.setMaterial(materialRepository.findByName(cell.getStringCellValue()));
+                            break;
+                        case 6:
+                            product.setCategory(categoryRepository.findByName(cell.getStringCellValue()));
+                            break;
+                        case 7:
+                            product.setForm(formRepository.findByName(cell.getStringCellValue()));
+                            break;
+                        default:
+                            break;
+//                        case 3 -> price = BigDecimal.valueOf(cell.getNumericCellValue());
+//                        case 4 -> brand = brandRepository.findByName(cell.getStringCellValue());
+//                        case 5 -> material = materialRepository.findByName(cell.getStringCellValue());
+//                        case 6 -> category = categoryRepository.findByName(cell.getStringCellValue());
+//                        case 7 -> form = formRepository.findByName(cell.getStringCellValue());
+//                        default -> {
+//                        }
+                    }
+                    cellIndex++;
+                }
+                product.setStatus(1);
+                product.setCreateDate(new Date());
+                product.setUpdateDate(new Date());
+                listProduct.add(product);
             }
-            listProduct.add(new Product(null, name, description, price, new Date(), new Date(), 1, category, brand, material, form));
+        } catch (Exception e) {
+            workbook.close();
+            fileInputStream.close();
+            File file = new File(path);
+            file.delete();
+            return "Sai dữ liệu";
         }
         workbook.close();
         fileInputStream.close();
         File file = new File(path);
         file.delete();
-        return listProduct;
+        productRepository.saveAll(listProduct);
+        return "okela";
     }
 }

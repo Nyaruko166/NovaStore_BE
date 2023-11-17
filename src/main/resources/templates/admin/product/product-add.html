@@ -15,6 +15,14 @@
             <div class="card-body card-block">
                 <form id="productAdd" th:object="${product}" class="form-horizontal">
                     <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Mã sản phẩm</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="code" id="code" oninput="onInputText('errorCode')">
+                            <small class="" style="color: red"
+                                   id="errorCode" ></small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="name" id="name" oninput="onInputText('errorName')">
@@ -89,9 +97,23 @@
                                     class="fa-solid fa-square-plus"></i>
                                 THÊM
                             </button>
+                            <a href="/nova/product/page">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM
+                                </button>
+                            </a>
                         </div>
                     </div>
                     <script th:inline="javascript">
+                        checkCode = () => {
+                            let isCode = document.getElementById('code').value
+                            if (isCode.trim() === '') {
+                                document.getElementById('errorCode').innerHTML = `Chưa nhập mã`
+                                return false;
+                            }
+                            return true;
+                        }
+
                         checkName = () => {
                             let isName = document.getElementById('name').value
                             if (isName.trim() === '') {
@@ -128,25 +150,36 @@
                         }
 
                         validate = () => {
+                            let isCode = checkCode();
                             let isName = checkName();
                             let isDescription = checkDescription();
                             let isPrice = checkPrice();
-                            if (isName === true && isDescription === true && isPrice === true) {
+                            if (isCode === true && isName === true && isDescription === true && isPrice === true) {
                                 return true;
                             }
                         }
 
-                        clickAdd = (entity, id) => {
+                        clickAdd = (entity, idForm) => {
                             if (validate()) {
-                                let add = confirm("Bạn có muốn thêm dữ liệu ?")
-                                if (add) {
-                                    document.getElementById(id).action = '/nova/' + entity + '/add'
-                                    document.getElementById(id).method = 'post'
-                                    document.getElementById(id).submit()
-                                } else {
-                                    return null
-                                }
+                                swal({
+                                    title: "Thêm dữ liệu",
+                                    text: "Bạn có muốn thêm dữ liệu không ?",
+                                    icon: "warning",
+                                    buttons: ["Không", "Có"],
+                                    dangerMode: true,
+                                    closeOnClickOutside: false,
+                                }).then((add) => {
+                                    if (add) {
+                                        document.getElementById(idForm).action = '/nova/' + entity + '/add'
+                                        document.getElementById(idForm).method = 'post'
+                                        document.getElementById(idForm).submit()
+                                        // swal("Thêm dữ liệu thành công", {
+                                        //     icon: "success",
+                                        // })
+                                    }
+                                });
                             }
+
                         }
                     </script>
                 </form>
