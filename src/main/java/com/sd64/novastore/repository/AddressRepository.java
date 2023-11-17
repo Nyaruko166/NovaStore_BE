@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +18,10 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
     List<Address> findAllByStatus(Integer status);
 
     Page<Address> findAllByStatus(Pageable pageable, Integer status);
+
+    @Query("SELECT a FROM Address a WHERE a.status = 1 AND a.account.id = :accountId")
+    Address findAccountDefaultAddress(@Param("accountId") Integer accountId);
+
+    @Query("SELECT a FROM Address a WHERE a.status = 2 AND a.account.id = :accountId")
+    List<Address> findAccountAddress(@Param("accountId") Integer accountId);
 }
