@@ -65,4 +65,14 @@ public class AddressServiceImpl implements AddressService {
     public Address getOne(Integer id) {
         return addressRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Address findAccountDefaultAddress(Integer AccountId) {
+        return addressRepository.findAccountDefaultAddress(AccountId);
+    }
+
+    @Override
+    public List<Address> findAccountAddress(Integer AccountId) {
+        return addressRepository.findAccountAddress(AccountId);
+    }
 }

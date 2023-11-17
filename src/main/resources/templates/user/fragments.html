@@ -116,9 +116,17 @@
                             </div>
                             <a th:href="@{user/contact.html}" class="nav-item nav-link">Liên hệ</a>
                         </div>
-                        <div class="navbar-nav ml-auto py-0">
-                            <a th:if="${session.username == null}" th:href="@{/login}" class="nav-item nav-link">Đăng nhập</a>
-                            <a th:if="${session.username == null}" th:href="@{/login}" class="nav-item nav-link">Đăng ký</a>
+                        <div class="navbar-nav ml-auto py-0" th:if="${session.username == null}">
+                            <a th:href="@{/login}" class="nav-item nav-link">Đăng nhập</a>
+                            <a th:href="@{/login}" class="nav-item nav-link">Đăng ký</a>
+                        </div>
+                        <div class="nav-item dropdown" th:if="${session.username != null}">
+                            <a th:href="@{/home}" th:text="'Xin chào, ' + ${session.username}" class="nav-link dropdown-toggle" data-toggle="dropdown"></a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a th:href="@{/home}" class="dropdown-item">Thông tin tài khoản</a>
+                                <a th:href="@{/orders}" class="dropdown-item">Đơn hàng của bạn</a>
+                                <a th:href="@{/home}" class="dropdown-item">Đăng xuất</a>
+                            </div>
                         </div>
                     </div>
                 </nav>
