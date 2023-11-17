@@ -42,14 +42,15 @@
                 <form id="productExcel" enctype="multipart/form-data" action="/nova/product/excel" >
                     <div class="card-footer">
                         <div class="custom-file">
-                            <input type="file" id="importFile" name="excelFile"
-                                   accept=".xls, .xlsx" onchange="setFileName()">
+                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx" onchange="setFileName()">
                             <label class="custom-file-label" for="importFile">Chọn tệp excel</label>
                         </div>
-                        <div class="mt-1">
-                            <button type="button" onclick="importExcel('productExcel')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i>
+                        <div class="mt-2">
+                            <button type="button" onclick="importExcel('productExcel', 'importFile', 'errorExcel')" class="btn btn-success"><i
+                                    class="fa-solid fa-file-excel"></i>
                                 EXCEL
                             </button>
+                            <small id="errorExcel" class="ml-2" style="color: red;"></small>
                         </div>
 
                     </div>
@@ -283,19 +284,27 @@
                                 <th scope="col">Chất liệu</th>
                                 <th scope="col">Loại sản phẩm</th>
                                 <th scope="col">Kiểu dáng</th>
+                                <th scope="col">Ảnh</th>
                                 <th scope="col">Chức năng</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="items:${pageProduct}">
-                                <td th:text="${items.id}"></td>
+                                <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
                                 <td th:text="${items.description}"></td>
-                                <td th:text="${#numbers.formatDecimal(items.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                                <td th:text="${'₫'+#numbers.formatDecimal(items.price, 0, 'COMMA', 0, 'POINT')}"></td>
                                 <td th:text="${items.brandName}"></td>
                                 <td th:text="${items.materialName}"></td>
                                 <td th:text="${items.categoryName}"></td>
                                 <td th:text="${items.formName}"></td>
+                                <td>
+                                    <a th:href="@{'/nova/product/' + ${items.id} + '/image'}">
+                                        <button type="button" class="btn btn-primary"><i
+                                                class="fa-solid fa-image mr-1"></i>ẢNH
+                                        </button>
+                                    </a>
+                                </td>
                                 <td class="d-flex justify-content-center">
                                     <div style="margin-right: 10px">
                                         <a th:href="@{'/nova/product/' + ${items.id} + '/product-detail'}">

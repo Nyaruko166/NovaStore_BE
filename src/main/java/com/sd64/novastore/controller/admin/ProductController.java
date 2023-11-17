@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     @GetMapping("/view-add")
-    public String viewAdd (Model model) {
+    public String viewAdd(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
         List<Material> listMaterial = materialService.getAll();
@@ -66,7 +66,8 @@ public class ProductController {
 
 
     @PostMapping("/add")
-    public String add(@RequestParam String name,
+    public String add(@RequestParam String code,
+                      @RequestParam String name,
                       @RequestParam String description,
                       @RequestParam BigDecimal price,
                       @RequestParam Integer materialId,
@@ -74,8 +75,11 @@ public class ProductController {
                       @RequestParam Integer brandId,
                       @RequestParam Integer formId,
                       RedirectAttributes redirectAttributes) {
-        productService.add(name, description, price, materialId, categoryId, brandId, formId);
-        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+        if (productService.add(code, name, description, price, materialId, categoryId, brandId, formId)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Mã sản phẩm đã tồn tại, Thêm dữ liệu thất bại");
+        }
         return "redirect:/nova/product/page";
     }
 
@@ -96,7 +100,8 @@ public class ProductController {
 
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id,
+    public String update(@RequestParam String code,
+                         @PathVariable Integer id,
                          @RequestParam String name,
                          @RequestParam String description,
                          @RequestParam BigDecimal price,
@@ -105,7 +110,7 @@ public class ProductController {
                          @RequestParam Integer brandId,
                          @RequestParam Integer formId,
                          RedirectAttributes redirectAttributes) {
-        productService.update(id, name, description, price, materialId, categoryId, brandId, formId);
+        productService.update(id, code, name, description, price, materialId, categoryId, brandId, formId);
         redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
         return "redirect:/nova/product/page";
     }
@@ -162,13 +167,19 @@ public class ProductController {
     }
 
     @PostMapping("/excel")
-    public String importExcel(Model model, @RequestParam MultipartFile excelFile) throws IOException {
-        if (productService.importExcelProduct(excelFile)) {
-            model.addAttribute("mess", "Thêm dữ liệu excel thành công");
+    public String importExcel(RedirectAttributes redirectAttributes, @RequestParam MultipartFile excelFile) throws IOException {
+        if (productService.importExcelProduct(excelFile).contains("Trùng mã")) {
+            redirectAttributes.addFlashAttribute("error", "Mã sản phẩm trong file đã tồn tại");
+            return "redirect:/nova/product/page";
+        } else if (productService.importExcelProduct(excelFile).contains("Sai dữ liệu")) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại dữ liệu trong file");
+            return "redirect:/nova/product/page";
+        } else if (productService.importExcelProduct(excelFile).contains("Lỗi file")) {
+            redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");
             return "redirect:/nova/product/page";
         } else {
-            model.addAttribute("error", "Dữ liệu sai định dạng");
-            return "admin/product/product";
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
+            return "redirect:/nova/product/page";
         }
     }
 }

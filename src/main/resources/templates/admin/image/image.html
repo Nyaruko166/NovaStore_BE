@@ -20,11 +20,11 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form id="imageForm" th:object="${productDetail}" class="form-horizontal" enctype="multipart/form-data">
-                    <input type="hidden" class="form-control" name="productDetailId" th:value="*{id}">
+                <form id="imageForm" th:object="${product}" class="form-horizontal" enctype="multipart/form-data">
+                    <input type="hidden" class="form-control" name="productId" th:value="*{id}">
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="importFileProduct" class="font-weight-bold  form-control-label">Ảnh</label>
+                            <label for="importFileProduct" class="font-weight-bold  form-control-label">File ảnh</label>
                         </div>
                         <div class="col-12 col-md-9">
                             <div class="input-group mb-3">
@@ -75,9 +75,9 @@
                                     }
                                 }
                             </script>
-                            <a th:href="@{'/nova/product-detail/' + *{product.id}}">
+                            <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM CHI TIẾT
+                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM
                                 </button>
                             </a>
                         </div>

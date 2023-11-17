@@ -9,11 +9,11 @@ import java.util.List;
 public interface ImageService {
     List<Image> getAll();
 
-    Page<Image> getImageByProductDetail(int page, Integer productDetailId);
+    Page<Image> getImageByProductDetail(int page, Integer productId);
 
-    void add(Integer productDetailId, List<MultipartFile> images);
+    void add(Integer productId, List<MultipartFile> images);
 
-    void update(Integer id, Integer productDetailId, MultipartFile image);
+    void update(Integer id, Integer productId, MultipartFile image);
 
     Integer getProductDetailByIdImage(Integer imageId);
 

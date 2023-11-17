@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
@@ -18,7 +19,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Page<Product> findAllByStatus(Pageable pageable, Integer status);
 
+    Optional<Product> findAllByCode(String code);
+
     @Query(value = "SELECT p.id as id, " +
+            "p.code as code, " +
             "p.name as name, " +
             "p.description as description, " +
             "p.price as price, " +
@@ -26,10 +30,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "p.category.name as categoryName, " +
             "p.form.name as formName, " +
             "p.material.name as materialName " +
-            " FROM Product p WHERE p.status = 1 ORDER BY p.updateDate DESC")
+            " FROM Product p " +
+            " WHERE p.status = 1 ORDER BY p.updateDate DESC")
     Page<ProductDto> getAllProduct(Pageable pageable);
 
     @Query(value = "SELECT p.id as id, " +
+            "p.code as code, " +
             "p.name as name, " +
             "p.description as description, " +
             "p.price as price, " +

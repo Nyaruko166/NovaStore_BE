@@ -12,9 +12,9 @@ public interface SizeService {
 
     Page<Size> getPage(Integer page);
 
-    Size add(Size size);
+    Size add(String name);
 
-    Size update(Size size, Integer id);
+    Size update(Integer id, String name);
 
     Size delete(Integer id);
 

@@ -44,28 +44,42 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.getAllProduct(pageable);
     }
 
-    @Override
-    public Product add(String productName, String description, BigDecimal price, Integer materialId, Integer categoryId,
-                       Integer brandId, Integer formId) {
-        Product product = new Product();
-        product.setName(productName);
-        product.setStatus(1);
-        product.setDescription(description);
-        product.setCreateDate(new Date());
-        product.setUpdateDate(new Date());
-        product.setPrice(price);
-        product.setMaterial(Material.builder().id(materialId).build());
-        product.setCategory(Category.builder().id(categoryId).build());
-        product.setBrand(Brand.builder().id(brandId).build());
-        product.setForm(Form.builder().id(formId).build());
-        return productRepository.save(product);
+    public Boolean checkCode(String code) {
+        Optional<Product> optionalProduct = productRepository.findAllByCode(code);
+        if (optionalProduct.isPresent()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public Product update(Integer id, String productName, String description, BigDecimal price, Integer materialId,
+    public Boolean add(String code, String productName, String description, BigDecimal price, Integer materialId, Integer categoryId,
+                       Integer brandId, Integer formId) {
+        if (checkCode(code)) {
+            Product product = new Product();
+            product.setCode(code);
+            product.setName(productName);
+            product.setStatus(1);
+            product.setDescription(description);
+            product.setCreateDate(new Date());
+            product.setUpdateDate(new Date());
+            product.setPrice(price);
+            product.setMaterial(Material.builder().id(materialId).build());
+            product.setCategory(Category.builder().id(categoryId).build());
+            product.setBrand(Brand.builder().id(brandId).build());
+            product.setForm(Form.builder().id(formId).build());
+            productRepository.save(product);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Product update(Integer id, String code, String productName, String description, BigDecimal price, Integer materialId,
                           Integer categoryId, Integer brandId, Integer formId) {
         Product product = new Product();
         product.setId(id);
+        product.setCode(code);
         product.setName(productName);
         product.setStatus(1);
         product.setDescription(description);
@@ -103,16 +117,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean importExcelProduct(MultipartFile file) throws IOException {
+    public String importExcelProduct(MultipartFile file) throws IOException {
         if (productExcelUtil.isValidExcel(file)) {
             String uploadDir = "./src/main/resources/static/filecustom/product/";
             String fileName = file.getOriginalFilename();
             String excelPath = FileUtil.copyFile(file, fileName, uploadDir);
-            List<Product> listProduct = productExcelUtil.getProductFromExcel(excelPath);
-            productRepository.saveAll(listProduct);
-            return true;
+
+            String status = productExcelUtil.getProductFromExcel(excelPath);
+            if (status.contains("Trùng mã")) {
+                return "Trùng mã";
+            } else if (status.contains("Sai dữ liệu")) {
+                return "Sai dữ liệu";
+            } else {
+                return "Oke bạn ơi";
+            }
         } else {
-            return false;
+            return "lỗi file";
         }
     }
 }

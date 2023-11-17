@@ -36,17 +36,30 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return productDetailRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
+    public Boolean checkCode(String code) {
+        Optional<ProductDetail> optionalProductDetail = productDetailRepository.findAllByCode(code);
+        if (optionalProductDetail.isPresent()) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
-    public ProductDetail add(Integer productId, Integer quantity, Integer sizeId, Integer colorId) {
-        ProductDetail productDetail = new ProductDetail();
-        productDetail.setStatus(1);
-        productDetail.setCreateDate(new java.util.Date());
-        productDetail.setUpdateDate(new java.util.Date());
-        productDetail.setProduct(Product.builder().id(productId).build());
-        productDetail.setQuantity(quantity);
-        productDetail.setSize(Size.builder().id(sizeId).build());
-        productDetail.setColor(Color.builder().id(colorId).build());
-        return productDetailRepository.save(productDetail);
+    public Boolean add(Integer productId, String code, Integer quantity, Integer sizeId, Integer colorId) {
+        if (checkCode(code)) {
+            ProductDetail productDetail = new ProductDetail();
+            productDetail.setCode(code);
+            productDetail.setStatus(1);
+            productDetail.setCreateDate(new java.util.Date());
+            productDetail.setUpdateDate(new java.util.Date());
+            productDetail.setProduct(Product.builder().id(productId).build());
+            productDetail.setQuantity(quantity);
+            productDetail.setSize(Size.builder().id(sizeId).build());
+            productDetail.setColor(Color.builder().id(colorId).build());
+            productDetailRepository.save(productDetail);
+            return true;
+        }
+        return false;
     }
 
     @Override

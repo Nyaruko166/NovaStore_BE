@@ -18,6 +18,6 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
 
     Page<Image> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
 
-    Page<Image> getAllImageByProductDetail_IdAndStatusOrderByUpdateDateDesc(Pageable pageable, Integer id, Integer status);
+    Page<Image> getAllImageByProduct_IdAndStatusOrderByUpdateDateDesc(Pageable pageable, Integer id, Integer status);
 
 }

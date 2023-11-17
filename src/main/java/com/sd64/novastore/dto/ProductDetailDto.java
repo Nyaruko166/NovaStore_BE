@@ -4,6 +4,8 @@ public interface ProductDetailDto {
 
     Integer getId();
 
+    String getCode();
+
     Integer getQuantity();
 
     String getSizeName();
