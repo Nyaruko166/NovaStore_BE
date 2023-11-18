@@ -51,8 +51,14 @@ public class Bill {
     @Column(name = "PaymentDate")
     private Date paymentDate;
 
+    @Column(name = "Price")
+    private BigDecimal price;
+
     @Column(name = "ShippingFee")
     private BigDecimal shippingFee;
+
+    @Column(name = "DiscountAmount")
+    private BigDecimal discountAmount;
 
     @Column(name = "TotalPrice")
     private BigDecimal totalPrice;

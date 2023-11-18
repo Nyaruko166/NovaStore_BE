@@ -48,7 +48,7 @@
                                 th:text="'Màu: ' + ${cartItem.productDetail.color.name}
                                 + ', ' + 'Kích cỡ: ' + ${cartItem.productDetail.size.name}"></td>
                             <td class="align-middle"
-                                th:text="'₫' + ${#numbers.formatDecimal(cartItem.price, 1, 'COMMA', 0, 'POINT')}"></td>
+                                th:text="'₫' + ${#numbers.formatDecimal(cartItem.price, 0, 'COMMA', 0, 'POINT')}"></td>
                             <form th:action="@{/update-cart}" method="post" name="form1">
                                 <input type="hidden" name="id" th:value="${cartItem.productDetail.id}">
                                 <td class="align-middle">
@@ -67,7 +67,7 @@
                                     </div>
                                 </td>
                                 <td class="align-middle"
-                                    th:text="'₫' + ${#numbers.formatDecimal(cartItem.price * cartItem.quantity, 1, 'COMMA', 0, 'POINT')}"
+                                    th:text="'₫' + ${#numbers.formatDecimal(cartItem.price * cartItem.quantity, 0, 'COMMA', 0, 'POINT')}"
                                 ></td>
                                 <td class="align-middle">
                                     <button class="btn btn-sm btn-primary"
@@ -97,7 +97,7 @@
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tổng tiền hàng</h6>
                             <h6 class="font-weight-medium"
-                                th:text="'₫' + ${#numbers.formatDecimal(grandTotal, 1, 'COMMA', 0, 'POINT')}"></h6>
+                                th:text="'₫' + ${#numbers.formatDecimal(grandTotal, 0, 'COMMA', 0, 'POINT')}"></h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Phí vận chuyển</h6>
@@ -108,7 +108,7 @@
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Tổng thanh toán</h5>
                             <h5 class="font-weight-bold"
-                                th:text="'₫' + ${#numbers.formatDecimal(grandTotal, 1, 'COMMA', 0, 'POINT')}"></h5>
+                                th:text="'₫' + ${#numbers.formatDecimal(grandTotal, 0, 'COMMA', 0, 'POINT')}"></h5>
                         </div>
                         <a th:href="@{/checkout}">
                             <button class="btn btn-block btn-primary my-3 py-3">Thanh toán</button>
