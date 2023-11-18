@@ -35,7 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
     Gson gson = new Gson();
 
     @Override
-    public String MomoPayCreate() throws IOException, URISyntaxException {
+    public String MomoPayCreate(Long amount) throws IOException, URISyntaxException {
 
         int random_id = new Random().nextInt(1000000);
 
@@ -43,7 +43,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .partnerCode(MomoPaymentConfig.partnerCode)
                 .redirectUrl(MomoPaymentConfig.returnUrl)
                 .ipnUrl(MomoPaymentConfig.ipnUrl)
-                .amount(100000L)
+                .amount(amount)
                 .requestType("captureWallet")
                 .requestId(String.valueOf(random_id))
                 .orderId(String.valueOf(random_id))
@@ -80,7 +80,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public String zalopayCreate() throws IOException {
+    public String zalopayCreate(Long amount) throws IOException {
 
         int random_id = new Random().nextInt(1000000);
 
@@ -99,30 +99,30 @@ public class PaymentServiceImpl implements PaymentService {
             put("app_trans_id", ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id); // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
             put("app_time", System.currentTimeMillis()); // milliseconds
             put("app_user", "Nyaruko166");
-            put("amount", 10000);
+            put("amount", amount);
             put("description", "NovaStore - Thanh Toán Đơn Hàng #" + random_id);
             put("bank_code", "");
             put("item", "[{}]");
             put("embed_data", embed_data);
         }};
 
-        ZaloPaymentRequest zaloPaymentRequest = ZaloPaymentRequest.builder()
-                .app_id(ZaloPayConfig.appid)
-                .app_trans_id(ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id)
-                .app_time(String.valueOf(System.currentTimeMillis()))
-                .app_user("Nyaruko166")
-                .amount(10000000L)
-                .description("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
-                .bank_code("")
-                .item(new JsonArray())
-                .embed_data(embed_data)
-                .build();
-        zaloPaymentRequest.setMac(zaloPaymentRequest.signatureGen(ZaloPayConfig.key1));
-
-        String jsonPost = gson.toJson(zaloPaymentRequest);
+//        ZaloPaymentRequest zaloPaymentRequest = ZaloPaymentRequest.builder()
+//                .app_id(ZaloPayConfig.appid)
+//                .app_trans_id(ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id)
+//                .app_time(String.valueOf(System.currentTimeMillis()))
+//                .app_user("Nyaruko166")
+//                .amount(10000000L)
+//                .description("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
+//                .bank_code("")
+//                .item(new JsonArray())
+//                .embed_data(embed_data)
+//                .build();
+//        zaloPaymentRequest.setMac(zaloPaymentRequest.signatureGen(ZaloPayConfig.key1));
+//
+//        String jsonPost = gson.toJson(zaloPaymentRequest);
 
 //        System.out.println(zaloPaymentRequest.getItem());
-        System.out.println(jsonPost);
+//        System.out.println(jsonPost);
 
         String data = order.get("app_id") + "|" + order.get("app_trans_id") + "|" + order.get("app_user") + "|" + order.get("amount") + "|" + order.get("app_time") + "|" + order.get("embed_data") + "|" + order.get("item");
         order.put("mac", HMACUtil.HMACSHA256Encode(ZaloPayConfig.key1, data));

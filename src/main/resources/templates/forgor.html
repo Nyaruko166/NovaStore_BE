@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Quên mật khẩu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+          rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<section>
+    <div class="container d-flex flex-column">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 col-md-8 col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h5>Quên mật khẩu?</h5>
+                            <p class="mb-2">Nhập Email của bạn để đặt lại mật khẩu</p>
+                        </div>
+                        <form action="/reset-pass" method="post">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input
+                                        type="email"
+                                        id="email"
+                                        class="form-control"
+                                        name="email"
+                                        placeholder="Nhập Email"
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="code" class="form-label">Mã xác nhận</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Nhập Mã Xác Nhận" id="code"
+                                           name="code">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="validateEmail()">
+                                        Nhận Mã
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">Mật Khẩu Mới</label>
+                                <input
+                                        type="text"
+                                        id="newPassword"
+                                        class="form-control"
+                                        name="newPassword"
+                                        placeholder="Nhập Mật Khẩu Mới"
+                                />
+                            </div>
+                            <div class="mb-3 d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    Đặt lại mật khẩu
+                                </button>
+                            </div>
+                            <span>Không có tài khoản?</span><a href="/register" style="margin-left: 10px">Đăng ký</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Kiểm tra nếu có giá trị trong Local Storage và đặt nó vào trường input
+        let storedEmailValue = localStorage.getItem('emailValue');
+        if (storedEmailValue) {
+            document.getElementById('email').value = storedEmailValue;
+            localStorage.removeItem('emailValue');
+        }
+    });
+
+    function validateEmail() {
+        // Lấy thẻ input bằng ID
+        let emailInput = document.getElementById('email');
+
+        // Lấy giá trị từ thẻ input
+        let emailValue = emailInput.value;
+
+        // Kiểm tra xem giá trị có trống không
+        if (emailValue.trim() === '') {
+            alert('Vui lòng nhập địa chỉ email.');
+            return;
+        }
+
+        // Kiểm tra xem giá trị có phải là địa chỉ email hợp lệ không
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailValue)) {
+            alert('Vui lòng nhập địa chỉ email hợp lệ.');
+            return;
+        }
+
+        // Nếu giá trị hợp lệ, có thể thực hiện các hành động khác ở đây
+
+        // Tạo một đối tượng URL từ URL hiện tại
+        let urlObject = new URL(window.location.href);
+
+        // Cắt bỏ phần query string
+        urlObject.search = '';
+
+        // Lấy URL mới
+        let newUrl = urlObject.href;
+
+        // Hiển thị URL mới trong console (hoặc bạn có thể sử dụng newUrl theo cách khác)
+
+        let redirectUrl = newUrl + '?email=' + encodeURIComponent(emailValue);
+
+        console.log('redirectUrl:', redirectUrl);
+        localStorage.setItem('emailValue', emailValue);
+        window.location.href = redirectUrl;
+    }
+
+</script>
+</body>
+</html>

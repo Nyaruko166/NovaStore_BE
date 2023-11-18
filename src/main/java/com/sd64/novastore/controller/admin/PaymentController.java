@@ -25,7 +25,7 @@ public class PaymentController {
     @GetMapping("/momo/create-payment")
     ResponseEntity<?> momoCreate() throws IOException, URISyntaxException {
 
-        return ResponseEntity.ok(paymentService.MomoPayCreate());
+        return ResponseEntity.ok(paymentService.MomoPayCreate(1000000L));
     }
 
     @GetMapping("/vnpay/create-payment")
@@ -37,7 +37,7 @@ public class PaymentController {
     @GetMapping("/zalo/create-payment")
     ResponseEntity<?> zalopayCreate() throws IOException, URISyntaxException {
 
-        return ResponseEntity.ok(paymentService.zalopayCreate());
+        return ResponseEntity.ok(paymentService.zalopayCreate(1000000L));
     }
 
     @GetMapping("/vnpay/return")

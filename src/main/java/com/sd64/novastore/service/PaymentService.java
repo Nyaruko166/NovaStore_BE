@@ -10,7 +10,7 @@ public interface PaymentService {
 
     String vnpayCreate(HttpServletRequest req, Long price) throws UnsupportedEncodingException;
 
-    String zalopayCreate() throws IOException, URISyntaxException;
+    String zalopayCreate(Long amount) throws IOException, URISyntaxException;
 
-    String MomoPayCreate() throws IOException, URISyntaxException;
+    String MomoPayCreate(Long amount) throws IOException, URISyntaxException;
 }
