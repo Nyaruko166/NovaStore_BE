@@ -165,7 +165,6 @@ public class BillServiceImpl implements BillService {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setBill(bill);
         paymentMethod.setName(payment);
-        paymentMethod.setMoney(bill.getTotalPrice());
         paymentMethod.setDescription(payment);
         paymentMethod.setStatus(1);
         paymentMethodRepository.save(paymentMethod);
