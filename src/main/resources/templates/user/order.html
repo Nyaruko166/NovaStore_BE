@@ -23,8 +23,8 @@
 
 <!-- Cart Start -->
 <div class="container-fluid pt-5">
-    <div th:if="${check}">
-        <h4 class="text-center" style="color: darkslategray" th:text="${check}"><i
+    <div th:if="${success}">
+        <h4 class="text-center" style="color: darkslategray" th:text="${success}"><i
                 class="text-info font-weight-bold text-center"></i></h4>
     </div>
     <div class="row px-xl-5">
@@ -54,7 +54,7 @@
                     <td class="align-middle"
                         th:text="${#dates.format(order.orderDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                     <td class="align-middle"
-                        th:text="'₫' + ${#numbers.formatDecimal(order.totalPrice, 1, 'COMMA', 0, 'POINT')}"></td>
+                        th:text="'₫' + ${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')}"></td>
                     <td class="align-middle">
                         <span th:switch="${order.status}">
                             <span th:case="10">Chờ xác nhận</span>

@@ -59,9 +59,19 @@ public class UserBillController {
         return "/user/order";
     }
 
+    @GetMapping("/order-detail/{id}")
+    public String getOrderDetail(@PathVariable Integer id, Model model, Principal principal){
+        if (principal == null){
+            return "redirect:/login";
+        }
+        Bill bill = billService.getOneBill(id);
+        model.addAttribute("order", bill);
+        return "/user/order-detail";
+    }
+
     @PostMapping("/add-order")
     public String createOrder(Principal principal,
-                              Model model,
+                              RedirectAttributes attributes,
                               HttpSession session,
                               @RequestParam("address") String address,
                               @RequestParam("payment") String payment){
@@ -72,7 +82,8 @@ public class UserBillController {
         Cart cart = customer.getCart();
         Bill bill = billService.placeOrder(cart, address, payment);
         session.removeAttribute("totalItems");
-        return "redirect:/home";
+        attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+        return "redirect:/orders";
     }
 
     @RequestMapping(value = "/cancel-order/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
