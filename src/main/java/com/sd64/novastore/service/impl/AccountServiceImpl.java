@@ -42,6 +42,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account findFirstByEmail(String email) {
+        return accountRepository.findFirstByEmail(email);
+    }
+
+    @Override
     public Account findOne(Integer id) {
         return accountRepository.findById(id).orElse(null);
     }

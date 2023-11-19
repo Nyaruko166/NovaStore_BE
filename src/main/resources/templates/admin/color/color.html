@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>COLOR</strong>
+                <strong>MÀU SẮC</strong>
             </div>
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -21,31 +21,52 @@
             </div>
             <div class="card-body card-block">
                 <form id="colorForm" class="form-horizontal">
-                    <div class="row form-group">
-                        <div class="col col-md-3"><label class="form-control-label">Color name</label></div>
-                        <div class="col-12 col-md-9"><input type="text" name="name" class="form-control">
-                            <!--              <small class="form-text text-muted">This is a help text</small>-->
+                    <div class="card-footer">
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <input type="hidden" class="form-control" th:value="${product.id}" name="productId">
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="card-footer d-flex">
+                        <div class="row form-group">
+                            <div class="col col-md-3"><label class="font-weight-bold form-control-label">Tên màu</label>
+                            </div>
+                            <div class="col-12 col-md-9"><input type="text" id="name" name="name" class="form-control"
+                                                                oninput="onInputText('errorName')">
+                                <small class="" style="color: red"
+                                       id="errorName"></small>
+                            </div>
+                        </div>
                         <div>
-                            <button onclick="clickAdd('color', 'colorForm')" type="button" class="btn btn-success"><i
+                            <button onclick="clickAdd('color', 'colorForm', 'name', 'errorName', 'màu sắc')"
+                                    type="button" class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
-                                ADD
+                                THÊM
                             </button>
+                            <a th:href="@{|/nova/product/${product.id}/product-detail|}">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM CHI TIẾT
+                                </button>
+                            </a>
                         </div>
                     </div>
                     <br>
-                    <div class="card-footer d-flex">
-                        <div>
-                            <button onclick="clickSearch('color', 'colorForm')" type="button" class="btn btn-secondary">
+                    <div class="border-search">
+                        <div class="col-md-3">
+                            <button th:onclick="clickSearch('color', 'colorForm', [[${product.id}]])" type="button"
+                                    class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
-                                SEARCH
+                                TÌM KIẾM
                             </button>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" placeholder="Search by name..."
+                        <script th:inline="javascript">
+                            clickSearch = (entity, idForm, productId) => {
+                                document.getElementById(idForm).action = '/nova/' + productId + "/" + entity + '/search'
+                                document.getElementById(idForm).method = 'get'
+                                document.getElementById(idForm).submit()
+                            }
+                        </script>
+                        <div class="col-md-9">
+                            <input type="text" placeholder="Nhập tên màu sắc..."
                                    th:value="${colorNameSearch}" th:name="colorNameSearch"
                                    class="form-control">
                         </div>
@@ -60,48 +81,65 @@
         <div class="card">
             <div class="card">
                 <div class="card-header" th:if="${pageColor.isEmpty()}">
-                    <strong class="card-title">NOT FOUND ANY RECORD</strong>
+                    <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
                 </div>
                 <div th:if="${not pageColor.isEmpty()}">
                     <div class="card-header">
-                        <strong>FOUND</strong>
+                        <strong>CÓ</strong>
                         <strong class="card-title" th:text="${pageColor.getTotalElements()}"></strong>
-                        <strong class="card-title"> RECORD</strong>
+                        <strong class="card-title"> BẢN GHI</strong>
                     </div>
                     <div class="card-body">
-                        <table class="table text-center">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Function</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="items:${pageColor}">
-                                <td th:text="${items.id}"></td>
-                                <td th:text="${items.name}"></td>
-                                <td class="d-flex justify-content-center">
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/color/detail/' + ${items.id}}">
-                                            <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                        <form id="colorDelete">
+                            <table class="table text-center">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">TÊN MÀU</th>
+                                    <th scope="col">CHỨC NĂNG</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="items:${pageColor}">
+                                    <td th:text="${items.id}"></td>
+                                    <td th:text="${items.name}"></td>
+                                    <td class="d-flex justify-content-center">
+                                        <div style="margin-right: 10px">
+                                            <a th:href="@{|/nova/${product.id}/color/detail/${items.id}|}">
+                                                <button type="button" class="btn btn-info">
+                                                    <i class="fa-solid fa-pen mr-1"></i>SỬA
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <button th:onclick="clickDeleted('color', 'colorDelete', [[${product.id}]] , [[${items.id}]])"
+                                                    type="button" class="btn btn-danger">
+                                                <i class="fa-solid fa-trash mr-1"></i>XÓA
                                             </button>
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <form id="colorDelete" th:action="@{'/nova/color/delete/' + ${items.id}}"
-                                              th:method="post">
-                                            <button onclick="clickDelete('colorDelete')" type="button"
-                                                    class="btn btn-danger">
-                                                <i class="fa-solid fa-trash mr-1"></i>DELETE
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                            <script th:inline="javascript">
+                                                clickDeleted = (entity, idForm, productId, idDelete) => {
+                                                    swal({
+                                                        title: "Xóa dữ liệu",
+                                                        text: "Bạn có muốn xóa dữ liệu không ?",
+                                                        icon: "warning",
+                                                        buttons: ["Không", "Có"],
+                                                        dangerMode: true,
+                                                        closeOnClickOutside: false,
+                                                    }).then((deleted) => {
+                                                        if (deleted) {
+                                                            document.getElementById(idForm).action = '/nova/' + productId + "/" + entity + "/delete/" + idDelete
+                                                            document.getElementById(idForm).method = 'post'
+                                                            document.getElementById(idForm).submit()
+                                                        }
+                                                    });
+                                                }
+                                            </script>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
 
                         <!--            Pagination-->
                         <div class="d-flex justify-content-center align-items-center">
@@ -134,5 +172,6 @@
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

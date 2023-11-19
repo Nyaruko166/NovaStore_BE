@@ -1,9 +1,11 @@
 package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.model.Image;
+import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.service.ImageService;
 import com.sd64.novastore.service.ProductDetailService;
+import com.sd64.novastore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -22,46 +25,39 @@ public class ImageController {
     private ImageService imageService;
 
     @Autowired
-    private ProductDetailService productDetailService;
+    private ProductService productService;
 
-//    @GetMapping("/page")
-//    public String getPage(@RequestParam(defaultValue = "0") Integer page, Model model) {
-//        Page<Image> pageImage = imageService.getPage(page);
-//        model.addAttribute("pageImage", pageImage);
-//        model.addAttribute("page", page);
-//        return "admin/image/image";
-//    }
-
-    @GetMapping("/product-detail/{productDetailId}/image")
-    public String getImage(@PathVariable Integer productDetailId,
+    @GetMapping("/product/{productId}/image")
+    public String getImage(@PathVariable Integer productId,
                            Model model,
                            @RequestParam(defaultValue = "0") int page) {
-        Page<Image> pageImage = imageService.getImageByProductDetail(page, productDetailId);
-        ProductDetail productDetail = productDetailService.getOne(productDetailId);
-        model.addAttribute("productDetail", productDetail);
+        Page<Image> pageImage = imageService.getImageByProductDetail(page, productId);
+        Product product = productService.getOne(productId);
+        model.addAttribute("product", product);
         model.addAttribute("pageImage", pageImage);
-        model.addAttribute("productDetailId", productDetail.getId());
+        model.addAttribute("productId", product.getId());
         return "admin/image/image";
     }
 
     @PostMapping("/image/add")
-    public String add(@RequestParam(required = false) Integer productDetailId,
+    public String add(@RequestParam(required = false) Integer productId,
                       @RequestParam List<MultipartFile> images,
                       RedirectAttributes redirectAttributes) {
-        imageService.add(productDetailId, images);
-        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
-        return "redirect:/nova/product-detail/" + productDetailId + "/image";
+        imageService.add(productId, images);
+        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+        return "redirect:/nova/product/" + productId + "/image";
     }
 
     @PostMapping("/image/update/{id}")
     public String update(@PathVariable Integer id,
-                         @RequestParam(required = false) Integer productDetailId,
+                         @RequestParam(required = false) Integer productId,
                          @RequestParam MultipartFile image,
                          RedirectAttributes redirectAttributes) {
-        imageService.update(id, productDetailId, image);
+        imageService.update(id, productId, image);
         redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
-        return "redirect:/nova/product-detail/" + productDetailId + "/image";
+        return "redirect:/nova/product/" + productId + "/image";
     }
+
 
     @GetMapping("/image/detail/{id}")
     public String detail(@PathVariable Integer id, Model model) {
@@ -72,9 +68,9 @@ public class ImageController {
 
     @PostMapping("/image/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        Integer productDetailId = imageService.getProductDetailByIdImage(id);
+        Integer productId = imageService.getProductDetailByIdImage(id);
         imageService.delete(id);
         redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
-        return "redirect:/nova/product-detail/" + productDetailId + "/image";
+        return "redirect:/nova/product/" + productId + "/image";
     }
 }

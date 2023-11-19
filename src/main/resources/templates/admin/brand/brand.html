@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>BRAND</strong>
+                <strong>THƯƠNG HIỆU</strong>
             </div>
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -21,36 +21,36 @@
             </div>
             <div class="card-body card-block">
                 <form id="brandForm" class="form-horizontal">
-                    <div class="row form-group">
-                        <div class="col col-md-3"><label class=" form-control-label">Brand name</label></div>
-                        <div class="col-12 col-md-9"><input type="text" name="name" class="form-control">
-                            <!--              <small class="form-text text-muted">This is a help text</small>-->
+                    <div class="card-footer">
+                        <div class="row form-group">
+                            <div class="col col-md-3"><label class="font-weight-bold form-control-label">Tên thương hiệu</label></div>
+                            <div class="col-12 col-md-9"><input type="text" id="name" name="name" class="form-control"
+                                                                oninput="onInputText('errorName')">
+                                <small class="" style="color: red"
+                                       id="errorName" ></small>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickAdd('brand', 'brandForm')" type="button" class="btn btn-success"><i
-                                    class="fa-solid fa-square-plus"></i>
-                                ADD
+                            <button onclick="clickAdd('brand', 'brandForm', 'name', 'errorName', 'thương hiệu')" type="button" class="btn btn-success">
+                                <i class="fa-solid fa-square-plus"></i> THÊM
                             </button>
                             <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO PRODUCT
+                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM
                                 </button>
                             </a>
                         </div>
                     </div>
                     <br>
-                    <div class="card-footer d-flex">
-                        <div>
+                    <div class="border-search">
+                        <div class="col-md-3">
                             <button onclick="clickSearch('brand', 'brandForm')" type="button" class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
-                                SEARCH
+                                TÌM KIẾM
                             </button>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" placeholder="Search by name..."
+                        <div class="col-md-9" >
+                            <input type="text" placeholder="Nhập tên thương hiệu..."
                                    th:value="${brandNameSearch}" th:name="brandNameSearch"
                                    class="form-control">
                         </div>
@@ -65,13 +65,13 @@
     <div class="col">
         <div class="card">
             <div class="card-header" th:if="${pageBrand.isEmpty()}">
-                <strong class="card-title">NOT FOUND ANY RECORD</strong>
+                <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
             </div>
             <div th:if="${not pageBrand.isEmpty()}">
                 <div class="card-header">
-                    <strong>FOUND</strong>
+                    <strong>CÓ</strong>
                     <strong class="card-title" th:text="${pageBrand.getTotalElements()}"></strong>
-                    <strong class="card-title"> RECORD</strong>
+                    <strong class="card-title"> BẢN GHI</strong>
                 </div>
                 <div class="card-body">
                     <form id="brandDelete">
@@ -79,8 +79,8 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Function</th>
+                                <th scope="col">Tên thương hiệu</th>
+                                <th scope="col">Chức năng</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -91,14 +91,14 @@
                                     <div style="margin-right: 10px">
                                         <a th:href="@{'/nova/brand/detail/' + ${items.id}}">
                                             <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                                <i class="fa-solid fa-pen mr-1"></i>SỬA
                                             </button>
                                         </a>
                                     </div>
                                     <div>
                                         <button th:onclick="clickDelete('brand', 'brandDelete', [[${items.id}]])"
                                                 type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                            <i class="fa-solid fa-trash mr-1"></i>XÓA
                                         </button>
                                     </div>
                                 </td>
@@ -123,11 +123,13 @@
                             <span>/</span>
                             <div th:text="${pageBrand.getTotalPages()}"></div>
                         </div>
-                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}" class="btn btn-dark ml-1">
+                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}"
+                             class="btn btn-dark ml-1">
                             <a th:href="@{|?page=${pageBrand.getNumber()+1}&brandNameSearch=${brandNameSearch}|}">
                                 <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                         </div>
-                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}" class="btn btn-dark ml-1">
+                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}"
+                             class="btn btn-dark ml-1">
                             <a th:href="@{|?page=${pageBrand.getTotalPages()-1}&brandNameSearch=${brandNameSearch}|}">
                                 <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                         </div>
@@ -137,5 +139,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

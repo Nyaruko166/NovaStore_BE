@@ -8,8 +8,6 @@ import java.util.List;
 public interface FormService {
     List<Form> getAll();
 
-    List<Form> getAllDefault();
-
     Page<Form> getPage(Integer page);
 
     Form add(Form form);

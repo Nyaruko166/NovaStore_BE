@@ -8,8 +8,6 @@ import java.util.List;
 public interface MaterialService {
     List<Material> getAll();
 
-    List<Material> getAllDefault();
-
     Page<Material> getPage(Integer page);
 
     Material add(Material material);

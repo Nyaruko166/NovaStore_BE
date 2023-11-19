@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>IMAGE</strong>
+                <strong>ẢNH</strong>
             </div>
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -20,20 +20,24 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form id="imageForm" th:object="${productDetail}" class="form-horizontal" enctype="multipart/form-data">
-                    <input type="hidden" class="form-control" name="productDetailId" th:value="*{id}">
+                <form id="imageForm" th:object="${product}" class="form-horizontal" enctype="multipart/form-data">
+                    <input type="hidden" class="form-control" name="productId" th:value="*{id}">
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="importFileProduct" class=" form-control-label">Image</label>
+                            <label for="importFileProduct" class="font-weight-bold  form-control-label">File ảnh</label>
                         </div>
                         <div class="col-12 col-md-9">
                             <div class="input-group mb-3">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="importFileProduct" name="images"
-                                           multiple
-                                           accept="image/png, image/jpg, image/jpeg">
-                                    <label class="custom-file-label" for="importFileProduct">Choose
-                                        Image</label>
+                                <div class="w-100">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="importFileProduct" name="images"
+                                               multiple oninput="onInputText('importFileProduct')"
+                                               accept="image/png, image/jpg, image/jpeg">
+                                        <label class="custom-file-label" for="importFileProduct">Chọn ảnh</label>
+                                    </div>
+                                    <div>
+                                        <small class="" style="color: red" id="errorName"></small>
+                                    </div>
                                 </div>
                                 <script th:inline="javascript">
                                     document.querySelector("#importFileProduct").addEventListener("change", function (event) {
@@ -47,13 +51,33 @@
                     <div class="row mb-2 ml-1" id="preview-image-files"></div>
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickAdd('image', 'imageForm')" type="button" class="btn btn-success"><i
+                            <button onclick="addImage()" type="button" class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
-                                ADD
+                                THÊM
                             </button>
-                            <a th:href="@{'/nova/product-detail/' + *{product.id}}">
+                            <script>
+                                addImage = () => {
+                                    if (validateFile('importFileProduct', 'errorName')) {
+                                        swal({
+                                            title: "Thêm dữ liệu",
+                                            text: "Bạn có muốn thêm dữ liệu không ?",
+                                            icon: "warning",
+                                            buttons: ["Không", "Có"],
+                                            dangerMode: true,
+                                            closeOnClickOutside: false,
+                                        }).then((add) => {
+                                            if (add) {
+                                                document.getElementById('imageForm').action = '/nova/image/add'
+                                                document.getElementById('imageForm').method = 'post'
+                                                document.getElementById('imageForm').submit()
+                                            }
+                                        });
+                                    }
+                                }
+                            </script>
+                            <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO PRODUCT DETAIL
+                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM
                                 </button>
                             </a>
                         </div>
@@ -68,13 +92,13 @@
     <div class="col">
         <div class="card">
             <div class="card-header" th:if="${pageImage.isEmpty()}">
-                <strong class="card-title">NOT FOUND ANY RECORD</strong>
+                <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
             </div>
             <div th:if="${not pageImage.isEmpty()}">
                 <div class="card-header">
-                    <strong>FOUND</strong>
+                    <strong>CÓ</strong>
                     <strong class="card-title" th:text="${pageImage.getTotalElements()}"></strong>
-                    <strong class="card-title"> RECORD</strong>
+                    <strong class="card-title"> BẢN GHI</strong>
                 </div>
                 <div class="card-body">
                     <form id="imageDelete">
@@ -82,8 +106,8 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Function</th>
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">Chức năng</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -97,14 +121,14 @@
                                     <div style="margin-right: 10px">
                                         <a th:href="@{'/nova/image/detail/' + ${items.id}}">
                                             <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                                <i class="fa-solid fa-pen mr-1"></i>SỬA
                                             </button>
                                         </a>
                                     </div>
                                     <div>
                                         <button th:onclick="clickDelete('image', 'imageDelete', [[${items.id}]])"
                                                 type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                            <i class="fa-solid fa-trash mr-1"></i>XÓA
                                         </button>
                                     </div>
                                 </td>

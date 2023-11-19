@@ -14,7 +14,10 @@
                 <i class="fa fa-bars"></i>
             </button>
             <a class="navbar-brand" href="./"><img th:src="@{/admin/images/logo.png}" alt="Logo"></a>
-            <a class="navbar-brand hidden" href="./"><img th:src="@{/admin/images/logo2.png}" alt="Logo"></a>
+            <a class="navbar-brand hidden" href="./"><img th:src="@{/admin/images/novaStore.png}" alt="Logo"></a>
+            <div class="d-flex justify-content-center">
+                <img src="../../static/admin/images/novaStore.png" width="60%">
+            </div>
         </div>
 
         <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -23,20 +26,21 @@
                     <a th:href="@{/getBuyHome}"> <i class="menu-icon fa fa-dashboard"></i>Bán hàng tại quầy </a>
                 </li>
                 <h3 class="menu-title">QUẢN LÝ</h3><!-- /.menu-title -->
-                <li class="menu-item-has-children dropdown">
-                    <a th:href="@{/}" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Quản lý sản phẩm</a>
-                    <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa-solid fa-palette"></i><a th:href="@{/nova/color/page}">Color</a></li>
-                        <li><i class="fa-solid fa-copyright"></i><a th:href="@{/nova/category/page}">Category</a></li>
-                        <li><i class="fa-brands fa-monero"></i><a th:href="@{/nova/material/page}">Material</a></li>
-                        <li><i class="fa-solid fa-left-right"></i><a th:href="@{/nova/size/page}">Size</a></li>
-                        <li><i class="fa-solid fa-person-dots-from-line"></i><a th:href="@{/nova/form/page}">Form</a></li>
-                        <li><i class="fa-solid fa-handshake"></i><a th:href="@{/nova/brand/page}">Brand</a></li>
-                        <li><i class="fa-solid fa-shirt"></i><a th:href="@{/nova/product/page}">Product</a></li>
-                        <li><i class="fa fa-id-badge"></i><a href="ui-badges.html">....</a></li>
-                        <li><i class="fa fa-bars"></i><a href="ui-tabs.html">....</a></li>
-                    </ul>
+                <li class="menu-item-has-children">
+<!--                <li class="menu-item-has-children dropdown">-->
+<!--                    <a th:href="@{/}" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"-->
+<!--                       aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Quản lý sản phẩm</a>-->
+<!--                    <ul class="sub-menu children dropdown-menu">-->
+<!--                        <li><i class="fa-solid fa-palette"></i><a th:href="@{/nova/color/page}">Color</a></li>-->
+<!--                        <li><i class="fa-solid fa-copyright"></i><a th:href="@{/nova/category/page}">Category</a></li>-->
+<!--                        <li><i class="fa-brands fa-monero"></i><a th:href="@{/nova/material/page}">Material</a></li>-->
+<!--                        <li><i class="fa-solid fa-left-right"></i><a th:href="@{/nova/size/page}">Size</a></li>-->
+<!--                        <li><i class="fa-solid fa-person-dots-from-line"></i><a th:href="@{/nova/form/page}">Form</a></li>-->
+<!--                        <li><i class="fa-solid fa-handshake"></i><a th:href="@{/nova/brand/page}">Brand</a></li>-->
+                        <li><a th:href="@{/nova/product/page}"><i class="fa-solid fa-shirt mr-4"></i>Quản lý sản phẩm</a></li>
+<!--                        <li><i class="fa fa-id-badge"></i><a href="ui-badges.html">....</a></li>-->
+<!--                        <li><i class="fa fa-bars"></i><a href="ui-tabs.html">....</a></li>-->
+<!--                    </ul>-->
                 </li>
                 <li class="menu-item-has-children dropdown">
                     <a th:href="@{/}" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"

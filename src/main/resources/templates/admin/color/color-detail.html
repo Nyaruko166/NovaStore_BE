@@ -10,22 +10,60 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>COLOR UPDATE</strong>
+                <strong>CẬP NHẬT MÀU SẮC</strong>
             </div>
             <div class="card-body card-block">
-                <form id="colorUpdate" th:object="${color}" th:action="@{/nova/color/update/{id}(id=${color.id})}" method="post"
+                <form id="colorUpdate" th:object="${color}" th:action="@{/nova/${product.id}/color/update/{id}(id=${color.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
-                        <div class="col col-md-3"><label for="" class=" form-control-label">Color name</label></div>
-                        <div class="col-12 col-md-9"><input type="text" id="" th:field="*{name}" class="form-control">
-                            <!--              <small class="form-text text-muted">This is a help text</small>-->
+                        <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Tên màu</label></div>
+                        <div class="col-12 col-md-9"><input type="text" id="name" th:field="*{name}" class="form-control"
+                                                            oninput="onInputText('errorName')">
+                            <small class="" style="color: red"
+                                   id="errorName" ></small>
                         </div>
                     </div>
 
                     <div class="card-footer">
-                        <button onclick="clickUpdate('colorUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
-                            UPDATE
+                        <button th:onclick="clickUpdate('colorUpdate', 'color', 'name', 'errorName', [[${product.id}]], [[${color.id}]])"
+                                type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
+                            SỬA
                         </button>
+                        <script th:inline="javascript">
+                            checkName = (idInput, errorName, text) => {
+                                let isName = document.getElementById(idInput).value
+                                debugger
+                                if (isName.trim() === '') {
+                                    document.getElementById(errorName).innerHTML = `Chưa nhập ${text}`
+                                    return false;
+                                }
+                                return true;
+                            }
+
+                            clickUpdate = (idForm, entity, idInput, errorName, productId , idUpdate) => {
+                                if (checkName(idInput, errorName, 'màu sắc')) {
+                                    swal({
+                                        title: "Sửa dữ liệu",
+                                        text: "Bạn có muốn sửa dữ liệu không ?",
+                                        icon: "warning",
+                                        buttons: ["Không", "Có"],
+                                        dangerMode: true,
+                                        closeOnClickOutside: false,
+                                    }).then((update) => {
+                                        if (update) {
+                                            document.getElementById(idForm).action = '/nova/'+ productId+"/" + entity + "/update/" + idUpdate
+                                            document.getElementById(idForm).method = 'post'
+                                            document.getElementById(idForm).submit()
+                                        }
+                                    });
+                                }
+                            }
+                        </script>
+                        <a th:href="@{|/nova/${product.id}/color/page|}">
+                            <button type="button" class="btn btn-warning"><i
+                                    class="fa-solid fa-circle-left mr-1"></i> MÀU SẮC
+                            </button>
+                        </a>
                     </div>
                 </form>
             </div>

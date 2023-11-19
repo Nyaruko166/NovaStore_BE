@@ -31,7 +31,9 @@ public class SizeServiceImpl implements SizeService {
     }
 
     @Override
-    public Size add(Size size) {
+    public Size add(String name) {
+        Size size = new Size();
+        size.setName(name);
         size.setStatus(1);
         size.setCreateDate(new Date());
         size.setUpdateDate(new Date());
@@ -39,15 +41,16 @@ public class SizeServiceImpl implements SizeService {
     }
 
     @Override
-    public Size update(Size size, Integer id) {
+    public Size update(Integer id, String name) {
         Optional<Size> optional = sizeRepository.findById(id);
         if (optional.isPresent()) {
             Size updateSize = optional.get();
-            size.setId(id);
-            size.setStatus(updateSize.getStatus());
-            size.setCreateDate(updateSize.getCreateDate());
-            size.setUpdateDate(new Date());
-            return sizeRepository.save(size);
+            updateSize.setId(id);
+            updateSize.setName(name);
+            updateSize.setStatus(1);
+            updateSize.setCreateDate(optional.get().getCreateDate());
+            updateSize.setUpdateDate(new Date());
+            return sizeRepository.save(updateSize);
         } else {
             return null;
         }

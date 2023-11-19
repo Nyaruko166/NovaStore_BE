@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "Bill")
 @Entity
@@ -50,8 +51,14 @@ public class Bill {
     @Column(name = "PaymentDate")
     private Date paymentDate;
 
+    @Column(name = "Price")
+    private BigDecimal price;
+
     @Column(name = "ShippingFee")
     private BigDecimal shippingFee;
+
+    @Column(name = "DiscountAmount")
+    private BigDecimal discountAmount;
 
     @Column(name = "TotalPrice")
     private BigDecimal totalPrice;
@@ -69,7 +76,10 @@ public class Bill {
     @JoinColumn(name = "AccountId", referencedColumnName = "Id")
     private Account account;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CustomerId", referencedColumnName = "Id")
-    private Account customerAccount;
+    private Customer customer;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bill")
+    private List<BillDetail> billDetails;
 }

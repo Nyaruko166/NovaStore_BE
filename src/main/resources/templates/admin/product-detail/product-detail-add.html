@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>PRODUCT DETAIL ADD</strong>
+                <strong>THÊM SẢN PHẨM CHI TIẾT</strong>
             </div>
             <div class="card-body card-block">
                 <form id="productDetailAdd" th:object="${product}" class="form-horizontal">
@@ -22,21 +22,39 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Product Name</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Mã sản phẩm</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" th:value="*{code}" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" th:value="*{name}" disabled>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Quantity</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Mã chi tiết</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="quantity">
+                            <input type="text" class="form-control" id="code" name="code" oninput="onInputText('errorCode')">
+                            <small class="" style="color: red"
+                                   id="errorCode" ></small>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Size</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Số lượng</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="quantity" name="quantity" oninput="onInputText('errorQuantity')">
+                            <small class="" style="color: red"
+                                   id="errorQuantity" ></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Kích cỡ</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="sizeId">
                                 <option th:value="${size.id}" th:each="size: ${listSize}"
@@ -46,7 +64,7 @@
                     </div>
 
                     <div class="row form-group">
-                        <label class="col-sm-2 col-form-label">Color</label>
+                        <label class="col-sm-2 col-form-label font-weight-bold">Màu sắc</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="colorId">
                                 <option th:value="${color.id}" th:each="color: ${listColor}"
@@ -56,10 +74,70 @@
                     </div>
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickAdd('product-detail', 'productDetailAdd')" type="button" class="btn btn-success"><i
+                            <button onclick="clickAdd()" type="button" class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
-                                ADD
+                                THÊM
                             </button>
+                            <script th:inline="javascript">
+
+                                checkQuantity = () => {
+                                    let quantity = document.getElementById('quantity').value
+                                    if (quantity === "") {
+                                        document.getElementById('errorQuantity').innerHTML = `Chưa nhập số lượng`
+                                        return false;
+                                    }
+                                    if (quantity < 0) {
+                                        document.getElementById('errorQuantity').innerHTML = `Số lượng phải lớn hơn 0`
+                                        return false;
+                                    }
+                                    if (Number.isInteger(quantity)) {
+                                        document.getElementById('errorQuantity').innerHTML = `Số lượng phải là số nguyên`
+                                        return false;
+                                    }
+                                    return true;
+                                }
+
+                                checkCode = () => {
+                                    let code = document.getElementById('code').value
+                                    if (code.trim() === '') {
+                                        document.getElementById('errorCode').innerHTML = `Chưa nhập mã chi tiết`
+                                        return false;
+                                    }
+                                    return true;
+                                }
+
+                                validate = () => {
+                                    let isCode = checkCode();
+                                    let isQuantity = checkQuantity();
+                                    if (isCode === true && isQuantity === true) {
+                                        return true;
+                                    }
+                                }
+
+                                clickAdd = () => {
+                                    if (validate()) {
+                                        swal({
+                                            title: "Thêm dữ liệu",
+                                            text: "Bạn có muốn thêm dữ liệu không ?",
+                                            icon: "warning",
+                                            buttons: ["Không", "Có"],
+                                            dangerMode: true,
+                                            closeOnClickOutside: false,
+                                        }).then((add) => {
+                                            if (add) {
+                                                document.getElementById('productDetailAdd').action = '/nova/product-detail/add'
+                                                document.getElementById('productDetailAdd').method = 'post'
+                                                document.getElementById('productDetailAdd').submit()
+                                            }
+                                        });
+                                    }
+                                }
+                            </script>
+                            <a th:href="@{|/nova/product/*{id}/product-detail|}">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM CHI TIẾT
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </form>

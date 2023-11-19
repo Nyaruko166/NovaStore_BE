@@ -33,10 +33,10 @@ public class Image {
     private Integer status;
 
     @ManyToOne
-    @JoinColumn(name = "ProductDetailId", referencedColumnName = "Id")
-    private ProductDetail productDetail;
+    @JoinColumn(name = "ProductId", referencedColumnName = "Id")
+    private Product product;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ImageType")
-    private ImageType imageType = ImageType.FILE;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "ImageType")
+//    private ImageType imageType = ImageType.FILE;
 }

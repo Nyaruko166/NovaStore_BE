@@ -8,8 +8,6 @@ import java.util.List;
 public interface BrandService {
     List<Brand> getAll();
 
-    List<Brand> getAllDefault();
-
     Page<Brand> getPage(Integer page);
 
     Brand add(Brand brand);

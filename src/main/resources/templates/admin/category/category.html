@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>CATEGORY</strong>
+                <strong>LOẠI SẢN PHẨM</strong>
             </div>
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -22,39 +22,39 @@
 
             <div class="card-body card-block">
                 <form id="categoryForm" class="form-horizontal">
-                    <div class="row form-group">
-                        <div class="col col-md-3"><label class="form-control-label">Category name</label></div>
-                        <div class="col-12 col-md-9"><input type="text" name="name" class="form-control">
-                            <!--              <small class="form-text text-muted">This is a help text</small>-->
+                    <div class="card-footer">
+                        <div class="row form-group">
+                            <div class="col col-md-3"><label class="font-weight-bold form-control-label">Tên loại</label></div>
+                            <div class="col-12 col-md-9"><input type="text" id="name" name="name" class="form-control"
+                                                                oninput="onInputText('errorName')">
+                                <small class="" style="color: red"
+                                       id="errorName" ></small>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickAdd('category', 'categoryForm')" type="button"
+                            <button onclick="clickAdd('category', 'categoryForm', 'name', 'errorName', 'tên loại')" type="button"
                                     class="btn btn-success"><i
                                     class="fa-solid fa-square-plus"></i>
-                                ADD
+                                THÊM
                             </button>
                             <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> BACK TO PRODUCT
+                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM
                                 </button>
                             </a>
                         </div>
                     </div>
 
                     <br>
-                    <div class="card-footer d-flex">
-                        <div>
-                            <button onclick="clickSearch('category', 'categoryForm')" type="button"
-                                    class="btn btn-secondary">
+                    <div class="border-search">
+                        <div class="col-md-3">
+                            <button onclick="clickSearch('category', 'categoryForm')" type="button" class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
-                                SEARCH
+                                TÌM KIẾM
                             </button>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" placeholder="Search by name..."
+                        <div class="col-md-9" >
+                            <input type="text" placeholder="Nhập loại sản phẩm..."
                                    th:value="${categoryNameSearch}" th:name="categoryNameSearch"
                                    class="form-control">
                         </div>
@@ -68,13 +68,13 @@
     <div class="col">
         <div class="card">
             <div class="card-header" th:if="${pageCategory.isEmpty()}">
-                <strong class="card-title">NOT FOUND ANY RECORD</strong>
+                <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
             </div>
             <div th:if="${not pageCategory.isEmpty()}">
                 <div class="card-header">
-                    <strong>FOUND</strong>
+                    <strong>CÓ</strong>
                     <strong class="card-title" th:text="${pageCategory.getTotalElements()}"></strong>
-                    <strong class="card-title"> RECORD</strong>
+                    <strong class="card-title"> BẢN GHI</strong>
                 </div>
                 <div class="card-body">
                     <form id="categoryDelete">
@@ -82,8 +82,8 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Function</th>
+                                <th scope="col">Tên loại</th>
+                                <th scope="col">Chức năng</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -94,14 +94,14 @@
                                     <div style="margin-right: 10px">
                                         <a th:href="@{'/nova/category/detail/' + ${items.id}}">
                                             <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-pen mr-1"></i>UPDATE
+                                                <i class="fa-solid fa-pen mr-1"></i>SỬA
                                             </button>
                                         </a>
                                     </div>
                                     <div>
                                         <button th:onclick="clickDelete('category', 'categoryDelete', [[${items.id}]])"
                                                 type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                            <i class="fa-solid fa-trash mr-1"></i>XÓA
                                         </button>
                                     </div>
                                 </td>

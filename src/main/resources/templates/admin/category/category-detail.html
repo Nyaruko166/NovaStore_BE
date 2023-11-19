@@ -10,25 +10,27 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>CATEGORY UPDATE</strong>
+                <strong>CẬP NHẬT LOẠI SẢN PHẨM</strong>
             </div>
             <div class="card-body card-block">
                 <form id="categoryUpdate" th:object="${category}" th:action="@{/nova/category/update/{id}(id=${category.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
-                        <div class="col col-md-3"><label for="" class=" form-control-label">Category name</label></div>
-                        <div class="col-12 col-md-9"><input type="text" id="" th:field="*{name}" class="form-control">
-                            <!--              <small class="form-text text-muted">This is a help text</small>-->
+                        <div class="col col-md-3"><label class="font-weight-bold  form-control-label">TÊN LOẠI</label></div>
+                        <div class="col-12 col-md-9"><input type="text" id="name" th:field="*{name}" class="form-control"
+                                                            oninput="onInputText('errorName')">
+                            <small class="" style="color: red"
+                                   id="errorName" ></small>
                         </div>
                     </div>
 
                     <div class="card-footer">
-                        <button onclick="clickUpdate('categoryUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
-                            UPDATE
+                        <button onclick="clickUpdate('categoryUpdate', 'name', 'errorName')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
+                            SỬA
                         </button>
                         <a href="/nova/category/page">
                             <button type="button" class="btn btn-warning"><i
-                                    class="fa-solid fa-circle-left mr-1"></i> BACK TO CATEGORY
+                                    class="fa-solid fa-circle-left mr-1"></i> LOẠI SẢN PHẨM
                             </button>
                         </a>
                     </div>
