@@ -40,11 +40,11 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.zalopayCreate(1000000L));
     }
 
-    @GetMapping("/vnpay/return")
-    ResponseEntity<?> vnpayReturn(VNPaymentResponse VNPaymentResponse) {
-
-        return ResponseEntity.ok(VNPaymentResponse);
-    }
+//    @GetMapping("/vnpay/return")
+//    ResponseEntity<?> vnpayReturn(VNPaymentResponse VNPaymentResponse) {
+//
+//        return ResponseEntity.ok(VNPaymentResponse);
+//    }
 
     @GetMapping("/zalo/return")
     ResponseEntity<?> zalopayReturn(ZaloPaymentResponse zaloPaymentResponse) {
@@ -52,9 +52,9 @@ public class PaymentController {
         return ResponseEntity.ok(zaloPaymentResponse);
     }
 
-    @GetMapping("/momo/return")
-    ResponseEntity<?> momoReturn(MomoPaymentResponse momoPaymentResponse) {
-
-        return ResponseEntity.ok(momoPaymentResponse);
-    }
+//    @GetMapping("/momo/return")
+//    ResponseEntity<?> momoReturn(MomoPaymentResponse momoPaymentResponse) {
+//
+//        return ResponseEntity.ok(momoPaymentResponse);
+//    }
 }
