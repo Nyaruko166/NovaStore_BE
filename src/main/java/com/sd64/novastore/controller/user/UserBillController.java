@@ -46,8 +46,8 @@ public class UserBillController {
     private PaymentService paymentService;
 
     @GetMapping("/checkout")
-    public String checkOut(Principal principal, Model model){
-        if (principal == null){
+    public String checkOut(Principal principal, Model model) {
+        if (principal == null) {
             return "redirect:/login";
         }
         Customer customer = customerService.findByEmail(principal.getName());
@@ -61,8 +61,8 @@ public class UserBillController {
     }
 
     @GetMapping("/orders")
-    public String getOrders(Model model, Principal principal){
-        if (principal == null){
+    public String getOrders(Model model, Principal principal) {
+        if (principal == null) {
             return "redirect:/login";
         }
         Customer customer = customerService.findByEmail(principal.getName());
@@ -72,8 +72,8 @@ public class UserBillController {
     }
 
     @GetMapping("/order-detail/{id}")
-    public String getOrderDetail(@PathVariable Integer id, Model model, Principal principal){
-        if (principal == null){
+    public String getOrderDetail(@PathVariable Integer id, Model model, Principal principal) {
+        if (principal == null) {
             return "redirect:/login";
         }
         Bill bill = billService.getOneBill(id);
@@ -81,33 +81,33 @@ public class UserBillController {
         return "/user/order-detail";
     }
 
-    @PostMapping("/add-order")
-    public String createOrder(Principal principal,
-                              RedirectAttributes attributes,
-                              HttpSession session,
-                              @RequestParam("address") String address,
-                              @RequestParam("payment") String payment,
-                              HttpServletRequest request) throws IOException, URISyntaxException {
-        if (principal == null){
-            return "redirect:/login";
-        }
-        Customer customer = customerService.findByEmail(principal.getName());
-        Cart cart = customer.getCart();
-        if (payment.equals("VNPAY")){
-            //Long dok
-            String vnpayUrl = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue());
-            return "redirect:" + vnpayUrl;
-        }
-        if (payment.equals("Momo")){
-            //Long dok
-            String momoUrl = paymentService.MomoPayCreate(cart.getTotalPrice().longValue());
-            return "redirect:" + momoUrl;
-        }
-        billService.placeOrder(cart, address, payment);
-        session.removeAttribute("totalItems");
-        attributes.addFlashAttribute("success", "Đặt hàng thành công!");
-        return "redirect:/orders";
-    }
+//    @PostMapping("/add-order")
+//    public String createOrder(Principal principal,
+//                              RedirectAttributes attributes,
+//                              HttpSession session,
+//                              @RequestParam("address") String address,
+//                              @RequestParam("payment") String payment,
+//                              HttpServletRequest request) throws IOException, URISyntaxException {
+//        if (principal == null){
+//            return "redirect:/login";
+//        }
+//        Customer customer = customerService.findByEmail(principal.getName());
+//        Cart cart = customer.getCart();
+//        if (payment.equals("VNPAY")){
+//            //Long dok
+//            String vnpayUrl = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue());
+//            return "redirect:" + vnpayUrl;
+//        }
+//        if (payment.equals("Momo")){
+//            //Long dok
+//            String momoUrl = paymentService.MomoPayCreate(cart.getTotalPrice().longValue());
+//            return "redirect:" + momoUrl;
+//        }
+//        billService.placeOrder(cart, address, payment);
+//        session.removeAttribute("totalItems");
+//        attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+//        return "redirect:/orders";
+//    }
 
     @RequestMapping(value = "/cancel-order/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
     public String cancelOrder(@PathVariable Integer id, RedirectAttributes attributes) {
@@ -118,7 +118,7 @@ public class UserBillController {
 
     @GetMapping("/vnpay/return")
     public String vnpayReturn(VNPaymentResponse VNPaymentResponse, RedirectAttributes attributes) {
-        if (VNPaymentResponse.getVnp_ResponseCode().equals("00")){
+        if (VNPaymentResponse.getVnp_ResponseCode().equals("00")) {
             attributes.addFlashAttribute("success", "Đặt hàng thành công!");
         }
         return "redirect:/orders";
@@ -126,7 +126,7 @@ public class UserBillController {
 
     @GetMapping("/momo/return")
     public String momoReturn(MomoPaymentResponse momoPaymentResponse, RedirectAttributes attributes) {
-        if (momoPaymentResponse.getResultCode().equals("0")){
+        if (momoPaymentResponse.getResultCode().equals("0")) {
             attributes.addFlashAttribute("success", "Đặt hàng thành công!");
         }
         return "redirect:/orders";

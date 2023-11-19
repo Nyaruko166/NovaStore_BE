@@ -6,6 +6,9 @@ import com.google.gson.JsonObject;
 import com.sd64.novastore.config.MomoPaymentConfig;
 import com.sd64.novastore.config.VNPaymentConfig;
 import com.sd64.novastore.config.ZaloPayConfig;
+import com.sd64.novastore.dto.PaymentDto;
+import com.sd64.novastore.model.Address;
+import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.request.MomoPaymentRequest;
 import com.sd64.novastore.request.ZaloPaymentRequest;
 import com.sd64.novastore.service.PaymentService;
@@ -35,22 +38,11 @@ public class PaymentServiceImpl implements PaymentService {
     Gson gson = new Gson();
 
     @Override
-    public String MomoPayCreate(Long amount) throws IOException, URISyntaxException {
+    public PaymentDto MomoPayCreate(Long amount, Cart cart, Address address) throws IOException, URISyntaxException {
 
         int random_id = new Random().nextInt(1000000);
 
-        MomoPaymentRequest momoPaymentRequest = MomoPaymentRequest.builder()
-                .partnerCode(MomoPaymentConfig.partnerCode)
-                .redirectUrl(MomoPaymentConfig.returnUrl)
-                .ipnUrl(MomoPaymentConfig.ipnUrl)
-                .amount(amount)
-                .requestType("captureWallet")
-                .requestId(String.valueOf(random_id))
-                .orderId(String.valueOf(random_id))
-                .orderInfo("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
-                .lang("vi")
-                .extraData("")
-                .build();
+        MomoPaymentRequest momoPaymentRequest = MomoPaymentRequest.builder().partnerCode(MomoPaymentConfig.partnerCode).redirectUrl(MomoPaymentConfig.returnUrl).ipnUrl(MomoPaymentConfig.ipnUrl).amount(amount).requestType("captureWallet").requestId(String.valueOf(random_id)).orderId(String.valueOf(random_id)).orderInfo("NovaStore - Thanh Toán Đơn Hàng #" + random_id).lang("vi").extraData("").build();
 
         String signature = momoPaymentRequest.signatureGen(MomoPaymentConfig.accessKey, MomoPaymentConfig.secretKey);
         momoPaymentRequest.setSignature(signature);
@@ -81,11 +73,12 @@ public class PaymentServiceImpl implements PaymentService {
 //        System.out.println(jsonResult.get("payUrl"));
 
 //        return resultJsonStr.toString();
-        return jsonResult.get("payUrl").toString().replaceAll("\"", "");
+        String payUrl = jsonResult.get("payUrl").toString().replaceAll("\"", "");
+        return PaymentDto.builder().payUrl(payUrl).cart(cart).address(address).build();
     }
 
     @Override
-    public String zalopayCreate(Long amount) throws IOException {
+    public PaymentDto zalopayCreate(Long amount, Cart cart, Address address) throws IOException {
 
         int random_id = new Random().nextInt(1000000);
 
@@ -159,11 +152,14 @@ public class PaymentServiceImpl implements PaymentService {
             resultJsonStr.append(line);
         }
 
-        return resultJsonStr.toString();
+        JsonObject jsonResult = gson.fromJson(resultJsonStr.toString(), JsonObject.class);
+        String payUrl = jsonResult.get("payUrl").toString().replaceAll("\"", "");
+        return PaymentDto.builder().payUrl(payUrl).cart(cart).address(address).build();
+//        return resultJsonStr.toString();
     }
 
     @Override
-    public String vnpayCreate(HttpServletRequest req, Long price) throws UnsupportedEncodingException {
+    public PaymentDto vnpayCreate(HttpServletRequest req, Long price, Cart cart, Address address) throws UnsupportedEncodingException {
         String vnp_Version = VNPaymentConfig.vnp_Version;
         String vnp_Command = VNPaymentConfig.vnp_Command;
         String orderType = VNPaymentConfig.orderType;
@@ -230,9 +226,12 @@ public class PaymentServiceImpl implements PaymentService {
                 }
             }
         }
+
         String queryUrl = query.toString();
         String vnp_SecureHash = VNPaymentConfig.hmacSHA512(VNPaymentConfig.secretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        return VNPaymentConfig.vnp_PayUrl + "?" + queryUrl;
+        String payUrl = VNPaymentConfig.vnp_PayUrl + "?" + queryUrl;
+
+        return PaymentDto.builder().payUrl(payUrl).cart(cart).address(address).build();
     }
 }
