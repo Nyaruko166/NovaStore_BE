@@ -76,7 +76,12 @@ public class PaymentServiceImpl implements PaymentService {
             resultJsonStr.append(line);
         }
 
-        return resultJsonStr.toString();
+        JsonObject jsonResult = gson.fromJson(resultJsonStr.toString(), JsonObject.class);
+
+//        System.out.println(jsonResult.get("payUrl"));
+
+//        return resultJsonStr.toString();
+        return jsonResult.get("payUrl").toString().replaceAll("\"", "");
     }
 
     @Override
