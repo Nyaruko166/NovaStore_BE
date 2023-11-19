@@ -29,8 +29,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    TempCodeManager tempCodeManager = new TempCodeManager();
-
     MailConfig mailConfig = new MailConfig();
 
     @GetMapping("/login")
@@ -45,15 +43,16 @@ public class AuthController {
 
     @GetMapping("/forgot")
     public String forgor(@RequestParam(value = "email", defaultValue = "") String email,
-                         HttpServletRequest request) {
+                         HttpServletRequest request, Model model) {
         if (email.isBlank()) {
             return "forgor";
         }
         if (authService.codeGen(email, request)) {
-            System.out.println("Mail đang được gửi...");
+            model.addAttribute("mess", "Đã gửi mã xác minh đến email của bạn...");
+//            System.out.println("Mail đang được gửi...");
             return "forgor";
         }
-        System.out.println("vl lỗi");
+        model.addAttribute("err", "Email này chưa được đăng ký !!!");
         return "forgor";
     }
 
@@ -64,19 +63,16 @@ public class AuthController {
                             RedirectAttributes redirectAttributes,
                             HttpServletRequest request, Model model
     ) {
-        if (authService.codeVerifyAndNewPass(email, newPassword, code, request)) {
-            System.out.println("Ngon");
+        Integer status = authService.codeVerifyAndNewPass(email, newPassword, code, request);
+        if (status == 0) {
+            model.addAttribute("mess", "Reset mật khẩu thành công");
+            System.out.println("Reset mật khẩu thành công");
+        } else if (status == 1) {
+            model.addAttribute("err", "Mã xác minh đã hết hạn");
+            System.out.println("Mã xác minh đã hết hạn");
         } else {
-            System.out.println("Khong Ngon");
-        }
-        return "access-denied";
-    }
-
-    @PostMapping("/forgot-post")
-    public String forgorPost(@RequestParam("code") String code, HttpServletRequest request) {
-        boolean check = tempCodeManager.verifyTemporaryCode(request.getRemoteAddr(), code);
-        if (check) {
-
+            model.addAttribute("err", "Mã xác minh không khớp");
+            System.out.println("Mã xác minh không khớp");
         }
         return "forgor";
     }
@@ -85,6 +81,51 @@ public class AuthController {
     public String register() {
 
         return "register";
+    }
+
+    @GetMapping("/change-password")
+    public String changePass(@RequestParam(value = "email", defaultValue = "") String email,
+                             HttpServletRequest request, Model model) {
+        if (email.isBlank()) {
+            return "change-pass";
+        }
+        if (authService.codeGenChangePass(email, request)) {
+            model.addAttribute("mess", "Đã gửi mã xác minh đến email của bạn...");
+            return "change-pass";
+        }
+        model.addAttribute("err", "Email này chưa được đăng ký !!!");
+        return "change-pass";
+    }
+
+    @PostMapping("/change-pass-post")
+    public String changePassPost(@RequestParam("email") String email,
+                                 @RequestParam("code") String code,
+                                 @RequestParam("currentPass") String currentPass,
+                                 @RequestParam("newPass") String newPass,
+                                 @RequestParam("reNewPass") String reNewPass,
+                                 RedirectAttributes redirectAttributes,
+                                 HttpServletRequest request, Model model) {
+        switch (authService.codeVerifyAndChangePass(email, currentPass, reNewPass, newPass, code, request)) {
+            case 0:
+                model.addAttribute("mess", "Đổi mật khẩu thành công !!!");
+                break;
+            case 1:
+                model.addAttribute("err", "Tài khoản không tồn tại !!!");
+                break;
+            case 2:
+                model.addAttribute("err", "Mật khẩu mới không khớp !!!");
+                break;
+            case 3:
+                model.addAttribute("err", "Mật khẩu hiện tại không khớp !!!");
+                break;
+            case 4:
+                model.addAttribute("err", "Mã xác minh hết hạn !!!");
+                break;
+            case 5:
+                model.addAttribute("err", "Mã xác minh không khớp !!!");
+                break;
+        }
+        return "change-pass";
     }
 
     @GetMapping("/mail")

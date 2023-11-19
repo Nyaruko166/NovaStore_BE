@@ -14,6 +14,8 @@ public class MailConfig {
 
     public String resetPassMail = "Mã Xác Nhận Cho Yêu Cầu Đặt Lại Mật Khẩu Của Bạn";
 
+    public String changePassMail = "Mã Xác Nhận Cho Yêu Cầu Thay Đổi Mật Khẩu Của Bạn";
+
     public String randomCode() {
         Random random = new Random();
         int min = 100000;

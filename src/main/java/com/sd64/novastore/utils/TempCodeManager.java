@@ -40,17 +40,17 @@ public class TempCodeManager {
         return code;
     }
 
-    public boolean verifyTemporaryCode(String id, String code) {
+    public Integer verifyTemporaryCode(String id, String code) {
         TemporaryCode storedCode = temporaryCodes.get(id);
         if (storedCode != null && storedCode.getCode().equals(code)) {
             if (storedCode.isExpired()) {
                 temporaryCodes.remove(id); // Xoá mã đã hết hạn
-                return false;
+                return 1;
+            } else {
+                return 0;
             }
-            temporaryCodes.remove(id);
-            return true;
         }
-        return false;
+        return 2;
     }
 
     public String createTemporaryCode(String id) {
@@ -63,6 +63,10 @@ public class TempCodeManager {
         } else {
             return generateTemporaryCode(id);
         }
+    }
+
+    public void removeCode(String id) {
+        temporaryCodes.remove(id);
     }
 
 }
