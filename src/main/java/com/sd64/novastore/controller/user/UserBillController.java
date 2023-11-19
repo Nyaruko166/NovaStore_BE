@@ -4,11 +4,17 @@ import com.sd64.novastore.model.Address;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.Customer;
+import com.sd64.novastore.response.MomoPaymentResponse;
+import com.sd64.novastore.response.VNPaymentResponse;
+import com.sd64.novastore.response.ZaloPaymentResponse;
 import com.sd64.novastore.service.AddressService;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.CustomerService;
+import com.sd64.novastore.service.PaymentService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.security.Principal;
 import java.util.List;
 
@@ -32,6 +41,9 @@ public class UserBillController {
 
     @Autowired
     private BillService billService;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @GetMapping("/checkout")
     public String checkOut(Principal principal, Model model){
@@ -74,13 +86,24 @@ public class UserBillController {
                               RedirectAttributes attributes,
                               HttpSession session,
                               @RequestParam("address") String address,
-                              @RequestParam("payment") String payment){
+                              @RequestParam("payment") String payment,
+                              HttpServletRequest request) throws IOException, URISyntaxException {
         if (principal == null){
             return "redirect:/login";
         }
         Customer customer = customerService.findByEmail(principal.getName());
         Cart cart = customer.getCart();
-        Bill bill = billService.placeOrder(cart, address, payment);
+        if (payment.equals("VNPAY")){
+            //Long dok
+            String vnpayUrl = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue());
+            return "redirect:" + vnpayUrl;
+        }
+        if (payment.equals("Momo")){
+            //Long dok
+            String momoUrl = paymentService.MomoPayCreate(cart.getTotalPrice().longValue());
+            return "redirect:" + momoUrl;
+        }
+        billService.placeOrder(cart, address, payment);
         session.removeAttribute("totalItems");
         attributes.addFlashAttribute("success", "Đặt hàng thành công!");
         return "redirect:/orders";
@@ -90,6 +113,22 @@ public class UserBillController {
     public String cancelOrder(@PathVariable Integer id, RedirectAttributes attributes) {
         billService.cancelOrder(id);
         attributes.addFlashAttribute("success", "Huỷ đơn hàng thành công!");
+        return "redirect:/orders";
+    }
+
+    @GetMapping("/vnpay/return")
+    public String vnpayReturn(VNPaymentResponse VNPaymentResponse, RedirectAttributes attributes) {
+        if (VNPaymentResponse.getVnp_ResponseCode().equals("00")){
+            attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+        }
+        return "redirect:/orders";
+    }
+
+    @GetMapping("/momo/return")
+    public String momoReturn(MomoPaymentResponse momoPaymentResponse, RedirectAttributes attributes) {
+        if (momoPaymentResponse.getResultCode().equals("0")){
+            attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+        }
         return "redirect:/orders";
     }
 }
