@@ -21,6 +21,9 @@ import java.util.Optional;
 public class PromotionDetailServiceImpl implements PromotionDetailService {
     @Autowired
     private PromotionDetailRepository promotionDetailRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
     @Override
     public List<PromotionDetail> getAllPromotionDetail() {
         return promotionDetailRepository.findAllByAndStatusOrderByIdDesc(1);
@@ -69,10 +72,26 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
         return promotionDetailRepository.findById(id).orElse(null);
     }
 
+//    @Override
+//    public Page<PromotionDetail> search(String name, int page) {
+//        Pageable pageable = PageRequest.of(page, 5);
+//        return promotionDetailRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+//    }
+
     @Override
-    public Page<PromotionDetail> search(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return promotionDetailRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    public List<Product> getAll() {
+        return productRepository.findAllByAndStatusOrderByIdDesc(1);
     }
+
+    @Override
+    public List<Product> getProductsByIds(List<Integer> productIds) {
+        return productRepository.findAllById(productIds);
+    }
+
+    @Override
+    public Boolean existsByProductIdAndStatus(Integer productId, Integer status) {
+        return promotionDetailRepository.existsByProductIdAndStatus(productId,1);
+    }
+
 
 }

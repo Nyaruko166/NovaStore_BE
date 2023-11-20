@@ -398,7 +398,6 @@ CREATE TABLE [dbo].[Promotion](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Code] [varchar](255) NULL,
     [Name] [nvarchar](50) NULL,
-    [Type] [bit] NULL,
     [Value] [money] NULL,
     [StartDate] [datetime] NULL,
     [EndDate] [datetime] NULL,
@@ -418,7 +417,6 @@ CREATE TABLE [dbo].[Promotion](
     GO
 CREATE TABLE [dbo].[PromotionDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Name] [nvarchar](50) NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
@@ -473,7 +471,6 @@ CREATE TABLE [dbo].[Voucher](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Code] [varchar](50) NULL,
     [Name] [nvarchar](50) NULL,
-    [Type] [bit] NULL,
     [Value] [money] NULL,
     [Quantity] [int] NULL,
     [MinimumPrice] [money] NULL,

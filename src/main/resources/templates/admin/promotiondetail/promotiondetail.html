@@ -3,14 +3,14 @@
       layout:decorate="~{admin/admin-layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Promotion detail Management</title>
+    <title>Promotion Detail Management</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>Promotion detail</strong>
+                <strong>Promotion Detail</strong>
             </div>
             <!--            Notification-->
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
@@ -20,41 +20,112 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <span th:text="${error}"></span>
+            </div>
             <div class="card-body card-block">
-                <form id="promotionDetailForm" th:action="@{/nova/promotion_detail/add}" th:object="${promotionDetail}"  method="post" class="form-horizontal"
-                      enctype="multipart/form-data">
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="name" class=" form-control-label">Name</label>
+                <form id="promotionDetailForm" th:object="${promotionDetail}" th:action="@{/nova/promotion-detail/add}"
+                      method="post" class="form-horizontal">
+                    <div class="container">
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label class="form-control-label">Promotion Name</label>
+                            </div>
+                            <div class="col-md-9">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal">
+                                    Xem sản phẩm
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text"  id="name" name="name" th:field="*{name}" class="form-control">
-                            <br>
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+                        <!-- Product Modal -->
+                        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="productModalLabel">Danh sách sản phẩm</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th class="form-control-label">
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" id="selectAllCheckbox"> Chọn tất cả
+                                                    </label>
+                                                </th>
+                                                <th class="form-control-label">Name</th>
+                                                <th class="form-control-label">Description</th>
+                                                <th class="form-control-label">Price</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!-- Loop through all products -->
+                                            <tr th:each="product : ${productList}" class="visible-row">
+                                                <td>
+                                                    <label class="checkbox-inline">
+                                                        <input type="checkbox" th:value="${product.id}" th:data-name="${product.name}" name="selectedProducts">
+                                                    </label>
+                                                </td>
+                                                <td th:text="${product.name}"></td>
+                                                <td th:text="${product.description}"></td>
+                                                <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-primary" onclick="confirmSelection()">Xác nhận</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            // Chọn tất cả checkbox
+                            var selectAllCheckbox = document.getElementById('selectAllCheckbox');
+                            selectAllCheckbox.addEventListener('change', function () {
+                                var checkboxes = document.querySelectorAll('input[name="selectedProducts"]');
+                                checkboxes.forEach(function (checkbox) {
+                                    checkbox.checked = selectAllCheckbox.checked;
+                                });
+                            });
+
+                            function confirmSelection() {
+                                // Lấy danh sách các checkbox đã chọn
+                                var selectedCheckboxes = document.querySelectorAll('input[name="selectedProducts"]:checked');
+
+                                // Xác nhận số lượng và giá trị của các checkbox đã chọn
+                                var confirmationMessage = "Bạn đã chọn " + selectedCheckboxes.length + " sản phẩm:\n";
+                                selectedCheckboxes.forEach(function (checkbox) {
+                                    confirmationMessage += "ID: " + checkbox.value + " - Name: " + checkbox.getAttribute('data-name') + "\n";
+                                });
+
+                                // Hiển thị hộp thoại xác nhận
+                                alert(confirmationMessage);
+                            }
+                        </script>
+
+
+
+                        <!-- Promotion Dropdown -->
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label class="form-control-label">Promotion Name</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control" name="promotion">
+                                    <option th:each="x : ${promotionList}" th:value="${x.id}"
+                                            th:text="${x.name}"></option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label class=" form-control-label">Product Name</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <select class="form-control"  name="product">
-                                <option th:each="x : ${productList}" th:value="${x.id}" th:text="${x.name}"></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label class=" form-control-label">Promotion Name</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <select class="form-control"  name="promotion">
-                                <option th:each="x : ${promotionList}" th:value="${x.id}" th:text="${x.name}"></option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="card-footer">
                         <a th:href="@{/nova/promotion/page}">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
@@ -70,28 +141,13 @@
 
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickAdd('promotionDetail', 'promotionDetail')" type="button" class="btn btn-success"><i
-                                    class="fa-solid fa-square-plus"></i>
-                                ADD
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                                Add
                             </button>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex">
-                        <div>
-                            <button onclick="clickSearch('promotionDetail', 'promotionDetailForm')" type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                SEARCH
-                            </button>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" placeholder="Search by name..."
-                                   th:value="${promotiondetailSearch}" th:name="promotiondetailSearch"
-                                   class="form-control">
                         </div>
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
     <br>
@@ -99,71 +155,77 @@
     <br>
     <div class="col">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Data Record</strong>
+            <div class="card-header" th:if="${pagePromotionDetail.isEmpty()}">
+                <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
             </div>
-            <div class="card-body">
-                <table class="table text-center">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Promotion Name</th>
-                        <th scope="col">Create Date</th>
-                        <th scope="col">Update Date</th>
-                        <!--                        <th scope="col">Account Name</th>-->
-                        <th scope="col">Function</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="items:${pagePromotionDetail}">
-                        <td th:text="${items.id}"></td>
-                        <td th:text="${items.name}"></td>
-                        <td th:text="${items.product.name}"></td>
-                        <td th:text="${items.promotion.name}"></td>
-                        <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                        <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                        <!--                        <td th:text="${items.role.name}"></td>-->
-                        <td class="d-flex justify-content-center">
-                            <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/promotion_detail/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-warning">Detail</button>
-                                </a>
-                            </div>
-                            <div>
-                                <form id="promotionDetailUpdate" th:action="@{'/nova/promotion_detail/delete/' + ${items.id}}"
-                                      th:method="post">
-                                    <button onclick="clickDelete('promotionDetailUpdate')" type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="d-flex justify-content-center align-items-center">
-                    <div th:if="${pagePromotionDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=0&promotiondetailSearch=${promotiondetailSearch}|}">
-                            </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
-                    </div>
-                    <div th:if="${pagePromotionDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                        <a th:href="@{|?page=${pagePromotionDetail.getNumber() - 1}&promotiondetailSearch=${promotionNameSearch}|}">
-                            <i style="color: white" class="fa-solid fa-left-long"></i></a>
-                    </div>
-                    <div class="btn btn-dark d-flex">
-                        <div th:text="${pagePromotionDetail.getNumber() + 1}"></div>
-                        <span>/</span>
-                        <div th:text="${pagePromotionDetail.getTotalPages()}"></div>
-                    </div>
-                    <div th:if="${pagePromotionDetail.getNumber() + 1 lt pagePromotionDetail.getTotalPages()}" class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pagePromotionDetail.getNumber()+1}&promotiondetailSearch=${promotiondetailSearch}|}">
-                            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
-                    </div>
-                    <div th:if="${pagePromotionDetail.getNumber() + 1 lt pagePromotionDetail.getTotalPages()}" class="btn btn-dark ml-1">
-                        <a th:href="@{|?page=${pagePromotionDetail.getTotalPages()-1}&promotiondetailSearch=${promotiondetailSearch}|}">
-                            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+            <div th:if="${not pagePromotionDetail.isEmpty()}">
+                <div class="card-header">
+                    <strong>CÓ</strong>
+                    <strong class="card-title" th:text="${pagePromotionDetail.getTotalElements()}"></strong>
+                    <strong class="card-title"> BẢN GHI</strong>
+                </div>
+                <div class="card-body">
+                    <form id="promotionDetailDelete">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Promotion Name</th>
+                                <th scope="col">Create Date</th>
+                                <th scope="col">Update Date</th>
+                                <!--                        <th scope="col">Account Name</th>-->
+                                <th scope="col">Function</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pagePromotionDetail}">
+                                <td th:text="${items.id}"></td>
+                                <td th:text="${items.product.name}"></td>
+                                <td th:text="${items.promotion.name}"></td>
+                                <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                                <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                                <td class="d-flex justify-content-center">
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/promotion-detail/detail/' + ${items.id}}">
+                                            <button type="button" class="btn btn-warning">Detail</button>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <button th:onclick="clickDelete('promotion-detail', 'promotionDetailDelete', [[${items.id}]])"
+                                                type="button" class="btn btn-danger">
+                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div th:if="${pagePromotionDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0&promotiondetailSearch=${promotiondetailSearch}|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pagePromotionDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pagePromotionDetail.getNumber() - 1}&promotiondetailSearch=${promotionNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-dark d-flex">
+                            <div th:text="${pagePromotionDetail.getNumber() + 1}"></div>
+                            <span>/</span>
+                            <div th:text="${pagePromotionDetail.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pagePromotionDetail.getNumber() + 1 lt pagePromotionDetail.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pagePromotionDetail.getNumber()+1}&promotiondetailSearch=${promotiondetailSearch}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pagePromotionDetail.getNumber() + 1 lt pagePromotionDetail.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pagePromotionDetail.getTotalPages()-1}&promotiondetailSearch=${promotiondetailSearch}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
