@@ -152,8 +152,12 @@ public class PaymentServiceImpl implements PaymentService {
 
         JsonObject jsonResult = gson.fromJson(resultJsonStr.toString(), JsonObject.class);
         String payUrl = jsonResult.get("payUrl").toString().replaceAll("\"", "");
-        return PaymentDto.builder().payUrl(payUrl).cart(cart).address(address).build();
-//        return resultJsonStr.toString();
+
+        JsonObject returnJson = new JsonObject();
+
+        returnJson.addProperty("payUrl",payUrl);
+        returnJson.addProperty("address",address);
+        return returnJson;
     }
 
     @Override
@@ -230,6 +234,9 @@ public class PaymentServiceImpl implements PaymentService {
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String payUrl = VNPaymentConfig.vnp_PayUrl + "?" + queryUrl;
 
-        return PaymentDto.builder().payUrl(payUrl).cart(cart).address(address).build();
+        JsonObject returnJson = new JsonObject();
+        returnJson.addProperty("payUrl",payUrl);
+        returnJson.addProperty("address",address);
+        return returnJson;
     }
 }
