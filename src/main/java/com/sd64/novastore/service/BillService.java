@@ -5,6 +5,7 @@ import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.Cart;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface BillService {
@@ -39,4 +40,8 @@ public interface BillService {
     List<Bill> getAllOrders(Integer customerId);
 
     Bill cancelOrder(Integer billId);
+
+    Bill shippingOrder(Integer billId);
+
+    Bill acceptBill(Integer id, BigDecimal shippingFee);
 }

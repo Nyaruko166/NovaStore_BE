@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
@@ -8,9 +9,9 @@ import java.net.URISyntaxException;
 
 public interface PaymentService {
 
-    String vnpayCreate(HttpServletRequest req, Long price) throws UnsupportedEncodingException;
+    JsonObject vnpayCreate(HttpServletRequest req, Long price, String address) throws UnsupportedEncodingException;
 
-    String zalopayCreate() throws IOException, URISyntaxException;
+    JsonObject zalopayCreate(Long amount, String address) throws IOException, URISyntaxException;
 
-    String MomoPayCreate() throws IOException, URISyntaxException;
+    JsonObject MomoPayCreate(Long amount, String address) throws IOException, URISyntaxException;
 }

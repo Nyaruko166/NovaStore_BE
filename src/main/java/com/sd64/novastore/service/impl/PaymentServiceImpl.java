@@ -1,13 +1,11 @@
 package com.sd64.novastore.service.impl;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sd64.novastore.config.MomoPaymentConfig;
 import com.sd64.novastore.config.VNPaymentConfig;
 import com.sd64.novastore.config.ZaloPayConfig;
 import com.sd64.novastore.request.MomoPaymentRequest;
-import com.sd64.novastore.request.ZaloPaymentRequest;
 import com.sd64.novastore.service.PaymentService;
 import com.sd64.novastore.utils.payment.HMACUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,22 +33,11 @@ public class PaymentServiceImpl implements PaymentService {
     Gson gson = new Gson();
 
     @Override
-    public String MomoPayCreate() throws IOException, URISyntaxException {
+    public JsonObject MomoPayCreate(Long amount, String address) throws IOException, URISyntaxException {
 
         int random_id = new Random().nextInt(1000000);
 
-        MomoPaymentRequest momoPaymentRequest = MomoPaymentRequest.builder()
-                .partnerCode(MomoPaymentConfig.partnerCode)
-                .redirectUrl(MomoPaymentConfig.returnUrl)
-                .ipnUrl(MomoPaymentConfig.ipnUrl)
-                .amount(100000L)
-                .requestType("captureWallet")
-                .requestId(String.valueOf(random_id))
-                .orderId(String.valueOf(random_id))
-                .orderInfo("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
-                .lang("vi")
-                .extraData("")
-                .build();
+        MomoPaymentRequest momoPaymentRequest = MomoPaymentRequest.builder().partnerCode(MomoPaymentConfig.partnerCode).redirectUrl(MomoPaymentConfig.returnUrl).ipnUrl(MomoPaymentConfig.ipnUrl).amount(amount).requestType("captureWallet").requestId(String.valueOf(random_id)).orderId(String.valueOf(random_id)).orderInfo("NovaStore - Thanh Toán Đơn Hàng #" + random_id).lang("vi").extraData("").build();
 
         String signature = momoPaymentRequest.signatureGen(MomoPaymentConfig.accessKey, MomoPaymentConfig.secretKey);
         momoPaymentRequest.setSignature(signature);
@@ -76,11 +63,20 @@ public class PaymentServiceImpl implements PaymentService {
             resultJsonStr.append(line);
         }
 
-        return resultJsonStr.toString();
+        JsonObject jsonResult = gson.fromJson(resultJsonStr.toString(), JsonObject.class);
+
+//        System.out.println(jsonResult.get("payUrl"));
+
+//        return resultJsonStr.toString();
+        String payUrl = jsonResult.get("payUrl").toString().replaceAll("\"", "");
+        JsonObject returnJson = new JsonObject();
+        returnJson.addProperty("payUrl",payUrl);
+        returnJson.addProperty("address",address);
+        return returnJson;
     }
 
     @Override
-    public String zalopayCreate() throws IOException {
+    public JsonObject zalopayCreate(Long amount, String address) throws IOException {
 
         int random_id = new Random().nextInt(1000000);
 
@@ -99,30 +95,30 @@ public class PaymentServiceImpl implements PaymentService {
             put("app_trans_id", ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id); // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
             put("app_time", System.currentTimeMillis()); // milliseconds
             put("app_user", "Nyaruko166");
-            put("amount", 10000);
+            put("amount", amount);
             put("description", "NovaStore - Thanh Toán Đơn Hàng #" + random_id);
             put("bank_code", "");
             put("item", "[{}]");
             put("embed_data", embed_data);
         }};
 
-        ZaloPaymentRequest zaloPaymentRequest = ZaloPaymentRequest.builder()
-                .app_id(ZaloPayConfig.appid)
-                .app_trans_id(ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id)
-                .app_time(String.valueOf(System.currentTimeMillis()))
-                .app_user("Nyaruko166")
-                .amount(10000000L)
-                .description("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
-                .bank_code("")
-                .item(new JsonArray())
-                .embed_data(embed_data)
-                .build();
-        zaloPaymentRequest.setMac(zaloPaymentRequest.signatureGen(ZaloPayConfig.key1));
-
-        String jsonPost = gson.toJson(zaloPaymentRequest);
+//        ZaloPaymentRequest zaloPaymentRequest = ZaloPaymentRequest.builder()
+//                .app_id(ZaloPayConfig.appid)
+//                .app_trans_id(ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id)
+//                .app_time(String.valueOf(System.currentTimeMillis()))
+//                .app_user("Nyaruko166")
+//                .amount(10000000L)
+//                .description("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
+//                .bank_code("")
+//                .item(new JsonArray())
+//                .embed_data(embed_data)
+//                .build();
+//        zaloPaymentRequest.setMac(zaloPaymentRequest.signatureGen(ZaloPayConfig.key1));
+//
+//        String jsonPost = gson.toJson(zaloPaymentRequest);
 
 //        System.out.println(zaloPaymentRequest.getItem());
-        System.out.println(jsonPost);
+//        System.out.println(jsonPost);
 
         String data = order.get("app_id") + "|" + order.get("app_trans_id") + "|" + order.get("app_user") + "|" + order.get("amount") + "|" + order.get("app_time") + "|" + order.get("embed_data") + "|" + order.get("item");
         order.put("mac", HMACUtil.HMACSHA256Encode(ZaloPayConfig.key1, data));
@@ -154,11 +150,18 @@ public class PaymentServiceImpl implements PaymentService {
             resultJsonStr.append(line);
         }
 
-        return resultJsonStr.toString();
+        JsonObject jsonResult = gson.fromJson(resultJsonStr.toString(), JsonObject.class);
+        String payUrl = jsonResult.get("payUrl").toString().replaceAll("\"", "");
+
+        JsonObject returnJson = new JsonObject();
+
+        returnJson.addProperty("payUrl",payUrl);
+        returnJson.addProperty("address",address);
+        return returnJson;
     }
 
     @Override
-    public String vnpayCreate(HttpServletRequest req, Long price) throws UnsupportedEncodingException {
+    public JsonObject vnpayCreate(HttpServletRequest req, Long price, String address) throws UnsupportedEncodingException {
         String vnp_Version = VNPaymentConfig.vnp_Version;
         String vnp_Command = VNPaymentConfig.vnp_Command;
         String orderType = VNPaymentConfig.orderType;
@@ -225,9 +228,15 @@ public class PaymentServiceImpl implements PaymentService {
                 }
             }
         }
+
         String queryUrl = query.toString();
         String vnp_SecureHash = VNPaymentConfig.hmacSHA512(VNPaymentConfig.secretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        return VNPaymentConfig.vnp_PayUrl + "?" + queryUrl;
+        String payUrl = VNPaymentConfig.vnp_PayUrl + "?" + queryUrl;
+
+        JsonObject returnJson = new JsonObject();
+        returnJson.addProperty("payUrl",payUrl);
+        returnJson.addProperty("address",address);
+        return returnJson;
     }
 }

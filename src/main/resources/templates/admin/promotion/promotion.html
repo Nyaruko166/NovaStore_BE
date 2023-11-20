@@ -21,15 +21,17 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form  id="promotionForm" th:action="@{/nova/promotion/add}" th:object="${promotion}"  method="post" class="form-horizontal">
+                <form id="promotionForm" th:action="@{/nova/promotion/add}" th:object="${promotion}"  method="post"
+                      class="form-horizontal">
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="code" class=" form-control-label">Code</label>
+                            <label for="name" class=" form-control-label">Code</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text"  id="code" name="code" th:field="*{code}" class="form-control">
+                            <input type="text" id="code" name="name" th:field="*{code}" class="form-control">
                             <br>
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('code')}"
+                                 th:errors="*{code}"></div>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -37,28 +39,13 @@
                             <label for="name" class=" form-control-label">Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text"  id="name" name="name" th:field="*{name}" class="form-control">
+                            <input type="text" id="name" name="name" th:field="*{name}" class="form-control">
                             <br>
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}"
+                                 th:errors="*{name}"></div>
                         </div>
                     </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label class=" form-control-label">Type</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <div class="form-check-inline form-check">
-                                <label for="type1" class="form-check-label ">
-                                    <input type="radio" id="type1" name="type" value="true" checked
-                                           class="form-check-input">Giảm tiền mặt
-                                </label>
-                                <label for="type2" class="form-check-label ">
-                                    <input type="radio" id="type2" name="type" value="false" class="form-check-input">Giảm
-                                    phần trăm
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="value" class=" form-control-label">Value</label>
@@ -77,11 +64,13 @@
                         <div class="col-12 col-md-9">
                             <div id="start-date-picker" class="md-form md-outline input-with-post-icon datepicker"
                                  inline="true">
-                                <input placeholder="Choose start date"  th:field="*{startDate}" type="datetime-local" id="startDate"
+                                <input placeholder="Choose start date" th:field="*{startDate}" type="datetime-local"
+                                       id="startDate"
                                        class="form-control"
                                        name="startDate">
                                 <br>
-                                <div class="alert alert-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('startDate')}"
+                                     th:errors="*{startDate}"></div>
                             </div>
                         </div>
                     </div>
@@ -92,16 +81,18 @@
                         <div class="col-12 col-md-9">
                             <div id="end-date-picker" class="md-form md-outline input-with-post-icon datepicker"
                                  inline="true">
-                                <input placeholder="Choose end date" th:field="*{endDate}" type="datetime-local" id="endDate"
+                                <input placeholder="Choose end date" th:field="*{endDate}" type="datetime-local"
+                                       id="endDate"
                                        class="form-control"
                                        name="endDate">
                                 <br>
-                                <div class="alert alert-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('endDate')}"
+                                     th:errors="*{endDate}"></div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a th:href="@{/nova/promotion_detail/page}">
+                        <a th:href="@{/nova/promotion-detail/page}">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
                                 Change PromotionDetail
                             </button>
@@ -110,16 +101,16 @@
 
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickAdd('promotion', 'promotionForm')" type="button" class="btn btn-success"><i
-                                    class="fa-solid fa-square-plus"></i>
-                                ADD
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
+                                Add
                             </button>
                         </div>
                     </div>
                     <br>
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickSearch('promotion', 'promotionForm')" type="button" class="btn btn-secondary">
+                            <button onclick="clickSearch('promotion', 'promotionForm')" type="button"
+                                    class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 SEARCH
                             </button>
@@ -139,17 +130,23 @@
     <br>
     <div class="col">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Data Record</strong>
+            <div class="card-header" th:if="${pagePromotion.isEmpty()}">
+                <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
             </div>
+            <div th:if="${not pagePromotion.isEmpty()}">
+                <div class="card-header">
+                    <strong>CÓ</strong>
+                    <strong class="card-title" th:text="${pagePromotion.getTotalElements()}"></strong>
+                    <strong class="card-title"> BẢN GHI</strong>
+                </div>
             <div class="card-body">
+                <form id="promotionDelete">
                 <table class="table text-center">
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Code</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Type</th>
                         <th scope="col">Value</th>
                         <th scope="col">Start date</th>
                         <th scope="col">End date</th>
@@ -164,7 +161,6 @@
                         <td th:text="${items.id}"></td>
                         <td th:text="${items.code}"></td>
                         <td th:text="${items.name}"></td>
-                        <td th:text="${items.type}"></td>
                         <td th:text="${#numbers.formatDecimal(items.value, 0, 0)}"></td>
                         <td th:text="${#dates.format(items.startDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                         <td th:text="${#dates.format(items.endDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
@@ -178,17 +174,16 @@
                                 </a>
                             </div>
                             <div>
-                                <form id="promotionDelete" th:action="@{'/nova/promotion/delete/' + ${items.id}}"
-                                      th:method="post">
-                                    <button onclick="clickDelete('promotionDelete')" type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash mr-1"></i>DELETE
-                                    </button>
-                                </form>
+                                <button th:onclick="clickDelete('promotion', 'promotionDelete', [[${items.id}]])"
+                                        type="button" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                </button>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                </form>
                 <div class="d-flex justify-content-center align-items-center">
                     <div th:if="${pagePromotion.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
                         <a th:href="@{|?page=0&promotionNameSearch=${promotionNameSearch}|}">
@@ -203,11 +198,13 @@
                         <span>/</span>
                         <div th:text="${pagePromotion.getTotalPages()}"></div>
                     </div>
-                    <div th:if="${pagePromotion.getNumber() + 1 lt pagePromotion.getTotalPages()}" class="btn btn-dark ml-1">
+                    <div th:if="${pagePromotion.getNumber() + 1 lt pagePromotion.getTotalPages()}"
+                         class="btn btn-dark ml-1">
                         <a th:href="@{|?page=${pagePromotion.getNumber()+1}&promotionNameSearch=${promotionNameSearch}|}">
                             <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                     </div>
-                    <div th:if="${pagePromotion.getNumber() + 1 lt pagePromotion.getTotalPages()}" class="btn btn-dark ml-1">
+                    <div th:if="${pagePromotion.getNumber() + 1 lt pagePromotion.getTotalPages()}"
+                         class="btn btn-dark ml-1">
                         <a th:href="@{|?page=${pagePromotion.getTotalPages()-1}&promotionNameSearch=${promotionNameSearch}|}">
                             <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                     </div>
@@ -215,6 +212,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>

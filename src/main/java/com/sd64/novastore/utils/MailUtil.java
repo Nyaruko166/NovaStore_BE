@@ -30,6 +30,36 @@ public class MailUtil {
         return emailTemplate;
     }
 
+    public String resetPassMailTemplate(String recipientName, String confirmationCode, String companyName, String contactInfo) {
+        String emailTemplate =
+                "Kính gửi " + recipientName + ",\n\n" +
+                        "Chúng tôi xin gửi bạn mã xác nhận để hoàn tất quá trình đặt lại mật khẩu cho tài khoản của bạn. Mã này sẽ giúp bảo" +
+                        " mật tài khoản của bạn và đảm bảo rằng chỉ có bạn mới có quyền truy cập.\n\n" +
+                        "Mã xác nhận của bạn là: " + confirmationCode + "\n\n" +
+                        "Vui lòng sử dụng mã này trong 10 phút để hoàn tất quá trình đặt lại mật khẩu cho tài khoản của bạn.\n\n" +
+                        "Nếu bạn không yêu cầu mã này, vui lòng liên hệ với chúng tôi ngay lập tức để chúng tôi có thể hỗ trợ bạn.\n\n" +
+                        "Xin cảm ơn.\n\n" +
+                        "Trân trọng,\n" +
+                        companyName + "\n" +
+                        contactInfo;
+        return emailTemplate;
+    }
+
+    public String changePassMailTemplate(String recipientName, String confirmationCode, String companyName, String contactInfo) {
+        String emailTemplate =
+                "Kính gửi " + recipientName + ",\n\n" +
+                        "Chúng tôi xin gửi bạn mã xác nhận để hoàn tất quá trình thay đổi mật khẩu cho tài khoản của bạn. Mã này sẽ giúp bảo" +
+                        " mật tài khoản của bạn và đảm bảo rằng chỉ có bạn mới có quyền truy cập.\n\n" +
+                        "Mã xác nhận của bạn là: " + confirmationCode + "\n\n" +
+                        "Vui lòng sử dụng mã này trong 10 phút để hoàn tất quá trình đổi mật khẩu cho tài khoản của bạn.\n\n" +
+                        "Nếu bạn không yêu cầu mã này, vui lòng liên hệ với chúng tôi ngay lập tức để chúng tôi có thể hỗ trợ bạn.\n\n" +
+                        "Xin cảm ơn.\n\n" +
+                        "Trân trọng,\n" +
+                        companyName + "\n" +
+                        contactInfo;
+        return emailTemplate;
+    }
+
     public void sendEmail(
             String to, String subject, String body) {
         new Thread(() -> {

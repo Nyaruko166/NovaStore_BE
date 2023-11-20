@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -21,11 +23,9 @@ public class BillController {
     @GetMapping("/page")
     public String getAllPT(@RequestParam(defaultValue = "0", value = "page") Integer page,
                            Model model) {
-        Page<Bill> page1 = billService.getAllBillPT(page);
-        model.addAttribute("page", page1.getContent());
-        for (Bill x : billService.getAllBill()) {
-
-        }
+        Page<Bill> pageBill = billService.getAllBillPT(page);
+        model.addAttribute("pageBill", pageBill.getContent());
+        model.addAttribute("totalElements", pageBill.getTotalElements());
         return "/admin/bill/bill";
     }
 
@@ -35,6 +35,25 @@ public class BillController {
         List<BillDetail> lstBillDetails = billService.getLstDetailByBillId(id);
         model.addAttribute("page", lstBillDetails);
         return "/admin/bill/bill-detail";
+    }
+
+    @RequestMapping(value = "/cancel-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String cancelBill(@PathVariable Integer id, RedirectAttributes attributes) {
+        billService.cancelOrder(id);
+        return "redirect:/nova/bill/page";
+    }
+
+    @RequestMapping(value = "/shipping-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String shippingBill(@PathVariable Integer id, RedirectAttributes attributes) {
+        billService.shippingOrder(id);
+        return "redirect:/nova/bill/page";
+    }
+
+    @PostMapping("/confirm-bill")
+    public String confirmBill(@RequestParam("id") Integer id,
+                              @RequestParam("shippingFee") BigDecimal shippingFee){
+        billService.acceptBill(id, shippingFee);
+        return "redirect:/nova/bill/page";
     }
 //    @PostMapping("/delete/{id}")
 //    public String delete(@PathVariable Integer id) {

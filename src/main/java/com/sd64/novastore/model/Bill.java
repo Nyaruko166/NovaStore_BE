@@ -51,8 +51,14 @@ public class Bill {
     @Column(name = "PaymentDate")
     private Date paymentDate;
 
+    @Column(name = "Price")
+    private BigDecimal price;
+
     @Column(name = "ShippingFee")
     private BigDecimal shippingFee;
+
+    @Column(name = "DiscountAmount")
+    private BigDecimal discountAmount;
 
     @Column(name = "TotalPrice")
     private BigDecimal totalPrice;
@@ -76,4 +82,20 @@ public class Bill {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bill")
     private List<BillDetail> billDetails;
+
+    public String getStatusName(){
+        if (this.status == 10){
+            return "Chờ xác nhận";
+        } else if (this.status == 3){
+            return "Đã xác nhận";
+        } else if (this.status == 2){
+            return "Đang giao hàng";
+        } else if (this.status == 1){
+            return "Đã hoàn thành";
+        } else if (this.status == 0){
+            return "Đã huỷ";
+        } else {
+            return null;
+        }
+    }
 }

@@ -3,116 +3,115 @@
       layout:decorate="~{admin/admin-layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Bill Management</title>
+    <title>Quản Lý Hoá Đơn</title>
 </head>
 <body>
 <div layout:fragment="content">
+
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>BILL</strong>
+                <strong>HOÁ ĐƠN</strong>
             </div>
-            <!--            Notification-->
-            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${mess}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <!--            <div class="card-body card-block">-->
-            <!--                <form action="/nova/bill/add" method="post" class="form-horizontal" enctype="multipart/form-data">-->
-            <!--                    <div class="row form-group">-->
-            <!--                        <div class="col col-md-3">-->
-            <!--                            <label for="city" class=" form-control-label">City</label>-->
-            <!--                        </div>-->
-            <!--                        <div class="col-12 col-md-9">-->
-            <!--                            <input type="text" id="city" name="city" class="form-control">-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                    <div class="row form-group">-->
-            <!--                        <div class="col col-md-3">-->
-            <!--                            <label for="district" class=" form-control-label">District</label>-->
-            <!--                        </div>-->
-            <!--                        <div class="col-12 col-md-9">-->
-            <!--                            <input type="text" id="district" name="district" class="form-control">-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                    <div class="row form-group">-->
-            <!--                        <div class="col col-md-3">-->
-            <!--                            <label for="ward" class=" form-control-label">Ward</label>-->
-            <!--                        </div>-->
-            <!--                        <div class="col-12 col-md-9">-->
-            <!--                            <input type="text" id="ward" name="ward" class="form-control">-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                    <div class="row form-group">-->
-            <!--                        <div class="col col-md-3">-->
-            <!--                            <label for="specificAddress" class=" form-control-label">Specific Address</label>-->
-            <!--                        </div>-->
-            <!--                        <div class="col-12 col-md-9">-->
-            <!--                            <input type="text" id="specificAddress" name="specificAddress" class="form-control">-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                    <div class="card-footer">-->
-            <!--                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>-->
-            <!--                            Add-->
-            <!--                        </button>-->
-            <!--                        <a href="/nova/bill/page">-->
-            <!--                            <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>-->
-            <!--                                Cancel-->
-            <!--                            </button>-->
-            <!--                        </a>-->
-
-            <!--                    </div>-->
-            <!--                </form>-->
-            <!--            </div>-->
         </div>
     </div>
-    <br>
-    <br>
     <div class="col">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Data Record</strong>
+            <div class="card-header" th:if="${pageBill.isEmpty()}">
+                <strong class="card-title">Không có bản ghi nào</strong>
             </div>
-            <div class="card-body">
-                <table class="table text-center">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Customer Name</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Phone Number</th>
-                        <th scope="col">Shipping Fee</th>
-                        <th scope="col">Total Price</th>
-                        <th scope="col">Function</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="items:${page}">
-                        <td th:text="${items.id}"></td>
-                        <td th:text="${items.customerName}"></td>
-                        <td th:text="${items.address}"></td>
-                        <td th:text="${items.phoneNumber}"></td>
-                        <td th:text="${items.shippingFee}"></td>
-                        <td th:text="${items.totalPrice}"></td>
-                        <!--                        <td th:text="${items.role.name}"></td>-->
-                        <td class="d-flex justify-content-center">
-                            <div style="margin-right: 10px">
-                                <a th:href="@{'/nova/bill/detail/' + ${items.id}}">
-                                    <button type="button" class="btn btn-warning">Detail</button>
-                                </a>
-                            </div>
-                            <!--                            <div>-->
-                            <!--                                <form th:action="@{'/nova/bill/delete/' + ${items.id}}" th:method="post">-->
-                            <!--                                    <button type="submit" class="btn btn-danger">Delete</button>-->
-                            <!--                                </form>-->
-                            <!--                            </div>-->
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div th:if="${not pageBill.isEmpty()}">
+                <div class="card-header">
+                    <strong>Có</strong>
+                    <strong class="card-title" th:text="${totalElements}"></strong>
+                    <strong class="card-title"> Hoá đơn</strong>
+                </div>
+                <div class="card-body">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Khách Hàng</th>
+                                <th scope="col">Ngày đặt</th>
+                                <th scope="col">Tổng</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Thao tác</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="bill : ${pageBill}">
+                                <td th:text="${bill.id}"></td>
+                                <td th:text="${bill.customer.email}"></td>
+                                <td th:text="${#dates.format(bill.orderDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                                <td th:text="'₫' + ${#numbers.formatDecimal(bill.totalPrice, 0, 'COMMA', 0, 'POINT')}"></td>
+                                <td th:text="${bill.getStatusName()}">
+                                </td>
+                                <td class="d-flex justify-content-center">
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/bill/detail/' + ${bill.id}}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-eye mr-1"></i>Chi tiết
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div style="margin-right: 10px" th:if="${bill.status == 10}">
+                                        <button type="button" class="btn btn-info" data-toggle="modal"
+                                                data-target="#confirmModal">
+                                            <i class="fa-solid fa-pen mr-1"></i>Xác nhận
+                                        </button>
+                                        <!--Confirm Modal -->
+                                        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="confirmModalLabel">Xác nhận</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="confirmForm" th:action="@{/nova/bill/confirm-bill}" method="post">
+                                                            <div class="form-group">
+                                                                <input type="text" hidden="true" name="id" th:value="${bill.id}">
+                                                                <label for="shippingFee">Nhập phí Ship cho đơn hàng</label>
+                                                                <input type="number" class="form-control" id="shippingFee" name="shippingFee" placeholder="Nhập phí ship">
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--End Modal-->
+                                    </div>
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/bill/shipping-bill/' + ${bill.id}}" th:if="${bill.status == 2}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-address-book mr-1"></i>Ship đơn
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/bill/complete-bill/' + ${bill.id}}" th:if="${bill.status == 2}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-circle mr-1"></i>Hoàn thành
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/bill/cancel-bill/' + ${bill.id}}" th:if="${bill.status == 10 || bill.status == 3}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-times mr-1"></i>Huỷ
+                                            </button>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    <!--                    Pagination-->
+
             </div>
         </div>
     </div>

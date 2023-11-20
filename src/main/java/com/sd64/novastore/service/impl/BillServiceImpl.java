@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,8 +51,8 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public Page<Bill> getAllBillPT(Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return billRepository.findAllByStatus(pageable, 1);
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "OrderDate"));
+        return billRepository.findAll(pageable);
     }
 
     @Override
@@ -131,10 +133,19 @@ public class BillServiceImpl implements BillService {
         bill.setAddress(address);
         bill.setPhoneNumber(cart.getCustomer().getPhoneNumber());
         bill.setOrderDate(new Date());
+        bill.setPrice(cart.getTotalPrice());
+        bill.setDiscountAmount(BigDecimal.ZERO);
+        bill.setShippingFee(BigDecimal.ZERO);
         bill.setTotalPrice(cart.getTotalPrice());
         bill.setCreateDate(new Date());
         bill.setUpdateDate(new Date());
-        bill.setStatus(10);
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo")){
+            bill.setPaymentDate(new Date());
+            bill.setConfirmationDate(new Date());
+            bill.setStatus(3);
+        } else {
+            bill.setStatus(10);
+        }
         bill.setCustomer(cart.getCustomer());
 
         List<BillDetail> billDetailList = new ArrayList<>();
@@ -160,7 +171,9 @@ public class BillServiceImpl implements BillService {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setBill(bill);
         paymentMethod.setName(payment);
-        paymentMethod.setMoney(bill.getTotalPrice());
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo")){
+            paymentMethod.setMoney(bill.getTotalPrice());
+        }
         paymentMethod.setDescription(payment);
         paymentMethod.setStatus(1);
         paymentMethodRepository.save(paymentMethod);
@@ -192,6 +205,24 @@ public class BillServiceImpl implements BillService {
             productDetailRepository.save(productDetail);
         }
         bill.setBillDetails(billDetailList);
+        return billRepository.save(bill);
+    }
+
+    @Override
+    public Bill acceptBill(Integer id, BigDecimal shippingFee) {
+        Bill bill = billRepository.findById(id).orElse(null);
+        bill.setStatus(3);
+        bill.setConfirmationDate(new Date());
+        bill.setShippingFee(shippingFee);
+        bill.setTotalPrice(bill.getPrice().subtract(bill.getDiscountAmount()).add(shippingFee));
+        return billRepository.save(bill);
+    }
+
+    @Override
+    public Bill shippingOrder(Integer id) {
+        Bill bill = billRepository.findById(id).orElse(null);
+        bill.setStatus(2);
+        bill.setShippingDate(new Date());
         return billRepository.save(bill);
     }
 }

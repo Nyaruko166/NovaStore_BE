@@ -50,13 +50,11 @@ public class VoucherRequest {
         voucher.setName(this.getName());
         voucher.setCode(this.getCode());
         voucher.setQuantity(this.getQuantity());
-        voucher.setType(this.getType());
         voucher.setValue(this.getValue());
         voucher.setStatus(1);
         voucher.setCreateDate(new Date());
         voucher.setUpdateDate(new Date());
         voucher.setEndDate(this.getEndDate());
-        voucher.setMaximumDiscount(this.getMaximumDiscount());
         voucher.setMinimumPrice(this.getMinimumPrice());
         voucher.setStartDate(this.getStartDate());
         return voucher;

@@ -79,4 +79,5 @@ public class PromotionServiceImpl implements PromotionService {
         Pageable pageable = PageRequest.of(page, 5);
         return promotionRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
     }
+
 }

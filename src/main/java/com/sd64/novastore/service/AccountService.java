@@ -21,4 +21,6 @@ public interface AccountService {
     Page<Account> search(String name, int page);
 
     Account findOne(Integer id);
+
+    Account findFirstByEmail(String email);
 }

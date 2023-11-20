@@ -19,5 +19,9 @@ public interface PromotionDetailService {
     PromotionDetail delete(Integer id);
 
     PromotionDetail getOne(Integer id);
-    Page<PromotionDetail> search(String name, int page);
+//    Page<PromotionDetail> search(String name, int page);
+
+    List<Product> getAll();
+    List<Product> getProductsByIds(List<Integer> productIds);
+    Boolean existsByProductIdAndStatus(Integer productId, Integer status);
 }

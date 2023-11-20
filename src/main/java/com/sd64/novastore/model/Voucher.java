@@ -44,8 +44,6 @@ public class Voucher {
     @Column(name = "Quantity")
     private Integer quantity;
 
-    @Column(name = "Type")
-    private Boolean type;
 
     @NotNull(message = "Value khong duoc de trong")
     @Min(value = 10000, message = "Value phai lon hon hoac bang 10000")
@@ -59,11 +57,6 @@ public class Voucher {
     @Column(name = "MinimumPrice")
     private BigDecimal minimumPrice;
 
-    @NotNull(message = "MaximumDiscount khong duoc de trong")
-    @Min(value = 10000, message = "MaximumDiscount phai lon hon hoac bang 10000")
-    @Max(value = 1000000000, message = "MaximumDiscount phai nho hon hoac bang 1000000000")
-    @Column(name = "MaximumDiscount")
-    private BigDecimal maximumDiscount;
 
     @NotNull(message = "StartDate khong duoc de trong")
     @Column(name = "StartDate")
