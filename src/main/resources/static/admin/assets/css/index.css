@@ -14,8 +14,14 @@
     width: 10%;
 }
 
-.btn-admin {
-    color: #d19c97;
+.link-option-admin {
+    text-align: center;
+}
+
+.link-option-admin:hover {
+    background-color: #272c33;
+    color: white !important;
+    text-align: center;
 }
 
 .border-search {
@@ -28,20 +34,20 @@
 }
 
 .background-option-admin {
-    padding: 10px !important;
-    color: white !important;
-    font-weight: bold !important;
-    font-size: 15px !important;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .background-option-admin:hover {
-    background-color: white !important;
+    background-color: white;
     color: black !important;
-    border-radius: 8px !important;
-    transition: 0.4s all !important;
+    border-radius: 8px;
+    transition: 0.4s all;
 }
 
 .border-link-option-admin {
-    padding: 10px !important;
+    padding: 10px;
 }
 
