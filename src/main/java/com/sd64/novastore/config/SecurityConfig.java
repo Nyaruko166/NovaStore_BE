@@ -51,7 +51,7 @@ public class SecurityConfig {
 
         http.formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/nova/account/page")
+                        .defaultSuccessUrl("/home")
                         .loginProcessingUrl("/login")
                         .permitAll())
                 .logout(logout -> logout
