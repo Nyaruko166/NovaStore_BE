@@ -38,8 +38,14 @@ public class BillController {
     }
 
     @RequestMapping(value = "/cancel-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String cancelOrder(@PathVariable Integer id, RedirectAttributes attributes) {
+    public String cancelBill(@PathVariable Integer id, RedirectAttributes attributes) {
         billService.cancelOrder(id);
+        return "redirect:/nova/bill/page";
+    }
+
+    @RequestMapping(value = "/shipping-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String shippingBill(@PathVariable Integer id, RedirectAttributes attributes) {
+        billService.shippingOrder(id);
         return "redirect:/nova/bill/page";
     }
 

@@ -44,13 +44,7 @@
                                 <td th:text="${bill.customer.email}"></td>
                                 <td th:text="${#dates.format(bill.orderDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td th:text="'₫' + ${#numbers.formatDecimal(bill.totalPrice, 0, 'COMMA', 0, 'POINT')}"></td>
-                                <td>
-                                    <span th:switch="${bill.status}">
-                                        <span th:case="10">Chờ xác nhận</span>
-                                        <span th:case="0">Đã huỷ</span>
-                                        <span th:case="2">Đang giao hàng</span>
-                                        <span th:case="1">Đã giao hàng thành công</span>
-                                    </span>
+                                <td th:text="${bill.getStatusName()}">
                                 </td>
                                 <td class="d-flex justify-content-center">
                                     <div style="margin-right: 10px">
@@ -79,7 +73,7 @@
                                                         <form id="confirmForm" th:action="@{/nova/bill/confirm-bill}" method="post">
                                                             <div class="form-group">
                                                                 <input type="text" hidden="true" name="id" th:value="${bill.id}">
-                                                                <label for="shippingFee">Phí Ship</label>
+                                                                <label for="shippingFee">Nhập phí Ship cho đơn hàng</label>
                                                                 <input type="number" class="form-control" id="shippingFee" name="shippingFee" placeholder="Nhập phí ship">
                                                             </div>
                                                             <button type="submit" class="btn btn-primary">Xác nhận</button>
@@ -91,6 +85,13 @@
                                         <!--End Modal-->
                                     </div>
                                     <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/bill/shipping-bill/' + ${bill.id}}" th:if="${bill.status == 2}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-address-book mr-1"></i>Ship đơn
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div style="margin-right: 10px">
                                         <a th:href="@{'/nova/bill/complete-bill/' + ${bill.id}}" th:if="${bill.status == 2}">
                                             <button type="button" class="btn btn-info">
                                                 <i class="fa-solid fa-circle mr-1"></i>Hoàn thành
@@ -98,7 +99,7 @@
                                         </a>
                                     </div>
                                     <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/bill/cancel-bill/' + ${bill.id}}" th:if="${bill.status == 10 || bill.status == 2}">
+                                        <a th:href="@{'/nova/bill/cancel-bill/' + ${bill.id}}" th:if="${bill.status == 10 || bill.status == 3}">
                                             <button type="button" class="btn btn-info">
                                                 <i class="fa-solid fa-times mr-1"></i>Huỷ
                                             </button>
