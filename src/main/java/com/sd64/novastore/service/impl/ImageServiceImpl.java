@@ -57,7 +57,7 @@ public class ImageServiceImpl implements ImageService {
             imageAdd.setUpdateDate(new Date());
             imageAdd.setProduct(Product.builder().id(productId).build());
             Image imageLasted = imageRepository.save(imageAdd);
-            String uid = "uid_" + imageLasted.getId();
+            String uid = "product_" + imageLasted.getId();
             String avtPath = FileUtil.copyFile(image, fileName, uploadDir);
             String imageUrl = FileUtil.rename(avtPath, uid);
             imageLasted.setName(imageUrl);
@@ -79,10 +79,12 @@ public class ImageServiceImpl implements ImageService {
             updateImage.setCreateDate(updateImage.getCreateDate());
             updateImage.setUpdateDate(new Date());
             updateImage.setProduct(Product.builder().id(productId).build());
-            String uid = "uid_" + updateImage.getId();
+            String uid = "product_" + updateImage.getId();
             String extension = FileUtil.getFileExtension(fileName);
             String newFileName = uid+ "." + extension;
             FileUtil.copyFile(image, newFileName, uploadDir);
+            updateImage.setName(newFileName);
+            imageRepository.save(updateImage);
         }
     }
 
