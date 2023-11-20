@@ -14,6 +14,10 @@
     width: 10%;
 }
 
+.btn-admin {
+    color: #d19c97;
+}
+
 .border-search {
     background-color: #f0f3f5 !important;
     display: flex;
@@ -22,3 +26,22 @@
     justify-content: space-between;
     padding-inline: 5px;
 }
+
+.background-option-admin {
+    padding: 10px !important;
+    color: white !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+}
+
+.background-option-admin:hover {
+    background-color: white !important;
+    color: black !important;
+    border-radius: 8px !important;
+    transition: 0.4s all !important;
+}
+
+.border-link-option-admin {
+    padding: 10px !important;
+}
+
