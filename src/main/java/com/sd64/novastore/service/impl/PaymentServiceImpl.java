@@ -1,16 +1,11 @@
 package com.sd64.novastore.service.impl;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sd64.novastore.config.MomoPaymentConfig;
 import com.sd64.novastore.config.VNPaymentConfig;
 import com.sd64.novastore.config.ZaloPayConfig;
-import com.sd64.novastore.dto.PaymentDto;
-import com.sd64.novastore.model.Address;
-import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.request.MomoPaymentRequest;
-import com.sd64.novastore.request.ZaloPaymentRequest;
 import com.sd64.novastore.service.PaymentService;
 import com.sd64.novastore.utils.payment.HMACUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +33,7 @@ public class PaymentServiceImpl implements PaymentService {
     Gson gson = new Gson();
 
     @Override
-    public PaymentDto MomoPayCreate(Long amount, Cart cart, Address address) throws IOException, URISyntaxException {
+    public JsonObject MomoPayCreate(Long amount, String address) throws IOException, URISyntaxException {
 
         int random_id = new Random().nextInt(1000000);
 
@@ -74,11 +69,14 @@ public class PaymentServiceImpl implements PaymentService {
 
 //        return resultJsonStr.toString();
         String payUrl = jsonResult.get("payUrl").toString().replaceAll("\"", "");
-        return PaymentDto.builder().payUrl(payUrl).cart(cart).address(address).build();
+        JsonObject returnJson = new JsonObject();
+        returnJson.addProperty("payUrl",payUrl);
+        returnJson.addProperty("address",address);
+        return returnJson;
     }
 
     @Override
-    public PaymentDto zalopayCreate(Long amount, Cart cart, Address address) throws IOException {
+    public JsonObject zalopayCreate(Long amount, String address) throws IOException {
 
         int random_id = new Random().nextInt(1000000);
 
@@ -159,7 +157,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDto vnpayCreate(HttpServletRequest req, Long price, Cart cart, Address address) throws UnsupportedEncodingException {
+    public JsonObject vnpayCreate(HttpServletRequest req, Long price, String address) throws UnsupportedEncodingException {
         String vnp_Version = VNPaymentConfig.vnp_Version;
         String vnp_Command = VNPaymentConfig.vnp_Command;
         String orderType = VNPaymentConfig.orderType;
