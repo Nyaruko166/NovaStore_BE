@@ -46,21 +46,6 @@
           </div>
           <div class="row form-group">
             <div class="col col-md-3">
-              <label class=" form-control-label">Type</label>
-            </div>
-            <div class="col-12 col-md-9">
-              <div class="form-check-inline form-check">
-                <label for="type1" class="form-check-label ">
-                  <input type="radio" id="type1" th:field="*{type}" value="true" class="form-check-input">Giảm tiền mặt
-                </label>
-                <label for="type2" class="form-check-label ">
-                  <input type="radio" id="type2" th:field="*{type}" value="false" class="form-check-input">Giảm phần trăm
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col col-md-3">
               <label for="value" class=" form-control-label">Value</label>
             </div>
             <div class="col-12 col-md-9">
@@ -77,16 +62,6 @@
               <input type="number" id="minimumPrice" th:field="*{minimumPrice}" class="form-control">
               <br>
               <div class="alert alert-warning" th:if="${#fields.hasErrors('minimumPrice')}" th:errors="*{minimumPrice}"></div>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col col-md-3">
-              <label for="maximumDiscount" class=" form-control-label">Maximum discount</label>
-            </div>
-            <div class="col-12 col-md-9">
-              <input type="number" id="maximumDiscount" th:field="*{maximumDiscount}" class="form-control">
-              <br>
-              <div class="alert alert-warning" th:if="${#fields.hasErrors('maximumDiscount')}" th:errors="*{maximumDiscount}"></div>
             </div>
           </div>
           <div class="row form-group">
@@ -119,7 +94,7 @@
           </div>
           <div class="card-footer">
             <div class="card-footer">
-              <button onclick="clickUpdate('voucherUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
+              <button  type="submit" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
                 UPDATE
               </button>
             </div>

@@ -1,6 +1,7 @@
 package com.sd64.novastore.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -36,9 +37,6 @@ public class Promotion {
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "Type")
-    private Boolean type;
-
     @NotNull(message = "Value khong duoc de trong")
     @Min(value = 10000, message = "Value phai lon hon hoac bang 10000")
     @Max(value = 1000000000, message = "Value phai nho hon hoac bang 1000000000")
@@ -63,4 +61,5 @@ public class Promotion {
 
     @Column(name = "Status")
     private Integer status;
+
 }

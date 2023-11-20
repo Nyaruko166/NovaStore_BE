@@ -13,19 +13,9 @@
                 <strong>Promotion Detail</strong>
             </div>
             <div class="card-body card-block">
-                <form id="promotionDetailUpdate"  th:object="${promotionDetail}" th:action="@{/nova/promotion_detail/update/{id}(id=${promotionDetail.id})}"
+                <form id="promotionDetailUpdate"  th:object="${promotionDetail}" th:action="@{/nova/promotion-detail/update/{id}(id=${promotionDetail.id})}"
                       method="post" class="form-horizontal" enctype="multipart/form-data">
 
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="name" class=" form-control-label">Name</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="name" th:field="*{name}" class="form-control">
-                            <br>
-                            <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                        </div>
-                    </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label  class=" form-control-label">Promotion</label>
@@ -50,7 +40,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button onclick="clickUpdate('promotionDetailUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
+                        <button  type="submit" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
                             UPDATE
                         </button>
                     </div>
