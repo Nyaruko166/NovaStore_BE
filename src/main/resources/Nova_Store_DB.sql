@@ -105,6 +105,8 @@ CREATE TABLE [dbo].[Account](
     GO
 CREATE TABLE [dbo].[Address](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [CustomerName] nvarchar(50) NULL,
+    [PhoneNumber] varchar(15) NULL,
     [SpecificAddress] [nvarchar](50) NULL,
     [Ward] [nvarchar](50) NULL,
     [District] [nvarchar](50) NULL,
@@ -474,7 +476,6 @@ CREATE TABLE [dbo].[Voucher](
     [Value] [money] NULL,
     [Quantity] [int] NULL,
     [MinimumPrice] [money] NULL,
-    [MaximumDiscount] [money] NULL,
     [StartDate] [datetime] NULL,
     [EndDate] [datetime] NULL,
     [CreateDate] [datetime] NULL,
