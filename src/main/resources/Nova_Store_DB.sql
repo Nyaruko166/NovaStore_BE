@@ -747,47 +747,47 @@ VALUES (N'Cam', GETDATE(), GETDATE(), 1)
 
 SELECT * FROM Product
     INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0001', N'Áo thun tay ngắn', N'vip pro', 123, GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
+VALUES ('SP0001', N'Áo thun tay ngắn', N'vip pro', 123000, GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0002', N'Áo khoác Flannel tay dài kháo kéo', N'Chiến thần', 234, GETDATE(), GETDATE(), 1, 2, 2, 2, 2);
+VALUES ('SP0002', N'Áo khoác Flannel tay dài kháo kéo', N'Chiến thần', 234000, GETDATE(), GETDATE(), 1, 2, 2, 2, 2);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0003', N'Áo khoác bomber Nylon', N'quá là áo', 345, GETDATE(), GETDATE(), 1, 3, 3, 3, 3);
+VALUES ('SP0003', N'Áo khoác bomber Nylon', N'quá là áo', 345000, GETDATE(), GETDATE(), 1, 3, 3, 3, 3);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0004', N'Áo len Polo', N'vip plus', 222, GETDATE(), GETDATE(), 1, 4, 4, 4, 4);
+VALUES ('SP0004', N'Áo len Polo', N'vip plus', 222000, GETDATE(), GETDATE(), 1, 4, 4, 4, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0005', N'Áo Gile len', N'trên cả tuyệt vời', 33, GETDATE(), GETDATE(), 1, 5, 5, 5, 5);
+VALUES ('SP0005', N'Áo Gile len', N'trên cả tuyệt vời', 33000, GETDATE(), GETDATE(), 1, 5, 5, 5, 5);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0006', N'Áo Hoodie unisex', N'áo này đẹp lắm', 44, GETDATE(), GETDATE(), 1, 6, 6, 6, 6);
+VALUES ('SP0006', N'Áo Hoodie unisex', N'áo này đẹp lắm', 44000, GETDATE(), GETDATE(), 1, 6, 6, 6, 6);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0007', N'Áo Polo vải gân', N'mua đi đừng ngại', 55, GETDATE(), GETDATE(), 1, 7, 7, 7, 7);
+VALUES ('SP0007', N'Áo Polo vải gân', N'mua đi đừng ngại', 55000, GETDATE(), GETDATE(), 1, 7, 7, 7, 7);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0008', N'Áo dài tay', N'mua đi nghèo lắm rồi', 678, GETDATE(), GETDATE(), 1, 8, 8, 8, 8);
+VALUES ('SP0008', N'Áo dài tay', N'mua đi nghèo lắm rồi', 678000, GETDATE(), GETDATE(), 1, 8, 8, 8, 8);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0009', N'Áo Superman', N'mua đi đừng ngại', 789, GETDATE(), GETDATE(), 1, 9, 9, 9, 9);
+VALUES ('SP0009', N'Áo Superman', N'mua đi đừng ngại', 789000, GETDATE(), GETDATE(), 1, 9, 9, 9, 9);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0010', N'Áo Batman', N'mua đi nghèo lắm rồi',367, GETDATE(), GETDATE(), 1, 10, 10, 10, 10);
+VALUES ('SP0010', N'Áo Batman', N'mua đi nghèo lắm rồi',367000, GETDATE(), GETDATE(), 1, 10, 10, 10, 10);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0011', N'Áo Hulk', N'mua đi nghèo lắm rồi', 112, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0011', N'Áo Hulk', N'mua đi nghèo lắm rồi', 112000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0012', N'Áo Hulk', N'mua đi nghèo lắm rồi', 493, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0012', N'Áo Hulk', N'mua đi nghèo lắm rồi', 493000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0013', N'Áo Hulk', N'mua đi nghèo lắm rồi', 236, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0013', N'Áo Hulk', N'mua đi nghèo lắm rồi', 236000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0014', N'Áo Hulk', N'mua đi nghèo lắm rồi', 567, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0014', N'Áo Hulk', N'mua đi nghèo lắm rồi', 567000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0015', N'Áo Hulk', N'mua đi nghèo lắm rồi', 777, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0015', N'Áo Hulk', N'mua đi nghèo lắm rồi', 777000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0016', N'Áo Hulk', N'mua đi nghèo lắm rồi', 900, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0016', N'Áo Hulk', N'mua đi nghèo lắm rồi', 900000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0017', N'Áo Hulk', N'mua đi nghèo lắm rồi', 121, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0017', N'Áo Hulk', N'mua đi nghèo lắm rồi', 121000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0018', N'Áo Hulk', N'mua đi nghèo lắm rồi', 351, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0018', N'Áo Hulk', N'mua đi nghèo lắm rồi', 351000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0019', N'Áo Hulk', N'mua đi nghèo lắm rồi', 684, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0019', N'Áo Hulk', N'mua đi nghèo lắm rồi', 684000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0020', N'Áo Hulk', N'mua đi nghèo lắm rồi', 686, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0020', N'Áo Hulk', N'mua đi nghèo lắm rồi', 686000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0021', N'Áo Superman', N'mua đi nghèo lắm rồi', 686, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP0021', N'Áo Superman', N'mua đi nghèo lắm rồi', 686000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 USE Nova_Store_DB
 SELECT * FROM Product
 

@@ -22,4 +22,13 @@ public class ShowImageController {
                 .contentType(MediaType.IMAGE_PNG)
                 .body(imageData);
     }
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<byte[]> getImageByProductId(@PathVariable Integer productId) throws IOException {
+        byte[] imageData = imageService.getImageByProduct(productId);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(imageData);
+    }
 }
