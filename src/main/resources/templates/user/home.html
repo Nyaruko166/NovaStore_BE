@@ -105,7 +105,7 @@
 <div class="container-fluid pt-5">
     <div class="px-xl-5 pb-3">
         <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2 ">Mới nhất</span></h2>
+            <h2 class="mb-4 font-weight-semi-bold">- Mới nhất -</h2>
         </div>
     </div>
 </div>
@@ -181,7 +181,7 @@
         <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${productViews}">
             <div class="product-item mb-4 border-product-home">
                 <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" th:src="@{/user/img/cat-1.jpg}">
+                    <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.id}}">
                     <div class="product-action">
                         <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
                             <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
@@ -193,7 +193,8 @@
                     <div class="h5 text-decoration-none text-truncate" href="" th:text="${product.name}"></div>
                     <div class="d-flex align-items-center justify-content-center mt-2">
                         <div class="d-flex justify-content-center">
-                            <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">₫123.00</h6>
+                            <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">
+                                ₫123.00</h6>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center mb-1">
@@ -211,6 +212,38 @@
 </div>
 <!-- Product End -->
 
+
+<!-- pagination start -->
+<!--<div class="d-flex justify-content-center align-items-center">-->
+<!--    <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-primary mr-1" style="border-radius: 8px;">-->
+<!--        <a-->
+<!--                th:href="@{|?page=0&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">-->
+<!--            <i style="color: white" class="fa-solid fa-backward-fast"></i></a>-->
+<!--    </div>-->
+<!--    <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-primary mr-1" style="border-radius: 8px;">-->
+<!--        <a-->
+<!--                th:href="@{|?page=${pageProduct.getNumber() - 1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">-->
+<!--            <i style="color: white" class="fa-solid fa-left-long"></i></a>-->
+<!--    </div>-->
+<!--    <div class="btn btn-primary d-flex" style="border-radius: 8px;">-->
+<!--        <div th:text="${pageProduct.getNumber() + 1}" style="color: white"></div>-->
+<!--        <span style="color: white">/</span>-->
+<!--        <div th:text="${pageProduct.getTotalPages()}" style="color: white"></div>-->
+<!--    </div>-->
+<!--    <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}" class="btn btn-primary ml-1"-->
+<!--         style="border-radius: 8px;">-->
+<!--        <a-->
+<!--                th:href="@{|?page=${pageProduct.getNumber()+1}&productName=${productName == null ? '' : productName }&materialId=${materialId== null ? '' : materialId}&categoryId=${categoryId== null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">-->
+<!--            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>-->
+<!--    </div>-->
+<!--    <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}" class="btn btn-primary ml-1"-->
+<!--         style="border-radius: 8px;">-->
+<!--        <a-->
+<!--                th:href="@{|?page=${pageProduct.getTotalPages()-1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">-->
+<!--            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>-->
+<!--    </div>-->
+<!--</div>-->
+<!-- pagination end -->
 
 <!-- Offer Start -->
 <div class="container-fluid offer pt-5">
@@ -272,7 +305,7 @@
     <div class="row justify-content-md-center py-5 px-xl-5">
         <div class="col-md-6 col-12 py-5">
             <div class="text-center mb-2 pb-2">
-                <h2 class="section-title px-5 mb-3"><span class="bg-secondary px-2">Cập nhật sản phẩm</span></h2>
+                <h2 class="mb-4 font-weight-semi-bold">- Cập nhật thông tin -</h2>
                 <p>Hãy để lại email của bạn khi có sản phẩm mới shop sẽ thông báo ngay lập tức đến email cho bạn</p>
             </div>
             <form action="">

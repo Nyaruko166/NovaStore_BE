@@ -22,4 +22,6 @@ public interface ImageService {
     byte[] get(Integer imageId);
 
     Image detail(Integer id);
+
+    byte[] getImageByProduct(Integer productId);
 }
