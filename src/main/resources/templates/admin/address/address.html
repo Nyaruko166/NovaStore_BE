@@ -24,6 +24,22 @@
                 <form action="/nova/address/add" method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="row form-group">
                         <div class="col col-md-3">
+                            <label for="customerName" class=" form-control-label">Tên Khách Hàng</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="customerName" name="customerName" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="phoneNumber" class=" form-control-label">Số Điện Thoại</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
                             <label for="city" class=" form-control-label">City</label>
                         </div>
                         <div class="col-12 col-md-9">
@@ -67,11 +83,11 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
-                            Add
+                           Thêm
                         </button>
                         <a href="/nova/address/page">
                             <button type="button" class="btn btn-secondary"><i class="fa-solid fa-ban"></i>
-                                Cancel
+                                Huỷ
                             </button>
                         </a>
 
@@ -87,24 +103,27 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong class="card-title">Data Record</strong>
+                <strong class="card-title">Bản Ghi</strong>
             </div>
             <div class="card-body">
                 <table class="table text-center">
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Specific Address</th>
-                        <th scope="col">Create Date</th>
-                        <th scope="col">Update Date</th>
-                        <!--                        <th scope="col">Account Name</th>-->
-                        <th scope="col">Function</th>
+                        <th scope="col">Tên Khách Hàng</th>
+                        <th scope="col">Số Điện Thoại</th>
+                        <th scope="col">Địa Chỉ</th>
+                        <th scope="col">Địa Chỉ Cụ Thể</th>
+                        <th scope="col">Ngày Tạo</th>
+                        <th scope="col">Ngày Cập Nhật</th>
+                        <th scope="col">Chức Năng</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="items:${page}">
                         <td th:text="${items.id}"></td>
+                        <td th:text="${items.customerName}"></td>
+                        <td th:text="${items.phoneNumber}"></td>
                         <td th:text="${items.ward} + '-' + ${items.district} + '-' + ${items.city}"></td>
                         <td th:text="${items.specificAddress}"></td>
                         <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
