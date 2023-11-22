@@ -19,15 +19,14 @@
                         <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Tên màu</label></div>
                         <div class="col-12 col-md-9"><input type="text" id="name" th:field="*{name}" class="form-control"
                                                             oninput="onInputText('errorName')">
-                            <small class="" style="color: red"
-                                   id="errorName" ></small>
+                            <div class="" style="color: red"
+                                   id="errorName" ></div>
                         </div>
                     </div>
 
                     <div class="card-footer">
                         <button th:onclick="clickUpdate('colorUpdate', 'color', 'name', 'errorName', [[${product.id}]], [[${color.id}]])"
-                                type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
-                            SỬA
+                                type="button" class="btn btn-dark"><i class="fa-solid fa-pen px-4"></i>
                         </button>
                         <script th:inline="javascript">
                             checkName = (idInput, errorName, text) => {
@@ -61,7 +60,7 @@
                         </script>
                         <a th:href="@{|/nova/${product.id}/color/page|}">
                             <button type="button" class="btn btn-warning"><i
-                                    class="fa-solid fa-circle-left mr-1"></i> MÀU SẮC
+                                    class="fa-solid fa-circle-left px-4"></i>
                             </button>
                         </a>
                     </div>

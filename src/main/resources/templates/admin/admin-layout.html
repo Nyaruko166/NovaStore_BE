@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/admin/fragments-admin::page_head('Admin page')">
+<!--<head th:replace="/admin/fragments-admin::page_head('Admin page')">-->
+    <head th:replace="(~{/admin/fragments-admin::page_head('Admin page')})">
 
-</head>
+    </head>
+
+<!--</head>-->
 <body>
 <!--Admin option Start-->
 <aside id="left-panel" class="left-panel">

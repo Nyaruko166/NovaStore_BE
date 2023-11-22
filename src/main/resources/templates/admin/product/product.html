@@ -18,6 +18,7 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">x</span>
                 </button>
+
             </div>
             <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -28,29 +29,19 @@
             </div>
 
             <div class="card-body card-block">
-                <div class="card-footer d-flex">
-                    <div>
-                        <a href="/nova/product/view-add">
-                            <button type="button" class="btn btn-success"><i
-                                    class="fa-solid fa-square-plus"></i>
-                                THÊM
-                            </button>
-                        </a>
-                    </div>
-                </div>
-                <br>
-                <form id="productExcel" enctype="multipart/form-data" action="/nova/product/excel" >
+                <form id="productExcel" enctype="multipart/form-data" action="/nova/product/excel">
                     <div class="card-footer">
                         <div class="custom-file">
-                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx" onchange="setFileName()">
+                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx"
+                                   onchange="setFileName()">
                             <label class="custom-file-label" for="importFile">Chọn tệp excel</label>
                         </div>
-                        <div class="mt-2">
-                            <button type="button" onclick="importExcel('productExcel', 'importFile', 'errorExcel')" class="btn btn-success"><i
-                                    class="fa-solid fa-file-excel"></i>
-                                EXCEL
+                        <div class="mt-2 d-flex align-items-center">
+                            <button type="button" onclick="importExcel('productExcel', 'importFile', 'errorExcel')"
+                                    class="btn btn-success">
+                                <i class="fa-solid fa-file-excel px-4"></i>
                             </button>
-                            <small id="errorExcel" class="ml-2" style="color: red;"></small>
+                            <div id="errorExcel" class="ml-2" style="color: red;"></div>
                         </div>
 
                     </div>
@@ -71,7 +62,7 @@
                         <div class="form-group col-6">
                             <div class="d-flex justify-content-between">
                                 <label class="font-weight-bold">Giá từ</label>
-                                <small class="" style="color: red" id="error"></small>
+                                <div class="" style="color: red" id="error"></div>
                             </div>
                             <input type="number" class="form-control" th:name="priceMin" id="priceMin"
                                    th:value="${priceMin == 0 ? '' : priceMin}" oninput="onInputText('error')">
@@ -101,7 +92,7 @@
 
                         function clickSearch(entity, id) {
                             if (checkPrice()) {
-                                document.getElementById(id).action = '/nova/' + entity +'/search'
+                                document.getElementById(id).action = '/nova/' + entity + '/search'
                                 document.getElementById(id).method = 'get'
                                 document.getElementById(id).submit()
                             }
@@ -245,21 +236,308 @@
                     </div>
                     <br>
                     <div class="card-footer d-flex">
-                        <div>
+                        <div class="mr-3">
                             <button onclick="clickSearch('product', 'productForm')" type="button"
-                                    class="btn btn-secondary">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                TÌM KIẾM
+                                    class="btn btn-dark">
+                                <i class="fa-solid fa-magnifying-glass px-4"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
+                                <i class="fa-solid fa-square-plus px-4"></i>
                             </button>
                         </div>
                     </div>
-                    <br>
                 </form>
             </div>
         </div>
     </div>
 
-    </h1>
+
+    <!--    product add Start-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="productAdd" th:object="${product}" class="form-horizontal">
+<!--                        <div class="form-group row">-->
+<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Mã sản phẩm</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <input type="text" class="form-control" name="code" id="code"-->
+<!--                                       oninput="onInputText('errorCode')">-->
+<!--                                <small class="" style="color: red"-->
+<!--                                       id="errorCode"></small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Mã sản phẩm
+                                </label>
+                                <div class="" style="color: red" id="errorCode"></div>
+                            </div>
+                            <input type="text" id="code" name="code"
+                                   class="form-control" oninput="onInputText('errorCode')">
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Tên sản phẩm
+                                </label>
+                                <div class="" style="color: red" id="errorName"></div>
+                            </div>
+                            <input type="text" id="name" name="name"
+                                   class="form-control" oninput="onInputText('errorName')">
+                        </div>
+<!--                        <div class="form-group row">-->
+<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <input type="text" class="form-control" name="name" id="name"-->
+<!--                                       oninput="onInputText('errorName')">-->
+<!--                                <small class="" style="color: red"-->
+<!--                                       id="errorName"></small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Mô tả
+                                </label>
+                                <div class="" style="color: red" id="errorDescription"></div>
+                            </div>
+                            <input type="text" id="description" name="description"
+                                   class="form-control" oninput="onInputText('errorDescription')">
+                        </div>
+
+<!--                        <div class="form-group row">-->
+<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Mô tả</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <input type="text" class="form-control" name="description" id="description"-->
+<!--                                       oninput="onInputText('errorDescription')">-->
+<!--                                <small class="" style="color: red"-->
+<!--                                       id="errorDescription"></small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Giá
+                                </label>
+                                <div class="" style="color: red" id="errorPrice"></div>
+                            </div>
+                            <input type="number" id="price" name="price"
+                                   class="form-control" oninput="onInputText('errorPrice')">
+                        </div>
+
+<!--                        <div class="form-group row">-->
+<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Giá</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <input type="number" class="form-control" name="price" id="price"-->
+<!--                                       oninput="onInputText('errorPrice')">-->
+<!--                                <small class="" style="color: red"-->
+<!--                                       id="errorPrice"></small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Chất liệu
+                                </label>
+                            </div>
+                            <select class="form-control" name="materialId">
+                                <option th:value="${material.id}" th:each="material: ${listMaterial}"
+                                        th:text="${material.name}"></option>
+                            </select>
+                        </div>
+
+<!--                        <div class="form-group row">-->
+<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Chất liệu</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <select class="form-control" name="materialId">-->
+<!--                                    <option th:value="${material.id}" th:each="material: ${listMaterial}"-->
+<!--                                            th:text="${material.name}"></option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Loại sản phẩm
+                                </label>
+                            </div>
+                            <select class="form-control" name="categoryId">
+                                <option th:value="${category.id}" th:each="category: ${listCategory}"
+                                        th:text="${category.name}"></option>
+                            </select>
+                        </div>
+
+<!--                        <div class="row form-group">-->
+<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Loại sản phẩm</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <select class="form-control" name="categoryId">-->
+<!--                                    <option th:value="${category.id}" th:each="category: ${listCategory}"-->
+<!--                                            th:text="${category.name}"></option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Thương hiệu
+                                </label>
+                            </div>
+                            <select class="form-control" name="brandId">
+                                <option th:value="${brand.id}" th:each="brand: ${listBrand}"
+                                        th:text="${brand.name}"></option>
+                            </select>
+                        </div>
+
+<!--                        <div class="row form-group">-->
+<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Thương hiệu</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <select class="form-control" name="brandId">-->
+<!--                                    <option th:value="${brand.id}" th:each="brand: ${listBrand}"-->
+<!--                                            th:text="${brand.name}"></option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Kiểu dáng
+                                </label>
+                            </div>
+                            <select class="form-control" name="formId">
+                                <option th:value="${form.id}" th:each="form: ${listForm}"
+                                        th:text="${form.name}"></option>
+                            </select>
+                        </div>
+
+<!--                        <div class="row form-group">-->
+<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Kiểu dáng</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <select class="form-control" name="formId">-->
+<!--                                    <option th:value="${form.id}" th:each="form: ${listForm}"-->
+<!--                                            th:text="${form.name}"></option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+
+<!--                        </div>-->
+
+<!--                        <div class="card-footer d-flex">-->
+<!--                            <div>-->
+<!--                                <button onclick="clickAdd('product', 'productAdd')" type="button"-->
+<!--                                        class="btn btn-dark"><i-->
+<!--                                        class="fa-solid fa-square-plus px-4"></i>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="modal-footer">
+                            <button onclick="clickAddProduct('product', 'productAdd')"
+                                    type="button" class="btn btn-dark"><i
+                                    class="fa-solid fa-square-plus px-4"></i></button>
+                        </div>
+
+
+                    </form>
+                </div>
+                <script th:inline="javascript">
+                    checkCode = () => {
+                        let isCode = document.getElementById('code').value
+                        if (isCode.trim() === '') {
+                            document.getElementById('errorCode').innerHTML = `Chưa nhập mã`
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    checkName = () => {
+                        let isName = document.getElementById('name').value
+                        if (isName.trim() === '') {
+                            document.getElementById('errorName').innerHTML = `Chưa nhập tên`
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    checkDescription = () => {
+                        let isDescription = document.getElementById('description').value
+                        if (isDescription.trim() === '') {
+                            document.getElementById('errorDescription').innerHTML = `Chưa nhập mô tả`
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    checkPrice = () => {
+                        debugger
+                        let isPrice = document.getElementById('price').value
+                        if (isPrice.trim() === '') {
+                            document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`
+                            return false;
+                        }
+                        if (isPrice < 1000) {
+                            document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn hoặc bằng 1000`
+
+                            return false;
+                        }
+                        if (isPrice > 2147483647) {
+                            document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    validate = () => {
+                        let isCode = checkCode();
+                        let isName = checkName();
+                        let isDescription = checkDescription();
+                        let isPrice = checkPrice();
+                        if (isCode === true && isName === true && isDescription === true && isPrice === true) {
+                            return true;
+                        }
+                    }
+
+                    clickAddProduct = (entity, idForm) => {
+                        if (validate()) {
+                            swal({
+                                title: "Thêm dữ liệu",
+                                text: "Bạn có muốn thêm dữ liệu không ?",
+                                icon: "warning",
+                                buttons: ["Không", "Có"],
+                                dangerMode: true,
+                                closeOnClickOutside: false,
+                            }).then((add) => {
+                                if (add) {
+                                    document.getElementById(idForm).action = '/nova/' + entity + '/add'
+                                    document.getElementById(idForm).method = 'post'
+                                    document.getElementById(idForm).submit()
+                                    // swal("Thêm dữ liệu thành công", {
+                                    //     icon: "success",
+                                    // })
+                                }
+                            });
+                        }
+
+                    }
+                </script>
+<!--                <div class="modal-footer">-->
+<!--                    <button onclick="clickAdd('form', 'formForm', 'name', 'errorName', 'kích cỡ')"-->
+<!--                            type="button" class="btn btn-dark"><i-->
+<!--                            class="fa-solid fa-square-plus px-4"></i></button>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+    <!--    product add end-->
+
+
     <div class="col">
         <div class="card">
             <div class="card-header" th:if="${pageProduct.isEmpty()}">
@@ -300,31 +578,31 @@
                                 <td th:text="${items.formName}"></td>
                                 <td>
                                     <a th:href="@{'/nova/product/' + ${items.id} + '/image'}">
-                                        <button type="button" class="btn btn-primary"><i
-                                                class="fa-solid fa-image mr-1"></i>ẢNH
+                                        <button type="button" class="btn btn-dark px-4">
+                                            <i class="fa-solid fa-image"></i>
                                         </button>
                                     </a>
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/product/' + ${items.id} + '/product-detail'}">
-                                            <button type="button" class="btn btn-warning">
-                                                <i class="fa-solid fa-eye mr-1"></i>CHI TIẾT
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/product/view-update/' + ${items.id}}">
-                                            <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-pen mr-1"></i>SỬA
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <button th:onclick="clickDelete('product', 'productDelete', [[${items.id}]])"
-                                                type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>XÓA
+                                    <div class="dropdown">
+                                        <button class="btn btn-dark" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
                                         </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item"
+                                               th:href="@{'/nova/product/' + ${items.id} + '/product-detail'}"><i
+                                                    class="fa-solid fa-eye mr-2"></i> Chi tiết</a>
+                                            <a class="dropdown-item"
+                                               th:href="@{'/nova/product/view-update/' + ${items.id}}"><i
+                                                    class="fa-solid fa-pen mr-3"></i>Sửa</a>
+                                            <button
+                                                    th:onclick="clickDelete('product', 'productDelete', [[${items.id}]])"
+                                                    type="button" class="dropdown-item"><i
+                                                    class="fa-solid fa-trash mr-3"></i>Xóa
+                                            </button>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

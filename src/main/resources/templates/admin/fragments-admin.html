@@ -78,7 +78,7 @@
                 const img = document.createElement('img');
                 img.src = imageUrl;
                 img.classList.add('img-fluid');
-                img.style.width = '100px';
+                img.style.width = '75px';
                 img.style.height = '100px';
                 previewImagesContainer.appendChild(img);
             }
@@ -121,6 +121,7 @@
         }
 
         function validateFile(idInputFile, errorName) {
+            debugger
             let fileInput = document.getElementById(idInputFile);
             let file = fileInput.files;
             debugger
@@ -137,8 +138,8 @@
             return true;
         }
 
-        function clickUpdate(idForm, idInput, errorName) {
-            if (checkName(idInput, errorName)) {
+        function clickUpdate(idForm, idInput, errorName, text) {
+            if (checkName(idInput, errorName, text)) {
                 swal({
                     title: "Sửa dữ liệu",
                     text: "Bạn có muốn sửa dữ liệu không ?",
