@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>SIZE</strong>
+                <strong>KÍCH CỠ</strong>
             </div>
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -22,47 +22,66 @@
             <div class="card-body card-block">
                 <form id="sizeForm" class="form-horizontal">
                     <div class="card-footer">
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="hidden" class="form-control" th:value="${product.id}" name="productId">
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label class="font-weight-bold form-control-label">Kích cỡ</label></div>
-                            <div class="col-12 col-md-9"><input type="text" id="name" name="name" class="form-control"
-                                                                oninput="onInputText('errorName')">
-                                <small class="" style="color: red"
-                                       id="errorName" ></small>
-                            </div>
-                        </div>
+
+                        <input type="hidden" class="form-control" th:value="${product.id}" name="productId">
+
                         <div>
-                            <button onclick="clickAdd('size', 'sizeForm', 'name', 'errorName', 'kích cỡ')" type="button" class="btn btn-success"><i
-                                    class="fa-solid fa-square-plus"></i>
-                                THÊM
+                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
+                                <i class="fa-solid fa-square-plus px-4"></i>
                             </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between">
+                                                    <label class="font-weight-bold form-control-label">Kích cỡ
+                                                    </label>
+                                                    <div class="" style="color: red" id="errorName"></div>
+                                                </div>
+                                                <input type="text" id="name" name="name"
+                                                       class="form-control" oninput="onInputText('errorName')">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button onclick="clickAdd('form', 'formForm', 'name', 'errorName', 'kích cỡ')"
+                                                    type="button" class="btn btn-dark"><i
+                                                    class="fa-solid fa-square-plus px-4"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <a th:href="@{|/nova/product/${product.id}/product-detail|}">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM CHI TIẾT
+                                        class="fa-solid fa-circle-left px-4"></i>
                                 </button>
                             </a>
                         </div>
                     </div>
                     <br>
                     <div class="border-search">
-                        <div class="col-md-3">
-                            <button th:onclick="clickSearch('size', 'sizeForm', [[${product.id}]])" type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                TÌM KIẾM
+                        <div class="col-md-1">
+                            <button th:onclick="clickSearch('size', 'sizeForm', [[${product.id}]])" type="button"
+                                    class="btn btn-dark">
+                                <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
                         </div>
                         <script th:inline="javascript">
                             clickSearch = (entity, idForm, productId) => {
-                                document.getElementById(idForm).action = '/nova/' + productId + "/"+ entity + '/search'
+                                document.getElementById(idForm).action = '/nova/' + productId + "/" + entity + '/search'
                                 document.getElementById(idForm).method = 'get'
                                 document.getElementById(idForm).submit()
                             }
                         </script>
-                        <div class="col-md-9" >
+                        <div class="col-md-11">
                             <input type="text" placeholder="Nhập kích cỡ..."
                                    th:value="${sizeNameSearch}" th:name="sizeNameSearch"
                                    class="form-control">
@@ -101,38 +120,58 @@
                                     <td th:text="${items.id}"></td>
                                     <td th:text="${items.name}"></td>
                                     <td class="d-flex justify-content-center">
-                                        <div style="margin-right: 10px">
-                                            <a th:href="@{|/nova/${product.id}/size/detail/${items.id}|}">
-                                                <button type="button" class="btn btn-info">
-                                                    <i class="fa-solid fa-pen mr-1"></i>SỬA
-                                                </button>
-                                            </a>
-                                        </div>
-                                        <div>
-                                            <button th:onclick="clickDeleted('size', 'sizeDelete', [[${product.id}]] , [[${items.id}]])"
-                                                    type="button" class="btn btn-danger">
-                                                <i class="fa-solid fa-trash mr-1"></i>XÓA
+                                        <div class="dropdown">
+                                            <button class="btn btn-dark" type="button"
+                                                    id="dropdownMenuButton" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa-solid fa-ellipsis-vertical"></i>
                                             </button>
-                                            <script th:inline="javascript">
-                                                clickDeleted = (entity, idForm, productId, idDelete) => {
-                                                    swal({
-                                                        title: "Xóa dữ liệu",
-                                                        text: "Bạn có muốn xóa dữ liệu không ?",
-                                                        icon: "warning",
-                                                        buttons: ["Không", "Có"],
-                                                        dangerMode: true,
-                                                        closeOnClickOutside: false,
-                                                    }).then((deleted) => {
-                                                        if (deleted) {
-                                                            document.getElementById(idForm).action = '/nova/'+ productId+"/" + entity + "/delete/" + idDelete
-                                                            document.getElementById(idForm).method = 'post'
-                                                            document.getElementById(idForm).submit()
-                                                        }
-                                                    });
-                                                }
-                                            </script>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item"
+                                                   th:href="@{|/nova/${product.id}/size/detail/${items.id}|}">
+                                                    <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
+                                                <button
+                                                        th:onclick="clickDeleted('size', 'sizeDelete', [[${product.id}]] , [[${items.id}]])"
+                                                        type="button" class="dropdown-item"><i
+                                                        class="fa-solid fa-trash mr-3"></i>Xóa
+                                                </button>
+                                                <script th:inline="javascript">
+                                                    clickDeleted = (entity, idForm, productId, idDelete) => {
+                                                        swal({
+                                                            title: "Xóa dữ liệu",
+                                                            text: "Bạn có muốn xóa dữ liệu không ?",
+                                                            icon: "warning",
+                                                            buttons: ["Không", "Có"],
+                                                            dangerMode: true,
+                                                            closeOnClickOutside: false,
+                                                        }).then((deleted) => {
+                                                            if (deleted) {
+                                                                document.getElementById(idForm).action = '/nova/' + productId + "/" + entity + "/delete/" + idDelete
+                                                                document.getElementById(idForm).method = 'post'
+                                                                document.getElementById(idForm).submit()
+                                                            }
+                                                        });
+                                                    }
+                                                </script>
+                                            </div>
                                         </div>
                                     </td>
+                                    <!--                                    <td class="d-flex justify-content-center">-->
+                                    <!--                                        <div style="margin-right: 10px">-->
+                                    <!--                                            <a th:href="@{|/nova/${product.id}/size/detail/${items.id}|}">-->
+                                    <!--                                                <button type="button" class="btn btn-info">-->
+                                    <!--                                                    <i class="fa-solid fa-pen mr-1"></i>SỬA-->
+                                    <!--                                                </button>-->
+                                    <!--                                            </a>-->
+                                    <!--                                        </div>-->
+                                    <!--                                        <div>-->
+                                    <!--                                            <button th:onclick="clickDeleted('size', 'sizeDelete', [[${product.id}]] , [[${items.id}]])"-->
+                                    <!--                                                    type="button" class="btn btn-danger">-->
+                                    <!--                                                <i class="fa-solid fa-trash mr-1"></i>XÓA-->
+                                    <!--                                            </button>-->
+                                    <!--                                            -->
+                                    <!--                                        </div>-->
+                                    <!--                                    </td>-->
                                 </tr>
                                 </tbody>
                             </table>

@@ -27,8 +27,8 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="name" name="name"
                                    th:value="*{name}" oninput="onInputText('errorName')">
-                            <small class="" style="color: red"
-                                   id="errorName" ></small>
+                            <div class="" style="color: red"
+                                   id="errorName" ></div>
                         </div>
                     </div>
 
@@ -37,8 +37,8 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="description" name="description"
                                    th:value="*{description}" oninput="onInputText('errorDescription')">
-                            <small class="" style="color: red"
-                                   id="errorDescription" ></small>
+                            <div class="" style="color: red"
+                                   id="errorDescription" ></div>
                         </div>
                     </div>
 
@@ -47,8 +47,8 @@
                         <div class="col-sm-10">
                             <input type="number" class="form-control" id="price" name="price"
                                    th:value="*{price}" oninput="onInputText('errorPrice')">
-                            <small class="" style="color: red"
-                                   id="errorPrice" ></small>
+                            <div class="" style="color: red"
+                                   id="errorPrice" ></div>
                         </div>
                     </div>
 
@@ -155,12 +155,12 @@
                     </script>
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickUpdate('productUpdate')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
-                                SỬA
+                            <button onclick="clickUpdate('productUpdate')" type="button" class="btn btn-dark">
+                                <i class="fa-solid fa-pen px-4"></i>
                             </button>
                             <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM
+                                        class="fa-solid fa-circle-left px-4"></i>
                                 </button>
                             </a>
                         </div>

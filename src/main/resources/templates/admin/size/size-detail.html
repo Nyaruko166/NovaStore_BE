@@ -26,8 +26,7 @@
 
                     <div class="card-footer">
                         <button th:onclick="clickUpdate('sizeUpdate', 'size', 'name', 'errorName', [[${product.id}]], [[${size.id}]])"
-                                type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
-                            SỬA
+                                type="button" class="btn btn-dark"><i class="fa-solid fa-pen px-4"></i>
                         </button>
                         <script th:inline="javascript">
                             checkName = (idInput, errorName, text) => {
@@ -61,7 +60,7 @@
                         </script>
                         <a th:href="@{|/nova/${product.id}/size/page|}">
                             <button type="button" class="btn btn-warning"><i
-                                    class="fa-solid fa-circle-left mr-1"></i> KÍCH CỠ
+                                    class="fa-solid fa-circle-left px-4"></i>
                             </button>
                         </a>
                     </div>

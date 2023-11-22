@@ -19,18 +19,18 @@
                         <div class="col col-md-3"><label class="font-weight-bold  form-control-label">TÊN LOẠI</label></div>
                         <div class="col-12 col-md-9"><input type="text" id="name" th:field="*{name}" class="form-control"
                                                             oninput="onInputText('errorName')">
-                            <small class="" style="color: red"
-                                   id="errorName" ></small>
+                            <div class="" style="color: red"
+                                   id="errorName" ></div>
                         </div>
                     </div>
 
                     <div class="card-footer">
-                        <button onclick="clickUpdate('categoryUpdate', 'name', 'errorName')" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
-                            SỬA
+                        <button onclick="clickUpdate('categoryUpdate', 'name', 'errorName', 'tên loại')" type="button" class="btn btn-dark">
+                            <i class="fa-solid fa-pen px-4"></i>
                         </button>
                         <a href="/nova/category/page">
                             <button type="button" class="btn btn-warning"><i
-                                    class="fa-solid fa-circle-left mr-1"></i> LOẠI SẢN PHẨM
+                                    class="fa-solid fa-circle-left px-4"></i>
                             </button>
                         </a>
                     </div>

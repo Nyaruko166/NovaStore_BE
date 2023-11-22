@@ -75,8 +75,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button onclick="clickUpdate()" type="button" class="btn btn-info"><i class="fa-solid fa-pen mr-1"></i>
-                            SỬA
+                        <button onclick="clickUpdate()" type="button" class="btn btn-dark"><i class="fa-solid fa-pen px-4"></i>
                         </button>
                         <script th:inline="javascript">
 
@@ -87,7 +86,7 @@
                                     return false;
                                 }
                                 if (quantity < 0) {
-                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải lớn hơn 0`
+                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải lớn hơn hoặc bằng 0`
                                     return false;
                                 }
                                 if (Number.isInteger(quantity)) {
@@ -116,7 +115,7 @@
                         </script>
                         <a th:href="@{|/nova/product/*{product.id}/product-detail|}">
                             <button type="button" class="btn btn-warning"><i
-                                    class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM CHI TIẾT
+                                    class="fa-solid fa-circle-left px-4"></i>
                             </button>
                         </a>
                     </div>

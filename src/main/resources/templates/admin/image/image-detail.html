@@ -29,7 +29,7 @@
                                         <label class="custom-file-label" for="importFileProduct">Chọn ảnh</label>
                                     </div>
                                     <div>
-                                        <small class="" style="color: red" id="errorName"></small>
+                                        <div class="" style="color: red" id="errorName"></div>
                                     </div>
                                 </div>
                                 <script th:inline="javascript">
@@ -40,7 +40,7 @@
                             </div>
                             <div id="preview-image-files">
                                 <img th:src="@{'/image/' + *{id}}" alt=""
-                                     style="max-width: 75px; max-height: 100px">
+                                     style="width: 75px; height: 100px">
                             </div>
                             <!--                            <input type="text" id="avatar" name="avatar" class="form-control">-->
                         </div>
@@ -48,15 +48,18 @@
                     <!--                    <div class="row mb-2 ml-1" id="preview-image-files"></div>-->
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="updateImageFile()" type="button" class="btn btn-info"><i
-                                    class="fa-solid fa-pen mr-1"></i>
-                                SỬA
+                            <button onclick="updateImageFile()" type="button" class="btn btn-dark"><i
+                                    class="fa-solid fa-pen px-4"></i>
                             </button>
                             <script>
                                 validateUpdateFile = () => {
                                     debugger
                                     let image = document.getElementById('importFileProduct')
                                     let file = image.files
+                                    if (file.length === 0) {
+                                        document.getElementById('errorName').innerHTML = `Vui lòng chọn ảnh`
+                                        return false;
+                                    }
                                     for (let i = 0; i < file.length; i++) {
                                         if (file[i].size > 1024 * 1024) {
                                             document.getElementById('errorName').innerHTML = `Kích thước từng file không vượt quá 1MB`
@@ -86,7 +89,7 @@
                             </script>
                             <a th:href="@{|/nova/product/*{product.id}/image|}">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> ẢNH
+                                        class="fa-solid fa-circle-left px-4"></i>
                                 </button>
                             </a>
                         </div>

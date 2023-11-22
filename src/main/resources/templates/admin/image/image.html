@@ -19,72 +19,210 @@
                     <span aria-hidden="true">x</span>
                 </button>
             </div>
+
+            <!--            <div>-->
+            <!--                <form id="imageForm" th:object="${product}" class="form-horizontal" enctype="multipart/form-data">-->
+            <!--                    <div class="card-footer">-->
+            <!--                        <div>-->
+            <!--                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">-->
+            <!--                                <i class="fa-solid fa-square-plus px-4"></i>-->
+            <!--                            </button>-->
+            <!--                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"-->
+            <!--                                 aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+            <!--                                <div class="modal-dialog" role="document">-->
+            <!--                                    <div class="modal-content">-->
+            <!--                                        <div class="modal-header">-->
+            <!--                                            <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>-->
+            <!--                                            <button type="button" class="close" data-dismiss="modal"-->
+            <!--                                                    aria-label="Close">-->
+            <!--                                                <span aria-hidden="true">&times;</span>-->
+            <!--                                            </button>-->
+            <!--                                        </div>-->
+            <!--                                        <div class="modal-body">-->
+            <!--                                            <input type="hidden" class="form-control" name="productId" th:value="*{id}">-->
+            <!--                                            <div class="mb-3">-->
+            <!--                                                <div class="d-flex justify-content-between">-->
+            <!--                                                    <label class="font-weight-bold form-control-label">File ảnh-->
+            <!--                                                    </label>-->
+            <!--                                                    <div class="" style="color: red" id="errorName"></div>-->
+            <!--                                                </div>-->
+            <!--                                                <input type="file" class="custom-file-input" id="importFileProduct" name="images"-->
+            <!--                                                       multiple oninput="onInputText('importFileProduct')"-->
+            <!--                                                       accept="image/png, image/jpg, image/jpeg">-->
+            <!--                                                <label class="custom-file-label" for="importFileProduct">Chọn ảnh</label>-->
+            <!--                                            </div>-->
+            <!--                                            <script th:inline="javascript">-->
+            <!--                                                document.querySelector("#importFileProduct").addEventListener("change", function (event) {-->
+            <!--                                                    uploadFile(event);-->
+            <!--                                                });-->
+            <!--                                            </script>-->
+            <!--                                        </div>-->
+            <!--                                        <div class="row mb-2 ml-1" id="preview-image-files"></div>-->
+            <!--                                        <div class="modal-footer">-->
+            <!--                                            <button onclick="clickAdd('form', 'formForm', 'name', 'errorName', 'tên kiểu dáng')"-->
+            <!--                                                    type="button" class="btn btn-dark"><i-->
+            <!--                                                    class="fa-solid fa-square-plus px-4"></i></button>-->
+            <!--                                        </div>-->
+            <!--                                    </div>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                            <a href="/nova/product/page">-->
+            <!--                                <button type="button" class="btn btn-warning"><i-->
+            <!--                                        class="fa-solid fa-circle-left px-4"></i>-->
+            <!--                                </button>-->
+            <!--                            </a>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                    <br>-->
+            <!--                </form>-->
+            <!--            </div>-->
+
+
             <div class="card-body card-block">
                 <form id="imageForm" th:object="${product}" class="form-horizontal" enctype="multipart/form-data">
-                    <input type="hidden" class="form-control" name="productId" th:value="*{id}">
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="importFileProduct" class="font-weight-bold  form-control-label">File ảnh</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <div class="input-group mb-3">
-                                <div class="w-100">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="importFileProduct" name="images"
-                                               multiple oninput="onInputText('importFileProduct')"
-                                               accept="image/png, image/jpg, image/jpeg">
-                                        <label class="custom-file-label" for="importFileProduct">Chọn ảnh</label>
-                                    </div>
-                                    <div>
-                                        <small class="" style="color: red" id="errorName"></small>
+                    <div class="card-footer">
+                        <div>
+                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
+                                <i class="fa-solid fa-square-plus px-4"></i>
+                            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <input type="hidden" class="form-control" name="productId" th:value="*{id}">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="font-weight-bold form-control-label">File ảnh</div>
+                                                    <div class="" style="color: red" id="errorName"></div>
+                                                </div>
+
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="importFileProduct"
+                                                           name="images"
+                                                           multiple oninput="onInputText('importFileProduct')"
+                                                           accept="image/png, image/jpg, image/jpeg">
+                                                    <label class="custom-file-label" for="importFileProduct">Chọn ảnh</label>
+                                                </div>
+                                                <div class="row mb-2 ml-1" id="preview-image-files"></div>
+                                            </div>
+                                            <script th:inline="javascript">
+                                                document.querySelector("#importFileProduct").addEventListener("change", function (event) {
+                                                    uploadFile(event);
+                                                });
+                                            </script>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button onclick="addImage()" type="button" class="btn btn-dark"><i
+                                                    class="fa-solid fa-square-plus px-4"></i>
+                                            </button>
+                                            <script th:inline="javascript">
+                                                addImage = () => {
+                                                    if (validateFile('importFileProduct', 'errorName')) {
+                                                        swal({
+                                                            title: "Thêm dữ liệu",
+                                                            text: "Bạn có muốn thêm dữ liệu không ?",
+                                                            icon: "warning",
+                                                            buttons: ["Không", "Có"],
+                                                            dangerMode: true,
+                                                            closeOnClickOutside: false,
+                                                        }).then((add) => {
+                                                            if (add) {
+                                                                document.getElementById('imageForm').action = '/nova/image/add'
+                                                                document.getElementById('imageForm').method = 'post'
+                                                                document.getElementById('imageForm').submit()
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            </script>
+                                        </div>
                                     </div>
                                 </div>
-                                <script th:inline="javascript">
-                                    document.querySelector("#importFileProduct").addEventListener("change", function (event) {
-                                        uploadFile(event);
-                                    });
-                                </script>
                             </div>
-                            <!--                            <input type="text" id="avatar" name="avatar" class="form-control">-->
-                        </div>
-                    </div>
-                    <div class="row mb-2 ml-1" id="preview-image-files"></div>
-                    <div class="card-footer d-flex">
-                        <div>
-                            <button onclick="addImage()" type="button" class="btn btn-success"><i
-                                    class="fa-solid fa-square-plus"></i>
-                                THÊM
-                            </button>
-                            <script>
-                                addImage = () => {
-                                    if (validateFile('importFileProduct', 'errorName')) {
-                                        swal({
-                                            title: "Thêm dữ liệu",
-                                            text: "Bạn có muốn thêm dữ liệu không ?",
-                                            icon: "warning",
-                                            buttons: ["Không", "Có"],
-                                            dangerMode: true,
-                                            closeOnClickOutside: false,
-                                        }).then((add) => {
-                                            if (add) {
-                                                document.getElementById('imageForm').action = '/nova/image/add'
-                                                document.getElementById('imageForm').method = 'post'
-                                                document.getElementById('imageForm').submit()
-                                            }
-                                        });
-                                    }
-                                }
-                            </script>
                             <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM
+                                        class="fa-solid fa-circle-left px-4"></i>
                                 </button>
                             </a>
                         </div>
                     </div>
-                    <br>
                 </form>
             </div>
+
+
+            <!--            <div class="card-body card-block">-->
+            <!--                <form id="imageForm" th:object="${product}" class="form-horizontal" enctype="multipart/form-data">-->
+            <!--                    <input type="hidden" class="form-control" name="productId" th:value="*{id}">-->
+            <!--                    <div class="row form-group">-->
+            <!--                        <div class="col col-md-3">-->
+            <!--                            <label for="importFileProduct" class="font-weight-bold  form-control-label">File ảnh</label>-->
+            <!--                        </div>-->
+            <!--                        <div class="col-12 col-md-9">-->
+            <!--                            <div class="input-group mb-3">-->
+            <!--                                <div class="w-100">-->
+            <!--                                    <div class="custom-file">-->
+            <!--                                        <input type="file" class="custom-file-input" id="importFileProduct" name="images"-->
+            <!--                                               multiple oninput="onInputText('importFileProduct')"-->
+            <!--                                               accept="image/png, image/jpg, image/jpeg">-->
+            <!--                                        <label class="custom-file-label" for="importFileProduct">Chọn ảnh</label>-->
+            <!--                                    </div>-->
+            <!--                                    <div>-->
+            <!--                                        <small class="" style="color: red" id="errorName"></small>-->
+            <!--                                    </div>-->
+            <!--                                </div>-->
+            <!--                                <script th:inline="javascript">-->
+            <!--                                    document.querySelector("#importFileProduct").addEventListener("change", function (event) {-->
+            <!--                                        uploadFile(event);-->
+            <!--                                    });-->
+            <!--                                </script>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                    <div class="row mb-2 ml-1" id="preview-image-files"></div>-->
+            <!--                    <div class="card-footer d-flex">-->
+            <!--                        <div>-->
+            <!--                            <button onclick="addImage()" type="button" class="btn btn-dark"><i-->
+            <!--                                    class="fa-solid fa-square-plus px-4"></i>-->
+            <!--                            </button>-->
+            <!--                            <script>-->
+            <!--                                addImage = () => {-->
+            <!--                                    if (validateFile('importFileProduct', 'errorName')) {-->
+            <!--                                        swal({-->
+            <!--                                            title: "Thêm dữ liệu",-->
+            <!--                                            text: "Bạn có muốn thêm dữ liệu không ?",-->
+            <!--                                            icon: "warning",-->
+            <!--                                            buttons: ["Không", "Có"],-->
+            <!--                                            dangerMode: true,-->
+            <!--                                            closeOnClickOutside: false,-->
+            <!--                                        }).then((add) => {-->
+            <!--                                            if (add) {-->
+            <!--                                                document.getElementById('imageForm').action = '/nova/image/add'-->
+            <!--                                                document.getElementById('imageForm').method = 'post'-->
+            <!--                                                document.getElementById('imageForm').submit()-->
+            <!--                                            }-->
+            <!--                                        });-->
+            <!--                                    }-->
+            <!--                                }-->
+            <!--                            </script>-->
+            <!--                            <a href="/nova/product/page">-->
+            <!--                                <button type="button" class="btn btn-warning"><i-->
+            <!--                                        class="fa-solid fa-circle-left px-4"></i>-->
+            <!--                                </button>-->
+            <!--                            </a>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                    <br>-->
+            <!--                </form>-->
+            <!--            </div>-->
         </div>
     </div>
 
@@ -115,21 +253,25 @@
                                 <td th:text="${items.id}"></td>
                                 <td>
                                     <img th:src="@{'/image/' + ${items.id}}" alt=""
-                                         style="width: 75px;height: 75px">
+                                         style="width: 75px;height: 100px">
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/image/detail/' + ${items.id}}">
-                                            <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-pen mr-1"></i>SỬA
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <button th:onclick="clickDelete('image', 'imageDelete', [[${items.id}]])"
-                                                type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>XÓA
+                                    <div class="dropdown">
+                                        <button class="btn btn-dark" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
                                         </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item"
+                                               th:href="@{'/nova/image/detail/' + ${items.id}}">
+                                                <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
+                                            <button
+                                                    th:onclick="clickDelete('image', 'imageDelete', [[${items.id}]])"
+                                                    type="button" class="dropdown-item"><i
+                                                    class="fa-solid fa-trash mr-3"></i>Xóa
+                                            </button>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

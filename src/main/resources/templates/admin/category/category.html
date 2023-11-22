@@ -23,23 +23,43 @@
             <div class="card-body card-block">
                 <form id="categoryForm" class="form-horizontal">
                     <div class="card-footer">
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label class="font-weight-bold form-control-label">Tên loại</label></div>
-                            <div class="col-12 col-md-9"><input type="text" id="name" name="name" class="form-control"
-                                                                oninput="onInputText('errorName')">
-                                <small class="" style="color: red"
-                                       id="errorName" ></small>
-                            </div>
-                        </div>
                         <div>
-                            <button onclick="clickAdd('category', 'categoryForm', 'name', 'errorName', 'tên loại')" type="button"
-                                    class="btn btn-success"><i
-                                    class="fa-solid fa-square-plus"></i>
-                                THÊM
+                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
+                                <i class="fa-solid fa-square-plus px-4"></i>
                             </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between">
+                                                    <label class="font-weight-bold form-control-label">Tên loại
+                                                    </label>
+                                                    <div class="" style="color: red" id="errorName"></div>
+                                                </div>
+                                                <input type="text" id="name" name="name"
+                                                       class="form-control" oninput="onInputText('errorName')">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button onclick="clickAdd('category', 'categoryForm', 'name', 'errorName', 'tên loại')"
+                                                    type="button" class="btn btn-dark"><i
+                                                    class="fa-solid fa-square-plus px-4"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM
+                                        class="fa-solid fa-circle-left px-4"></i>
                                 </button>
                             </a>
                         </div>
@@ -47,13 +67,13 @@
 
                     <br>
                     <div class="border-search">
-                        <div class="col-md-3">
-                            <button onclick="clickSearch('category', 'categoryForm')" type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                TÌM KIẾM
+                        <div class="col-md-1">
+                            <button onclick="clickSearch('category', 'categoryForm')" type="button"
+                                    class="btn btn-dark">
+                                <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
                         </div>
-                        <div class="col-md-9" >
+                        <div class="col-md-11">
                             <input type="text" placeholder="Nhập loại sản phẩm..."
                                    th:value="${categoryNameSearch}" th:name="categoryNameSearch"
                                    class="form-control">
@@ -91,25 +111,28 @@
                                 <td th:text="${items.id}"></td>
                                 <td th:text="${items.name}"></td>
                                 <td class="d-flex justify-content-center">
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/category/detail/' + ${items.id}}">
-                                            <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-pen mr-1"></i>SỬA
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <button th:onclick="clickDelete('category', 'categoryDelete', [[${items.id}]])"
-                                                type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>XÓA
+                                    <div class="dropdown">
+                                        <button class="btn btn-dark" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
                                         </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item"
+                                               th:href="@{'/nova/category/detail/' + ${items.id}}">
+                                                <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
+                                            <button
+                                                    th:onclick="clickDelete('category', 'categoryDelete', [[${items.id}]])"
+                                                    type="button" class="dropdown-item"><i
+                                                    class="fa-solid fa-trash mr-3"></i>Xóa
+                                            </button>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </form>
-
 
                     <!--            Pagination-->
                     <div class="d-flex justify-content-center align-items-center">
