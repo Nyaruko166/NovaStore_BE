@@ -19,6 +19,12 @@ public class Address {
     @Column(name = "Id")
     private Integer id;
 
+    @Column(name = "CustomerName")
+    private String customerName;
+
+    @Column(name = "PhoneNumber")
+    private String phoneNumber;
+
     @Column(name = "City")
     private String city;
 

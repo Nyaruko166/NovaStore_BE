@@ -1,3 +1,7 @@
+/*
+ *  © 2023 Nyaruko166
+ */
+
 package com.sd64.novastore.config;
 
 import com.sd64.novastore.security.CustomAccessDeniedHandler;
