@@ -33,12 +33,12 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login() {
-        return "index";
+        return "/common/index";
     }
 
     @GetMapping("/access-denied")
     public String c403() {
-        return "access-denied";
+        return "/common/access-denied";
     }
 
     @GetMapping("/forgot")
@@ -53,7 +53,7 @@ public class AuthController {
             return "forgor";
         }
         model.addAttribute("err", "Email này chưa được đăng ký !!!");
-        return "forgor";
+        return "/common/forgor";
     }
 
     @PostMapping("/reset-pass")
@@ -74,13 +74,13 @@ public class AuthController {
             model.addAttribute("err", "Mã xác minh không khớp");
             System.out.println("Mã xác minh không khớp");
         }
-        return "forgor";
+        return "/common/forgor";
     }
 
     @GetMapping("/register")
     public String register() {
 
-        return "register";
+        return "/common/register";
     }
 
     @GetMapping("/change-password")
