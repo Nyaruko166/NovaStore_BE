@@ -23,4 +23,6 @@ public interface AccountService {
     Account findOne(Integer id);
 
     Account findFirstByEmail(String email);
+
+    Integer registerUser(Account user);
 }

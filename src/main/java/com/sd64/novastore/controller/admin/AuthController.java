@@ -78,9 +78,37 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String register() {
-
+    public String register(Model model) {
+        Account account = new Account();
+//        model.addAttribute("x", account);
         return "/common/register";
+    }
+
+    @PostMapping("/register-post")
+    public String registerP(
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("sdt") String sdt,
+            @RequestParam("password") String password,
+            @RequestParam("rePassword") String rePassword,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        Account user = Account.builder()
+                .name(name)
+                .email(email)
+                .phoneNumber(sdt)
+                .password(password)
+                .build();
+
+        if (accountService.registerUser(user) == 0) {
+            redirectAttributes.addFlashAttribute("mess", "Đăng ký thành công !!");
+            return "redirect:/login";
+        }
+
+        redirectAttributes.addFlashAttribute("mess", "Email đã tồn tại !!");
+//        redirectAttributes.addFlashAttribute("x", user);
+        return "redirect:/register";
     }
 
     @GetMapping("/change-password")
@@ -126,19 +154,6 @@ public class AuthController {
                 break;
         }
         return "change-pass";
-    }
-
-    @GetMapping("/mail")
-    public String test() {
-
-        String confirmCode = String.valueOf(mailConfig.randomCode());
-
-        String body = mailUtil.confirmMailTemplate
-                ("occho1666@gmail.com", confirmCode, mailConfig.company, mailConfig.contact);
-
-        mailUtil.sendEmail("occho1666@gmail.com", mailConfig.confirmMail, body);
-
-        return "access-denied";
     }
 
 }

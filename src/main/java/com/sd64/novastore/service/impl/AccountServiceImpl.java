@@ -3,6 +3,7 @@ package com.sd64.novastore.service.impl;
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Role;
 import com.sd64.novastore.repository.AccountRepository;
+import com.sd64.novastore.repository.RoleRepository;
 import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -121,5 +125,24 @@ public class AccountServiceImpl implements AccountService {
     public Page<Account> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return accountRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public Integer registerUser(Account user) {
+
+        Account check = accountRepository.findFirstByEmail(user.getEmail());
+        if (check == null) {
+            String rawPass = user.getPassword();
+            user.setPassword(passwordEncoder.encode(rawPass));
+            Role role = roleRepository.findFirstByName("User");
+            user.setRole(role);
+            user.setCreateDate(new Date());
+            user.setUpdateDate(new Date());
+            user.setStatus(1);
+            accountRepository.save(user);
+            return 0;
+        }
+
+        return 1;
     }
 }
