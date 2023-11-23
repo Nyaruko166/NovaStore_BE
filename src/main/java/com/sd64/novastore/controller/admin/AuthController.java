@@ -29,8 +29,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    MailConfig mailConfig = new MailConfig();
-
     @GetMapping("/login")
     public String login() {
         return "/common/index";
@@ -45,12 +43,12 @@ public class AuthController {
     public String forgor(@RequestParam(value = "email", defaultValue = "") String email,
                          HttpServletRequest request, Model model) {
         if (email.isBlank()) {
-            return "forgor";
+            return "/common/forgor";
         }
         if (authService.codeGen(email, request)) {
             model.addAttribute("mess", "Đã gửi mã xác minh đến email của bạn...");
 //            System.out.println("Mail đang được gửi...");
-            return "forgor";
+            return "/common/forgor";
         }
         model.addAttribute("err", "Email này chưa được đăng ký !!!");
         return "/common/forgor";
@@ -115,14 +113,14 @@ public class AuthController {
     public String changePass(@RequestParam(value = "email", defaultValue = "") String email,
                              HttpServletRequest request, Model model) {
         if (email.isBlank()) {
-            return "change-pass";
+            return "/common/change-pass";
         }
         if (authService.codeGenChangePass(email, request)) {
             model.addAttribute("mess", "Đã gửi mã xác minh đến email của bạn...");
-            return "change-pass";
+            return "/common/change-pass";
         }
         model.addAttribute("err", "Email này chưa được đăng ký !!!");
-        return "change-pass";
+        return "/common/change-pass";
     }
 
     @PostMapping("/change-pass-post")
@@ -153,7 +151,7 @@ public class AuthController {
                 model.addAttribute("err", "Mã xác minh không khớp !!!");
                 break;
         }
-        return "change-pass";
+        return "/common/change-pass";
     }
 
 }
