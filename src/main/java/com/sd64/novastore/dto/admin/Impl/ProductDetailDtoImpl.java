@@ -1,6 +1,6 @@
-package com.sd64.novastore.dto.Impl;
+package com.sd64.novastore.dto.admin.Impl;
 
-import com.sd64.novastore.dto.ProductDetailDto;
+import com.sd64.novastore.dto.admin.ProductDetailDto;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
 
 public class ProductDetailDtoImpl {

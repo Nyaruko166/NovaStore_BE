@@ -22,4 +22,6 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
 
     Image findTopByProductIdOrderByUpdateDateDesc(Integer productId);
 
+    List<Image> findAllByProduct_IdOrderByUpdateDateDesc(Integer productId);
+
 }

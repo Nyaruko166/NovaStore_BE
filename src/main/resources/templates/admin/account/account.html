@@ -143,8 +143,8 @@
                         <td th:text="${items.email}"></td>
                         <td th:text="${items.phoneNumber}"></td>
                         <td>
-                            <img th:src="@{'/assets/avatars/' + ${items.avatar}}" alt=""
-                                 style="width: 75px;height: 75px">
+                            <img th:src="@{'/image/account/' + ${items.id}}" alt=""
+                                 style="width: 100px;height: 100px">
                         </td>
                         <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                         <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>

@@ -177,6 +177,20 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+//    public byte[] getAllImageByProduct(Integer productId) {
+//        List<Image> listImage = imageRepository.findAllByProduct_IdOrderByUpdateDateDesc(productId);
+//        if (listImage.isEmpty()) {
+//            log.info("productId id = {} is not contain image", productId);
+//            return null;
+//        }
+//        try {
+//            return convert(getImagePath(image.getName()));
+//        } catch (IOException e) {
+//            log.error("Convert image fail, productId = {}", productId);
+//            return null;
+//        }
+//    }
+
 //    @Override
 //    public Page<Image> search(String name, int page) {
 //        Pageable pageable = PageRequest.of(page, 5);

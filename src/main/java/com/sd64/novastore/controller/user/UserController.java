@@ -1,5 +1,6 @@
 package com.sd64.novastore.controller.user;
 
+import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Customer;
@@ -11,6 +12,7 @@ import com.sd64.novastore.service.user.UserColorService;
 import com.sd64.novastore.service.user.UserSizeService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +45,7 @@ public class UserController {
                 session.setAttribute("totalItems", cart.getTotalItems());
             }
         }
-        List<Product> productViews = productViewService.getAllProductView();
+        List<Product> productViews = productViewService.getAllProductResponse();
         model.addAttribute("productViews", productViews);
         return "/user/home";
     }

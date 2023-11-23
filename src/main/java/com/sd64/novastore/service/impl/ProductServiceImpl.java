@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.ProductDto;
+import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.model.*;
 import com.sd64.novastore.repository.ProductRepository;
 import com.sd64.novastore.service.ProductService;
@@ -134,5 +134,17 @@ public class ProductServiceImpl implements ProductService {
         } else {
             return "lỗi file";
         }
+    }
+
+    @Override
+    public Page<ProductDto> getAllProductDeleted(int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return productRepository.getAllProductDeleted(pageable);
+    }
+
+    @Override
+    public Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, BigDecimal priceMin, BigDecimal priceMax, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return productRepository.searchProductDeleted(pageable, brandId, categoryId, formId, materialId, productName, description, priceMin, priceMax);
     }
 }

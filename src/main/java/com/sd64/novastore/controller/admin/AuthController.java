@@ -83,11 +83,6 @@ public class AuthController {
         return "/common/registerFuckU";
     }
 
-    @PostMapping("/register-post")
-    public String registerPost() {
-        return "";
-    }
-
     @GetMapping("/change-password")
     public String changePass(@RequestParam(value = "email", defaultValue = "") String email,
                              HttpServletRequest request, Model model) {
