@@ -1,12 +1,9 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.dto.Impl.ProductDetailDtoImpl;
-import com.sd64.novastore.dto.ProductDetailDto;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
 import org.springframework.data.domain.Page;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductDetailService {

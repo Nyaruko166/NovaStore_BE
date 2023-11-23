@@ -1,7 +1,5 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.dto.Impl.ProductDetailDtoImpl;
-import com.sd64.novastore.dto.ProductDetailDto;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
@@ -13,8 +11,6 @@ import com.sd64.novastore.service.ProductService;
 import com.sd64.novastore.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

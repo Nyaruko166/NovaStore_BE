@@ -1,7 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.Impl.ProductDetailDtoImpl;
-import com.sd64.novastore.dto.ProductDetailDto;
+import com.sd64.novastore.dto.admin.Impl.ProductDetailDtoImpl;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

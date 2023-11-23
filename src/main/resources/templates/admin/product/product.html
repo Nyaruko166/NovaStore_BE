@@ -73,31 +73,7 @@
                                    th:value="${priceMax == 2147483647 ? '' : priceMax}">
                         </div>
                     </div>
-                    <script th:inline="javascript">
 
-                        checkPrice = () => {
-                            let priceMin = document.getElementById('priceMin').value
-                            let priceMax = document.getElementById('priceMax').value
-                            debugger
-                            if (priceMin < 0 || priceMax < 0) {
-                                document.getElementById('error').innerHTML = `Giá phải là số dương`
-                                return false;
-                            }
-                            if (Number(priceMax) < Number(priceMin)) {
-                                document.getElementById('error').innerHTML = `Giá bắt đầu phải nhỏ hơn giá kết thúc`
-                                return false;
-                            }
-                            return true;
-                        }
-
-                        function clickSearch(entity, id) {
-                            if (checkPrice()) {
-                                document.getElementById(id).action = '/nova/' + entity + '/search'
-                                document.getElementById(id).method = 'get'
-                                document.getElementById(id).submit()
-                            }
-                        }
-                    </script>
                     <div class="row">
                         <div class="col-3">
                             <label class="font-weight-bold">Chất liệu</label>
@@ -235,17 +211,23 @@
                         </div>
                     </div>
                     <br>
-                    <div class="card-footer d-flex">
+                    <div class="card-footer d-flex justify-content-between">
                         <div class="mr-3">
                             <button onclick="clickSearch('product', 'productForm')" type="button"
                                     class="btn btn-dark">
                                 <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
-                        </div>
-                        <div>
                             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
                                 <i class="fa-solid fa-square-plus px-4"></i>
                             </button>
+                        </div>
+
+                        <div>
+                            <a href="/nova/product/view-restore">
+                                <button type="button" class="btn btn-dark">
+                                    <i class="fa-solid fa-warehouse px-4"></i>
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </form>
@@ -268,15 +250,6 @@
                 </div>
                 <div class="modal-body">
                     <form id="productAdd" th:object="${product}" class="form-horizontal">
-<!--                        <div class="form-group row">-->
-<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Mã sản phẩm</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <input type="text" class="form-control" name="code" id="code"-->
-<!--                                       oninput="onInputText('errorCode')">-->
-<!--                                <small class="" style="color: red"-->
-<!--                                       id="errorCode"></small>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
                                 <label class="font-weight-bold form-control-label">Mã sản phẩm
@@ -295,15 +268,6 @@
                             <input type="text" id="name" name="name"
                                    class="form-control" oninput="onInputText('errorName')">
                         </div>
-<!--                        <div class="form-group row">-->
-<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <input type="text" class="form-control" name="name" id="name"-->
-<!--                                       oninput="onInputText('errorName')">-->
-<!--                                <small class="" style="color: red"-->
-<!--                                       id="errorName"></small>-->
-<!--                            </div>-->
-<!--                        </div>-->
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
@@ -315,15 +279,6 @@
                                    class="form-control" oninput="onInputText('errorDescription')">
                         </div>
 
-<!--                        <div class="form-group row">-->
-<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Mô tả</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <input type="text" class="form-control" name="description" id="description"-->
-<!--                                       oninput="onInputText('errorDescription')">-->
-<!--                                <small class="" style="color: red"-->
-<!--                                       id="errorDescription"></small>-->
-<!--                            </div>-->
-<!--                        </div>-->
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
@@ -335,15 +290,6 @@
                                    class="form-control" oninput="onInputText('errorPrice')">
                         </div>
 
-<!--                        <div class="form-group row">-->
-<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Giá</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <input type="number" class="form-control" name="price" id="price"-->
-<!--                                       oninput="onInputText('errorPrice')">-->
-<!--                                <small class="" style="color: red"-->
-<!--                                       id="errorPrice"></small>-->
-<!--                            </div>-->
-<!--                        </div>-->
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
@@ -356,15 +302,6 @@
                             </select>
                         </div>
 
-<!--                        <div class="form-group row">-->
-<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Chất liệu</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <select class="form-control" name="materialId">-->
-<!--                                    <option th:value="${material.id}" th:each="material: ${listMaterial}"-->
-<!--                                            th:text="${material.name}"></option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
@@ -377,15 +314,6 @@
                             </select>
                         </div>
 
-<!--                        <div class="row form-group">-->
-<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Loại sản phẩm</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <select class="form-control" name="categoryId">-->
-<!--                                    <option th:value="${category.id}" th:each="category: ${listCategory}"-->
-<!--                                            th:text="${category.name}"></option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
@@ -398,15 +326,6 @@
                             </select>
                         </div>
 
-<!--                        <div class="row form-group">-->
-<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Thương hiệu</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <select class="form-control" name="brandId">-->
-<!--                                    <option th:value="${brand.id}" th:each="brand: ${listBrand}"-->
-<!--                                            th:text="${brand.name}"></option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
@@ -419,25 +338,6 @@
                             </select>
                         </div>
 
-<!--                        <div class="row form-group">-->
-<!--                            <label class="col-sm-2 col-form-label font-weight-bold">Kiểu dáng</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <select class="form-control" name="formId">-->
-<!--                                    <option th:value="${form.id}" th:each="form: ${listForm}"-->
-<!--                                            th:text="${form.name}"></option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-
-<!--                        </div>-->
-
-<!--                        <div class="card-footer d-flex">-->
-<!--                            <div>-->
-<!--                                <button onclick="clickAdd('product', 'productAdd')" type="button"-->
-<!--                                        class="btn btn-dark"><i-->
-<!--                                        class="fa-solid fa-square-plus px-4"></i>-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <div class="modal-footer">
                             <button onclick="clickAddProduct('product', 'productAdd')"
                                     type="button" class="btn btn-dark"><i
@@ -526,12 +426,30 @@
                         }
 
                     }
+
+                    checkPrice = () => {
+                        let priceMin = document.getElementById('priceMin').value
+                        let priceMax = document.getElementById('priceMax').value
+                        debugger
+                        if (priceMin < 0 || priceMax < 0) {
+                            document.getElementById('error').innerHTML = `Giá phải là số dương`
+                            return false;
+                        }
+                        if (Number(priceMax) < Number(priceMin)) {
+                            document.getElementById('error').innerHTML = `Giá bắt đầu phải nhỏ hơn giá kết thúc`
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    function clickSearch(entity, id) {
+                        if (checkPrice()) {
+                            document.getElementById(id).action = '/nova/' + entity + '/search'
+                            document.getElementById(id).method = 'get'
+                            document.getElementById(id).submit()
+                        }
+                    }
                 </script>
-<!--                <div class="modal-footer">-->
-<!--                    <button onclick="clickAdd('form', 'formForm', 'name', 'errorName', 'kích cỡ')"-->
-<!--                            type="button" class="btn btn-dark"><i-->
-<!--                            class="fa-solid fa-square-plus px-4"></i></button>-->
-<!--                </div>-->
             </div>
         </div>
     </div>

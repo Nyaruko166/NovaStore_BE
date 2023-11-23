@@ -1,7 +1,6 @@
 package com.sd64.novastore.repository;
 
-import com.sd64.novastore.dto.ProductDetailDto;
-import com.sd64.novastore.model.Product;
+import com.sd64.novastore.dto.admin.ProductDetailDto;
 import com.sd64.novastore.model.ProductDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
