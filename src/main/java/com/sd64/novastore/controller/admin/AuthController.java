@@ -80,7 +80,12 @@ public class AuthController {
     @GetMapping("/register")
     public String register() {
 
-        return "/common/register";
+        return "/common/registerFuckU";
+    }
+
+    @PostMapping("/register-post")
+    public String registerPost() {
+        return "";
     }
 
     @GetMapping("/change-password")

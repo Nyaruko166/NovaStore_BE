@@ -73,31 +73,7 @@
                                    th:value="${priceMax == 2147483647 ? '' : priceMax}">
                         </div>
                     </div>
-                    <script th:inline="javascript">
 
-                        checkPrice = () => {
-                            let priceMin = document.getElementById('priceMin').value
-                            let priceMax = document.getElementById('priceMax').value
-                            debugger
-                            if (priceMin < 0 || priceMax < 0) {
-                                document.getElementById('error').innerHTML = `Giá phải là số dương`
-                                return false;
-                            }
-                            if (Number(priceMax) < Number(priceMin)) {
-                                document.getElementById('error').innerHTML = `Giá bắt đầu phải nhỏ hơn giá kết thúc`
-                                return false;
-                            }
-                            return true;
-                        }
-
-                        function clickSearch(entity, id) {
-                            if (checkPrice()) {
-                                document.getElementById(id).action = '/nova/' + entity + '/search'
-                                document.getElementById(id).method = 'get'
-                                document.getElementById(id).submit()
-                            }
-                        }
-                    </script>
                     <div class="row">
                         <div class="col-3">
                             <label class="font-weight-bold">Chất liệu</label>
@@ -242,6 +218,7 @@
                                 <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
                         </div>
+
                         <div>
                             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
                                 <i class="fa-solid fa-square-plus px-4"></i>
@@ -525,6 +502,29 @@
                             });
                         }
 
+                    }
+
+                    checkPrice = () => {
+                        let priceMin = document.getElementById('priceMin').value
+                        let priceMax = document.getElementById('priceMax').value
+                        debugger
+                        if (priceMin < 0 || priceMax < 0) {
+                            document.getElementById('error').innerHTML = `Giá phải là số dương`
+                            return false;
+                        }
+                        if (Number(priceMax) < Number(priceMin)) {
+                            document.getElementById('error').innerHTML = `Giá bắt đầu phải nhỏ hơn giá kết thúc`
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    function clickSearch(entity, id) {
+                        if (checkPrice()) {
+                            document.getElementById(id).action = '/nova/' + entity + '/search'
+                            document.getElementById(id).method = 'get'
+                            document.getElementById(id).submit()
+                        }
                     }
                 </script>
 <!--                <div class="modal-footer">-->
