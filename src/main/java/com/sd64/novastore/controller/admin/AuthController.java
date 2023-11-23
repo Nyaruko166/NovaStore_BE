@@ -29,8 +29,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    MailConfig mailConfig = new MailConfig();
-
     @GetMapping("/login")
     public String login() {
         return "/common/index";
@@ -45,12 +43,12 @@ public class AuthController {
     public String forgor(@RequestParam(value = "email", defaultValue = "") String email,
                          HttpServletRequest request, Model model) {
         if (email.isBlank()) {
-            return "forgor";
+            return "/common/forgor";
         }
         if (authService.codeGen(email, request)) {
             model.addAttribute("mess", "Đã gửi mã xác minh đến email của bạn...");
 //            System.out.println("Mail đang được gửi...");
-            return "forgor";
+            return "/common/forgor";
         }
         model.addAttribute("err", "Email này chưa được đăng ký !!!");
         return "/common/forgor";
@@ -78,23 +76,51 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String register() {
+    public String register(Model model) {
+        Account account = new Account();
+//        model.addAttribute("x", account);
+        return "/common/register";
+    }
 
-        return "/common/registerFuckU";
+    @PostMapping("/register-post")
+    public String registerP(
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("sdt") String sdt,
+            @RequestParam("password") String password,
+            @RequestParam("rePassword") String rePassword,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        Account user = Account.builder()
+                .name(name)
+                .email(email)
+                .phoneNumber(sdt)
+                .password(password)
+                .build();
+
+        if (accountService.registerUser(user) == 0) {
+            redirectAttributes.addFlashAttribute("mess", "Đăng ký thành công !!");
+            return "redirect:/login";
+        }
+
+        redirectAttributes.addFlashAttribute("mess", "Email đã tồn tại !!");
+//        redirectAttributes.addFlashAttribute("x", user);
+        return "redirect:/register";
     }
 
     @GetMapping("/change-password")
     public String changePass(@RequestParam(value = "email", defaultValue = "") String email,
                              HttpServletRequest request, Model model) {
         if (email.isBlank()) {
-            return "change-pass";
+            return "/common/change-pass";
         }
         if (authService.codeGenChangePass(email, request)) {
             model.addAttribute("mess", "Đã gửi mã xác minh đến email của bạn...");
-            return "change-pass";
+            return "/common/change-pass";
         }
         model.addAttribute("err", "Email này chưa được đăng ký !!!");
-        return "change-pass";
+        return "/common/change-pass";
     }
 
     @PostMapping("/change-pass-post")
@@ -125,20 +151,7 @@ public class AuthController {
                 model.addAttribute("err", "Mã xác minh không khớp !!!");
                 break;
         }
-        return "change-pass";
-    }
-
-    @GetMapping("/mail")
-    public String test() {
-
-        String confirmCode = String.valueOf(mailConfig.randomCode());
-
-        String body = mailUtil.confirmMailTemplate
-                ("occho1666@gmail.com", confirmCode, mailConfig.company, mailConfig.contact);
-
-        mailUtil.sendEmail("occho1666@gmail.com", mailConfig.confirmMail, body);
-
-        return "access-denied";
+        return "/common/change-pass";
     }
 
 }
