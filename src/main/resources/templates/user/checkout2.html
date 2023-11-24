@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/user/fragments::head}">
+</head>
+
+<body>
+<div th:replace="~{/user/fragments::header}"></div>
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Thanh toán</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Thanh toán</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+
+<div class=" container-fluid my-5 ">
+    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addressModalLabel">Chọn địa chỉ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="radio" th:id="${'address-' + defaultAddress.id}"
+                           th:value="${defaultAddress.id}"
+                           checked>
+                    <div class="card">
+
+                    </div>
+                    <div th:each="">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center ">
+        <div class="col-xl-12">
+            <div class="card shadow-lg ">
+                <div class="row justify-content-around">
+                    <div class="col-md-4">
+                        <div class="card border-0">
+                            <div class="card-header pb-0" style="background: none; border-bottom: none">
+                                <p class="card-text text-muted mt-4  space">ĐỊA CHỈ NHẬN HÀNG</p>
+                                <hr class="my-0">
+                            </div>
+                            <div class="card-body">
+                                <div class="row justify-content-between">
+                                    <input type="text" th:value="${defaultAddress.id}" hidden="true">
+                                    <div class="col-auto mt-0">
+                                        <p>
+                                            <b th:text="${defaultAddress.customerName + ' ' + defaultAddress.phoneNumber}"></b>
+                                        </p>
+                                    </div>
+                                    <div class="col-auto">
+                                        <p>
+                                            <b th:text="${defaultAddress.specificAddress + ', ' + defaultAddress.ward + ', ' + defaultAddress.district + ', ' + defaultAddress.city}"></b>
+                                        </p>
+                                    </div>
+                                    <a href="#" data-toggle="modal" data-target="#addressModal">
+                                        Thay đổi
+                                    </a>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col"><p class="text-muted mb-2">PHƯƠNG THỨC THANH TOÁN</p><hr class="mt-0"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="radio" th:value="'Thanh toán khi nhận hàng'"
+                                           name="payment" id="cod" checked>
+                                    <label for="cod" class="small text-muted mb-1">Thanh toán khi nhận hàng</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="radio" th:value="'VNPAY'"
+                                           name="payment" id="vnpay">
+                                    <label for="vnpay" class="small text-muted mb-1">VNPAY</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="radio" th:value="'ZaloPay'"
+                                           name="payment" id="zalopay">
+                                    <label for="zalopay" class="small text-muted mb-1">ZaloPay</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="radio" th:value="'Momo'"
+                                           name="payment" id="momo">
+                                    <label for="momo" class="small text-muted mb-1">Momo</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 ">
+                            <div class="card-header card-2" style="background: none; border-bottom: none">
+                                <p class="card-text text-muted mt-md-4  mb-2 space">TỔNG QUAN ĐƠN HÀNG</p>
+                                <hr class="my-2">
+                            </div>
+                            <div class="card-body pt-0">
+                                <div th:each="item : ${cart.getCartDetails()}">
+                                    <div class="row  justify-content-between">
+                                        <div class="col-auto col-md-7">
+                                            <div class="media flex-column flex-sm-row">
+                                                <img class=" img-fluid" src="https://i.imgur.com/6oHix28.jpg" width="62" height="62">
+                                                <div class="media-body  my-auto">
+                                                    <div class="row ">
+                                                        <div class="col-auto">
+                                                            <p class="mb-0"><b th:text="${item.productDetail.product.name}"></b></p>
+                                                            <small class="text-muted" th:text="'Màu: ' + ${item.productDetail.color.name}
+                                + ', ' + 'Kích cỡ: ' + ${item.productDetail.size.name}"></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" pl-0 flex-sm-col col-auto  my-auto ">
+                                            <p>
+                                                <b th:text="'₫' + ${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></b>
+                                            </p>
+                                        </div>
+                                        <div class=" pl-0 flex-sm-col col-auto  my-auto"> <p class="boxed-1" th:text="'SL: ' + ${item.quantity}"></p></div>
+                                        <div class=" pl-0 flex-sm-col col-auto  my-auto ">
+                                            <p>
+                                                <b th:text="'₫' + ${#numbers.formatDecimal(item.price*item.quantity, 0, 'COMMA', 0, 'POINT')}"></b>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <hr class="my-2">
+                                </div>
+                                <div class="row ">
+                                    <div class="col">
+                                        <div class="row justify-content-between">
+                                            <div class="col-4"><p class="mb-1"><b>Tổng tiền hàng</b></p></div>
+                                            <div class="flex-sm-col col-auto">
+                                                <p class="mb-1">
+                                                    <b th:text="'₫' + ${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')}"></b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col"><p class="mb-1"><b>Phí ship</b></p></div>
+                                            <div class="flex-sm-col col-auto"><p class="mb-1"><b>Sẽ phát sinh thêm</b></p></div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-4"><p ><b>Tạm tính</b></p></div>
+                                            <div class="flex-sm-col col-auto">
+                                                <p  class="mb-1">
+                                                    <b th:text="'₫' + ${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')}"></b>
+                                                </p>
+                                            </div>
+                                        </div><hr class="my-0">
+                                    </div>
+                                </div>
+                                <div class="row mb-5 mt-4 ">
+                                    <div class="col-md-7 col-lg-6 mx-auto"><button type="submit" class="btn btn-block btn-outline-primary btn-lg">ĐẶT HÀNG</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{/user/fragments::footer}"></div>
+
+<div th:replace="~{/user/fragments::script}"></div>
+
+</body>
+
+</html>
