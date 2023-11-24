@@ -163,7 +163,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public byte[] getImageByProduct(Integer productId) {
+    public byte[] getImageByProductId(Integer productId) {
         var image = imageRepository.findTopByProductIdOrderByUpdateDateDesc(productId);
         if (image == null) {
             log.info("productId id = {} is not contain image", productId);

@@ -1,12 +1,9 @@
 package com.sd64.novastore.controller.user;
 
 import com.sd64.novastore.dto.admin.ProductDto;
-import com.sd64.novastore.model.Cart;
-import com.sd64.novastore.model.Color;
-import com.sd64.novastore.model.Customer;
-import com.sd64.novastore.model.Product;
-import com.sd64.novastore.model.Size;
+import com.sd64.novastore.model.*;
 import com.sd64.novastore.service.CustomerService;
+import com.sd64.novastore.service.ImageService;
 import com.sd64.novastore.service.user.ProductViewService;
 import com.sd64.novastore.service.user.UserColorService;
 import com.sd64.novastore.service.user.UserSizeService;
@@ -35,6 +32,9 @@ public class UserController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private ImageService imageService;
+
     @GetMapping("/home")
     public String home(Model model, Principal principal, HttpSession session){
         if (principal != null){
@@ -60,11 +60,12 @@ public class UserController {
     @GetMapping("/product-detail/{id}")
     public String productDetail(@PathVariable Integer id, Model model){
         Product product = productViewService.getOne(id);
-        List<Color> listProductColor = userColorService.getColorByProductId(id);
-        List<Size> listProductSize = userSizeService.getSizeByProductId(id);
+        List<Color> listColor = userColorService.getColorByProductId(id);
+        List<Size> listSize = userSizeService.getSizeByProductId(id);
+
         model.addAttribute("product", product);
-        model.addAttribute("listProductColor", listProductColor);
-        model.addAttribute("listProductSize", listProductSize);
+        model.addAttribute("listProductColor", listColor);
+        model.addAttribute("listProductSize", listSize);
         return "/user/detail";
     }
 }

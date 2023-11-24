@@ -147,4 +147,14 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(page, 10);
         return productRepository.searchProductDeleted(pageable, brandId, categoryId, formId, materialId, productName, description, priceMin, priceMax);
     }
+
+    @Override
+    public void restore(List<Integer> listInteger) {
+        for (int i = 0; i < listInteger.size(); i++) {
+            Product product = getOne(listInteger.get(i));
+            product.setStatus(1);
+            product.setUpdateDate(new Date());
+            productRepository.save(product);
+        }
+    }
 }

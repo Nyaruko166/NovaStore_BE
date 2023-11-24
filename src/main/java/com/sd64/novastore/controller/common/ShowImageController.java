@@ -28,7 +28,7 @@ public class ShowImageController {
 
     @GetMapping("/product/{productId}")
     public ResponseEntity<byte[]> getImageByProductId(@PathVariable Integer productId) throws IOException {
-        byte[] imageData = imageService.getImageByProduct(productId);
+        byte[] imageData = imageService.getImageByProductId(productId);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_PNG)

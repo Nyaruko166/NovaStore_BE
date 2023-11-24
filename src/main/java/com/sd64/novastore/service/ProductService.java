@@ -29,4 +29,7 @@ public interface ProductService {
     Page<ProductDto> getAllProductDeleted(int page);
 
     Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, BigDecimal priceMin, BigDecimal priceMax, int page);
+
+    void restore(List<Integer> listInteger);
+
 }

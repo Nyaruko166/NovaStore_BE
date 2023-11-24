@@ -19,4 +19,6 @@ public interface BrandService {
     Page<Brand> search(String name, int page);
 
     Brand detail(Integer id);
+
+    Page<Brand> getAllBrandDeleted(int page);
 }

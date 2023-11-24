@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>THƯƠNG HIỆU</strong>
+                <strong>THƯƠNG HIỆU ĐÃ XÓA</strong>
             </div>
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -20,58 +20,7 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form id="brandForm" class="form-horizontal">
-                    <div class="card-footer d-flex justify-content-between">
-                        <div>
-                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
-                                <i class="fa-solid fa-square-plus px-4"></i>
-                            </button>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between">
-                                                    <label class="font-weight-bold form-control-label">Tên thương hiệu
-                                                        </label>
-                                                    <div class="" style="color: red" id="errorName"></div>
-                                                </div>
-                                                <input type="text" id="name" name="name"
-                                                       class="form-control" oninput="onInputText('errorName')">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button onclick="clickAdd('brand', 'brandForm', 'name', 'errorName', 'tên thương hiệu')"
-                                                    type="button" class="btn btn-dark"><i
-                                                    class="fa-solid fa-square-plus px-4"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <a href="/nova/product/page">
-                                <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left px-4"></i>
-                                </button>
-                            </a>
-                        </div>
-                        <div>
-                            <a href="/nova/brand/view-restore">
-                                <button type="button" class="btn btn-dark">
-                                    <i class="fa-solid fa-warehouse px-4"></i>
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                    <br>
+                <form id="brandRestore" class="form-horizontal">
                     <div class="border-search">
                         <div class="col-md-1">
                             <button onclick="clickSearch('brand', 'brandForm')" type="button"
@@ -85,8 +34,14 @@
                                    class="form-control">
                         </div>
                     </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button onclick="clickRestore()" type="button" class="btn btn-danger">
+                            <i class="fa-solid fa-trash-can-arrow-up px-4"></i>
+                        </button>
+                    </div>
                 </form>
             </div>
+
         </div>
     </div>
 

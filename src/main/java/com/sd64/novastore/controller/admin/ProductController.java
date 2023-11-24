@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/nova/product")
@@ -198,9 +199,11 @@ public class ProductController {
     }
 
     @PostMapping("/restore")
-    public String restore() {
-
-        return "";
+    public String restore(@RequestParam List<Integer> listProductId,
+                          RedirectAttributes redirectAttributes) {
+        productService.restore(listProductId);
+        redirectAttributes.addFlashAttribute("mess", "Khôi phục sản phẩm thành công");
+        return "redirect:/nova/product/view-restore";
     }
 
     @GetMapping("/search-restore")
