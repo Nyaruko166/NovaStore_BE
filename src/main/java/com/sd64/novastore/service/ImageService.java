@@ -23,5 +23,5 @@ public interface ImageService {
 
     Image detail(Integer id);
 
-    byte[] getImageByProduct(Integer productId);
+    byte[] getImageByProductId(Integer productId);
 }

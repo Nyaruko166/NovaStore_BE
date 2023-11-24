@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean add(String code, String productName, String description, BigDecimal price, Integer materialId, Integer categoryId,
+    public Boolean add(String code, String productName, String description, Integer materialId, Integer categoryId,
                        Integer brandId, Integer formId) {
         if (checkCode(code)) {
             Product product = new Product();
@@ -63,7 +63,6 @@ public class ProductServiceImpl implements ProductService {
             product.setDescription(description);
             product.setCreateDate(new Date());
             product.setUpdateDate(new Date());
-            product.setPrice(price);
             product.setMaterial(Material.builder().id(materialId).build());
             product.setCategory(Category.builder().id(categoryId).build());
             product.setBrand(Brand.builder().id(brandId).build());
@@ -75,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product update(Integer id, String code, String productName, String description, BigDecimal price, Integer materialId,
+    public Product update(Integer id, String code, String productName, String description, Integer materialId,
                           Integer categoryId, Integer brandId, Integer formId) {
         Product product = new Product();
         product.setId(id);
@@ -85,7 +84,6 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(description);
         product.setCreateDate(new Date());
         product.setUpdateDate(new Date());
-        product.setPrice(price);
         product.setMaterial(Material.builder().id(materialId).build());
         product.setCategory(Category.builder().id(categoryId).build());
         product.setBrand(Brand.builder().id(brandId).build());
@@ -106,9 +104,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, BigDecimal priceMin, BigDecimal priceMax, int page) {
+    public Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return productRepository.search(pageable, brandId, categoryId, formId, materialId, productName, description, priceMin, priceMax);
+        return productRepository.search(pageable, brandId, categoryId, formId, materialId, productName, description);
     }
 
     @Override
@@ -143,8 +141,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, BigDecimal priceMin, BigDecimal priceMax, int page) {
+    public Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        return productRepository.searchProductDeleted(pageable, brandId, categoryId, formId, materialId, productName, description, priceMin, priceMax);
+        return productRepository.searchProductDeleted(pageable, brandId, categoryId, formId, materialId, productName, description);
+    }
+
+    @Override
+    public void restore(List<Integer> listInteger) {
+        for (int i = 0; i < listInteger.size(); i++) {
+            Product product = getOne(listInteger.get(i));
+            product.setStatus(1);
+            product.setUpdateDate(new Date());
+            productRepository.save(product);
+        }
     }
 }

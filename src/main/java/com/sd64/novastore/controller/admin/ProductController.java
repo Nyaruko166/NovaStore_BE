@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/nova/product")
@@ -68,13 +69,12 @@ public class ProductController {
     public String add(@RequestParam String code,
                       @RequestParam String name,
                       @RequestParam String description,
-                      @RequestParam BigDecimal price,
                       @RequestParam Integer materialId,
                       @RequestParam Integer categoryId,
                       @RequestParam Integer brandId,
                       @RequestParam Integer formId,
                       RedirectAttributes redirectAttributes) {
-        if (productService.add(code, name, description, price, materialId, categoryId, brandId, formId)) {
+        if (productService.add(code, name, description, materialId, categoryId, brandId, formId)) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
         } else {
             redirectAttributes.addFlashAttribute("error", "Mã sản phẩm đã tồn tại, Thêm dữ liệu thất bại");
@@ -103,13 +103,12 @@ public class ProductController {
                          @PathVariable Integer id,
                          @RequestParam String name,
                          @RequestParam String description,
-                         @RequestParam BigDecimal price,
                          @RequestParam Integer materialId,
                          @RequestParam Integer categoryId,
                          @RequestParam Integer brandId,
                          @RequestParam Integer formId,
                          RedirectAttributes redirectAttributes) {
-        productService.update(id, code, name, description, price, materialId, categoryId, brandId, formId);
+        productService.update(id, code, name, description, materialId, categoryId, brandId, formId);
         redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
         return "redirect:/nova/product/page";
     }
@@ -141,10 +140,7 @@ public class ProductController {
             priceMax = BigDecimal.valueOf(Integer.MAX_VALUE);
             model.addAttribute("priceMaxNull", null);
         }
-//        if (priceMin != null && priceMax != null) {
-//
-//        }
-        Page<ProductDto> pageProductDto = productService.search(materialId, brandId, formId, categoryId, productName, description, priceMin, priceMax, page);
+        Page<ProductDto> pageProductDto = productService.search(materialId, brandId, formId, categoryId, productName, description, page);
         model.addAttribute("pageProduct", pageProductDto);
         model.addAttribute("productName", productName);
         model.addAttribute("description", description);
@@ -198,9 +194,11 @@ public class ProductController {
     }
 
     @PostMapping("/restore")
-    public String restore() {
-
-        return "";
+    public String restore(@RequestParam List<Integer> listProductId,
+                          RedirectAttributes redirectAttributes) {
+        productService.restore(listProductId);
+        redirectAttributes.addFlashAttribute("mess", "Khôi phục sản phẩm thành công");
+        return "redirect:/nova/product/view-restore";
     }
 
     @GetMapping("/search-restore")
@@ -225,7 +223,7 @@ public class ProductController {
 //        if (priceMin != null && priceMax != null) {
 //
 //        }
-        Page<ProductDto> pageProductDto = productService.searchProductDeleted(materialId, brandId, formId, categoryId, productName, description, priceMin, priceMax, page);
+        Page<ProductDto> pageProductDto = productService.searchProductDeleted(materialId, brandId, formId, categoryId, productName, description, page);
         model.addAttribute("pageProduct", pageProductDto);
         model.addAttribute("productName", productName);
         model.addAttribute("description", description);

@@ -75,18 +75,15 @@ public class ProductExcelUtil {
                             product.setDescription(cell.getStringCellValue());
                             break;
                         case 3:
-                            product.setPrice(BigDecimal.valueOf(cell.getNumericCellValue()));
-                            break;
-                        case 4:
                             product.setBrand(brandRepository.findByName(cell.getStringCellValue()));
                             break;
-                        case 5:
+                        case 4:
                             product.setMaterial(materialRepository.findByName(cell.getStringCellValue()));
                             break;
-                        case 6:
+                        case 5:
                             product.setCategory(categoryRepository.findByName(cell.getStringCellValue()));
                             break;
-                        case 7:
+                        case 6:
                             product.setForm(formRepository.findByName(cell.getStringCellValue()));
                             break;
                         default:

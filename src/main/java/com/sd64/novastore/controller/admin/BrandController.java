@@ -68,4 +68,29 @@ public class BrandController {
         model.addAttribute("pageBrand", pageBrand);
         return "admin/brand/brand";
     }
+
+    @GetMapping("/view-restore")
+    public String getBrandRestore(@RequestParam(defaultValue = "0") Integer page, Model model) {
+        Page<Brand> pageBrand = brandService.getAllBrandDeleted(page);
+        model.addAttribute("pageBrand", pageBrand);
+        model.addAttribute("page", page);
+        return "admin/brand/brand-restore";
+    }
+
+    @GetMapping("/search-restore")
+    public String searchBrandDelete(Model model, @RequestParam(required = false) String brandNameSearch,
+                         @RequestParam(defaultValue = "0") int page) {
+        Page<Brand> pageBrand = brandService.search(brandNameSearch, page);
+        if ("".equals(brandNameSearch) || brandNameSearch.isEmpty()) {
+            return "redirect:/nova/brand/view-restore";
+        }
+        model.addAttribute("brandNameSearch", brandNameSearch);
+        model.addAttribute("pageBrand", pageBrand);
+        return "admin/brand/brand-restore";
+    }
+
+    @PostMapping("/restore")
+    public String restore() {
+        return "";
+    }
 }

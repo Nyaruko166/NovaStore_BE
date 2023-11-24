@@ -79,4 +79,11 @@ public class BrandServiceImpl implements BrandService {
             return null;
         }
     }
+
+
+    @Override
+    public Page<Brand> getAllBrandDeleted(int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
+    }
 }
