@@ -5,7 +5,9 @@ import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.SessionCart;
 import com.sd64.novastore.model.Size;
+import com.sd64.novastore.service.CartService;
 import com.sd64.novastore.service.CustomerService;
 import com.sd64.novastore.service.user.ProductViewService;
 import com.sd64.novastore.service.user.UserColorService;
@@ -35,12 +37,20 @@ public class UserController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CartService cartService;
+
     @GetMapping("/home")
     public String home(Model model, Principal principal, HttpSession session){
         if (principal != null){
             Customer customer = customerService.findByEmail(principal.getName());
             session.setAttribute("username", customer.getName());
             Cart cart = customer.getCart();
+            SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+            if (sessionCart != null){
+                cartService.combineCart(sessionCart, principal.getName());
+                session.removeAttribute("sessionCart");
+            }
             if (cart != null){
                 session.setAttribute("totalItems", cart.getTotalItems());
             }

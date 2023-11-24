@@ -43,16 +43,16 @@ public class BillController {
         return "redirect:/nova/bill/page";
     }
 
-    @RequestMapping(value = "/shipping-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String shippingBill(@PathVariable Integer id, RedirectAttributes attributes) {
-        billService.shippingOrder(id);
+    @RequestMapping(value = "/confirm-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String confirmBill(@PathVariable Integer id, RedirectAttributes attributes) {
+        billService.acceptBill(id);
         return "redirect:/nova/bill/page";
     }
 
-    @PostMapping("/confirm-bill")
-    public String confirmBill(@RequestParam("id") Integer id,
+    @PostMapping("/shipping-bill")
+    public String shippingBill(@RequestParam("id") Integer id,
                               @RequestParam("shippingFee") BigDecimal shippingFee){
-        billService.acceptBill(id, shippingFee);
+        billService.shippingOrder(id, shippingFee);
         return "redirect:/nova/bill/page";
     }
 //    @PostMapping("/delete/{id}")

@@ -7,7 +7,6 @@
 </head>
 <body>
 <div layout:fragment="content">
-
     <div class="col">
         <div class="card">
             <div class="card-header">
@@ -54,23 +53,30 @@
                                             </button>
                                         </a>
                                     </div>
-                                    <div style="margin-right: 10px" th:if="${bill.status == 10}">
+                                    <div style="margin-right: 10px">
+                                        <a th:href="@{'/nova/bill/confirm-bill/' + ${bill.id}}" th:if="${bill.status == 10}">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="fa-solid fa-address-book mr-1"></i>Xác nhận
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div style="margin-right: 10px" th:if="${bill.status == 3}">
                                         <button type="button" class="btn btn-info" data-toggle="modal"
-                                                data-target="#confirmModal">
-                                            <i class="fa-solid fa-pen mr-1"></i>Xác nhận
+                                                data-target="#shippingBill">
+                                            <i class="fa-solid fa-pen mr-1"></i>Giao hàng
                                         </button>
                                         <!--Confirm Modal -->
-                                        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="shippingBill" tabindex="-1" role="dialog" aria-labelledby="shippingBill" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="confirmModalLabel">Xác nhận</h5>
+                                                        <h5 class="modal-title" id="shippingBillLabel">Xác nhận</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form id="confirmForm" th:action="@{/nova/bill/confirm-bill}" method="post">
+                                                        <form id="shippingForm" th:action="@{/nova/bill/shipping-bill}" method="post">
                                                             <div class="form-group">
                                                                 <input type="text" hidden="true" name="id" th:value="${bill.id}">
                                                                 <label for="shippingFee">Nhập phí Ship cho đơn hàng</label>
@@ -83,13 +89,6 @@
                                             </div>
                                         </div>
                                         <!--End Modal-->
-                                    </div>
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/bill/shipping-bill/' + ${bill.id}}" th:if="${bill.status == 2}">
-                                            <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-address-book mr-1"></i>Ship đơn
-                                            </button>
-                                        </a>
                                     </div>
                                     <div style="margin-right: 10px">
                                         <a th:href="@{'/nova/bill/complete-bill/' + ${bill.id}}" th:if="${bill.status == 2}">
@@ -115,6 +114,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>
