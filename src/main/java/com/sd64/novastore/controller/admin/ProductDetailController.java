@@ -112,26 +112,6 @@ public class ProductDetailController {
         return "redirect:/nova/product/" + productDetail.getProduct().getId() +"/product-detail";
     }
 
-//    @GetMapping("/search")
-//    public RedirectView search(@RequestParam(required = false) Integer productId,
-//                               @RequestParam(required = false) Integer quantity,
-//                               @RequestParam(required = false) Integer sizeId,
-//                               @RequestParam(required = false) Integer colorId,
-//                               @RequestParam(defaultValue = "0") int page,
-//                               Model model, RedirectAttributes redirectAttributes) {
-//        Page<ProductDetailDto> pageProductDetailDto = productDetailService.getProductBySizeIdAndColorId(page, productId, sizeId, colorId);
-//        List<Size> listSize = sizeService.getAll();
-//        List<Color> listColor = colorService.getAll();
-//        model.addAttribute("listSize", listSize);
-//        model.addAttribute("listColor", listColor);
-//        model.addAttribute("quantity", quantity);
-//        model.addAttribute("sizeId", sizeId);
-//        model.addAttribute("colorId", colorId);
-//        model.addAttribute("pageProductDetail", pageProductDetailDto);
-//        redirectAttributes.addFlashAttribute("pageProductDetail", pageProductDetailDto);
-//        return new RedirectView("/nova/product-detail/" + productId);
-//    }
-
     @GetMapping("/product-detail/search")
     public String search( @RequestParam Integer productId, Model model, @RequestParam(defaultValue = "0") int page,
                            @RequestParam(required = false) Integer sizeId,
