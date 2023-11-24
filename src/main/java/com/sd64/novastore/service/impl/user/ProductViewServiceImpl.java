@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl.user;
 
+import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.repository.user.ProductViewRepository;
 import com.sd64.novastore.service.user.ProductViewService;
@@ -17,6 +18,11 @@ public class ProductViewServiceImpl implements ProductViewService {
     @Override
     public List<Product> getAllProductView() {
         return productViewRepository.getAllProductView();
+    }
+
+    @Override
+    public List<Product> getAllProductResponse () {
+        return productViewRepository.getAllProductResponse();
     }
 
     @Override

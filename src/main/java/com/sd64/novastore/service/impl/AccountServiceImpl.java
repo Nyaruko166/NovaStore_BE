@@ -3,8 +3,10 @@ package com.sd64.novastore.service.impl;
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Role;
 import com.sd64.novastore.repository.AccountRepository;
+import com.sd64.novastore.repository.RoleRepository;
 import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.utils.FileUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,18 +16,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AccountServiceImpl implements AccountService {
 
     private final String uploadDir = "./src/main/resources/static/assets/avatars/";
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -121,5 +130,66 @@ public class AccountServiceImpl implements AccountService {
     public Page<Account> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return accountRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    private byte[] convert(String imagePath) throws IOException {
+        // Create a FileInputStream object to read the image file.
+        FileInputStream fis = new FileInputStream(imagePath);
+
+        // Create a ByteArrayOutputStream object to store the image data in bytes.
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        // Read the image data from the FileInputStream object and write it to the ByteArrayOutputStream object.
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = fis.read(buffer)) != -1) {
+            bos.write(buffer, 0, bytesRead);
+        }
+        // Close the FileInputStream and ByteArrayOutputStream objects.
+        fis.close();
+        bos.close();
+
+        // Get the byte array containing the image data from the ByteArrayOutputStream object.
+        byte[] imageData = bos.toByteArray();
+        return imageData;
+    }
+
+    private String getImagePath(String fileName) {
+        String currentProjectPath = System.getProperty("user.dir");
+        return currentProjectPath + File.separator + "src/main/resources/static/assets/avatars"
+                + File.separator + fileName;
+    }
+    @Override
+    public byte[] get(Integer accountId) {
+        var account = accountRepository.findById(accountId).orElse(null);
+        if (account == null) {
+            log.info("image id = {} is not exist on DB", accountId);
+            return null;
+        }
+        try {
+            return convert(getImagePath(account.getAvatar()));
+        } catch (IOException e) {
+            log.error("Convert image fail, image id = {}", accountId);
+            return null;
+        }
+    }
+    
+    @Override
+    public Integer registerUser(Account user) {
+
+        Account check = accountRepository.findFirstByEmail(user.getEmail());
+        if (check == null) {
+            String rawPass = user.getPassword();
+            user.setPassword(passwordEncoder.encode(rawPass));
+            Role role = roleRepository.findFirstByName("User");
+            user.setRole(role);
+            user.setCreateDate(new Date());
+            user.setUpdateDate(new Date());
+            user.setStatus(1);
+            accountRepository.save(user);
+            return 0;
+        }
+
+        return 1;
     }
 }

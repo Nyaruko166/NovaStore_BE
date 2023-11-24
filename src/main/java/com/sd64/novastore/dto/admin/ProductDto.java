@@ -1,4 +1,4 @@
-package com.sd64.novastore.dto;
+package com.sd64.novastore.dto.admin;
 
 import java.math.BigDecimal;
 

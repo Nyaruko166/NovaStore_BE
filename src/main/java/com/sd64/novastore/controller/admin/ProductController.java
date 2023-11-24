@@ -1,6 +1,6 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.dto.ProductDto;
+import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.model.*;
 import com.sd64.novastore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/nova/product")
@@ -142,9 +141,9 @@ public class ProductController {
             priceMax = BigDecimal.valueOf(Integer.MAX_VALUE);
             model.addAttribute("priceMaxNull", null);
         }
-        if (priceMin != null && priceMax != null) {
-
-        }
+//        if (priceMin != null && priceMax != null) {
+//
+//        }
         Page<ProductDto> pageProductDto = productService.search(materialId, brandId, formId, categoryId, productName, description, priceMin, priceMax, page);
         model.addAttribute("pageProduct", pageProductDto);
         model.addAttribute("productName", productName);
@@ -181,5 +180,69 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
             return "redirect:/nova/product/page";
         }
+    }
+
+    @GetMapping("/view-restore")
+    public String viewRestore(@RequestParam(defaultValue = "0") int page, Model model) {
+        Page<ProductDto> pageProductDto = productService.getAllProductDeleted(page);
+        model.addAttribute("pageProduct", pageProductDto);
+        List<Material> listMaterial = materialService.getAll();
+        List<Category> listCategory = categoryService.getAll();
+        List<Form> listForm = formService.getAll();
+        List<Brand> listBrand = brandService.getAll();
+        model.addAttribute("listMaterial", listMaterial);
+        model.addAttribute("listCategory", listCategory);
+        model.addAttribute("listForm", listForm);
+        model.addAttribute("listBrand", listBrand);
+        return "admin/product/product-restore";
+    }
+
+    @PostMapping("/restore")
+    public String restore() {
+
+        return "";
+    }
+
+    @GetMapping("/search-restore")
+    public String searchProductDelete(@RequestParam(required = false) String productName,
+                         @RequestParam(required = false) Integer brandId,
+                         @RequestParam(required = false) Integer materialId,
+                         @RequestParam(required = false) Integer categoryId,
+                         @RequestParam(required = false) Integer formId,
+                         @RequestParam(required = false) String description,
+                         @RequestParam(required = false) BigDecimal priceMin,
+                         @RequestParam(required = false) BigDecimal priceMax,
+                         @RequestParam(defaultValue = "0") int page,
+                         Model model) {
+        if (priceMin == null) {
+            priceMin = BigDecimal.valueOf(0);
+            model.addAttribute("priceMinNull", null);
+        }
+        if (priceMax == null) {
+            priceMax = BigDecimal.valueOf(Integer.MAX_VALUE);
+            model.addAttribute("priceMaxNull", null);
+        }
+//        if (priceMin != null && priceMax != null) {
+//
+//        }
+        Page<ProductDto> pageProductDto = productService.searchProductDeleted(materialId, brandId, formId, categoryId, productName, description, priceMin, priceMax, page);
+        model.addAttribute("pageProduct", pageProductDto);
+        model.addAttribute("productName", productName);
+        model.addAttribute("description", description);
+        List<Material> listMaterial = materialService.getAll();
+        List<Category> listCategory = categoryService.getAll();
+        List<Form> listForm = formService.getAll();
+        List<Brand> listBrand = brandService.getAll();
+        model.addAttribute("listMaterial", listMaterial);
+        model.addAttribute("listCategory", listCategory);
+        model.addAttribute("listForm", listForm);
+        model.addAttribute("listBrand", listBrand);
+        model.addAttribute("brandId", brandId);
+        model.addAttribute("materialId", materialId);
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("formId", formId);
+        model.addAttribute("priceMin", priceMin);
+        model.addAttribute("priceMax", priceMax);
+        return "admin/product/product-restore";
     }
 }

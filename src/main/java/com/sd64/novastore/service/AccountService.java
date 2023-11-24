@@ -23,4 +23,8 @@ public interface AccountService {
     Account findOne(Integer id);
 
     Account findFirstByEmail(String email);
+
+    byte[] get(Integer accountId);
+    
+    Integer registerUser(Account user);
 }

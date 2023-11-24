@@ -1,4 +1,4 @@
-package com.sd64.novastore.dto;
+package com.sd64.novastore.dto.admin;
 
 public interface ProductDetailDto {
 
