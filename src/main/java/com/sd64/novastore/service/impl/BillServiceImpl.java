@@ -1,10 +1,12 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Address;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.CartDetail;
 import com.sd64.novastore.model.PaymentMethod;
 import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.repository.AddressRepository;
 import com.sd64.novastore.repository.BillDetailRepository;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.repository.BillRepository;
@@ -43,6 +45,9 @@ public class BillServiceImpl implements BillService {
 
     @Autowired
     private PaymentMethodRepository paymentMethodRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Override
     public List<Bill> getAllBill() {
@@ -129,9 +134,13 @@ public class BillServiceImpl implements BillService {
     @Transactional
     public Bill placeOrder(Cart cart, String address, String payment) {
         Bill bill = new Bill();
-        bill.setCustomerName(cart.getCustomer().getName());
-        bill.setAddress(address);
-        bill.setPhoneNumber(cart.getCustomer().getPhoneNumber());
+        Address customerAddress = addressRepository.findById(Integer.valueOf(address)).orElse(null);
+        bill.setCustomerName(customerAddress.getCustomerName());
+        bill.setAddress(customerAddress.getSpecificAddress() + ", "
+                + customerAddress.getWard() + ", "
+                + customerAddress.getDistrict() + ", "
+                + customerAddress.getCity());
+        bill.setPhoneNumber(customerAddress.getPhoneNumber());
         bill.setOrderDate(new Date());
         bill.setPrice(cart.getTotalPrice());
         bill.setDiscountAmount(BigDecimal.ZERO);
@@ -173,9 +182,11 @@ public class BillServiceImpl implements BillService {
         paymentMethod.setName(payment);
         if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo")){
             paymentMethod.setMoney(bill.getTotalPrice());
+            paymentMethod.setStatus(1);
+        } else {
+            paymentMethod.setStatus(10);
         }
         paymentMethod.setDescription(payment);
-        paymentMethod.setStatus(1);
         paymentMethodRepository.save(paymentMethod);
         return billRepository.save(bill);
     }
@@ -209,20 +220,20 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Bill acceptBill(Integer id, BigDecimal shippingFee) {
+    public Bill shippingOrder(Integer id, BigDecimal shippingFee) {
         Bill bill = billRepository.findById(id).orElse(null);
-        bill.setStatus(3);
-        bill.setConfirmationDate(new Date());
+        bill.setStatus(2);
+        bill.setShippingDate(new Date());
         bill.setShippingFee(shippingFee);
         bill.setTotalPrice(bill.getPrice().subtract(bill.getDiscountAmount()).add(shippingFee));
         return billRepository.save(bill);
     }
 
     @Override
-    public Bill shippingOrder(Integer id) {
+    public Bill acceptBill(Integer id) {
         Bill bill = billRepository.findById(id).orElse(null);
-        bill.setStatus(2);
-        bill.setShippingDate(new Date());
+        bill.setStatus(3);
+        bill.setConfirmationDate(new Date());
         return billRepository.save(bill);
     }
 }

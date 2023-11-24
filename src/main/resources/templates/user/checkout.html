@@ -23,6 +23,14 @@
 
 <!-- Checkout Start -->
 <div class="container-fluid pt-5">
+    <!--            Notification-->
+    <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+         style="margin: 5px">
+        <span th:text="${mess}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <form th:action="@{/add-order}" method="post">
         <div class="row px-xl-5">
             <div class="col-lg-5">
@@ -33,18 +41,20 @@
                             <div class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" class="custom-control-input"
                                        th:id="${'address-' + defaultAddress.id}"
-                                       th:value="${defaultAddress.specificAddress + ', ' + defaultAddress.ward + ', '
-                                       + defaultAddress.district + ', ' + defaultAddress.city}"
+                                       th:value="${defaultAddress.id}"
                                        checked
                                        name="address">
-                                <label class="custom-control-label" th:for="${'address-' + defaultAddress.id}"
-                                       th:text="${defaultAddress.specificAddress + ', ' + defaultAddress.ward + ', '
-                                       + defaultAddress.district + ', ' + defaultAddress.city}"></label>
+                                <label class="custom-control-label" th:for="${'address-' + defaultAddress.id}">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title" th:text="${defaultAddress.customerName + ' ' + defaultAddress.phoneNumber}"></h5>
+                                            <p class="card-text" th:text="${defaultAddress.specificAddress}"></p>
+                                            <p class="card-text"
+                                               th:text="${defaultAddress.ward + ', ' + defaultAddress.district + ', ' + defaultAddress.city}"></p>
+                                        </div>
+                                    </div>
+                                </label>
                             </div>
-                            <!--                            <div class="custom-control custom-checkbox">-->
-                            <!--                                <input type="checkbox" class="custom-control-input" id="shipto">-->
-                            <!--                                <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">Chọn địa chỉ khác</label>-->
-                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -89,13 +99,13 @@
                                 th:text="'₫' + ${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')}"></h6>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">0</h6>
+                            <h6 class="font-weight-medium">Phí ship</h6>
+                            <h6 class="font-weight-medium">Sẽ phát sinh thêm</h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">Tổng thanh toán</h5>
+                            <h5 class="font-weight-bold">Tạm tính</h5>
                             <h5 class="font-weight-bold"
                                 th:text="'₫' + ${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')}"></h5>
                         </div>

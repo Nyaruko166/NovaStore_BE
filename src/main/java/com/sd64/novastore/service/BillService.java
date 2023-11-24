@@ -41,7 +41,7 @@ public interface BillService {
 
     Bill cancelOrder(Integer billId);
 
-    Bill shippingOrder(Integer billId);
+    Bill acceptBill(Integer billId);
 
-    Bill acceptBill(Integer id, BigDecimal shippingFee);
+    Bill shippingOrder(Integer id, BigDecimal shippingFee);
 }

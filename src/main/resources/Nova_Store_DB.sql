@@ -199,6 +199,7 @@ CREATE TABLE [dbo].[BillHistory](
     GO
 CREATE TABLE [dbo].[Brand](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Code] [varchar](50) NULL,
     [Name] [nvarchar](50) NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
@@ -249,6 +250,7 @@ CREATE TABLE [dbo].[CartDetail](
     GO
 CREATE TABLE [dbo].[Category](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Code] [varchar](50) NULL,
     [Name] [nvarchar](50) NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
@@ -266,6 +268,7 @@ CREATE TABLE [dbo].[Category](
     GO
 CREATE TABLE [dbo].[Color](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Code] [varchar](50) NULL,
     [Name] [nvarchar](50) NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
@@ -283,6 +286,7 @@ CREATE TABLE [dbo].[Color](
     GO
 CREATE TABLE [dbo].[Form](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Code] [varchar](50) NULL,
     [Name] [nvarchar](50) NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
@@ -318,6 +322,7 @@ CREATE TABLE [dbo].[Image](
     GO
 CREATE TABLE [dbo].[Material](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Code] [varchar](50) NULL,
     [Name] [nvarchar](50) NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
@@ -356,7 +361,6 @@ CREATE TABLE [dbo].[Product](
     [Code] [varchar](50) UNIQUE,
     [Name] [nvarchar](50) NULL,
     [Description] [nvarchar](255) NULL,
-    [Price] [money] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
@@ -379,6 +383,7 @@ CREATE TABLE [dbo].[ProductDetail](
     [Id] [int] IDENTITY(1,1) NOT NULL,
     [Code] [varchar](50) UNIQUE,
     [Quantity] [int] NULL,
+    [Price] [money] NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
@@ -454,6 +459,7 @@ CREATE TABLE [dbo].[Role](
     GO
 CREATE TABLE [dbo].[Size](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Code] [varchar](50) NULL,
     [Name] [nvarchar](50) NULL,
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,

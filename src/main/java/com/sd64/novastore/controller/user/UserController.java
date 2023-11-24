@@ -2,6 +2,13 @@ package com.sd64.novastore.controller.user;
 
 import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.model.*;
+import com.sd64.novastore.model.Cart;
+import com.sd64.novastore.model.Color;
+import com.sd64.novastore.model.Customer;
+import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.SessionCart;
+import com.sd64.novastore.model.Size;
+import com.sd64.novastore.service.CartService;
 import com.sd64.novastore.service.CustomerService;
 import com.sd64.novastore.service.ImageService;
 import com.sd64.novastore.service.user.ProductViewService;
@@ -34,6 +41,7 @@ public class UserController {
 
     @Autowired
     private ImageService imageService;
+    private CartService cartService;
 
     @GetMapping("/home")
     public String home(Model model, Principal principal, HttpSession session){
@@ -41,6 +49,11 @@ public class UserController {
             Customer customer = customerService.findByEmail(principal.getName());
             session.setAttribute("username", customer.getName());
             Cart cart = customer.getCart();
+            SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+            if (sessionCart != null){
+                cartService.combineCart(sessionCart, principal.getName());
+                session.removeAttribute("sessionCart");
+            }
             if (cart != null){
                 session.setAttribute("totalItems", cart.getTotalItems());
             }

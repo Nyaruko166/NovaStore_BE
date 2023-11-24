@@ -28,6 +28,9 @@ public class Form {
     @Column(name = "Id")
     private Integer id;
 
+    @Column(name = "Code")
+    private String code;
+
     @Column(name = "Name")
     private String name;
 
