@@ -1,5 +1,10 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.model.Brand;
+import com.sd64.novastore.model.Category;
+import com.sd64.novastore.model.Form;
+import com.sd64.novastore.model.Material;
+import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.service.VoucherService;
@@ -17,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/nova/voucher")
 public class VoucherController {
@@ -33,28 +40,22 @@ public class VoucherController {
         return "admin/voucher/voucher";
     }
 
+    @GetMapping("/view-add")
+    public String viewAdd(Model model) {
+        Voucher voucher = new Voucher();
+        model.addAttribute("voucher", voucher);
+        return "admin/voucher/voucher-add";
+    }
+
     @PostMapping("/add")
-    public String add(Model model, @Valid @ModelAttribute("voucher") Voucher voucher, BindingResult bindingResult, RedirectAttributes redirectAttributes, @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        if (bindingResult.hasErrors()) {
-            Page<Voucher> pageVoucher = voucherService.getAll(page);
-            model.addAttribute("pageVoucher", pageVoucher);
-            model.addAttribute("page", page);
-            return "admin/voucher/voucher";
-        }
+    public String add( @ModelAttribute("voucher") Voucher voucher, RedirectAttributes redirectAttributes) {
         voucherService.add(voucher);
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
         return "redirect:/nova/voucher/page";
     }
 
     @PostMapping("/update/{id}")
-    public String update(Model model, @Valid @ModelAttribute("voucher") Voucher voucher, BindingResult bindingResult, @PathVariable Integer id, @RequestParam(name = "page", defaultValue = "0") Integer page,
-                         RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            Page<Voucher> pageVoucher = voucherService.getAll(page);
-            model.addAttribute("pageVoucher", pageVoucher);
-            model.addAttribute("page", page);
-            return "admin/voucher/voucher-detail";
-        }
+    public String update( @ModelAttribute("voucher") Voucher voucher, @PathVariable Integer id,RedirectAttributes redirectAttributes) {
         voucherService.update(voucher, id);
         redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
         return "redirect:/nova/voucher/page";

@@ -32,14 +32,16 @@
                                 <label class="form-control-label">Promotion Name</label>
                             </div>
                             <div class="col-md-9">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#productModal">
                                     Xem sản phẩm
                                 </button>
                             </div>
                         </div>
 
                         <!-- Product Modal -->
-                        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
+                             aria-labelledby="productModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -67,7 +69,8 @@
                                             <tr th:each="product : ${productList}" class="visible-row">
                                                 <td>
                                                     <label class="checkbox-inline">
-                                                        <input type="checkbox" th:value="${product.id}" th:data-name="${product.name}" name="selectedProducts">
+                                                        <input type="checkbox" th:value="${product.id}"
+                                                               th:data-name="${product.name}" name="selectedProducts">
                                                     </label>
                                                 </td>
                                                 <td th:text="${product.name}"></td>
@@ -78,15 +81,17 @@
                                         </table>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                        <button type="button" class="btn btn-primary" onclick="confirmSelection()">Xác nhận</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng
+                                        </button>
+                                        <button type="button" class="btn btn-primary" onclick="confirmSelection()">Xác
+                                            nhận
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <script>
-                            // Chọn tất cả checkbox
                             var selectAllCheckbox = document.getElementById('selectAllCheckbox');
                             selectAllCheckbox.addEventListener('change', function () {
                                 var checkboxes = document.querySelectorAll('input[name="selectedProducts"]');
@@ -96,20 +101,16 @@
                             });
 
                             function confirmSelection() {
-                                // Lấy danh sách các checkbox đã chọn
                                 var selectedCheckboxes = document.querySelectorAll('input[name="selectedProducts"]:checked');
 
-                                // Xác nhận số lượng và giá trị của các checkbox đã chọn
                                 var confirmationMessage = "Bạn đã chọn " + selectedCheckboxes.length + " sản phẩm:\n";
                                 selectedCheckboxes.forEach(function (checkbox) {
                                     confirmationMessage += "ID: " + checkbox.value + " - Name: " + checkbox.getAttribute('data-name') + "\n";
                                 });
 
-                                // Hiển thị hộp thoại xác nhận
                                 alert(confirmationMessage);
                             }
                         </script>
-
 
 
                         <!-- Promotion Dropdown -->
@@ -129,12 +130,12 @@
                     <div class="card-footer">
                         <a th:href="@{/nova/promotion/page}">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
-                                Change Promotion
+                                Mã khuyến mãi
                             </button>
                         </a>
                         <a th:href="@{/nova/product/page}">
                             <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
-                                Change Product
+                                Sản phẩm
                             </button>
                         </a>
                     </div>
@@ -170,10 +171,10 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Promotion Name</th>
-                                <th scope="col">Create Date</th>
-                                <th scope="col">Update Date</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Tên khuyến mãi</th>
+                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Ngày sửa</th>
                                 <!--                        <th scope="col">Account Name</th>-->
                                 <th scope="col">Function</th>
                             </tr>
@@ -186,15 +187,10 @@
                                 <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td class="d-flex justify-content-center">
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/promotion-detail/detail/' + ${items.id}}">
-                                            <button type="button" class="btn btn-warning">Detail</button>
-                                        </a>
-                                    </div>
                                     <div>
                                         <button th:onclick="clickDelete('promotion-detail', 'promotionDetailDelete', [[${items.id}]])"
                                                 type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>DELETE
+                                            <i class="fa-solid fa-trash mr-1"></i>
                                         </button>
                                     </div>
                                 </td>

@@ -7,6 +7,7 @@ import com.sd64.novastore.repository.ProductRepository;
 import com.sd64.novastore.repository.PromotionDetailRepository;
 import com.sd64.novastore.repository.PromotionRepository;
 import com.sd64.novastore.service.PromotionDetailService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,10 +25,20 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private PromotionRepository promotionRepository;
+
     @Override
     public List<PromotionDetail> getAllPromotionDetail() {
         return promotionDetailRepository.findAllByAndStatusOrderByIdDesc(1);
     }
+
+    @Override
+    public void save(Product product) {
+        productRepository.save(product);
+    }
+
 
     @Override
     public Page<PromotionDetail> getAllPT(Integer page) {
@@ -72,11 +83,6 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
         return promotionDetailRepository.findById(id).orElse(null);
     }
 
-//    @Override
-//    public Page<PromotionDetail> search(String name, int page) {
-//        Pageable pageable = PageRequest.of(page, 5);
-//        return promotionDetailRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
-//    }
 
     @Override
     public List<Product> getAll() {
@@ -90,7 +96,7 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
 
     @Override
     public Boolean existsByProductIdAndStatus(Integer productId, Integer status) {
-        return promotionDetailRepository.existsByProductIdAndStatus(productId,1);
+        return promotionDetailRepository.existsByProductIdAndStatus(productId, 1);
     }
 
 

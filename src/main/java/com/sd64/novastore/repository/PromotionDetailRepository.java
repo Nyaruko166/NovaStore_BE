@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface PromotionDetailRepository extends JpaRepository<PromotionDetail, Integer> {
+    List<PromotionDetail> findByPromotionId(Integer promotionId);
     List<PromotionDetail> findAllByAndStatusOrderByIdDesc(Integer status);
 
     Page<PromotionDetail> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
