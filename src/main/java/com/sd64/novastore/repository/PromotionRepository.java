@@ -7,11 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
-
+    List<Promotion> findByEndDateBeforeAndStatus(Date endDate, Integer status);
     List<Promotion> findAllByStatusOrderByIdDesc(Integer status);
 
     Page<Promotion> findAllByStatusOrderByIdDesc(Pageable pageable, Integer status);

@@ -31,11 +31,11 @@ public class PromotionDetail {
     @Column(name = "Status")
     private Integer status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductId", referencedColumnName = "Id")
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PromotionId", referencedColumnName = "Id")
     private Promotion promotion;
 }
