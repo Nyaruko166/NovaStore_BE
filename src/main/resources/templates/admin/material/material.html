@@ -19,10 +19,17 @@
                     <span aria-hidden="true">x</span>
                 </button>
             </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
 
             <div class="card-body card-block">
                 <form id="materialForm" class="form-horizontal">
-                    <div class="card-footer">
+                    <div class="card-footer d-flex justify-content-between">
                         <div>
                             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
                                 <i class="fa-solid fa-square-plus px-4"></i>
@@ -39,6 +46,15 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
+<!--                                            <div class="mb-3">-->
+<!--                                                <div class="d-flex justify-content-between">-->
+<!--                                                    <label class="font-weight-bold form-control-label">Mã chất-->
+<!--                                                        liệu</label>-->
+<!--                                                    <div class="" style="color: red" id="errorCode"></div>-->
+<!--                                                </div>-->
+<!--                                                <input type="text" id="code" name="code"-->
+<!--                                                       class="form-control" oninput="onInputText('errorCode')">-->
+<!--                                            </div>-->
                                             <div class="mb-3">
                                                 <div class="d-flex justify-content-between">
                                                     <label class="font-weight-bold form-control-label">Tên chất
@@ -60,6 +76,13 @@
                             <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning"><i
                                         class="fa-solid fa-circle-left px-4"></i>
+                                </button>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="/nova/material/view-restore">
+                                <button type="button" class="btn btn-dark">
+                                    <i class="fa-solid fa-warehouse px-4"></i>
                                 </button>
                             </a>
                         </div>
@@ -85,37 +108,6 @@
 
     </h1>
 
-<!--    Update-->
-<!--    <div class="modal fade" id="exampleModalUpdate" tabindex="-1" role="dialog"-->
-<!--         aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--        <div class="modal-dialog" role="document">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title" id="exampleModalLabelUpdate">Sửa dữ liệu</h5>-->
-<!--                    <button type="button" class="close" data-dismiss="modal"-->
-<!--                            aria-label="Close">-->
-<!--                        <span aria-hidden="true">&times;</span>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    <div class="mb-3">-->
-<!--                        <div class="d-flex justify-content-between">-->
-<!--                            <label class="font-weight-bold form-control-label">Tên chất-->
-<!--                                liệu</label>-->
-<!--                            <small class="" style="color: red" id="errorNameUpdate"></small>-->
-<!--                        </div>-->
-<!--                        <input type="text" id="nameUpdate" name="name" th:value="${material.name}"-->
-<!--                               class="form-control" oninput="onInputText('errorName')">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <button onclick="clickAdd('material', 'materialForm', 'name', 'errorName', 'chất liệu')"-->
-<!--                            type="button" class="btn btn-dark"><i-->
-<!--                            class="fa-solid fa-pen px-4"></i></button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
     <div class="col">
         <div class="card">
@@ -140,7 +132,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="items:${pageMaterial}">
-                                <td th:text="'CL'+ ${items.id}"></td>
+                                <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
                                 <td class="d-flex justify-content-center">
                                     <div class="dropdown">

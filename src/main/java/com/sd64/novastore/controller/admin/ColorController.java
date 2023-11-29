@@ -20,7 +20,7 @@ public class ColorController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/{productId}/color/page")
+    @GetMapping("/product/{productId}/color/page")
     public String getPage(@PathVariable Integer productId,
                           @RequestParam(defaultValue = "0") Integer page, Model model) {
         Page<Color> pageColor = colorService.getPage(page);
@@ -31,7 +31,7 @@ public class ColorController {
         return "admin/color/color";
     }
 
-    @GetMapping("/{productId}/color/detail/{id}")
+    @GetMapping("/product/{productId}/color/detail/{id}")
     public String detail(@PathVariable Integer productId,
                          @PathVariable Integer id,
                          Model model) {
@@ -47,9 +47,13 @@ public class ColorController {
     public String add(@RequestParam Integer productId,
                       @RequestParam String name,
                       RedirectAttributes redirectAttributes) {
-        colorService.add(name);
-        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
-        return "redirect:/nova/" + productId + "/color/page";
+        if (colorService.add(name)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/product/" + productId + "/color/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên màu sắc đã tồn tại");
+            return "redirect:/nova/product/" + productId + "/color/page";
+        }
     }
 
     @PostMapping("/{productId}/color/update/{id}")
@@ -57,9 +61,13 @@ public class ColorController {
                          @PathVariable Integer id,
                          @RequestParam String name,
                          RedirectAttributes redirectAttributes) {
-        colorService.update(id, name);
-        redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
-        return "redirect:/nova/" + productId + "/color/page";
+        if (colorService.update(id, name)) {
+            redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+            return "redirect:/nova/product/" + productId + "/color/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên màu sắc đã tồn tại");
+            return "redirect:/nova/product/" + productId + "/color/detail/" + id;
+        }
     }
 
     @PostMapping("/{productId}/color/delete/{id}")
@@ -67,22 +75,54 @@ public class ColorController {
                          @PathVariable Integer id,
                          RedirectAttributes redirectAttributes) {
         colorService.delete(id);
-        redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
-        return "redirect:/nova/" + productId + "/color/page";
+        redirectAttributes.addFlashAttribute("mess", "Xóa dữ liệu thành công");
+        return "redirect:/nova/product/" + productId + "/color/page";
     }
 
-    @GetMapping("{productId}/color/search")
+    @GetMapping("/product/{productId}/color/search")
     public String search(@PathVariable Integer productId,
                          Model model, @RequestParam(required = false) String colorNameSearch,
                          @RequestParam(defaultValue = "0") int page) {
         Page<Color> pageColor = colorService.search(colorNameSearch, page);
         if ("".equals(colorNameSearch) || colorNameSearch.isEmpty()) {
-            return "redirect:/nova/color/page";
+            return "redirect:/nova/product/" + productId + "/color/page";
         }
         model.addAttribute("colorNameSearch", colorNameSearch);
         model.addAttribute("pageColor", pageColor);
         Product product = productService.getOne(productId);
         model.addAttribute("product", product);
         return "admin/color/color";
+    }
+
+    @GetMapping("/product/{productId}/color/view-restore")
+    public String viewRestore(@PathVariable Integer productId,
+                              @RequestParam(defaultValue = "0") int page,
+                              Model model) {
+        Page<Color> pageColor = colorService.getAllSizeDelete(page);
+        model.addAttribute("pageColor", pageColor);
+        model.addAttribute("productId", productId);
+        return "admin/color/color-restore";
+    }
+
+    @PostMapping("/{productId}/color/restore/{id}")
+    public String restore(@PathVariable Integer productId,
+                          @PathVariable Integer id,
+                          RedirectAttributes redirectAttributes) {
+        colorService.restore(id);
+        redirectAttributes.addFlashAttribute("mess", "Khôi phục dữ liệu thành công");
+        return "redirect:/nova/product/" + productId +  "/color/view-restore";
+    }
+
+    @GetMapping("/product/{productId}/color/search-restore")
+    public String searchDelete(@PathVariable Integer productId,
+                               Model model, @RequestParam(required = false) String colorNameSearch,
+                               @RequestParam(defaultValue = "0") int page) {
+        Page<Color> pageColor = colorService.searchDeleted(colorNameSearch, page);
+        if ("".equals(colorNameSearch) || colorNameSearch.isEmpty()) {
+            return "redirect:/nova/product/" + productId +  "/color/view-restore";
+        }
+        model.addAttribute("colorNameSearch", colorNameSearch);
+        model.addAttribute("pageColor", pageColor);
+        return "admin/color/color-restore";
     }
 }

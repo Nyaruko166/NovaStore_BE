@@ -29,26 +29,41 @@ public class FormServiceImpl implements FormService {
         return formRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
-    @Override
-    public Form add(Form form) {
-        form.setStatus(1);
-        form.setCreateDate(new java.util.Date());
-        form.setUpdateDate(new java.util.Date());
-        return formRepository.save(form);
+    private Boolean checkName(String name) {
+        Form form = formRepository.findByName(name);
+        if (form != null) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public Form update(Form form, Integer id) {
-        Optional<Form> optional = formRepository.findById(id);
-        if (optional.isPresent()) {
-            Form updateForm = optional.get();
-            form.setId(id);
-            form.setStatus(updateForm.getStatus());
-            form.setCreateDate(updateForm.getCreateDate());
-            form.setUpdateDate(new Date());
-            return formRepository.save(form);
+    public Boolean add(Form form) {
+        if (checkName(form.getName())) {
+            form.setStatus(1);
+            form.setCreateDate(new java.util.Date());
+            form.setUpdateDate(new java.util.Date());
+            formRepository.save(form);
+            form.setCode("K"+form.getId());
+            formRepository.save(form);
+            return true;
         } else {
-            return null;
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean update(Form form, Integer id) {
+        Optional<Form> optional = formRepository.findById(id);
+        if (optional.isPresent() && checkName(form.getName())) {
+            Form updateForm = optional.get();
+            updateForm.setId(id);
+            updateForm.setName(form.getName());
+            updateForm.setUpdateDate(new Date());
+            formRepository.save(updateForm);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -58,6 +73,7 @@ public class FormServiceImpl implements FormService {
         if (optional.isPresent()) {
             Form form = optional.get();
             form.setStatus(0);
+            form.setUpdateDate(new Date());
             return formRepository.save(form);
         } else {
             return null;
@@ -67,7 +83,7 @@ public class FormServiceImpl implements FormService {
     @Override
     public Page<Form> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return formRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+        return formRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 1, pageable);
     }
 
     @Override
@@ -78,5 +94,30 @@ public class FormServiceImpl implements FormService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Page<Form> getAllDeleted(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return formRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
+    }
+
+    @Override
+    public Form restore(Integer id) {
+        Optional<Form> optionalForm = formRepository.findById(id);
+        if (optionalForm.isPresent()) {
+            Form restoreForm = optionalForm.get();
+            restoreForm.setStatus(1);
+            restoreForm.setUpdateDate(new Date());
+            return formRepository.save(restoreForm);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Page<Form> searchDelete(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return formRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
     }
 }

@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Form;
 import com.sd64.novastore.model.Image;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,4 +25,13 @@ public interface ImageService {
     Image detail(Integer id);
 
     byte[] getImageByProductId(Integer productId);
+
+    Page<Image> getAllDeleted(int page);
+
+    Image restore(Integer id);
+
+    List<Image> getAllImageByProductId(Integer productId);
+
+    Image getImageActiveByProductId(Integer productId);
+
 }

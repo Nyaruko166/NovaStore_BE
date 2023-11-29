@@ -55,7 +55,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "p.code as code, " +
             "p.name as name, " +
             "p.description as description, " +
-//            "p.price as price, " +
             "p.brand.name as brandName, " +
             "p.category.name as categoryName, " +
             "p.form.name as formName, " +

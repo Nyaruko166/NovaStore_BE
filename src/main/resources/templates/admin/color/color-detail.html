@@ -12,15 +12,28 @@
             <div class="card-header">
                 <strong>CẬP NHẬT MÀU SẮC</strong>
             </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
             <div class="card-body card-block">
                 <form id="colorUpdate" th:object="${color}" th:action="@{/nova/${product.id}/color/update/{id}(id=${color.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
-                        <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Tên màu</label></div>
-                        <div class="col-12 col-md-9"><input type="text" id="name" th:field="*{name}" class="form-control"
+                        <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Mã màu sắc</label></div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="code" name="code" th:field="*{code}" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Màu sắc</label></div>
+                        <div class="col-12 col-md-9"><input type="text" id="name" name="name" th:field="*{name}" class="form-control"
                                                             oninput="onInputText('errorName')">
                             <div class="" style="color: red"
-                                   id="errorName" ></div>
+                                 id="errorName" ></div>
                         </div>
                     </div>
 
@@ -58,7 +71,7 @@
                                 }
                             }
                         </script>
-                        <a th:href="@{|/nova/${product.id}/color/page|}">
+                        <a th:href="@{|/nova/product/${product.id}/color/page|}">
                             <button type="button" class="btn btn-warning"><i
                                     class="fa-solid fa-circle-left px-4"></i>
                             </button>

@@ -29,26 +29,39 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable,1);
     }
 
-    @Override
-    public Brand add(Brand brand) {
-        brand.setStatus(1);
-        brand.setCreateDate(new Date());
-        brand.setUpdateDate(new Date());
-        return brandRepository.save(brand);
+    private Boolean checkName(String name) {
+        Brand brand = brandRepository.findByName(name);
+        if (brand != null) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public Brand update(Brand brand, Integer id) {
-        Optional<Brand> optional = brandRepository.findById(id);
-        if (optional.isPresent()) {
-            Brand updateBrand = optional.get();
-            brand.setId(id);
-            brand.setCreateDate(updateBrand.getCreateDate());
+    public Boolean add(Brand brand) {
+        if (checkName(brand.getName())) {
+            brand.setStatus(1);
+            brand.setCreateDate(new Date());
             brand.setUpdateDate(new Date());
-            brand.setStatus(updateBrand.getStatus());
-            return brandRepository.save(brand);
+            brandRepository.save(brand);
+            brand.setCode("T"+brand.getId());
+            brandRepository.save(brand);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean update(Integer id, String name) {
+        Optional<Brand> optional = brandRepository.findById(id);
+        if (optional.isPresent() && checkName(name)) {
+            Brand updateBrand = optional.get();
+            updateBrand.setName(name);
+            updateBrand.setUpdateDate(new Date());
+            brandRepository.save(updateBrand);
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -58,6 +71,7 @@ public class BrandServiceImpl implements BrandService {
         if (optional.isPresent()) {
             Brand brand = optional.get();
             brand.setStatus(0);
+            brand.setUpdateDate(new Date());
             return brandRepository.save(brand);
         } else {
             return null;
@@ -67,7 +81,13 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Page<Brand> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return brandRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+        return brandRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 1, pageable);
+    }
+
+    @Override
+    public Page<Brand> searchDelete(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return brandRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
     }
 
     @Override
@@ -80,10 +100,22 @@ public class BrandServiceImpl implements BrandService {
         }
     }
 
+    @Override
+    public Page<Brand> getAllDeleted(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
+    }
 
     @Override
-    public Page<Brand> getAllBrandDeleted(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
-        return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
+    public Brand restore(Integer id) {
+        Optional<Brand> optionalBrand = brandRepository.findById(id);
+        if (optionalBrand.isPresent()) {
+            Brand restoreBrand = optionalBrand.get();
+            restoreBrand.setStatus(1);
+            restoreBrand.setUpdateDate(new Date());
+            return brandRepository.save(restoreBrand);
+        } else {
+            return null;
+        }
     }
 }

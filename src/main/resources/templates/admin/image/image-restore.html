@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>ẢNH ĐÃ XÓA</strong>
+            </div>
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${mess}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card-body card-block">
+                <form id="formForm" class="form-horizontal">
+                    <input type="hidden" class="form-control" name="productId" th:value="*{productId}">
+                    <div class="card-footer">
+                        <div>
+                            <a th:href="@{|/nova/product/${productId}/image|}">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left px-4"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </h1>
+    <div class="col">
+        <div class="card">
+            <div class="card-header" th:if="${pageImage.isEmpty()}">
+                <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
+            </div>
+            <div th:if="${not pageImage.isEmpty()}">
+                <div class="card-header">
+                    <strong>CÓ</strong>
+                    <strong class="card-title" th:text="${pageImage.getTotalElements()}"></strong>
+                    <strong class="card-title"> BẢN GHI</strong>
+                </div>
+                <div class="card-body">
+                    <form id="imageRestore">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">Khôi phục</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pageImage}">
+                                <td>
+                                    <img th:src="@{'/image/' + ${items.id}}" alt=""
+                                         style="width: 100px;height: 100px">
+                                </td>
+                                <td>
+                                    <button th:onclick="restore('image', 'imageRestore', [[${items.id}]], [[${productId}]])" type="button"
+                                            class="btn btn-dark">
+                                        <i class="fa-solid fa-trash-can-arrow-up px-4"></i>
+                                    </button>
+                                </td>
+                                <script th:inline="javascript">
+                                    restore = (entity, idForm, idRestore, productId) => {
+                                        swal({
+                                            title: "Khôi phục dữ liệu",
+                                            text: "Bạn có muốn khôi phục dữ liệu không ?",
+                                            icon: "warning",
+                                            buttons: ["Không", "Có"],
+                                            dangerMode: true,
+                                            closeOnClickOutside: false,
+                                        }).then((restore) => {
+                                            if (restore) {
+                                                document.getElementById(idForm).action = '/nova/product/' +productId +"/" + entity + "/restore/" + idRestore
+                                                document.getElementById(idForm).method = 'post'
+                                                document.getElementById(idForm).submit()
+                                            }
+                                        });
+                                    }
+                                </script>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+
+                    <!--            Pagination-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div th:if="${pageImage.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pageImage.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageImage.getNumber() - 1}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-dark d-flex">
+                            <div th:text="${pageImage.getNumber() + 1}"></div>
+                            <span>/</span>
+                            <div th:text="${pageImage.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pageImage.getNumber() + 1 lt pageImage.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageImage.getNumber()+1}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pageImage.getNumber() + 1 lt pageImage.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageImage.getTotalPages()-1}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

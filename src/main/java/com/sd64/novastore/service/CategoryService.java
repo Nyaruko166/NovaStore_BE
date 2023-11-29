@@ -10,13 +10,19 @@ public interface CategoryService {
 
     Page<Category> getPage(Integer page);
 
-    Category add(Category category);
+    Boolean add(Category category);
 
-    Category update(Category category, Integer id);
+    Boolean update(Category category, Integer id);
 
     Category delete(Integer id);
 
     Page<Category> search(String name, int page);
 
     Category detail(Integer id);
+
+    Page<Category> getAllDeleted(int page);
+
+    Category restore(Integer id);
+
+    Page<Category> searchDelete(String name, int page);
 }

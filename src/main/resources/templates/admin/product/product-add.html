@@ -132,22 +132,7 @@
                             return true;
                         }
 
-                        checkPrice = () => {
-                            let isPrice = document.getElementById('price').value
-                            if (isPrice.trim() === '') {
-                                document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`
-                                return false;
-                            }
-                            if (isPrice < 0) {
-                                document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn 0`
-                                return false;
-                            }
-                            if (isPrice > 2147483647) {
-                                document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`
-                                return false;
-                            }
-                            return true;
-                        }
+
 
                         validate = () => {
                             let isCode = checkCode();

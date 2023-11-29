@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [Nova_Store_DB]    Script Date: 15/11/2023 16:24 PM ******/
+/****** Object:  Database [Nova_Store_DB]    Update: 25/11/2023 00:31 AM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]
@@ -616,286 +616,291 @@ GO
 USE Nova_Store_DB
 
 SELECT * FROM Brand
-    INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'Reebok', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'Asics', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'Brooks', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'Mizuno', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'New balance', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'Puma', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'Nike', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'Skechers', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'Under armour', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (name, CreateDate, UpdateDate, Status)
-VALUES (N'Adidas', GETDATE(), GETDATE(), 1)
+    INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T1', N'Reebok', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T2', N'Asics', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T3', N'Brooks', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T4', N'Mizuno', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T5', N'New balance', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T6', N'Puma', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T7', N'Nike', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T8', N'Skechers', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T9', N'Under armour', GETDATE(), GETDATE(), 1)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('T10', N'Adidas', GETDATE(), GETDATE(), 1)
 
 
 SELECT * FROM Category
-    INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Áo thun', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Áo khoác', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Áo ngắn tay', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Áo Polo', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Áo dài tay', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Quần bó', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Quần cạp cao', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Quần đùi', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Quần dài', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (name, CreateDate, UpdateDate, Status)
-VALUES (N'Quần legging', GETDATE(), GETDATE(), 1)
+    INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L1', N'Áo thun', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L2', N'Áo khoác', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L3', N'Áo ngắn tay', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L4', N'Áo Polo', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L5', N'Áo dài tay', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L6', N'Quần bó', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L7', N'Quần cạp cao', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L8', N'Quần đùi', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L9', N'Quần dài', GETDATE(), GETDATE(), 1)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L10', N'Quần legging', GETDATE(), GETDATE(), 1)
 
 SELECT * FROM Material
-    INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Spandex', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Cotton', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Mesh', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Nylon', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Viscose', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Microfiber', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Linen', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Syntheic', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Polyester', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (name, CreateDate, UpdateDate, Status)
-VALUES (N'Fleece', GETDATE(), GETDATE(), 1)
+    INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C1', N'Spandex', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C2', N'Cotton', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C3', N'Mesh', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C4', N'Nylon', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C5', N'Viscose', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C6', N'Microfiber', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C7', N'Linen', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C8', N'Syntheic', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C9', N'Polyester', GETDATE(), GETDATE(), 1)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('C10', N'Fleece', GETDATE(), GETDATE(), 1)
 
 
 SELECT * FROM Form
-    INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Bó', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Rộng', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Tank top', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Jogger', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Dài', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Ngắn', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Dày', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Mỏng', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Lưới', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (name, CreateDate, UpdateDate, Status)
-VALUES (N'Thiếu vải', GETDATE(), GETDATE(), 1)
+    INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K1', N'Bó', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K2', N'Rộng', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K3', N'Tank top', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K4', N'Jogger', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K5', N'Dài', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K6', N'Ngắn', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K7', N'Dày', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K8', N'Mỏng', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K9', N'Lưới', GETDATE(), GETDATE(), 1)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('K10', N'Thiếu vải', GETDATE(), GETDATE(), 1)
 
 
 SELECT * FROM Size
-    INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'28', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'29', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'30', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'31', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'32', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'XXL', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'XL', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'L', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'S', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (name, CreateDate, UpdateDate, Status)
-VALUES (N'M', GETDATE(), GETDATE(), 1)
+    INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S1', N'28', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S2', N'29', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S3', N'30', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S4', N'31', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S5', N'32', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S6', N'XXL', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S7', N'XL', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S8', N'L', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S9', N'S', GETDATE(), GETDATE(), 1)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S1', N'M', GETDATE(), GETDATE(), 1)
 
 
 SELECT * FROM Color
-    INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Đen', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Đỏ', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Xanh dương', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Xanh lá', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Vàng', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Trắng', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Xám', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Ghi', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Nâu', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (name, CreateDate, UpdateDate, Status)
-VALUES (N'Cam', GETDATE(), GETDATE(), 1)
+    INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M1', N'Đen', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M2', N'Đỏ', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M3', N'Xanh dương', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M4', N'Xanh lá', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M5', N'Vàng', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M6', N'Trắng', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M7', N'Xám', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M8', N'Ghi', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M9', N'Nâu', GETDATE(), GETDATE(), 1)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M10', N'Cam', GETDATE(), GETDATE(), 1)
 
 
 SELECT * FROM Product
-    INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0001', N'Áo thun tay ngắn', N'vip pro', 123000, GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0002', N'Áo khoác Flannel tay dài kháo kéo', N'Chiến thần', 234000, GETDATE(), GETDATE(), 1, 2, 2, 2, 2);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0003', N'Áo khoác bomber Nylon', N'quá là áo', 345000, GETDATE(), GETDATE(), 1, 3, 3, 3, 3);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0004', N'Áo len Polo', N'vip plus', 222000, GETDATE(), GETDATE(), 1, 4, 4, 4, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0005', N'Áo Gile len', N'trên cả tuyệt vời', 33000, GETDATE(), GETDATE(), 1, 5, 5, 5, 5);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0006', N'Áo Hoodie unisex', N'áo này đẹp lắm', 44000, GETDATE(), GETDATE(), 1, 6, 6, 6, 6);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0007', N'Áo Polo vải gân', N'mua đi đừng ngại', 55000, GETDATE(), GETDATE(), 1, 7, 7, 7, 7);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0008', N'Áo dài tay', N'mua đi nghèo lắm rồi', 678000, GETDATE(), GETDATE(), 1, 8, 8, 8, 8);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0009', N'Áo Superman', N'mua đi đừng ngại', 789000, GETDATE(), GETDATE(), 1, 9, 9, 9, 9);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0010', N'Áo Batman', N'mua đi nghèo lắm rồi',367000, GETDATE(), GETDATE(), 1, 10, 10, 10, 10);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0011', N'Áo Hulk', N'mua đi nghèo lắm rồi', 112000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0012', N'Áo Hulk', N'mua đi nghèo lắm rồi', 493000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0013', N'Áo Hulk', N'mua đi nghèo lắm rồi', 236000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0014', N'Áo Hulk', N'mua đi nghèo lắm rồi', 567000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0015', N'Áo Hulk', N'mua đi nghèo lắm rồi', 777000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0016', N'Áo Hulk', N'mua đi nghèo lắm rồi', 900000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0017', N'Áo Hulk', N'mua đi nghèo lắm rồi', 121000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0018', N'Áo Hulk', N'mua đi nghèo lắm rồi', 351000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0019', N'Áo Hulk', N'mua đi nghèo lắm rồi', 684000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0020', N'Áo Hulk', N'mua đi nghèo lắm rồi', 686000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
-INSERT INTO Product (code, name, Description, Price, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP0021', N'Áo Superman', N'mua đi nghèo lắm rồi', 686000, GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+    INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP1', N'Áo thun tay ngắn', N'vip pro', GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP2', N'Áo khoác Flannel tay dài kháo kéo', N'Chiến thần', GETDATE(), GETDATE(), 1, 2, 2, 2, 2);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP3', N'Áo khoác bomber Nylon', N'quá là áo', GETDATE(), GETDATE(), 1, 3, 3, 3, 3);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP4', N'Áo len Polo', N'vip plus', GETDATE(), GETDATE(), 1, 4, 4, 4, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP5', N'Áo Gile len', N'trên cả tuyệt vời', GETDATE(), GETDATE(), 1, 5, 5, 5, 5);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP6', N'Áo Hoodie unisex', N'áo này đẹp lắm', GETDATE(), GETDATE(), 1, 6, 6, 6, 6);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP7', N'Áo Polo vải gân', N'mua đi đừng ngại', GETDATE(), GETDATE(), 1, 7, 7, 7, 7);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP8', N'Áo dài tay', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 8, 8, 8, 8);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP9', N'Áo Superman', N'mua đi đừng ngại', GETDATE(), GETDATE(), 1, 9, 9, 9, 9);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP10', N'Áo Batman', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 10, 10, 10, 10);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP11', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP12', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP13', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP14', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP15', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP16', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP17', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP18', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP19', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP20', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP21', N'Áo Superman', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 USE Nova_Store_DB
 SELECT * FROM Product
 
 SELECT * FROM ProductDetail
-    INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0001', 12, GETDATE(), GETDATE(), 1, 1, 1, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0002', 22, GETDATE(), GETDATE(), 1, 2, 2, 3);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0003', 30, GETDATE(), GETDATE(), 1, 3, 1, 2);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0004', 40, GETDATE(), GETDATE(), 1, 4, 2, 3);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0005', 31, GETDATE(), GETDATE(), 1, 5, 3, 4);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0006', 12, GETDATE(), GETDATE(), 1, 6, 5, 6);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0007', 11, GETDATE(), GETDATE(), 1, 7, 7, 8);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0008', 60, GETDATE(), GETDATE(), 1, 8, 9, 10);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0009', 27, GETDATE(), GETDATE(), 1, 9, 2, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0010', 38, GETDATE(), GETDATE(), 1, 10, 4, 3);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0011', 36, GETDATE(), GETDATE(), 1, 11, 4, 9);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0012', 18, GETDATE(), GETDATE(), 1, 12, 2, 7);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0013', 24, GETDATE(), GETDATE(), 1, 13, 3, 8);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0014', 44, GETDATE(), GETDATE(), 1, 14, 10, 4);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0015', 55, GETDATE(), GETDATE(), 1, 15, 6, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0016', 46, GETDATE(), GETDATE(), 1, 16, 3, 5);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0017', 71, GETDATE(), GETDATE(), 1, 17, 1, 4);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0018', 28, GETDATE(), GETDATE(), 1, 18, 9, 3);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0019', 23, GETDATE(), GETDATE(), 1, 19, 10, 2);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0020', 26, GETDATE(), GETDATE(), 1, 20, 2, 4);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0021', 2, GETDATE(), GETDATE(), 1, 21, 5, 8);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0022', 34, GETDATE(), GETDATE(), 1, 1, 2, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0023', 51, GETDATE(), GETDATE(), 1, 2, 3, 3);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0024', 61, GETDATE(), GETDATE(), 1, 3, 2, 8);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0025', 73, GETDATE(), GETDATE(), 1, 4, 3, 5);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0026', 82, GETDATE(), GETDATE(), 1, 5, 2, 7);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0027', 23, GETDATE(), GETDATE(), 1, 6, 4, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0028', 73, GETDATE(), GETDATE(), 1, 7, 2, 2);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0029', 28, GETDATE(), GETDATE(), 1, 8, 5, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0030', 38, GETDATE(), GETDATE(), 1, 9, 3, 9);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0031', 128, GETDATE(), GETDATE(), 1, 10, 2, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0032', 38, GETDATE(), GETDATE(), 1, 11, 2, 9);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0033', 282, GETDATE(), GETDATE(), 1, 12, 5, 7);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0034', 382, GETDATE(), GETDATE(), 1, 13, 5, 4);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0035', 311, GETDATE(), GETDATE(), 1, 14, 5, 5);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0036', 111, GETDATE(), GETDATE(), 1, 15, 9, 7);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0037', 112, GETDATE(), GETDATE(), 1, 16, 10, 10);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0038', 138, GETDATE(), GETDATE(), 1, 17, 5, 3);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0039', 222, GETDATE(), GETDATE(), 1, 18, 6, 6);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0040', 100, GETDATE(), GETDATE(), 1, 19, 2, 10);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0041', 99, GETDATE(), GETDATE(), 1, 20, 1, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0042', 28, GETDATE(), GETDATE(), 1, 21, 2, 3);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0043', 12, GETDATE(), GETDATE(), 1, 1, 1, 4);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0044', 14, GETDATE(), GETDATE(), 1, 2, 2, 5);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0045', 223, GETDATE(), GETDATE(), 1, 3, 9, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0046', 333, GETDATE(), GETDATE(), 1, 4, 8, 3);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0047', 492, GETDATE(), GETDATE(), 1, 5, 2, 1);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0048', 389, GETDATE(), GETDATE(), 1, 6, 2, 4);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0049', 123, GETDATE(), GETDATE(), 1, 7, 1, 2);
-INSERT INTO ProductDetail (code, quantity, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT0050', 324, GETDATE(), GETDATE(), 1, 8, 2, 3);
+    INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT1', 12, 20000, GETDATE(), GETDATE(), 1, 1, 1, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT2', 22, 45000, GETDATE(), GETDATE(), 1, 2, 2, 3);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT3', 30, 100000, GETDATE(), GETDATE(), 1, 3, 1, 2);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT4', 40, 25000, GETDATE(), GETDATE(), 1, 4, 2, 3);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT5', 31, 60000, GETDATE(), GETDATE(), 1, 5, 3, 4);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT6', 12, 200000, GETDATE(), GETDATE(), 1, 6, 5, 6);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT7', 11, 230000, GETDATE(), GETDATE(), 1, 7, 7, 8);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT8', 60, 40000, GETDATE(), GETDATE(), 1, 8, 9, 10);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT9', 27, 55000, GETDATE(), GETDATE(), 1, 9, 2, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT10', 38, 20000, GETDATE(), GETDATE(), 1, 10, 4, 3);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT11', 36, 12000, GETDATE(), GETDATE(), 1, 11, 4, 9);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT12', 18, 22000, GETDATE(), GETDATE(), 1, 12, 2, 7);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT13', 24, 44000, GETDATE(), GETDATE(), 1, 13, 3, 8);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT14', 44, 56000, GETDATE(), GETDATE(), 1, 14, 10, 4);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT15', 55, 62000, GETDATE(), GETDATE(), 1, 15, 6, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT16', 46, 72000, GETDATE(), GETDATE(), 1, 16, 3, 5);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT17', 71, 88000, GETDATE(), GETDATE(), 1, 17, 1, 4);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT18', 28, 78000, GETDATE(), GETDATE(), 1, 18, 9, 3);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT19', 23, 98000, GETDATE(), GETDATE(), 1, 19, 10, 2);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT20', 26, 230000, GETDATE(), GETDATE(), 1, 20, 2, 4);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT21', 2, 340000, GETDATE(), GETDATE(), 1, 21, 5, 8);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT22', 34, 20000, GETDATE(), GETDATE(), 1, 1, 2, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT23', 51, 210000, GETDATE(), GETDATE(), 1, 2, 3, 3);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT24', 61, 65000, GETDATE(), GETDATE(), 1, 3, 2, 8);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT25', 73, 56000, GETDATE(), GETDATE(), 1, 4, 3, 5);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT26', 82, 23000, GETDATE(), GETDATE(), 1, 5, 2, 7);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT27', 23, 31000, GETDATE(), GETDATE(), 1, 6, 4, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT28', 73, 900000, GETDATE(), GETDATE(), 1, 7, 2, 2);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT29', 28, 230000, GETDATE(), GETDATE(), 1, 8, 5, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT30', 38, 48000, GETDATE(), GETDATE(), 1, 9, 3, 9);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT31', 128, 20000, GETDATE(), GETDATE(), 1, 10, 2, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT32', 38, 20000, GETDATE(), GETDATE(), 1, 11, 2, 9);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT33', 282, 22000, GETDATE(), GETDATE(), 1, 12, 5, 7);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT34', 382, 77000, GETDATE(), GETDATE(), 1, 13, 5, 4);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT35', 311, 88000, GETDATE(), GETDATE(), 1, 14, 5, 5);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT36', 111, 99000, GETDATE(), GETDATE(), 1, 15, 9, 7);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT37', 112, 24000, GETDATE(), GETDATE(), 1, 16, 10, 10);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT38', 138, 25000, GETDATE(), GETDATE(), 1, 17, 5, 3);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT39', 222, 67000, GETDATE(), GETDATE(), 1, 18, 6, 6);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT40', 100, 45000, GETDATE(), GETDATE(), 1, 19, 2, 10);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT41', 99, 78000, GETDATE(), GETDATE(), 1, 20, 1, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT42', 28, 56000, GETDATE(), GETDATE(), 1, 21, 2, 3);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT43', 12, 43000, GETDATE(), GETDATE(), 1, 1, 1, 4);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT44', 14, 78000, GETDATE(), GETDATE(), 1, 2, 2, 5);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT45', 223, 30000, GETDATE(), GETDATE(), 1, 3, 9, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT46', 333, 20000, GETDATE(), GETDATE(), 1, 4, 8, 3);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT47', 492, 20000, GETDATE(), GETDATE(), 1, 5, 2, 1);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT48', 389, 20000, GETDATE(), GETDATE(), 1, 6, 2, 4);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT49', 123, 20000, GETDATE(), GETDATE(), 1, 7, 1, 2);
+INSERT INTO ProductDetail (code, quantity, Price, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT50', 324, 20000, GETDATE(), GETDATE(), 1, 8, 2, 3);
+
+
+SELECT * FROM Role
+    INSERT INTO Role (name, CreateDate, UpdateDate, Status) VALUES ('Admin', GETDATE(), GETDATE(), 1);
+INSERT INTO Role (name, CreateDate, UpdateDate, Status) VALUES ('User', GETDATE(), GETDATE(), 1);

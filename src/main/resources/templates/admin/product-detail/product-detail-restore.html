@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>SẢN PHẨM CHI TIẾT ĐÃ XÓA</strong>
+            </div>
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${mess}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+
+            <div class="card-body card-block">
+                <form id="productDetailForm" th:object="${product}" class="form-horizontal">
+
+                    <div class="row">
+                        <input type="hidden" class="form-control" th:name="productId" th:value="*{id}">
+                        <div class="form-group col-6">
+                            <label class="font-weight-bold">Mã sản phẩm</label>
+                            <input type="text" class="form-control" th:value="*{code}" disabled>
+                        </div>
+
+                        <div class="form-group col-6">
+                            <label class="font-weight-bold">Tên sản phẩm</label>
+                            <input type="text" class="form-control" th:value="*{name}" disabled>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold">Giá từ</label>
+                                <div class="" style="color: red" id="error"></div>
+                            </div>
+                            <input type="number" class="form-control" th:name="priceMin" id="priceMin"
+                                   th:value="${priceMin == 0 ? '' : priceMin}" oninput="onInputText('error')">
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="font-weight-bold">Đến giá</label>
+                            <input type="number" class="form-control" th:name="priceMax" id="priceMax"
+                                   th:value="${priceMax == 2147483647 ? '' : priceMax}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="font-weight-bold">Kích cỡ</label>
+                            <div th:if="${sizeId == null}" class="d-flex w-100">
+                                <div class="w-100">
+                                    <select class="form-control" name="sizeId">
+                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="${size.id}" th:each="size: ${listSize}"
+                                                th:text="${size.name}"></option>
+                                    </select>
+                                </div>
+<!--                                <div class="w-10 d-flex justify-content-end">-->
+<!--                                    <a th:href="@{|/nova/product/*{id}/size/page|}">-->
+<!--                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>-->
+<!--                                        </button>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+                            </div>
+                            <div th:if="${sizeId != null}" class="d-flex w-100">
+                                <div class="w-100">
+                                    <select class="form-control" name="sizeId">
+                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="${size.id}" th:each="size: ${listSize}"
+                                                th:text="${size.name}" th:selected="${sizeId == size.id}"></option>
+                                    </select>
+                                </div>
+<!--                                <div class="w-10 d-flex justify-content-end">-->
+<!--                                    <a th:href="@{|/nova/product/*{id}/size/page|}">-->
+<!--                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>-->
+<!--                                        </button>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="font-weight-bold">Màu sắc</label>
+                            <div th:if="${colorId == null}" class="d-flex w-100">
+                                <div class="w-100">
+                                    <select class="form-control" name="colorId">
+                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="${color.id}" th:each="color: ${listColor}"
+                                                th:text="${color.name}"></option>
+                                    </select>
+                                </div>
+<!--                                <div class="w-10 d-flex justify-content-end">-->
+<!--                                    <a th:href="@{|/nova/product/*{id}/color/page|}">-->
+<!--                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>-->
+<!--                                        </button>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+                            </div>
+                            <div th:if="${colorId != null}" class="d-flex w-100">
+                                <div class="w-100">
+                                    <select class="form-control" name="colorId">
+                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="${color.id}" th:each="color: ${listColor}"
+                                                th:text="${color.name}" th:selected="${colorId == color.id}"></option>
+                                    </select>
+                                </div>
+<!--                                <div class="w-10 d-flex justify-content-end">-->
+<!--                                    <a th:href="@{|/nova/product/*{id}/color/page|}">-->
+<!--                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>-->
+<!--                                        </button>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card-footer">
+                        <div>
+                            <button th:onclick="searchDeleted([[${productId}]])" type="button"
+                                    class="btn btn-dark">
+                                <i class="fa-solid fa-magnifying-glass px-4"></i>
+                            </button>
+                            <script th:inline="javascript">
+                                checkPrice = () => {
+                                    let priceMin = document.getElementById('priceMin').value
+                                    let priceMax = document.getElementById('priceMax').value
+                                    debugger
+                                    if (priceMin < 0 || priceMax < 0) {
+                                        document.getElementById('error').innerHTML = `Giá phải là số dương`
+                                        return false;
+                                    }
+                                    if (Number(priceMax) < Number(priceMin)) {
+                                        document.getElementById('error').innerHTML = `Giá bắt đầu phải nhỏ hơn giá kết thúc`
+                                        return false;
+                                    }
+                                    return true;
+                                }
+
+                                searchDeleted = (productId) => {
+                                    if (checkPrice()) {
+                                        document.getElementById('productDetailForm').action = '/nova/product/' + productId + '/product-detail/search-restore'
+                                        document.getElementById('productDetailForm').method = 'get'
+                                        document.getElementById('productDetailForm').submit()
+                                    }
+                                }
+
+                                restore = (productId, idRestore) => {
+                                    swal({
+                                        title: "Khôi phục dữ liệu",
+                                        text: "Bạn có muốn khôi phục dữ liệu không ?",
+                                        icon: "warning",
+                                        buttons: ["Không", "Có"],
+                                        dangerMode: true,
+                                        closeOnClickOutside: false,
+                                    }).then((restore) => {
+                                        if (restore) {
+                                            document.getElementById('productDetailRestore').action = '/nova/product/' + productId + '/product-detail/restore/' +idRestore
+                                            document.getElementById('productDetailRestore').method = 'post'
+                                            document.getElementById('productDetailRestore').submit()
+                                        }
+                                    });
+
+                                }
+                            </script>
+                            <a th:href="@{|/nova/product/${productId}/product-detail|}">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left px-4"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </h1>
+    <div class="col">
+        <div class="card">
+            <div class="card-header" th:if="${pageProductDetail.isEmpty()}">
+                <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
+            </div>
+            <div th:if="${not pageProductDetail.isEmpty()}">
+                <div class="card-header">
+                    <strong>CÓ</strong>
+                    <strong class="card-title" th:text="${pageProductDetail.getTotalElements()}"></strong>
+                    <strong class="card-title"> BẢN GHI</strong>
+                </div>
+                <div class="card-body">
+                    <form id="productDetailRestore">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Mã CT</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Giá tiền</th>
+                                <th scope="col">Kích cỡ</th>
+                                <th scope="col">Màu sắc</th>
+                                <th scope="col">Khôi phục</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pageProductDetail}">
+                                <td th:text="${items.code}"></td>
+                                <td th:text="${items.quantity}"></td>
+                                <td th:text="${'₫'+#numbers.formatDecimal(items.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                                <td th:text="${items.sizeName}"></td>
+                                <td th:text="${items.colorName}"></td>
+                                <td>
+                                    <button th:onclick="restore([[${productId}]], [[${items.id}]])"
+                                            type="button"
+                                            class="btn btn-dark">
+                                        <i class="fa-solid fa-trash-can-arrow-up px-4"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+
+                    <!--                                Pagination-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageProductDetail.getNumber() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-dark d-flex">
+                            <div th:text="${pageProductDetail.getNumber() + 1}"></div>
+                            <span>/</span>
+                            <div th:text="${pageProductDetail.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageProductDetail.getNumber()+1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageProductDetail.getTotalPages() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

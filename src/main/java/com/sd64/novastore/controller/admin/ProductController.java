@@ -66,19 +66,15 @@ public class ProductController {
 
 
     @PostMapping("/add")
-    public String add(@RequestParam String code,
-                      @RequestParam String name,
+    public String add(@RequestParam String name,
                       @RequestParam String description,
                       @RequestParam Integer materialId,
                       @RequestParam Integer categoryId,
                       @RequestParam Integer brandId,
                       @RequestParam Integer formId,
                       RedirectAttributes redirectAttributes) {
-        if (productService.add(code, name, description, materialId, categoryId, brandId, formId)) {
-            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Mã sản phẩm đã tồn tại, Thêm dữ liệu thất bại");
-        }
+        productService.add(name, description, materialId, categoryId, brandId, formId);
+        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
         return "redirect:/nova/product/page";
     }
 
@@ -128,17 +124,10 @@ public class ProductController {
                          @RequestParam(required = false) Integer categoryId,
                          @RequestParam(required = false) Integer formId,
                          @RequestParam(required = false) String description,
-                         @RequestParam(required = false) BigDecimal priceMin,
-                         @RequestParam(required = false) BigDecimal priceMax,
                          @RequestParam(defaultValue = "0") int page,
                          Model model) {
-        if (priceMin == null) {
-            priceMin = BigDecimal.valueOf(0);
-            model.addAttribute("priceMinNull", null);
-        }
-        if (priceMax == null) {
-            priceMax = BigDecimal.valueOf(Integer.MAX_VALUE);
-            model.addAttribute("priceMaxNull", null);
+        if (productName.isEmpty() && description.isEmpty() && brandId == null && materialId == null && categoryId == null && formId == null) {
+            return "redirect:/nova/product/page";
         }
         Page<ProductDto> pageProductDto = productService.search(materialId, brandId, formId, categoryId, productName, description, page);
         model.addAttribute("pageProduct", pageProductDto);
@@ -156,24 +145,20 @@ public class ProductController {
         model.addAttribute("materialId", materialId);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("formId", formId);
-        model.addAttribute("priceMin", priceMin);
-        model.addAttribute("priceMax", priceMax);
+
         return "admin/product/product";
     }
 
     @PostMapping("/excel")
     public String importExcel(RedirectAttributes redirectAttributes, @RequestParam MultipartFile excelFile) throws IOException {
-        if (productService.importExcelProduct(excelFile).contains("Trùng mã")) {
-            redirectAttributes.addFlashAttribute("error", "Mã sản phẩm trong file đã tồn tại");
+        if (productService.importExcelProduct(excelFile) == 1) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
             return "redirect:/nova/product/page";
-        } else if (productService.importExcelProduct(excelFile).contains("Sai dữ liệu")) {
+        } else if (productService.importExcelProduct(excelFile) == -1) {
             redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại dữ liệu trong file");
             return "redirect:/nova/product/page";
-        } else if (productService.importExcelProduct(excelFile).contains("Lỗi file")) {
-            redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");
-            return "redirect:/nova/product/page";
         } else {
-            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
+            redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");
             return "redirect:/nova/product/page";
         }
     }
@@ -193,11 +178,11 @@ public class ProductController {
         return "admin/product/product-restore";
     }
 
-    @PostMapping("/restore")
-    public String restore(@RequestParam List<Integer> listProductId,
+    @PostMapping("/restore/{id}")
+    public String restore(@PathVariable Integer id,
                           RedirectAttributes redirectAttributes) {
-        productService.restore(listProductId);
-        redirectAttributes.addFlashAttribute("mess", "Khôi phục sản phẩm thành công");
+        productService.restore(id);
+        redirectAttributes.addFlashAttribute("mess", "Khôi phục dữ liệu thành công");
         return "redirect:/nova/product/view-restore";
     }
 
@@ -208,21 +193,13 @@ public class ProductController {
                          @RequestParam(required = false) Integer categoryId,
                          @RequestParam(required = false) Integer formId,
                          @RequestParam(required = false) String description,
-                         @RequestParam(required = false) BigDecimal priceMin,
-                         @RequestParam(required = false) BigDecimal priceMax,
+
                          @RequestParam(defaultValue = "0") int page,
                          Model model) {
-        if (priceMin == null) {
-            priceMin = BigDecimal.valueOf(0);
-            model.addAttribute("priceMinNull", null);
+
+        if (productName.isEmpty() && description.isEmpty() && brandId == null && materialId == null && categoryId == null && formId == null) {
+            return "redirect:/nova/product/view-restore";
         }
-        if (priceMax == null) {
-            priceMax = BigDecimal.valueOf(Integer.MAX_VALUE);
-            model.addAttribute("priceMaxNull", null);
-        }
-//        if (priceMin != null && priceMax != null) {
-//
-//        }
         Page<ProductDto> pageProductDto = productService.searchProductDeleted(materialId, brandId, formId, categoryId, productName, description, page);
         model.addAttribute("pageProduct", pageProductDto);
         model.addAttribute("productName", productName);
@@ -239,8 +216,6 @@ public class ProductController {
         model.addAttribute("materialId", materialId);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("formId", formId);
-        model.addAttribute("priceMin", priceMin);
-        model.addAttribute("priceMax", priceMax);
         return "admin/product/product-restore";
     }
 }

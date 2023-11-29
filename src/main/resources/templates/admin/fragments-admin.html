@@ -90,7 +90,6 @@
 
         checkName = (idInput, errorName, text) => {
             let isName = document.getElementById(idInput).value
-            debugger
             if (isName.trim() === '') {
                 document.getElementById(errorName).innerHTML = `Chưa nhập ${text}`
                 return false;
@@ -98,8 +97,8 @@
             return true;
         }
 
-        function clickAdd(entity, idForm, idInput, errorName, text) {
-            if (checkName(idInput, errorName, text)) {
+        function clickAdd(entity, idForm, idName, errorName, textName) {
+            if (checkName(idName, errorName, textName)) {
                 swal({
                     title: "Thêm dữ liệu",
                     text: "Bạn có muốn thêm dữ liệu không ?",
@@ -138,8 +137,8 @@
             return true;
         }
 
-        function clickUpdate(idForm, idInput, errorName, text) {
-            if (checkName(idInput, errorName, text)) {
+        function clickUpdate(idForm, idName, errorName, textName) {
+            if (checkName(idName, errorName, textName)) {
                 swal({
                     title: "Sửa dữ liệu",
                     text: "Bạn có muốn sửa dữ liệu không ?",
@@ -172,7 +171,24 @@
             });
         }
 
-        function importExcel(id, name, error) {
+        clickRestore = (entity, idForm, idRestore) => {
+            swal({
+                title: "Khôi phục dữ liệu",
+                text: "Bạn có muốn khôi phục dữ liệu không ?",
+                icon: "warning",
+                buttons: ["Không", "Có"],
+                dangerMode: true,
+                closeOnClickOutside: false,
+            }).then((restore) => {
+                if (restore) {
+                    document.getElementById(idForm).action = '/nova/' + entity + "/restore/" + idRestore
+                    document.getElementById(idForm).method = 'post'
+                    document.getElementById(idForm).submit()
+                }
+            });
+        }
+
+        function importExcel(idForm, name, error) {
             if (validateFile(name, error)) {
                 swal({
                     title: "Thêm dữ liệu Excel",
@@ -183,8 +199,8 @@
                     closeOnClickOutside: false,
                 }).then((update) => {
                     if (update) {
-                        document.getElementById(id).method = 'post'
-                        document.getElementById(id).submit()
+                        document.getElementById(idForm).method = 'post'
+                        document.getElementById(idForm).submit()
                     }
                 });
             }
@@ -192,6 +208,12 @@
 
         function clickSearch(entity, id) {
             document.getElementById(id).action = '/nova/' + entity + '/search'
+            document.getElementById(id).method = 'get'
+            document.getElementById(id).submit()
+        }
+
+        function clickSearchRestore(entity, id) {
+            document.getElementById(id).action = '/nova/' + entity + '/search-restore'
             document.getElementById(id).method = 'get'
             document.getElementById(id).submit()
         }

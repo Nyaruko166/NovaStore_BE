@@ -2,7 +2,6 @@ package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.model.Image;
 import com.sd64.novastore.model.Product;
-import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.repository.ImageRepository;
 import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.service.ImageService;
@@ -13,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -100,6 +97,7 @@ public class ImageServiceImpl implements ImageService {
         if (optional.isPresent()){
             Image image = optional.get();
             image.setStatus(0);
+            image.setUpdateDate(new Date());
             return imageRepository.save(image);
         } else {
             return null;
@@ -177,39 +175,32 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-//    public byte[] getAllImageByProduct(Integer productId) {
-//        List<Image> listImage = imageRepository.findAllByProduct_IdOrderByUpdateDateDesc(productId);
-//        if (listImage.isEmpty()) {
-//            log.info("productId id = {} is not contain image", productId);
-//            return null;
-//        }
-//        try {
-//            return convert(getImagePath(image.getName()));
-//        } catch (IOException e) {
-//            log.error("Convert image fail, productId = {}", productId);
-//            return null;
-//        }
-//    }
+    @Override
+    public Page<Image> getAllDeleted(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return imageRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
+    }
 
-//    @Override
-//    public Page<Image> search(String name, int page) {
-//        Pageable pageable = PageRequest.of(page, 5);
-//        return imageRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
-//    }
+    @Override
+    public Image restore(Integer id) {
+        Optional<Image> optionalImage = imageRepository.findById(id);
+        if (optionalImage.isPresent()) {
+            Image restoreImage = optionalImage.get();
+            restoreImage.setStatus(1);
+            restoreImage.setUpdateDate(new Date());
+            return imageRepository.save(restoreImage);
+        } else {
+            return null;
+        }
+    }
 
-//    public Boolean uploadImage(@RequestParam MultipartFile file) {
-//        String path = System.getProperty("user.dir");
-//        String folderUpload = path + File.separator + "/src/main/resources/static/assets/product/";
-//        File folder = new File(folderUpload);
-//        if (!folder.exists()) {
-//            folder.mkdirs();
-//        }
-//
-//        try {
-//            file.transferTo(new File(folderUpload + File.separator + file.getOriginalFilename()));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return true;
-//    }
+    @Override
+    public List<Image> getAllImageByProductId(Integer productId) {
+        return imageRepository.findAllByProduct_IdOrderByUpdateDateDesc(productId);
+    }
+
+    @Override
+    public Image getImageActiveByProductId(Integer productId) {
+        return imageRepository.findTopByProduct_IdOrderByUpdateDateDesc(productId);
+    }
 }

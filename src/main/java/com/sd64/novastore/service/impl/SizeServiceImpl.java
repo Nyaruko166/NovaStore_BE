@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Size;
 import com.sd64.novastore.repository.SizeRepository;
 import com.sd64.novastore.service.SizeService;
@@ -30,29 +31,43 @@ public class SizeServiceImpl implements SizeService {
         return sizeRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
-    @Override
-    public Size add(String name) {
-        Size size = new Size();
-        size.setName(name);
-        size.setStatus(1);
-        size.setCreateDate(new Date());
-        size.setUpdateDate(new Date());
-        return sizeRepository.save(size);
+    private Boolean checkName(String name) {
+        Optional<Size> optionalSize = sizeRepository.findByName(name);
+        if (optionalSize.isPresent()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public Size update(Integer id, String name) {
+    public Boolean add(String name) {
+        if (checkName(name)) {
+            Size size = new Size();
+            size.setName(name);
+            size.setStatus(1);
+            size.setCreateDate(new Date());
+            size.setUpdateDate(new Date());
+            sizeRepository.save(size);
+            size.setCode("S"+size.getId());
+            sizeRepository.save(size);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean update(Integer id, String name) {
         Optional<Size> optional = sizeRepository.findById(id);
-        if (optional.isPresent()) {
+        if (optional.isPresent() && checkName(name)) {
             Size updateSize = optional.get();
             updateSize.setId(id);
             updateSize.setName(name);
-            updateSize.setStatus(1);
-            updateSize.setCreateDate(optional.get().getCreateDate());
             updateSize.setUpdateDate(new Date());
-            return sizeRepository.save(updateSize);
+            sizeRepository.save(updateSize);
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -62,6 +77,7 @@ public class SizeServiceImpl implements SizeService {
         if (optional.isPresent()) {
             Size size = optional.get();
             size.setStatus(0);
+            size.setUpdateDate(new Date());
             return sizeRepository.save(size);
         } else {
             return null;
@@ -71,7 +87,7 @@ public class SizeServiceImpl implements SizeService {
     @Override
     public Page<Size> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return sizeRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+        return sizeRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 1, pageable);
     }
 
     @Override
@@ -82,5 +98,30 @@ public class SizeServiceImpl implements SizeService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Page<Size> getAllSizeDelete(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return sizeRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
+    }
+
+    @Override
+    public Size restore(Integer id) {
+        Optional<Size> optionalSize = sizeRepository.findById(id);
+        if (optionalSize.isPresent()) {
+            Size restoreSize = optionalSize.get();
+            restoreSize.setStatus(1);
+            restoreSize.setUpdateDate(new Date());
+            return sizeRepository.save(restoreSize);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Page<Size> searchDeleted(String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return sizeRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
     }
 }

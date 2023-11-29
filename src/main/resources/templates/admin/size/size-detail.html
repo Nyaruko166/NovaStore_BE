@@ -12,15 +12,28 @@
             <div class="card-header">
                 <strong>CẬP NHẬT KÍCH CỠ</strong>
             </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
             <div class="card-body card-block">
                 <form id="sizeUpdate" th:object="${size}" th:action="@{/nova/${product.id}/size/update/{id}(id=${size.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
+                        <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Mã kích cỡ</label></div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="code" name="code" th:field="*{code}" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row form-group">
                         <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Kích cỡ</label></div>
                         <div class="col-12 col-md-9"><input type="text" id="name" name="name" th:field="*{name}" class="form-control"
                                                             oninput="onInputText('errorName')">
-                            <small class="" style="color: red"
-                                   id="errorName" ></small>
+                            <div class="" style="color: red"
+                                   id="errorName" ></div>
                         </div>
                     </div>
 
@@ -58,7 +71,7 @@
                                 }
                             }
                         </script>
-                        <a th:href="@{|/nova/${product.id}/size/page|}">
+                        <a th:href="@{|/nova/product/${product.id}/size/page|}">
                             <button type="button" class="btn btn-warning"><i
                                     class="fa-solid fa-circle-left px-4"></i>
                             </button>

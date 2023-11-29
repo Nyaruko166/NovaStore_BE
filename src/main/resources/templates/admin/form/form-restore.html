@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>THƯƠNG HIỆU ĐÃ XÓA</strong>
+                <strong>KIỂU DÁNG ĐÃ XÓA</strong>
             </div>
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -20,10 +20,10 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form id="brandForm" class="form-horizontal">
+                <form id="formForm" class="form-horizontal">
                     <div class="card-footer">
                         <div>
-                            <a href="/nova/brand/page">
+                            <a href="/nova/form/page">
                                 <button type="button" class="btn btn-warning"><i
                                         class="fa-solid fa-circle-left px-4"></i>
                                 </button>
@@ -33,14 +33,14 @@
                     <br>
                     <div class="border-search">
                         <div class="col-md-1">
-                            <button onclick="clickSearchRestore('brand', 'brandForm')" type="button"
+                            <button onclick="clickSearchRestore('form', 'formForm')" type="button"
                                     class="btn btn-dark">
                                 <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
                         </div>
                         <div class="col-md-11">
-                            <input type="text" placeholder="Nhập tên thương hiệu..."
-                                   th:value="${brandNameSearch}" th:name="brandNameSearch"
+                            <input type="text" placeholder="Nhập tên kiểu dáng..."
+                                   th:value="${formNameSearch}" th:name="formNameSearch"
                                    class="form-control">
                         </div>
                     </div>
@@ -52,33 +52,33 @@
     </h1>
     <div class="col">
         <div class="card">
-            <div class="card-header" th:if="${pageBrand.isEmpty()}">
+            <div class="card-header" th:if="${pageForm.isEmpty()}">
                 <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
             </div>
-            <div th:if="${not pageBrand.isEmpty()}">
+            <div th:if="${not pageForm.isEmpty()}">
                 <div class="card-header">
                     <strong>CÓ</strong>
-                    <strong class="card-title" th:text="${pageBrand.getTotalElements()}"></strong>
+                    <strong class="card-title" th:text="${pageForm.getTotalElements()}"></strong>
                     <strong class="card-title"> BẢN GHI</strong>
                 </div>
                 <div class="card-body">
-                    <form id="brandRestore">
+                    <form id="formRestore">
                         <table class="table text-center">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Mã thương hiệu</th>
-                                <th scope="col">Tên thương hiệu</th>
+                                <th scope="col">Mã kiểu dáng</th>
+                                <th scope="col">Tên kiểu dáng</th>
                                 <th scope="col">Khôi phục</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="items:${pageBrand}">
+                            <tr th:each="items:${pageForm}">
                                 <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
                                 <td>
-                                    <button th:onclick="clickRestore('brand', 'brandRestore', [[${items.id}]])" type="button"
-                                    class="btn btn-dark">
-                                            <i class="fa-solid fa-trash-can-arrow-up px-4"></i>
+                                    <button th:onclick="clickRestore('form', 'formRestore', [[${items.id}]])" type="button"
+                                            class="btn btn-dark">
+                                        <i class="fa-solid fa-trash-can-arrow-up px-4"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -86,30 +86,27 @@
                         </table>
                     </form>
 
-
                     <!--            Pagination-->
                     <div class="d-flex justify-content-center align-items-center">
-                        <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=0&brandNameSearch=${brandNameSearch}|}">
+                        <div th:if="${pageForm.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0&formNameSearch=${formNameSearch}|}">
                                 </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
                         </div>
-                        <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=${pageBrand.getNumber() - 1}&brandNameSearch=${brandNameSearch}|}">
+                        <div th:if="${pageForm.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageForm.getNumber() - 1}&formNameSearch=${formNameSearch}|}">
                                 <i style="color: white" class="fa-solid fa-left-long"></i></a>
                         </div>
                         <div class="btn btn-dark d-flex">
-                            <div th:text="${pageBrand.getNumber() + 1}"></div>
+                            <div th:text="${pageForm.getNumber() + 1}"></div>
                             <span>/</span>
-                            <div th:text="${pageBrand.getTotalPages()}"></div>
+                            <div th:text="${pageForm.getTotalPages()}"></div>
                         </div>
-                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}"
-                             class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageBrand.getNumber()+1}&brandNameSearch=${brandNameSearch}|}">
+                        <div th:if="${pageForm.getNumber() + 1 lt pageForm.getTotalPages()}" class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageForm.getNumber()+1}&formNameSearch=${formNameSearch}|}">
                                 <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                         </div>
-                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}"
-                             class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageBrand.getTotalPages()-1}&brandNameSearch=${brandNameSearch}|}">
+                        <div th:if="${pageForm.getNumber() + 1 lt pageForm.getTotalPages()}" class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageForm.getTotalPages()-1}&formNameSearch=${formNameSearch}|}">
                                 <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                         </div>
                     </div>

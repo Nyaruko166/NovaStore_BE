@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FormRepository extends JpaRepository<Form, Integer> {
@@ -15,4 +16,6 @@ public interface FormRepository extends JpaRepository<Form, Integer> {
     Page<Form> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 
     Form findByName(String name);
+
+    Optional<Form> findByCode(String code);
 }

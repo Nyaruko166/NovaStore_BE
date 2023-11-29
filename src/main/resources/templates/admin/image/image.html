@@ -20,11 +20,9 @@
                 </button>
             </div>
 
-
-
             <div class="card-body card-block">
                 <form id="imageForm" th:object="${product}" class="form-horizontal" enctype="multipart/form-data">
-                    <div class="card-footer">
+                    <div class="card-footer d-flex justify-content-between">
                         <div>
                             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
                                 <i class="fa-solid fa-square-plus px-4"></i>
@@ -98,6 +96,13 @@
                                 </button>
                             </a>
                         </div>
+                        <div>
+                            <a th:href="@{'/nova/product/' + ${productId} + '/image/view-restore'}">
+                                <button type="button" class="btn btn-dark">
+                                    <i class="fa-solid fa-warehouse px-4"></i>
+                                </button>
+                            </a>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -122,14 +127,14 @@
                         <table class="table text-center">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Id</th>
+<!--                                <th scope="col">Mã ảnh</th>-->
                                 <th scope="col">Ảnh</th>
                                 <th scope="col">Chức năng</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="items:${pageImage}">
-                                <td th:text="${items.id}"></td>
+<!--                                <td th:text="${items.id}"></td>-->
                                 <td>
                                     <img th:src="@{'/image/' + ${items.id}}" alt=""
                                          style="width: 100px;height: 100px">

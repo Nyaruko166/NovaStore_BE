@@ -8,10 +8,15 @@ import com.sd64.novastore.model.Size;
 import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
 import com.sd64.novastore.service.ProductDetailService;
+import com.sd64.novastore.utils.FileUtil;
+import com.sd64.novastore.utils.productdetail.ProductDetailExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +27,9 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
+    @Autowired
+    private ProductDetailExcelUtil productDetailExcelUtil;
 
-    @Override
-    public List<ProductDetail> getAllProductDetail() {
-        return productDetailRepository.findAllByAndStatusOrderByIdDesc(1);
-    }
 
     @Override
     public Page<ProductDetail> getAllPT(Integer page) {
@@ -34,34 +37,25 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return productDetailRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
     }
 
-    public Boolean checkCode(String code) {
-        Optional<ProductDetail> optionalProductDetail = productDetailRepository.findAllByCode(code);
-        if (optionalProductDetail.isPresent()) {
-            return false;
-        }
+    @Override
+    public Boolean add(Integer productId, Integer quantity, BigDecimal price, Integer sizeId, Integer colorId) {
+        ProductDetail productDetail = new ProductDetail();
+        productDetail.setStatus(1);
+        productDetail.setCreateDate(new java.util.Date());
+        productDetail.setUpdateDate(new java.util.Date());
+        productDetail.setProduct(Product.builder().id(productId).build());
+        productDetail.setQuantity(quantity);
+        productDetail.setPrice(price);
+        productDetail.setSize(Size.builder().id(sizeId).build());
+        productDetail.setColor(Color.builder().id(colorId).build());
+        productDetailRepository.save(productDetail);
+        productDetail.setCode("CT"+productDetail.getId());
+        productDetailRepository.save(productDetail);
         return true;
     }
 
     @Override
-    public Boolean add(Integer productId, String code, Integer quantity, Integer sizeId, Integer colorId) {
-        if (checkCode(code)) {
-            ProductDetail productDetail = new ProductDetail();
-            productDetail.setCode(code);
-            productDetail.setStatus(1);
-            productDetail.setCreateDate(new java.util.Date());
-            productDetail.setUpdateDate(new java.util.Date());
-            productDetail.setProduct(Product.builder().id(productId).build());
-            productDetail.setQuantity(quantity);
-            productDetail.setSize(Size.builder().id(sizeId).build());
-            productDetail.setColor(Color.builder().id(colorId).build());
-            productDetailRepository.save(productDetail);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public ProductDetail update(Integer id, Integer productId, Integer quantity, Integer sizeId, Integer colorId) {
+    public ProductDetail update(Integer id, Integer productId, Integer quantity, BigDecimal price, Integer sizeId, Integer colorId) {
         Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(id);
         if (productDetailOptional.isPresent()) {
             ProductDetail productDetail = productDetailOptional.get();
@@ -69,6 +63,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             productDetail.setStatus(productDetail.getStatus());
             productDetail.setCreateDate(productDetail.getCreateDate());
             productDetail.setQuantity(quantity);
+            productDetail.setPrice(price);
             productDetail.setUpdateDate(new Date());
             productDetail.setProduct(Product.builder().id(productId).build());
             productDetail.setColor(Color.builder().id(colorId).build());
@@ -83,6 +78,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         Optional<ProductDetail> optional = productDetailRepository.findById(id);
         if (optional.isPresent()) {
             optional.get().setStatus(0);
+            optional.get().setUpdateDate(new Date());
             return productDetailRepository.save(optional.get());
         } else {
             return null;
@@ -101,12 +97,36 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public Page<ProductDetailSearchResponse> getProductBySizeIdAndColorId(int page, Integer productId, Integer sizeId, Integer colorId) {
-        Pageable pageable = PageRequest.of(page, 5);
+    public List<ProductDetail> getProductDetailByProductId(Integer productId) {
+        return null;
+    }
 
-        var pageProductDetailDto = productDetailRepository.getProductBySizeIdAndColorId(productId, sizeId, colorId, pageable)
+    @Override
+    public String importExcelProduct(MultipartFile file, Integer productId) throws IOException {
+        if (productDetailExcelUtil.isValidExcel(file)) {
+            String uploadDir = "./src/main/resources/static/filecustom/productdetail/";
+            String fileName = file.getOriginalFilename();
+            String excelPath = FileUtil.copyFile(file, fileName, uploadDir);
+
+            String status = productDetailExcelUtil.getProductDetailFromExcel(excelPath, productId);
+            if (status.contains("Trùng mã")) {
+                return "Trùng mã";
+            } else if (status.contains("Sai dữ liệu")) {
+                return "Sai dữ liệu";
+            } else {
+                return "Oke bạn ơi";
+            }
+        } else {
+            return "lỗi file";
+        }
+    }
+
+    @Override
+    public Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorId(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId) {
+        Pageable pageable = PageRequest.of(page, 5);
+        var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMin, priceMax, sizeId, colorId, pageable)
                 .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
-        long totalElements = productDetailRepository.getProductBySizeIdAndColorId(productId, sizeId, colorId).stream().count();
+        long totalElements = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMin, priceMax, sizeId, colorId).stream().count();
         return new PageImpl(pageProductDetailDto, pageable, totalElements);
     }
 
@@ -119,9 +139,9 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public int getTotalPage(int page, Integer productId, Integer sizeId, Integer colorId) {
+    public int getTotalPage(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId) {
         Pageable pageable = PageRequest.of(page, 5);
-        var pageProductDetailDto = productDetailRepository.getProductBySizeIdAndColorId(productId, sizeId, colorId, pageable)
+        var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMin, priceMax, sizeId, colorId, pageable)
                 .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
         int totalElemets = pageProductDetailDto.size();
         int elementsPerpage = 5;
@@ -130,5 +150,58 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             totalPage++;
         }
         return totalPage;
+    }
+
+    @Override
+    public Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorIdDeleted(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId) {
+        Pageable pageable = PageRequest.of(page, 5);
+        var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorIdDeleted(productId, priceMin, priceMax, sizeId, colorId, pageable)
+                .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
+        long totalElements = productDetailRepository.getProductByPriceAndSizeIdAndColorIdDeleted(productId, priceMin, priceMax, sizeId, colorId).stream().count();
+        return new PageImpl(pageProductDetailDto, pageable, totalElements);
+    }
+
+    @Override
+    public ProductDetail restore(Integer id) {
+        Optional<ProductDetail> optionalProductDetail = productDetailRepository.findById(id);
+        if (optionalProductDetail.isPresent()) {
+            ProductDetail restoreProductDetail = optionalProductDetail.get();
+            restoreProductDetail.setStatus(1);
+            restoreProductDetail.setUpdateDate(new Date());
+            return productDetailRepository.save(restoreProductDetail);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public int getTotalPageDeleted(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId) {
+        Pageable pageable = PageRequest.of(page, 5);
+        var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorIdDeleted(productId, priceMin, priceMax, sizeId, colorId, pageable)
+                .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
+        int totalElemets = pageProductDetailDto.size();
+        int elementsPerpage = 5;
+        int totalPage = totalElemets / elementsPerpage;
+        if (totalElemets % elementsPerpage != 0) {
+            totalPage++;
+        }
+        return totalPage;
+    }
+
+    @Override
+    public List<BigDecimal> getPriceActiveProductDetailByProductId(Integer productId) {
+        return null;
+    }
+
+    @Override
+    public BigDecimal getPriceMaxByProductId(Integer productId) {
+        List<ProductDetail> listProductDetail = productDetailRepository.findByProductIdAndStatusOrderByPriceDesc(productId, 1);
+        return listProductDetail.get(0).getPrice();
+    }
+
+    @Override
+    public BigDecimal getPriceMinByProductId(Integer productId) {
+        List<ProductDetail> listProductDetail = productDetailRepository.findByProductIdAndStatusOrderByPriceAsc(productId, 1);
+        return listProductDetail.get(0).getPrice();
     }
 }

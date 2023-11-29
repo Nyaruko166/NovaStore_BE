@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Size;
 import org.springframework.data.domain.Page;
@@ -12,13 +13,19 @@ public interface SizeService {
 
     Page<Size> getPage(Integer page);
 
-    Size add(String name);
+    Boolean add(String name);
 
-    Size update(Integer id, String name);
+    Boolean update(Integer id, String name);
 
     Size delete(Integer id);
 
     Page<Size> search(String name, int page);
 
     Size detail(Integer id);
+
+    Page<Size> getAllSizeDelete(int page);
+
+    Size restore(Integer id);
+
+    Page<Size> searchDeleted(String name, int page);
 }

@@ -2,9 +2,7 @@ package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.model.Image;
 import com.sd64.novastore.model.Product;
-import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.service.ImageService;
-import com.sd64.novastore.service.ProductDetailService;
 import com.sd64.novastore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
 import java.util.List;
 
 
@@ -54,7 +51,7 @@ public class ImageController {
                          @RequestParam MultipartFile image,
                          RedirectAttributes redirectAttributes) {
         imageService.update(id, productId, image);
-        redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
+        redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
         return "redirect:/nova/product/" + productId + "/image";
     }
 
@@ -70,7 +67,26 @@ public class ImageController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         Integer productId = imageService.getProductDetailByIdImage(id);
         imageService.delete(id);
-        redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
+        redirectAttributes.addFlashAttribute("mess", "Xóa dữ liệu thành công");
         return "redirect:/nova/product/" + productId + "/image";
     }
+
+    @GetMapping("/product/{productId}/image/view-restore")
+    public String viewRestore(@PathVariable Integer productId,
+                              @RequestParam(defaultValue = "0") Integer page, Model model) {
+        Page<Image> pageImage = imageService.getAllDeleted(page);
+        model.addAttribute("pageImage", pageImage);
+        model.addAttribute("productId", productId);
+        return "admin/image/image-restore";
+    }
+
+    @PostMapping("/product/{productId}/image/restore/{id}")
+    public String restore(@PathVariable Integer productId,
+                          @PathVariable Integer id,
+                          RedirectAttributes redirectAttributes) {
+        imageService.restore(id);
+        redirectAttributes.addFlashAttribute("mess", "Khôi phục dữ liệu thành công");
+        return "redirect:/nova/product/" + productId + "/image/view-restore";
+    }
+
 }
