@@ -27,43 +27,35 @@ public class Voucher {
     @Column(name = "Id")
     private Integer id;
 
-    @NotBlank(message = "Code khong duoc de trong")
-    @Size(max = 50, message = "Code khong duoc vuot qua 50 ky tu")
+
     @Column(name = "Code")
     private String code;
 
 
-    @NotBlank(message = "Name khong duoc de trong")
-    @Size(max = 50, message = "Name khong duoc vuot qua 50 ky tu")
+
     @Column(name = "Name")
     private String name;
 
-    @NotNull(message = "Quantity khong duoc de trong")
-    @Min(value = 1, message = "Quantity phai lon hon hoac bang 1")
-    @Max(value = 100, message = "Quantity phai nho hon hoac bang 100")
+
     @Column(name = "Quantity")
     private Integer quantity;
 
 
-    @NotNull(message = "Value khong duoc de trong")
-    @Min(value = 10000, message = "Value phai lon hon hoac bang 10000")
-    @Max(value = 1000000000, message = "Value phai nho hon hoac bang 1000000000")
+
     @Column(name = "Value")
     private BigDecimal value;
 
-    @NotNull(message = "MinimumPrice khong duoc de trong")
-    @Min(value = 10000, message = "MinimumPrice phai lon hon hoac bang 10000")
-    @Max(value = 1000000000, message = "MinimumPrice phai nho hon hoac bang 1000000000")
+
     @Column(name = "MinimumPrice")
     private BigDecimal minimumPrice;
 
 
-    @NotNull(message = "StartDate khong duoc de trong")
+
     @Column(name = "StartDate")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date startDate;
 
-    @NotNull(message = "EndDate khong duoc de trong")
+
     @Column(name = "EndDate")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date endDate;

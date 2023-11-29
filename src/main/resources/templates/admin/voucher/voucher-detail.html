@@ -2,107 +2,249 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/admin-layout.html}">
 <head>
-  <meta charset="UTF-8">
-  <title>Payment Method Management</title>
+    <meta charset="UTF-8">
+    <title>Payment Method Management</title>
 </head>
 <body>
 <div layout:fragment="content">
-  <div class="col">
-    <div class="card">
-      <div class="card-header">
-        <strong>Voucher</strong>
-      </div>
-      <div class="card-body card-block">
-        <form id="voucherUpdate" th:object="${voucher}" th:action="@{/nova/voucher/update/{id}(id=${voucher.id})}" method="post" class="form-horizontal">
-          <div class="row form-group">
-            <div class="col col-md-3">
-              <label for="code" class=" form-control-label">Code</label>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>Cập nhật phiếu mua</strong>
             </div>
-            <div class="col-12 col-md-9">
-              <input type="text" id="code" th:field="*{code}" class="form-control">
-              <br>
-              <div class="alert alert-warning" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+            <div class="card-body card-block">
+                <form id="voucherUpdate" th:object="${voucher}"
+                      th:action="@{/nova/voucher/update/{id}(id=${voucher.id})}" method="post" class="form-horizontal">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Mã phiếu mua</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="code" id="code"
+                                   th:value="*{code}"  oninput="onInputText('errorCode')">
+                            <small class="" style="color: red"
+                                   id="errorCode"></small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Tên phiếu mua</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="name" id="name"
+                                   th:value="*{name}"  oninput="onInputText('errorName')">
+                            <small class="" style="color: red"
+                                   id="errorName"></small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Số lượng</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="quantity" id="quantity"
+                                   th:value="*{quantity}"    oninput="onInputText('errorQuantity')">
+                            <small class="" style="color: red"
+                                   id="errorQuantity"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Giá trị</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="value" id="value"
+                                   th:value="*{value}"  oninput="onInputText('errorValue')">
+                            <small class="" style="color: red"
+                                   id="errorValue"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Giá thấp nhất</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="minimumPrice" id="minimumPrice"
+                                   th:value="*{minimumPrice}"  oninput="onInputText('errorMinimumPrice')">
+                            <small class="" style="color: red"
+                                   id="errorMinimumPrice"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Ngày bắt đầu</label>
+                        <div class="col-sm-10">
+                            <div id="start-date-picker" class="md-form md-outline input-with-post-icon datepicker"
+                                 inline="true">
+                                <input placeholder="Choose start date" type="datetime-local"
+                                       id="startDate"
+                                       class="form-control"
+                                       name="startDate"
+                                       th:value="*{startDate}"
+                                       oninput="onInputText('errorStartDate')"
+                                >
+
+                                <small class="" style="color: red"
+                                       id="errorStartDate"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Ngày kết thúc</label>
+                        <div class="col-sm-10">
+                            <div id="end-date-picker" class="md-form md-outline input-with-post-icon datepicker"
+                                 inline="true">
+                                <input placeholder="Choose start date" type="datetime-local"
+                                       id="endDate"
+                                       class="form-control"
+                                       name="endDate"
+                                       th:value="*{endDate}"
+                                       oninput="onInputText('errorEndDate')"
+                                >
+                                <small class="" style="color: red"
+                                       id="errorEndDate"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer d-flex">
+                        <div>
+                            <button onclick="clickUpdate('voucherUpdate')" type="button" class="btn btn-info"><i
+                                    class="fa-solid fa-pen mr-1"></i>
+                                SỬA
+                            </button>
+                            <a href="/nova/voucher/page">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left mr-1"></i> Voucher
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <script th:inline="javascript">
+                        checkCode = () => {
+                            let isCode = document.getElementById('code').value
+                            if (isCode.trim() === '') {
+                                document.getElementById('errorCode').innerHTML = `Chưa nhập mã`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        checkName = () => {
+                            let isName = document.getElementById('name').value
+                            if (isName.trim() === '') {
+                                document.getElementById('errorName').innerHTML = `Chưa nhập tên`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        checkQuantity = () => {
+                            let isQuantity = document.getElementById('quantity').value
+                            if (isQuantity.trim() === '') {
+                                document.getElementById('errorQuantity').innerHTML = `Chưa nhập số lượng`
+                                return false;
+                            }
+                            if (isQuantity < 0) {
+                                document.getElementById('errorQuantity').innerHTML = `Số lượng lớn hơn 0`
+                                return false;
+                            }
+                            if (isQuantity > 30) {
+                                document.getElementById('errorQuantity').innerHTML = `Số lượng phiếu mua cao nhất là 30`
+                                return false;
+                            }
+                            return true;
+                        }
+                        checkValue = () => {
+                            let isValue = document.getElementById('value').value
+                            if (isValue.trim() === '') {
+                                document.getElementById('errorValue').innerHTML = `Chưa nhập giá trị`
+                                return false;
+                            }
+                            if (isValue < 10000) {
+                                document.getElementById('errorValue').innerHTML = `Giá trị lớn hơn 10000đ`
+                                return false;
+                            }
+                            if (isValue > 200000) {
+                                document.getElementById('errorValue').innerHTML = `SGiá trị lớn nhất là 200000đ`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        checkMinimumPrice = () => {
+                            let isMinimumPrice = document.getElementById('minimumPrice').value
+                            if (isMinimumPrice.trim() === '') {
+                                document.getElementById('errorMinimumPrice').innerHTML = `Chưa nhập giá thấp nhất`
+                                return false;
+                            }
+                            if (isMinimumPrice < 100000) {
+                                document.getElementById('errorMinimumPrice').innerHTML = `Giá trị lớn hơn 100000đ`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        checkStartDate = () => {
+                            let startDateInput = document.getElementById('startDate');
+                            let errorStartDate = document.getElementById('errorStartDate');
+
+                            let startDateValue = startDateInput.value.trim();
+                            if (startDateValue === '') {
+                                errorStartDate.innerHTML = `Chưa nhập ngày bắt đầu`;
+                                return false;
+                            }
+
+                            let currentDate = new Date();
+                            let startDate = new Date(startDateValue);
+
+                            if (startDate <= currentDate) {
+                                errorStartDate.innerHTML = `Ngày bắt đầu phải lớn hơn ngày hiện tại`;
+                                return false;
+                            }
+
+                            errorStartDate.innerHTML = ''; // Reset lỗi nếu có
+                            return true;
+                        }
+
+                        checkEndDate = () => {
+                            let endDateInput = document.getElementById('endDate');
+                            let errorEndDate = document.getElementById('errorEndDate');
+
+                            let endDateValue = endDateInput.value.trim();
+                            if (endDateValue === '') {
+                                errorEndDate.innerHTML = `Chưa nhập ngày kết thúc`;
+                                return false;
+                            }
+
+                            let startDateValue = document.getElementById('startDate').value.trim();
+                            let startDate = new Date(startDateValue);
+                            let endDate = new Date(endDateValue);
+
+                            if (endDate <= startDate) {
+                                errorEndDate.innerHTML = `Ngày kết thúc phải lớn hơn ngày bắt đầu`;
+                                return false;
+                            }
+
+                            errorEndDate.innerHTML = ''; // Reset lỗi nếu có
+                            return true;
+                        }
+
+                        clickUpdate = (idForm) => {
+                            if (validate()) {
+                                swal({
+                                    title: "Sửa dữ liệu",
+                                    text: "Bạn có muốn sửa dữ liệu không ?",
+                                    icon: "warning",
+                                    buttons: ["Không", "Có"],
+                                    dangerMode: true,
+                                    closeOnClickOutside: false,
+                                }).then((update) => {
+                                    if (update) {
+                                        document.getElementById(idForm).submit()
+                                    }
+                                });
+                            }
+                        }
+                    </script>
+
+                </form>
             </div>
-          </div>
-          <div class="row form-group">
-            <div class="col col-md-3">
-              <label for="name" class=" form-control-label">Name</label>
-            </div>
-            <div class="col-12 col-md-9">
-              <input type="text" id="name" th:field="*{name}" class="form-control">
-              <br>
-              <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col col-md-3">
-              <label for="quantity" class=" form-control-label">Quantity</label>
-            </div>
-            <div class="col-12 col-md-9">
-              <input type="number" id="quantity" th:field="*{quantity}" class="form-control">
-              <br>
-              <div class="alert alert-warning" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col col-md-3">
-              <label for="value" class=" form-control-label">Value</label>
-            </div>
-            <div class="col-12 col-md-9">
-              <input type="number" id="value" th:field="*{value}" class="form-control">
-              <br>
-              <div class="alert alert-warning" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col col-md-3">
-              <label for="minimumPrice" class=" form-control-label">Minimum price</label>
-            </div>
-            <div class="col-12 col-md-9">
-              <input type="number" id="minimumPrice" th:field="*{minimumPrice}" class="form-control">
-              <br>
-              <div class="alert alert-warning" th:if="${#fields.hasErrors('minimumPrice')}" th:errors="*{minimumPrice}"></div>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col col-md-3">
-              <label for="startDate" class=" form-control-label">Start date</label>
-            </div>
-            <div class="col-12 col-md-9">
-              <div id="start-date-picker" class="md-form md-outline input-with-post-icon datepicker"
-                   inline="true">
-                <input placeholder="Choose start date" type="datetime-local" id="startDate" class="form-control"
-                       th:field="*{startDate}">
-                <br>
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
-              </div>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col col-md-3">
-              <label for="endDate" class=" form-control-label">End date</label>
-            </div>
-            <div class="col-12 col-md-9">
-              <div id="end-date-picker" class="md-form md-outline input-with-post-icon datepicker"
-                   inline="true">
-                <input placeholder="Choose end date" type="datetime-local" id="endDate" class="form-control"
-                       th:field="*{endDate}">
-                <br>
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer">
-            <div class="card-footer">
-              <button  type="submit" class="btn btn-info"><i class="fa-solid fa-eye mr-1"></i>
-                UPDATE
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 </body>
 </html>
