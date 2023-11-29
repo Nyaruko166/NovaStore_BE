@@ -1,9 +1,7 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.model.Color;
-import com.sd64.novastore.model.Product;
-import com.sd64.novastore.model.ProductDetail;
-import com.sd64.novastore.model.Size;
+import com.sd64.novastore.dto.admin.ProductDto;
+import com.sd64.novastore.model.*;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
 import com.sd64.novastore.service.ColorService;
 import com.sd64.novastore.service.ProductDetailService;
@@ -18,8 +16,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -40,7 +41,7 @@ public class ProductDetailController {
     public String getProductDetail(@PathVariable Integer productId, Model model, @RequestParam(defaultValue = "0") int page) {
         List<Size> listSize = sizeService.getAll();
         List<Color> listColor = colorService.getAll();
-        var pageProductDetail = productDetailService.getProductBySizeIdAndColorId(page, productId, null, null);
+        var pageProductDetail = productDetailService.getProductByPriceAndSizeIdAndColorId(page, productId, BigDecimal.valueOf(0), BigDecimal.valueOf(Integer.MAX_VALUE), null, null);
 //                .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
         model.addAttribute("pageProductDetail", pageProductDetail);
         Product product = productService.getOne(productId);
@@ -67,16 +68,32 @@ public class ProductDetailController {
 
     @PostMapping("/product-detail/add")
     public String add(@RequestParam Integer productId,
-                      @RequestParam String code,
                       @RequestParam Integer quantity,
+                      @RequestParam BigDecimal price,
                       @RequestParam Integer sizeId,
                       @RequestParam Integer colorId,
                       RedirectAttributes redirectAttributes) {
-        if (productDetailService.add(productId, code, quantity, sizeId, colorId)) {
-            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành cồng");
+        if (productDetailService.add(productId, quantity, price, sizeId, colorId)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
             return "redirect:/nova/product/" + productId + "/product-detail";
         } else {
             redirectAttributes.addFlashAttribute("error", "Mã chi tiết đã tồn tại, Thêm dữ liệu thất bại");
+            return "redirect:/nova/product/" + productId + "/product-detail";
+        }
+    }
+
+    @PostMapping("/product-detail/excel")
+    public String importExcel(@RequestParam Integer productId,
+                              RedirectAttributes redirectAttributes,
+                              @RequestParam MultipartFile excelFile) throws IOException {
+        if (productDetailService.importExcelProduct(excelFile, productId).contains("Oke bạn ơi")) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
+            return "redirect:/nova/product/" + productId + "/product-detail";
+        } else if (productDetailService.importExcelProduct(excelFile, productId).contains("Sai dữ liệu")) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại dữ liệu trong file");
+            return "redirect:/nova/product/" + productId + "/product-detail";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");
             return "redirect:/nova/product/" + productId + "/product-detail";
         }
     }
@@ -96,10 +113,11 @@ public class ProductDetailController {
     public String update(@PathVariable Integer id,
                          @RequestParam Integer productId,
                          @RequestParam Integer quantity,
+                         @RequestParam BigDecimal price,
                          @RequestParam Integer sizeId,
                          @RequestParam Integer colorId,
                          RedirectAttributes redirectAttributes) {
-        productDetailService.update(id, productId, quantity, sizeId, colorId);
+        productDetailService.update(id, productId, quantity, price, sizeId, colorId);
         redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
         return "redirect:/nova/product/" + productId + "/product-detail";
     }
@@ -109,18 +127,30 @@ public class ProductDetailController {
         ProductDetail productDetail = productDetailService.getOne(id);
         productDetailService.delete(id);
         redirectAttributes.addFlashAttribute("mess", "Xóa dữ liệu thành công");
-        return "redirect:/nova/product/" + productDetail.getProduct().getId() +"/product-detail";
+        return "redirect:/nova/product/" + productDetail.getProduct().getId() + "/product-detail";
     }
 
-    @GetMapping("/product-detail/search")
-    public String search( @RequestParam Integer productId, Model model, @RequestParam(defaultValue = "0") int page,
-                           @RequestParam(required = false) Integer sizeId,
-                           @RequestParam(required = false) Integer colorId) {
+    @GetMapping("/product/{productId}/product-detail/search")
+    public String search(@PathVariable Integer productId,
+                         Model model,
+                         @RequestParam(defaultValue = "0") int page,
+                         @RequestParam(required = false) BigDecimal priceMin,
+                         @RequestParam(required = false) BigDecimal priceMax,
+                         @RequestParam(required = false) Integer sizeId,
+                         @RequestParam(required = false) Integer colorId) {
+        if (priceMin == null) {
+            priceMin = BigDecimal.valueOf(0);
+//            model.addAttribute("priceMinNull", null);
+        }
+        if (priceMax == null) {
+            priceMax = BigDecimal.valueOf(Integer.MAX_VALUE);
+//            model.addAttribute("priceMaxNull", null);
+        }
         List<Size> listSize = sizeService.getAll();
         List<Color> listColor = colorService.getAll();
 
-        Page<ProductDetailSearchResponse> productDetailSearchResponses = productDetailService.getProductBySizeIdAndColorId(page, productId, sizeId, colorId);
-        int totalPage = productDetailService.getTotalPage(page, productId, sizeId, colorId);
+        Page<ProductDetailSearchResponse> productDetailSearchResponses = productDetailService.getProductByPriceAndSizeIdAndColorId(page, productId, priceMin, priceMax, sizeId, colorId);
+        int totalPage = productDetailService.getTotalPage(page, productId, priceMin, priceMax, sizeId, colorId);
         model.addAttribute("pageProductDetail", productDetailSearchResponses);
         model.addAttribute("totalPage", totalPage);
         Product product = productService.getOne(productId);
@@ -130,6 +160,68 @@ public class ProductDetailController {
         model.addAttribute("listColor", listColor);
         model.addAttribute("sizeId", sizeId);
         model.addAttribute("colorId", colorId);
+        model.addAttribute("priceMin", priceMin);
+        model.addAttribute("priceMax", priceMax);
         return "admin/product-detail/product-detail";
+    }
+
+    @GetMapping("/product/{productId}/product-detail/view-restore")
+    public String viewRestore(@PathVariable Integer productId,
+                              @RequestParam(defaultValue = "0") int page, Model model) {
+        List<Size> listSize = sizeService.getAll();
+        List<Color> listColor = colorService.getAll();
+        var pageProductDetail = productDetailService.getProductByPriceAndSizeIdAndColorIdDeleted(page, productId, BigDecimal.valueOf(0), BigDecimal.valueOf(Integer.MAX_VALUE), null, null);
+        model.addAttribute("pageProductDetail", pageProductDetail);
+        Product product = productService.getOne(productId);
+        model.addAttribute("productId", productId);
+        model.addAttribute("product", product);
+        model.addAttribute("listSize", listSize);
+        model.addAttribute("listColor", listColor);
+        return "admin/product-detail/product-detail-restore";
+    }
+
+    @PostMapping("/product/{productId}/product-detail/restore/{id}")
+    public String restore(@PathVariable Integer productId,
+                          @PathVariable Integer id,
+                          RedirectAttributes redirectAttributes) {
+        productDetailService.restore(id);
+        redirectAttributes.addFlashAttribute("mess", "Khôi phục dữ liệu thành công");
+        return "redirect:/nova/product/" + productId + "/product-detail/view-restore";
+    }
+
+    @GetMapping("/product/{productId}/product-detail/search-restore")
+    public String searchDeleted(@PathVariable Integer productId,
+                                Model model,
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(required = false) BigDecimal priceMin,
+                                @RequestParam(required = false) BigDecimal priceMax,
+                                @RequestParam(required = false) Integer sizeId,
+                                @RequestParam(required = false) Integer colorId) {
+        if (priceMin == null) {
+            priceMin = BigDecimal.valueOf(0);
+//            model.addAttribute("priceMinNull", null);
+        }
+        if (priceMax == null) {
+            priceMax = BigDecimal.valueOf(Integer.MAX_VALUE);
+//            model.addAttribute("priceMaxNull", null);
+        }
+
+        List<Size> listSize = sizeService.getAll();
+        List<Color> listColor = colorService.getAll();
+
+        Page<ProductDetailSearchResponse> productDetailSearchResponses = productDetailService.getProductByPriceAndSizeIdAndColorIdDeleted(page, productId, priceMin, priceMax, sizeId, colorId);
+        int totalPage = productDetailService.getTotalPageDeleted(page, productId, priceMin, priceMax, sizeId, colorId);
+        model.addAttribute("pageProductDetail", productDetailSearchResponses);
+        model.addAttribute("totalPage", totalPage);
+        Product product = productService.getOne(productId);
+        model.addAttribute("productId", productId);
+        model.addAttribute("product", product);
+        model.addAttribute("listSize", listSize);
+        model.addAttribute("listColor", listColor);
+        model.addAttribute("sizeId", sizeId);
+        model.addAttribute("colorId", colorId);
+        model.addAttribute("priceMin", priceMin);
+        model.addAttribute("priceMax", priceMax);
+        return "admin/product-detail/product-detail-restore";
     }
 }

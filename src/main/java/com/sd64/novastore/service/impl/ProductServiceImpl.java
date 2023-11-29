@@ -44,33 +44,22 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.getAllProduct(pageable);
     }
 
-    public Boolean checkCode(String code) {
-        Optional<Product> optionalProduct = productRepository.findAllByCode(code);
-        if (optionalProduct.isPresent()) {
-            return false;
-        }
-        return true;
-    }
-
     @Override
-    public Boolean add(String code, String productName, String description, Integer materialId, Integer categoryId,
-                       Integer brandId, Integer formId) {
-        if (checkCode(code)) {
-            Product product = new Product();
-            product.setCode(code);
-            product.setName(productName);
-            product.setStatus(1);
-            product.setDescription(description);
-            product.setCreateDate(new Date());
-            product.setUpdateDate(new Date());
-            product.setMaterial(Material.builder().id(materialId).build());
-            product.setCategory(Category.builder().id(categoryId).build());
-            product.setBrand(Brand.builder().id(brandId).build());
-            product.setForm(Form.builder().id(formId).build());
-            productRepository.save(product);
-            return true;
-        }
-        return false;
+    public Boolean add(String productName, String description, Integer materialId, Integer categoryId, Integer brandId, Integer formId) {
+        Product product = new Product();
+        product.setName(productName);
+        product.setStatus(1);
+        product.setDescription(description);
+        product.setCreateDate(new Date());
+        product.setUpdateDate(new Date());
+        product.setMaterial(Material.builder().id(materialId).build());
+        product.setCategory(Category.builder().id(categoryId).build());
+        product.setBrand(Brand.builder().id(brandId).build());
+        product.setForm(Form.builder().id(formId).build());
+        productRepository.save(product);
+        product.setCode("SP"+product.getId());
+        productRepository.save(product);
+        return true;
     }
 
     @Override
@@ -97,6 +86,7 @@ public class ProductServiceImpl implements ProductService {
         if (optional.isPresent()) {
             Product product = optional.get();
             product.setStatus(0);
+            product.setUpdateDate(new Date());
             return productRepository.save(product);
         } else {
             return null;
@@ -106,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return productRepository.search(pageable, brandId, categoryId, formId, materialId, productName, description);
+        return productRepository.search(pageable, brandId, categoryId, formId, materialId, productName.trim(), description.trim());
     }
 
     @Override
@@ -115,44 +105,45 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String importExcelProduct(MultipartFile file) throws IOException {
+    public Integer importExcelProduct(MultipartFile file) throws IOException {
         if (productExcelUtil.isValidExcel(file)) {
             String uploadDir = "./src/main/resources/static/filecustom/product/";
             String fileName = file.getOriginalFilename();
             String excelPath = FileUtil.copyFile(file, fileName, uploadDir);
 
             String status = productExcelUtil.getProductFromExcel(excelPath);
-            if (status.contains("Trùng mã")) {
-                return "Trùng mã";
-            } else if (status.contains("Sai dữ liệu")) {
-                return "Sai dữ liệu";
+            if (status.contains("Sai dữ liệu")) {
+                return -1;
             } else {
-                return "Oke bạn ơi";
+                return 1;
             }
         } else {
-            return "lỗi file";
+            return 0; // Lỗi file
         }
     }
 
     @Override
     public Page<ProductDto> getAllProductDeleted(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 5);
         return productRepository.getAllProductDeleted(pageable);
     }
 
     @Override
     public Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page) {
-        Pageable pageable = PageRequest.of(page, 10);
-        return productRepository.searchProductDeleted(pageable, brandId, categoryId, formId, materialId, productName, description);
+        Pageable pageable = PageRequest.of(page, 5);
+        return productRepository.searchProductDeleted(pageable, brandId, categoryId, formId, materialId, productName.trim(), description.trim());
     }
 
     @Override
-    public void restore(List<Integer> listInteger) {
-        for (int i = 0; i < listInteger.size(); i++) {
-            Product product = getOne(listInteger.get(i));
-            product.setStatus(1);
-            product.setUpdateDate(new Date());
-            productRepository.save(product);
+    public Product restore(Integer id) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()) {
+            Product restoreProduct = optionalProduct.get();
+            restoreProduct.setStatus(1);
+            restoreProduct.setUpdateDate(new Date());
+            return productRepository.save(restoreProduct);
+        } else {
+            return null;
         }
     }
 }

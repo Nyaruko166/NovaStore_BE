@@ -181,19 +181,24 @@
         <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${productViews}">
             <div class="product-item mb-4 border-product-home">
                 <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.id}}">
+                    <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.productId}}">
                     <div class="product-action">
-                        <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
+                        <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.productId}}">
                             <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
                         </a>
                     </div>
 
                 </div>
                 <div class="text-center py-4 border-info-product-home">
-                    <div class="h5 text-decoration-none text-truncate" href="" th:text="${product.name}"></div>
+                    <div class="h5 text-decoration-none text-truncate" href="" th:text="${product.productName}"></div>
                     <div class="d-flex align-items-center justify-content-center mt-2">
-                        <div class="d-flex justify-content-center">
-                            <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                        <div class="d-flex justify-content-center" th:if="${priceMax != priceMin}">
+                            <h6 th:text="'₫' + ${#numbers.formatDecimal(priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                            <h6 class="ml-1 mr-1"> ~ </h6>
+                            <h6 th:text="'₫' + ${#numbers.formatDecimal(priceMax.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                        </div>
+                        <div class="d-flex justify-content-center" th:if="${priceMax == priceMin}">
+                            <h6 th:text="'₫' + ${#numbers.formatDecimal(priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center mb-1">

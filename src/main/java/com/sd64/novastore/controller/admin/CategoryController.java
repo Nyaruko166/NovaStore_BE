@@ -34,23 +34,34 @@ public class CategoryController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         categoryService.delete(id);
-        redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
+        redirectAttributes.addFlashAttribute("mess", "Xóa dữ liệu thành công");
         return "redirect:/nova/category/page";
     }
 
 
     @PostMapping("/add")
-    public String add(@ModelAttribute Category category, RedirectAttributes redirectAttributes) {
-        categoryService.add(category);
-        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
-        return "redirect:/nova/category/page";
+    public String add(@ModelAttribute Category category,
+                      RedirectAttributes redirectAttributes) {
+        if (categoryService.add(category)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/category/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên loại đã tồn tại");
+            return "redirect:/nova/category/page";
+        }
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id, @ModelAttribute Category category, RedirectAttributes redirectAttributes) {
-        categoryService.update(category, id);
-        redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
-        return "redirect:/nova/category/page";
+    public String update(@PathVariable Integer id,
+                         @ModelAttribute Category category,
+                         RedirectAttributes redirectAttributes) {
+        if (categoryService.update(category, id)) {
+            redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+            return "redirect:/nova/category/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên loại đã tồn tại");
+            return "redirect:/nova/category/detail/" + id;
+        }
     }
 
     @GetMapping("/search")
@@ -63,5 +74,32 @@ public class CategoryController {
         model.addAttribute("categoryNameSearch", categoryNameSearch);
         model.addAttribute("pageCategory", pageCategory);
         return "admin/category/category";
+    }
+
+    @GetMapping("/view-restore")
+    public String viewRestore(@RequestParam(defaultValue = "0") Integer page, Model model) {
+        Page<Category> pageCategory = categoryService.getAllDeleted(page);
+        model.addAttribute("pageCategory", pageCategory);
+        return "admin/category/category-restore";
+    }
+
+    @PostMapping("/restore/{id}")
+    public String restore(@PathVariable Integer id,
+                          RedirectAttributes redirectAttributes) {
+        categoryService.restore(id);
+        redirectAttributes.addFlashAttribute("mess", "Khôi phục dữ liệu thành công");
+        return "redirect:/nova/category/view-restore";
+    }
+
+    @GetMapping("/search-restore")
+    public String searchDelete(Model model, @RequestParam(required = false) String categoryNameSearch,
+                               @RequestParam(defaultValue = "0") int page) {
+        Page<Category> pageCategory = categoryService.searchDelete(categoryNameSearch, page);
+        if ("".equals(categoryNameSearch) || categoryNameSearch.isEmpty()) {
+            return "redirect:/nova/category/view-restore";
+        }
+        model.addAttribute("categoryNameSearch", categoryNameSearch);
+        model.addAttribute("pageCategory", pageCategory);
+        return "admin/category/category-restore";
     }
 }

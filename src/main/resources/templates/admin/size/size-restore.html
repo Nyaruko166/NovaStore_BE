@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>KÍCH CỠ ĐÃ XÓA</strong>
+            </div>
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${mess}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="card-body card-block">
+                <form id="sizeForm" class="form-horizontal">
+                    <div class="card-footer">
+
+                        <input type="hidden" class="form-control" th:value="${productId}" name="productId">
+                        <div>
+                            <a th:href="@{|/nova/product/${productId}/size/page|}">
+                                <button type="button" class="btn btn-warning"><i
+                                        class="fa-solid fa-circle-left px-4"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="border-search">
+                        <div class="col-md-1">
+                            <button th:onclick="clickSearch('size', 'sizeForm', [[${productId}]])" type="button"
+                                    class="btn btn-dark">
+                                <i class="fa-solid fa-magnifying-glass px-4"></i>
+                            </button>
+                        </div>
+                        <script th:inline="javascript">
+                            clickSearch = (entity, idForm, productId) => {
+                                document.getElementById(idForm).action = '/nova/product/' + productId + "/" + entity + '/search-restore'
+                                document.getElementById(idForm).method = 'get'
+                                document.getElementById(idForm).submit()
+                            }
+                        </script>
+                        <div class="col-md-11">
+                            <input type="text" placeholder="Nhập kích cỡ..."
+                                   th:value="${sizeNameSearch}" th:name="sizeNameSearch"
+                                   class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </h1>
+
+    <div class="col">
+        <div class="card">
+            <div class="card-header" th:if="${pageSize.isEmpty()}">
+                <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
+            </div>
+            <div th:if="${not pageSize.isEmpty()}">
+                <div class="card-header">
+                    <strong>CÓ</strong>
+                    <strong class="card-title" th:text="${pageSize.getTotalElements()}"></strong>
+                    <strong class="card-title"> BẢN GHI</strong>
+                </div>
+                <div class="card-body">
+                    <form id="sizeRestore">
+                        <table class="table text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Mã kích cỡ</th>
+                                <th scope="col">Kích cỡ</th>
+                                <th scope="col">Chức năng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="items:${pageSize}">
+                                <td th:text="${items.code}"></td>
+                                <td th:text="${items.name}"></td>
+                                <td>
+                                    <button th:onclick="restore('size', 'sizeRestore', [[${productId}]], [[${items.id}]])" type="button"
+                                            class="btn btn-dark">
+                                        <i class="fa-solid fa-trash-can-arrow-up px-4"></i>
+                                    </button>
+                                    <script th:inline="javascript">
+                                        restore = (entity, idForm, productId, idRestore) => {
+                                            swal({
+                                                title: "Khôi phục dữ liệu",
+                                                text: "Bạn có muốn khôi phục dữ liệu không ?",
+                                                icon: "warning",
+                                                buttons: ["Không", "Có"],
+                                                dangerMode: true,
+                                                closeOnClickOutside: false,
+                                            }).then((restore) => {
+                                                if (restore) {
+                                                    document.getElementById(idForm).action = '/nova/' +productId +"/" + entity + "/restore/" + idRestore
+                                                    document.getElementById(idForm).method = 'post'
+                                                    document.getElementById(idForm).submit()
+                                                }
+                                            });
+                                        }
+                                    </script>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+
+                    <!--            Pagination-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div th:if="${pageSize.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0&sizeNameSearch=${sizeNameSearch}|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pageSize.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageSize.getNumber() - 1}&sizeNameSearch=${sizeNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-dark d-flex">
+                            <div th:text="${pageSize.getNumber() + 1}"></div>
+                            <span>/</span>
+                            <div th:text="${pageSize.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pageSize.getNumber() + 1 lt pageSize.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageSize.getNumber()+1}&sizeNameSearch=${sizeNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pageSize.getNumber() + 1 lt pageSize.getTotalPages()}"
+                             class="btn btn-dark ml-1">
+                            <a th:href="@{|?page=${pageSize.getTotalPages()-1}&sizeNameSearch=${sizeNameSearch}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

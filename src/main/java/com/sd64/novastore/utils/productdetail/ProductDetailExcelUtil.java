@@ -1,9 +1,13 @@
-package com.sd64.novastore.utils.product;
+package com.sd64.novastore.utils.productdetail;
 
-
-import com.sd64.novastore.model.*;
-import com.sd64.novastore.repository.*;
+import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.model.Size;
+import com.sd64.novastore.repository.ColorRepository;
+import com.sd64.novastore.repository.ProductDetailRepository;
+import com.sd64.novastore.repository.SizeRepository;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -11,33 +15,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Component
-public class ProductExcelUtil {
+public class ProductDetailExcelUtil {
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private ColorRepository colorRepository;
 
     @Autowired
-    private MaterialRepository materialRepository;
+    private SizeRepository sizeRepository;
 
     @Autowired
-    private BrandRepository brandRepository;
-
-    @Autowired
-    private FormRepository formRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
+    private ProductDetailRepository productDetailRepository;
 
     public Boolean isValidExcel(MultipartFile file) {
         return Objects.equals(file.getContentType(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     }
 
-    public String getProductFromExcel(String path) throws IOException {
-        List<Product> listProduct = new ArrayList<>();
+    public String getProductDetailFromExcel(String path, Integer productId) throws IOException {
+        List<ProductDetail> listProductDetail = new ArrayList<>();
         FileInputStream fileInputStream = new FileInputStream(path);
         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
         XSSFSheet xssfSheet = workbook.getSheetAt(0);
@@ -51,38 +52,40 @@ public class ProductExcelUtil {
                 }
                 Iterator<Cell> cellIterator = row.iterator();
                 int cellIndex = 0;
-                Product product = new Product();
+                ProductDetail productDetail = new ProductDetail();
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
                     switch (cellIndex) {
 //                        case 0:
-//                            Optional<Product> optionalProduct = productRepository.findAllByCode(cell.getStringCellValue());
-//                            if (optionalProduct.isPresent()) {
+//                            Optional<ProductDetail> optionalProductDetail = productDetailRepository.findAllByCode(cell.getStringCellValue());
+//                            if (optionalProductDetail.isPresent()) {
 //                                workbook.close();
 //                                fileInputStream.close();
 //                                File file = new File(path);
 //                                file.delete();
 //                                return "Trùng mã";
 //                            }
-//                            product.setCode(cell.getStringCellValue());
+//                            productDetail.setCode(cell.getStringCellValue());
 //                            break;
                         case 0:
-                            product.setName(cell.getStringCellValue());
+                            productDetail.setQuantity((int) cell.getNumericCellValue());
                             break;
                         case 1:
-                            product.setDescription(cell.getStringCellValue());
+                            productDetail.setPrice(BigDecimal.valueOf(cell.getNumericCellValue()));
                             break;
                         case 2:
-                            product.setBrand(brandRepository.findByName(cell.getStringCellValue()));
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                String sizeStr = String.valueOf(new Double(cell.getNumericCellValue()).intValue());
+                                Size size = sizeRepository.findByName(sizeStr).orElse(null);
+                                productDetail.setSize(size);
+                            } else {
+                                String sizeStr = cell.getStringCellValue();
+                                Size size = sizeRepository.findByName(sizeStr).orElse(null);
+                                productDetail.setSize(size);
+                            }
                             break;
                         case 3:
-                            product.setMaterial(materialRepository.findByName(cell.getStringCellValue()));
-                            break;
-                        case 4:
-                            product.setCategory(categoryRepository.findByName(cell.getStringCellValue()));
-                            break;
-                        case 5:
-                            product.setForm(formRepository.findByName(cell.getStringCellValue()));
+                            productDetail.setColor(colorRepository.findByName(cell.getStringCellValue()));
                             break;
                         default:
                             break;
@@ -96,13 +99,14 @@ public class ProductExcelUtil {
                     }
                     cellIndex++;
                 }
-                product.setStatus(1);
-                product.setCreateDate(new Date());
-                product.setUpdateDate(new Date());
-                productRepository.save(product);
-                product.setCode("SP"+product.getId());
-                productRepository.save(product);
-                listProduct.add(product);
+                productDetail.setProduct(Product.builder().id(productId).build());
+                productDetail.setStatus(1);
+                productDetail.setCreateDate(new Date());
+                productDetail.setUpdateDate(new Date());
+                productDetailRepository.save(productDetail);
+                productDetail.setCode("CT"+productDetail.getId());
+                productDetailRepository.save(productDetail);
+                listProductDetail.add(productDetail);
             }
         } catch (Exception e) {
             workbook.close();
@@ -115,7 +119,7 @@ public class ProductExcelUtil {
         fileInputStream.close();
         File file = new File(path);
         file.delete();
-        productRepository.saveAll(listProduct);
+        productDetailRepository.saveAll(listProductDetail);
         return "okela";
     }
 }

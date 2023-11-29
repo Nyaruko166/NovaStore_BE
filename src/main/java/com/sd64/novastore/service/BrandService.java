@@ -10,9 +10,9 @@ public interface BrandService {
 
     Page<Brand> getPage(Integer page);
 
-    Brand add(Brand brand);
+    Boolean add(Brand brand);
 
-    Brand update(Brand brand, Integer id);
+    Boolean update(Integer id, String name);
 
     Brand delete(Integer id);
 
@@ -20,5 +20,9 @@ public interface BrandService {
 
     Brand detail(Integer id);
 
-    Page<Brand> getAllBrandDeleted(int page);
+    Page<Brand> getAllDeleted(int page);
+
+    Brand restore(Integer id);
+
+    Page<Brand> searchDelete(String name, int page);
 }

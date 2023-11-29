@@ -6,98 +6,102 @@
 </head>
 
 <body>
-    <div th:replace="~{/user/fragments::header}"></div>
+<div th:replace="~{/user/fragments::header}"></div>
 
-    <!-- Page Header Start -->
-    <div class="container-fluid bg-secondary mb-5">
-        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">Sản phẩm</h1>
-            <div class="d-inline-flex">
-                <p class="m-0"><a href="/home">Trang chủ</a></p>
-                <p class="m-0 px-2">-</p>
-                <p class="m-0">Sản phẩm</p>
-            </div>
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Sản phẩm</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="/home">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Sản phẩm</p>
         </div>
     </div>
-    <!-- Page Header End -->
+</div>
+<!-- Page Header End -->
 
 
-    <!-- Shop Start -->
-    <div class="container-fluid pt-5">
-        <div class="row px-xl-5">
-            <!-- Shop Sidebar Start -->
-            <div class="col-lg-3 col-md-12">
-                <!-- Price Start -->
-                <div class="border-bottom mb-4 pb-4">
-                    <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
+<!-- Shop Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <!-- Shop Sidebar Start -->
+        <div class="col-lg-3 col-md-12 d-flex justify-content-between">
+            <!-- Price Start -->
+            <div class="border-bottom mb-4 pb-4">
+
+                <h5 class="font-weight-semi-bold mb-4">Lọc theo giá</h5>
+                <div>
                     <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="price-all">
                             <label class="custom-control-label" for="price-all">All Price</label>
-                            <span class="badge border font-weight-normal">1000</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-1">
                             <label class="custom-control-label" for="price-1">$0 - $100</label>
-                            <span class="badge border font-weight-normal">150</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-2">
                             <label class="custom-control-label" for="price-2">$100 - $200</label>
-                            <span class="badge border font-weight-normal">295</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-3">
                             <label class="custom-control-label" for="price-3">$200 - $300</label>
-                            <span class="badge border font-weight-normal">246</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="price-4">
                             <label class="custom-control-label" for="price-4">$300 - $400</label>
-                            <span class="badge border font-weight-normal">145</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                             <input type="checkbox" class="custom-control-input" id="price-5">
                             <label class="custom-control-label" for="price-5">$400 - $500</label>
-                            <span class="badge border font-weight-normal">168</span>
                         </div>
+
                     </form>
                 </div>
+
                 <!-- Price End -->
-                
+
                 <!-- Color Start -->
-                <div class="border-bottom mb-4 pb-4">
-                    <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
+                <div class="border-bottom mb-4 pb-4 mt-5">
+                    <h5 class="font-weight-semi-bold mb-4">Lọc theo màu sắc</h5>
                     <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="color-all">
                             <label class="custom-control-label" for="price-all">All Color</label>
-                            <span class="badge border font-weight-normal">1000</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="color-1">
                             <label class="custom-control-label" for="color-1">Black</label>
-                            <span class="badge border font-weight-normal">150</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="color-2">
                             <label class="custom-control-label" for="color-2">White</label>
-                            <span class="badge border font-weight-normal">295</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="color-3">
                             <label class="custom-control-label" for="color-3">Red</label>
-                            <span class="badge border font-weight-normal">246</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="color-4">
                             <label class="custom-control-label" for="color-4">Blue</label>
-                            <span class="badge border font-weight-normal">145</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                             <input type="checkbox" class="custom-control-input" id="color-5">
                             <label class="custom-control-label" for="color-5">Green</label>
-                            <span class="badge border font-weight-normal">168</span>
                         </div>
                     </form>
                 </div>
@@ -105,121 +109,144 @@
 
                 <!-- Size Start -->
                 <div class="mb-5">
-                    <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
+                    <h5 class="font-weight-semi-bold mb-4">Lọc theo kích thước</h5>
                     <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" checked id="size-all">
                             <label class="custom-control-label" for="size-all">All Size</label>
-                            <span class="badge border font-weight-normal">1000</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="size-1">
                             <label class="custom-control-label" for="size-1">XS</label>
-                            <span class="badge border font-weight-normal">150</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="size-2">
                             <label class="custom-control-label" for="size-2">S</label>
-                            <span class="badge border font-weight-normal">295</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="size-3">
                             <label class="custom-control-label" for="size-3">M</label>
-                            <span class="badge border font-weight-normal">246</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="checkbox" class="custom-control-input" id="size-4">
                             <label class="custom-control-label" for="size-4">L</label>
-                            <span class="badge border font-weight-normal">145</span>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <div
+                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                             <input type="checkbox" class="custom-control-input" id="size-5">
                             <label class="custom-control-label" for="size-5">XL</label>
-                            <span class="badge border font-weight-normal">168</span>
                         </div>
                     </form>
                 </div>
                 <!-- Size End -->
+
             </div>
-            <!-- Shop Sidebar End -->
+            <div>
+                <button class="btn btn-primary" style="border-radius: 5px;">
+                    <i class="fa-solid fa-filter"></i>
+                </button>
+            </div>
+        </div>
 
 
-            <!-- Shop Product Start -->
-            <div class="col-lg-9 col-md-12">
-                <div class="row pb-3">
-                    <div class="col-12 pb-1">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <form action="">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by name">
-                                    <div class="input-group-append">
+        <!-- Shop Product Start -->
+        <div class="col-lg-9 col-md-12">
+            <div class="row pb-3">
+                <div class="col-12 pb-1">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search by name">
+                                <div class="input-group-append">
                                         <span class="input-group-text bg-transparent text-primary">
                                             <i class="fa fa-search"></i>
                                         </span>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="dropdown ml-4">
+                            <button class="btn border dropdown-toggle" type="button" id="triggerId"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sort by
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+                                <a class="dropdown-item" th:href="@{/#}">Latest</a>
+                                <a class="dropdown-item" th:href="@{/#}">Popularity</a>
+                                <a class="dropdown-item" th:href="@{/#}">Best Rating</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" pb-1 row" >
+                        <div class="card border-0 mb-4 col-4" th:each="product : ${productViews}">
+                            <div class="product-item">
+                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                    <img class="img-fluid w-100" src="" alt="">
+                                    <div class="product-action">
+<!--                                        <a class="btn btn-detail-home" th:href="'/product-detail/' + $product.id">-->
+<!--                                            <i class="fa-solid fa-eye" style="color: #D19C97;"></i>-->
+<!--                                        </a>-->
                                     </div>
                                 </div>
-                            </form>
-                            <div class="dropdown ml-4">
-                                <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                            Sort by
-                                        </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                    <a class="dropdown-item" th:href="@{/#}">Latest</a>
-                                    <a class="dropdown-item" th:href="@{/#}">Popularity</a>
-                                    <a class="dropdown-item" th:href="@{/#}">Best Rating</a>
+                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3 border-info-product-home">
+<!--                                    <a th:href="@{'/product-detail/' + ${product.id}}">-->
+<!--                                        <h6 class="text-truncate mb-3" th:text="${product.name}">Colorful Stylish-->
+<!--                                            Shirt-->
+<!--                                        </h6>-->
+<!--                                    </a>-->
+                                    <div class="d-flex justify-content-center">
+<!--                                        <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">-->
+<!--                                            ₫123.00</h6>-->
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1" th:each="product : ${productViews}">
-                        <div class="card product-item border-0 mb-4">
-                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" th:src="@{/user/img/product-1.jpg}" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <a th:href="@{'/product-detail/' + ${product.id}}">
-                                    <h6 class="text-truncate mb-3" th:text="${product.name}">Colorful Stylish Shirt</h6>
-                                </a>
-                                <div class="d-flex justify-content-center">
-                                    <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">₫123.00</h6>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between bg-light border">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 pb-1">
-                        <nav aria-label="Page navigation">
-                          <ul class="pagination justify-content-center mb-3">
-                            <li class="page-item disabled">
-                              <a class="page-link" th:href="@{/#}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                              </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" th:href="@{/#}">1</a></li>
-                            <li class="page-item"><a class="page-link" th:href="@{/#}">2</a></li>
-                            <li class="page-item"><a class="page-link" th:href="@{/#}">3</a></li>
-                            <li class="page-item">
-                              <a class="page-link" th:href="@{/#}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                              </a>
-                            </li>
-                          </ul>
-                        </nav>
                     </div>
                 </div>
+                <div class="col-12 pb-1">
+<!--                    <div class="d-flex justify-content-center align-items-center">-->
+<!--                        <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">-->
+<!--                            <a th:href="@{|?page=0&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">-->
+<!--                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>-->
+<!--                        </div>-->
+<!--                        <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">-->
+<!--                            <a th:href="@{|?page=${pageProductDetail.getNumber() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">-->
+<!--                                <i style="color: white" class="fa-solid fa-left-long"></i></a>-->
+<!--                        </div>-->
+<!--                        <div class="btn btn-dark d-flex">-->
+<!--                            <div th:text="${pageProductDetail.getNumber() + 1}"></div>-->
+<!--                            <span>/</span>-->
+<!--                            <div th:text="${pageProductDetail.getTotalPages()}"></div>-->
+<!--                        </div>-->
+<!--                        <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"-->
+<!--                             class="btn btn-dark ml-1">-->
+<!--                            <a th:href="@{|?page=${pageProductDetail.getNumber()+1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">-->
+<!--                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>-->
+<!--                        </div>-->
+<!--                        <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"-->
+<!--                             class="btn btn-dark ml-1">-->
+<!--                            <a th:href="@{|?page=${pageProductDetail.getTotalPages() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">-->
+<!--                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
             </div>
-            <!-- Shop Product End -->
         </div>
     </div>
-    <!-- Shop End -->
 
-    <div th:replace="~{/user/fragments::footer}"></div>
+</div>
 
-    <div th:replace="~{/user/fragments::script}"></div>
+<!-- Shop End -->
+
+
+<div th:replace="~{/user/fragments::footer}"></div>
+
+<div th:replace="~{/user/fragments::script}"></div>
 </body>
 
 </html>

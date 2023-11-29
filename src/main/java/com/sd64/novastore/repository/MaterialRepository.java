@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
@@ -16,4 +17,6 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
     List<Material> findAllByStatusOrderByUpdateDateDesc(Integer status);
 
     Material findByName(String name);
+
+    Optional<Material> findByCode(String code);
 }

@@ -12,9 +12,22 @@
             <div class="card-header">
                 <strong>CẬP NHẬT CHẤT LIỆU</strong>
             </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
             <div class="card-body card-block">
                 <form id="materialUpdate" th:object="${material}" th:action="@{/nova/material/update/{id}(id=${material.id})}" method="post"
                       class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Mã chất liệu</label></div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="code" th:field="*{code}" class="form-control" disabled>
+                        </div>
+                    </div>
                     <div class="row form-group">
                         <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Tên chất liệu</label></div>
                         <div class="col-12 col-md-9"><input type="text" id="name" th:field="*{name}" class="form-control"

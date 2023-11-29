@@ -58,21 +58,6 @@
                             <input type="text" class="form-control" th:name="description" th:value="${description}">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-6">
-                            <div class="d-flex justify-content-between">
-                                <label class="font-weight-bold">Giá từ</label>
-                                <div class="" style="color: red" id="error"></div>
-                            </div>
-                            <input type="number" class="form-control" th:name="priceMin" id="priceMin"
-                                   th:value="${priceMin == 0 ? '' : priceMin}" oninput="onInputText('error')">
-                        </div>
-                        <div class="form-group col-6">
-                            <label class="font-weight-bold">Đến giá</label>
-                            <input type="number" class="form-control" th:name="priceMax" id="priceMax"
-                                   th:value="${priceMax == 2147483647 ? '' : priceMax}">
-                        </div>
-                    </div>
 
                     <div class="row">
                         <div class="col-3">
@@ -250,15 +235,15 @@
                 </div>
                 <div class="modal-body">
                     <form id="productAdd" th:object="${product}" class="form-horizontal">
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between">
-                                <label class="font-weight-bold form-control-label">Mã sản phẩm
-                                </label>
-                                <div class="" style="color: red" id="errorCode"></div>
-                            </div>
-                            <input type="text" id="code" name="code"
-                                   class="form-control" oninput="onInputText('errorCode')">
-                        </div>
+<!--                        <div class="mb-3">-->
+<!--                            <div class="d-flex justify-content-between">-->
+<!--                                <label class="font-weight-bold form-control-label">Mã sản phẩm-->
+<!--                                </label>-->
+<!--                                <div class="" style="color: red" id="errorCode"></div>-->
+<!--                            </div>-->
+<!--                            <input type="text" id="code" name="code"-->
+<!--                                   class="form-control" oninput="onInputText('errorCode')">-->
+<!--                        </div>-->
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
                                 <label class="font-weight-bold form-control-label">Tên sản phẩm
@@ -280,15 +265,15 @@
                         </div>
 
 
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between">
-                                <label class="font-weight-bold form-control-label">Giá
-                                </label>
-                                <div class="" style="color: red" id="errorPrice"></div>
-                            </div>
-                            <input type="number" id="price" name="price"
-                                   class="form-control" oninput="onInputText('errorPrice')">
-                        </div>
+                        <!--                        <div class="mb-3">-->
+                        <!--                            <div class="d-flex justify-content-between">-->
+                        <!--                                <label class="font-weight-bold form-control-label">Giá-->
+                        <!--                                </label>-->
+                        <!--                                <div class="" style="color: red" id="errorPrice"></div>-->
+                        <!--                            </div>-->
+                        <!--                            <input type="number" id="price" name="price"-->
+                        <!--                                   class="form-control" oninput="onInputText('errorPrice')">-->
+                        <!--                        </div>-->
 
 
                         <div class="mb-3">
@@ -348,19 +333,10 @@
                     </form>
                 </div>
                 <script th:inline="javascript">
-                    checkCode = () => {
-                        let isCode = document.getElementById('code').value
-                        if (isCode.trim() === '') {
-                            document.getElementById('errorCode').innerHTML = `Chưa nhập mã`
-                            return false;
-                        }
-                        return true;
-                    }
-
                     checkName = () => {
                         let isName = document.getElementById('name').value
                         if (isName.trim() === '') {
-                            document.getElementById('errorName').innerHTML = `Chưa nhập tên`
+                            document.getElementById('errorName').innerHTML = `Chưa nhập tên sản phẩm`
                             return false;
                         }
                         return true;
@@ -375,31 +351,11 @@
                         return true;
                     }
 
-                    checkPrice = () => {
-                        debugger
-                        let isPrice = document.getElementById('price').value
-                        if (isPrice.trim() === '') {
-                            document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`
-                            return false;
-                        }
-                        if (isPrice < 1000) {
-                            document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn hoặc bằng 1000`
-
-                            return false;
-                        }
-                        if (isPrice > 2147483647) {
-                            document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`
-                            return false;
-                        }
-                        return true;
-                    }
 
                     validate = () => {
-                        let isCode = checkCode();
                         let isName = checkName();
                         let isDescription = checkDescription();
-                        let isPrice = checkPrice();
-                        if (isCode === true && isName === true && isDescription === true && isPrice === true) {
+                        if (isName === true && isDescription === true) {
                             return true;
                         }
                     }
@@ -427,27 +383,10 @@
 
                     }
 
-                    checkPrice = () => {
-                        let priceMin = document.getElementById('priceMin').value
-                        let priceMax = document.getElementById('priceMax').value
-                        debugger
-                        if (priceMin < 0 || priceMax < 0) {
-                            document.getElementById('error').innerHTML = `Giá phải là số dương`
-                            return false;
-                        }
-                        if (Number(priceMax) < Number(priceMin)) {
-                            document.getElementById('error').innerHTML = `Giá bắt đầu phải nhỏ hơn giá kết thúc`
-                            return false;
-                        }
-                        return true;
-                    }
-
                     function clickSearch(entity, id) {
-                        if (checkPrice()) {
-                            document.getElementById(id).action = '/nova/' + entity + '/search'
-                            document.getElementById(id).method = 'get'
-                            document.getElementById(id).submit()
-                        }
+                        document.getElementById(id).action = '/nova/' + entity + '/search'
+                        document.getElementById(id).method = 'get'
+                        document.getElementById(id).submit()
                     }
                 </script>
             </div>
@@ -475,7 +414,6 @@
                                 <th scope="col">Mã sản phẩm</th>
                                 <th scope="col">Tên sản phẩm</th>
                                 <th scope="col">Mô tả</th>
-                                <th scope="col">Giá</th>
                                 <th scope="col">Thương hiệu</th>
                                 <th scope="col">Chất liệu</th>
                                 <th scope="col">Loại sản phẩm</th>
@@ -489,7 +427,6 @@
                                 <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
                                 <td th:text="${items.description}"></td>
-                                <td th:text="${'₫'+#numbers.formatDecimal(items.price, 0, 'COMMA', 0, 'POINT')}"></td>
                                 <td th:text="${items.brandName}"></td>
                                 <td th:text="${items.materialName}"></td>
                                 <td th:text="${items.categoryName}"></td>

@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>THƯƠNG HIỆU ĐÃ XÓA</strong>
+                <strong>CHẤT LIỆU ĐÃ XÓA</strong>
             </div>
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
@@ -20,10 +20,10 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form id="brandForm" class="form-horizontal">
+                <form id="materialForm" class="form-horizontal">
                     <div class="card-footer">
                         <div>
-                            <a href="/nova/brand/page">
+                            <a href="/nova/material/page">
                                 <button type="button" class="btn btn-warning"><i
                                         class="fa-solid fa-circle-left px-4"></i>
                                 </button>
@@ -33,14 +33,14 @@
                     <br>
                     <div class="border-search">
                         <div class="col-md-1">
-                            <button onclick="clickSearchRestore('brand', 'brandForm')" type="button"
+                            <button onclick="clickSearchRestore('material', 'materialForm')" type="button"
                                     class="btn btn-dark">
                                 <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
                         </div>
                         <div class="col-md-11">
-                            <input type="text" placeholder="Nhập tên thương hiệu..."
-                                   th:value="${brandNameSearch}" th:name="brandNameSearch"
+                            <input type="text" placeholder="Nhập tên chất liệu..."
+                                   th:value="${materialNameSearch}" th:name="materialNameSearch"
                                    class="form-control">
                         </div>
                     </div>
@@ -52,33 +52,33 @@
     </h1>
     <div class="col">
         <div class="card">
-            <div class="card-header" th:if="${pageBrand.isEmpty()}">
+            <div class="card-header" th:if="${pageMaterial.isEmpty()}">
                 <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
             </div>
-            <div th:if="${not pageBrand.isEmpty()}">
+            <div th:if="${not pageMaterial.isEmpty()}">
                 <div class="card-header">
                     <strong>CÓ</strong>
-                    <strong class="card-title" th:text="${pageBrand.getTotalElements()}"></strong>
+                    <strong class="card-title" th:text="${pageMaterial.getTotalElements()}"></strong>
                     <strong class="card-title"> BẢN GHI</strong>
                 </div>
                 <div class="card-body">
-                    <form id="brandRestore">
+                    <form id="materialRestore">
                         <table class="table text-center">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Mã thương hiệu</th>
-                                <th scope="col">Tên thương hiệu</th>
+                                <th scope="col">Mã chất liệu</th>
+                                <th scope="col">Tên chất liệu</th>
                                 <th scope="col">Khôi phục</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="items:${pageBrand}">
+                            <tr th:each="items:${pageMaterial}">
                                 <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
                                 <td>
-                                    <button th:onclick="clickRestore('brand', 'brandRestore', [[${items.id}]])" type="button"
-                                    class="btn btn-dark">
-                                            <i class="fa-solid fa-trash-can-arrow-up px-4"></i>
+                                    <button th:onclick="clickRestore('material', 'materialRestore', [[${items.id}]])" type="button"
+                                            class="btn btn-dark">
+                                        <i class="fa-solid fa-trash-can-arrow-up px-4"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -89,27 +89,27 @@
 
                     <!--            Pagination-->
                     <div class="d-flex justify-content-center align-items-center">
-                        <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=0&brandNameSearch=${brandNameSearch}|}">
+                        <div th:if="${pageMaterial.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=0&materialNameSearch=${materialNameSearch}|}">
                                 </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
                         </div>
-                        <div th:if="${pageBrand.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=${pageBrand.getNumber() - 1}&brandNameSearch=${brandNameSearch}|}">
+                        <div th:if="${pageMaterial.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
+                            <a th:href="@{|?page=${pageMaterial.getNumber() - 1}&materialNameSearch=${materialNameSearch}|}">
                                 <i style="color: white" class="fa-solid fa-left-long"></i></a>
                         </div>
                         <div class="btn btn-dark d-flex">
-                            <div th:text="${pageBrand.getNumber() + 1}"></div>
+                            <div th:text="${pageMaterial.getNumber() + 1}"></div>
                             <span>/</span>
-                            <div th:text="${pageBrand.getTotalPages()}"></div>
+                            <div th:text="${pageMaterial.getTotalPages()}"></div>
                         </div>
-                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}"
+                        <div th:if="${pageMaterial.getNumber() + 1 lt pageMaterial.getTotalPages()}"
                              class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageBrand.getNumber()+1}&brandNameSearch=${brandNameSearch}|}">
+                            <a th:href="@{|?page=${pageMaterial.getNumber()+1}&materialNameSearch=${materialNameSearch}|}">
                                 <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                         </div>
-                        <div th:if="${pageBrand.getNumber() + 1 lt pageBrand.getTotalPages()}"
+                        <div th:if="${pageMaterial.getNumber() + 1 lt pageMaterial.getTotalPages()}"
                              class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageBrand.getTotalPages()-1}&brandNameSearch=${brandNameSearch}|}">
+                            <a th:href="@{|?page=${pageMaterial.getTotalPages()-1}&materialNameSearch=${materialNameSearch}|}">
                                 <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                         </div>
                     </div>

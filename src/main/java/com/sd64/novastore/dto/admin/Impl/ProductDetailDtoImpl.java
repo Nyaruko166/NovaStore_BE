@@ -8,6 +8,7 @@ public class ProductDetailDtoImpl {
         return ProductDetailSearchResponse.builder()
                 .id(dto.getId())
                 .code(dto.getCode())
+                .price(dto.getPrice())
                 .sizeName(dto.getSizeName())
                 .colorName(dto.getColorName())
                 .quantity(dto.getQuantity())

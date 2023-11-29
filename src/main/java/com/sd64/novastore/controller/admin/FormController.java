@@ -1,5 +1,6 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Form;
 import com.sd64.novastore.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,23 +35,34 @@ public class FormController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute Form form, RedirectAttributes redirectAttributes) {
-        formService.add(form);
-        redirectAttributes.addFlashAttribute("mess", "Thêm thành công");
-        return "redirect:/nova/form/page";
+    public String add(@ModelAttribute Form form,
+                      RedirectAttributes redirectAttributes) {
+        if (formService.add(form)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/form/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên kiểu dáng đã tồn tại");
+            return "redirect:/nova/form/page";
+        }
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Integer id, @Validated @ModelAttribute Form form, RedirectAttributes redirectAttributes) {
-        formService.update(form, id);
-        redirectAttributes.addFlashAttribute("mess", "Sửa thành công");
-        return "redirect:/nova/form/page";
+    public String update(@PathVariable Integer id,
+                         @ModelAttribute Form form,
+                         RedirectAttributes redirectAttributes) {
+        if (formService.update(form, id)) {
+            redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+            return "redirect:/nova/form/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên kiểu dáng đã tồn tại");
+            return "redirect:/nova/form/detail/" + id;
+        }
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         formService.delete(id);
-        redirectAttributes.addFlashAttribute("mess", "Xóa thành công");
+        redirectAttributes.addFlashAttribute("mess", "Xóa dữ liệu thành công");
         return "redirect:/nova/form/page";
     }
 
@@ -64,5 +76,32 @@ public class FormController {
         model.addAttribute("formNameSearch", formNameSearch);
         model.addAttribute("pageForm", pageForm);
         return "admin/form/form";
+    }
+
+    @GetMapping("/view-restore")
+    public String viewRestore(@RequestParam(defaultValue = "0") Integer page, Model model) {
+        Page<Form> pageForm = formService.getAllDeleted(page);
+        model.addAttribute("pageForm", pageForm);
+        return "admin/form/form-restore";
+    }
+
+    @PostMapping("/restore/{id}")
+    public String restore(@PathVariable Integer id,
+                          RedirectAttributes redirectAttributes) {
+        formService.restore(id);
+        redirectAttributes.addFlashAttribute("mess", "Khôi phục dữ liệu thành công");
+        return "redirect:/nova/form/view-restore";
+    }
+
+    @GetMapping("/search-restore")
+    public String searchDelete(Model model, @RequestParam(required = false) String formNameSearch,
+                               @RequestParam(defaultValue = "0") int page) {
+        Page<Form> pageForm = formService.searchDelete(formNameSearch, page);
+        if ("".equals(formNameSearch) || formNameSearch.isEmpty()) {
+            return "redirect:/nova/form/view-restore";
+        }
+        model.addAttribute("formNameSearch", formNameSearch);
+        model.addAttribute("pageForm", pageForm);
+        return "admin/form/form-restore";
     }
 }

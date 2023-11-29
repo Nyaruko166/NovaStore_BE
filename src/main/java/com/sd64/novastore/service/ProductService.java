@@ -14,7 +14,7 @@ public interface ProductService {
     Page<Product> getAll(Integer page);
     Page<ProductDto> getAll(int page);
 
-    Boolean add(String code, String productName, String description, Integer materialId, Integer categoryId, Integer brandId, Integer formId);
+    Boolean add(String productName, String description, Integer materialId, Integer categoryId, Integer brandId, Integer formId);
 
     Product update(Integer id, String code, String productName, String description, Integer materialId, Integer categoryId, Integer brandId, Integer formId);
 
@@ -24,12 +24,12 @@ public interface ProductService {
 
     Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page);
 
-    String importExcelProduct(MultipartFile file) throws IOException;
+    Integer importExcelProduct(MultipartFile file) throws IOException;
 
     Page<ProductDto> getAllProductDeleted(int page);
 
     Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page);
 
-    void restore(List<Integer> listInteger);
+    Product restore(Integer id);
 
 }

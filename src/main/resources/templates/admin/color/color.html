@@ -19,9 +19,16 @@
                     <span aria-hidden="true">x</span>
                 </button>
             </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
             <div class="card-body card-block">
                 <form id="colorForm" class="form-horizontal">
-                    <div class="card-footer">
+                    <div class="card-footer d-flex justify-content-between">
 
                         <input type="hidden" class="form-control" th:value="${product.id}" name="productId">
 
@@ -41,9 +48,18 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
+<!--                                            <div class="mb-3">-->
+<!--                                                <div class="d-flex justify-content-between">-->
+<!--                                                    <label class="font-weight-bold form-control-label">Mã màu sắc-->
+<!--                                                    </label>-->
+<!--                                                    <div class="" style="color: red" id="errorCode"></div>-->
+<!--                                                </div>-->
+<!--                                                <input type="text" id="code" name="code"-->
+<!--                                                       class="form-control" oninput="onInputText('errorCode')">-->
+<!--                                            </div>-->
                                             <div class="mb-3">
                                                 <div class="d-flex justify-content-between">
-                                                    <label class="font-weight-bold form-control-label">Tên màu
+                                                    <label class="font-weight-bold form-control-label">Màu sắc
                                                     </label>
                                                     <div class="" style="color: red" id="errorName"></div>
                                                 </div>
@@ -52,7 +68,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button onclick="clickAdd('form', 'formForm', 'name', 'errorName', 'tên màu')"
+                                            <button onclick="clickAdd('color', 'colorForm', 'name', 'errorName', 'màu sắc')"
                                                     type="button" class="btn btn-dark"><i
                                                     class="fa-solid fa-square-plus px-4"></i></button>
                                         </div>
@@ -62,6 +78,13 @@
                             <a th:href="@{|/nova/product/${product.id}/product-detail|}">
                                 <button type="button" class="btn btn-warning"><i
                                         class="fa-solid fa-circle-left px-4"></i>
+                                </button>
+                            </a>
+                        </div>
+                        <div>
+                            <a th:href="@{|/nova/product/${product.id}/color/view-restore|}">
+                                <button type="button" class="btn btn-dark">
+                                    <i class="fa-solid fa-warehouse px-4"></i>
                                 </button>
                             </a>
                         </div>
@@ -76,13 +99,13 @@
                         </div>
                         <script th:inline="javascript">
                             clickSearch = (entity, idForm, productId) => {
-                                document.getElementById(idForm).action = '/nova/' + productId + "/" + entity + '/search'
+                                document.getElementById(idForm).action = '/nova/product/' + productId + "/" + entity + '/search'
                                 document.getElementById(idForm).method = 'get'
                                 document.getElementById(idForm).submit()
                             }
                         </script>
                         <div class="col-md-11">
-                            <input type="text" placeholder="Nhập tên màu sắc..."
+                            <input type="text" placeholder="Nhập màu sắc..."
                                    th:value="${colorNameSearch}" th:name="colorNameSearch"
                                    class="form-control">
                         </div>
@@ -110,16 +133,15 @@
                             <table class="table text-center">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">TÊN MÀU</th>
-                                    <th scope="col">CHỨC NĂNG</th>
+                                    <th scope="col">Mã màu sắc</th>
+                                    <th scope="col">Tên màu sắc</th>
+                                    <th scope="col">Chức năng</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="items:${pageColor}">
-                                    <td th:text="${items.id}"></td>
+                                    <td th:text="${items.code}"></td>
                                     <td th:text="${items.name}"></td>
-
                                     <td class="d-flex justify-content-center">
                                         <div class="dropdown">
                                             <button class="btn btn-dark" type="button"
@@ -129,7 +151,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item"
-                                                   th:href="@{|/nova/${product.id}/color/detail/${items.id}|}">
+                                                   th:href="@{|/nova/product/${product.id}/color/detail/${items.id}|}">
                                                     <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
                                                 <button
                                                         th:onclick="clickDeleted('color', 'colorDelete', [[${product.id}]] , [[${items.id}]])"
