@@ -59,6 +59,9 @@ function validateSubmit() {
     let newPasswordInput = document.getElementById('newPassword');
     let newPasswordError = document.getElementById('newPass-error');
 
+    let rePasswordInput = document.getElementById('rePassword');
+    let rePasswordError = document.getElementById('rePassword-error');
+
     if (emailInput.value.trim() === '') {
         emailError.textContent = 'Vui lòng nhập địa chỉ email.';
         return false;
@@ -86,5 +89,17 @@ function validateSubmit() {
     }
 
     newPasswordError.textContent = '';
+
+    if (rePasswordInput.value.trim() === '') {
+        rePasswordError.textContent = 'Vui lòng nhập lại mật khẩu mới.';
+        return false;
+    }
+
+    rePasswordError.textContent = '';
+
+    if (!newPasswordInput.value === rePasswordInput.value) {
+        rePasswordError.textContent = 'Mật khẩu không khớp.';
+        return false;
+    }
     return true;
 }

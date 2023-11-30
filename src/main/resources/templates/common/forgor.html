@@ -1,90 +1,187 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Quên mật khẩu</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet"
-          type="text/css"/>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
-          rel="stylesheet" type="text/css"/>
+    <title>Nova Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link href="/admin/images/nova.png" rel="icon">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../login/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../login/fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../login/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../login/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../login/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../login/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../login/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="../login/css/main.css">
+    <!--===============================================================================================-->
     <style>
+        .text-login {
+            font-size: 40px;
+        }
+
+        * {
+            font-family: "Poppins", sans-serif !important;
+        }
+
         .error {
+            /*margin-left: 10px;*/
             color: red;
         }
+
     </style>
 </head>
 <body>
 
-<section>
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('../login/images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+            <form class="login100-form validate-form" action="/reset-pass" method="post"
+                  onsubmit="return validateSubmit()">
+					<span class="login100-form-title p-b-49 text-login">
+						Quên mật khẩu
+					</span>
 
-    <div class="container d-flex flex-column">
-        <div class="row align-items-center justify-content-center">
-            <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${mess}" th:text="${mess}">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${err}" th:text="${err}">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <div class="col-12 col-md-8 col-lg-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="mb-4">
-                            <h5>Quên mật khẩu?</h5>
-                            <p class="mb-2">Nhập Email của bạn để đặt lại mật khẩu</p>
+                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is reauired">
+                    <div class="row">
+                        <div class="col-3">
+                            <span class="label-input100">Email</span>
                         </div>
-                        <form action="/reset-pass" method="post" onsubmit="return validateSubmit()">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input
-                                        type="email"
-                                        id="email"
-                                        class="form-control"
-                                        name="email"
-                                        placeholder="Nhập Email"
-                                />
-                                <span id="email-error" class="error"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="code" class="form-label">Mã xác nhận</label>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Nhập Mã Xác Nhận" id="code"
-                                           name="code">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="validateEmail()">
-                                        Nhận Mã
-                                    </button>
-                                </div>
-                                <span id="code-error" class="error"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="newPassword" class="form-label">Mật Khẩu Mới</label>
-                                <input
-                                        type="password"
-                                        id="newPassword"
-                                        class="form-control"
-                                        name="newPassword"
-                                        placeholder="Nhập Mật Khẩu Mới"
-                                />
-                                <span id="newPass-error" class="error"></span>
-                            </div>
-                            <div class="mb-3 d-grid">
-                                <button type="submit" class="btn btn-primary">
-                                    Đặt lại mật khẩu
-                                </button>
-                            </div>
-                            <span>Không có tài khoản?</span><a href="/register" style="margin-left: 10px">Đăng ký</a>
-                        </form>
+                        <div class="col-9" style="text-align: right;">
+                            <span id="email-error" class="error"></span>
+                        </div>
+                    </div>
+                    <input class="input100" id="email" type="email" name="email" placeholder="Nhập Email">
+                    <span class="focus-input100" data-symbol="&#x2709;"></span>
+                </div>
+
+                <!--                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is reauired">-->
+                <!--                    <div class="row">-->
+                <!--                        <div class="col-3">-->
+                <!--                            <span class="label-input100">Email</span>-->
+                <!--                        </div>-->
+                <!--                        <div class="col-9" style="text-align: right;">-->
+                <!--                            <span id="email-error" class="error"></span>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                    <input class="input100" id="email" type="text" name="email" placeholder="Nhập email">-->
+                <!--                    <span class="focus-input100" data-symbol="&#x2709;"></span>-->
+                <!--                </div>-->
+
+                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is reauired">
+                    <div class="row">
+                        <div class="col-4">
+                            <span class="label-input100">Mã xác nhận</span>
+                        </div>
+                        <div class="col-8" style="text-align: right;">
+                            <span id="code-error" class="error"></span>
+                        </div>
+                    </div>
+                    <div class="input100">
+                        <span style="::after{margin: 4px}" class="focus-input100" data-symbol="&#x266F;"></span>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Nhập mã xác nhận" id="code"
+                                   name="code" style="margin-top: 11px;border: none;padding: 0px">
+                            <button class="btn btn-outline-secondary" type="button" onclick="validateEmail()"
+                                    style="margin-top: 11px">
+                                Nhận Mã
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <!--                    <input class="input100" id="sdt" type="text" name="sdt" placeholder="Nhập số điện thoại">-->
+
+                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is reauired">
+                    <div class="row">
+                        <div class="col-6">
+                            <span class="label-input100">Mật khẩu mới</span>
+                        </div>
+                        <div class="col-6" style="text-align: right;">
+                            <span id="newPass-error" class="error"></span>
+                        </div>
+                    </div>
+                    <input class="input100" id="newPassword" type="password" name="newPassword"
+                           placeholder="Nhập mật khẩu mới">
+                    <span class="focus-input100" data-symbol="&#xf190;"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is reauired">
+                    <div class="row">
+                        <div class="col-5">
+                            <span class="label-input100">Xác nhận mật khẩu</span>
+                        </div>
+                        <div class="col-7" style="text-align: right;">
+                            <span id="rePassword-error" class="error"></span>
+                        </div>
+                    </div>
+                    <input class="input100" id="rePassword" type="password" name="rePassword"
+                           placeholder="Nhập lại mật khẩu">
+                    <span class="focus-input100" data-symbol="&#xf190;"></span>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn" type="submit">
+                            Đặt lại mật khẩu
+                        </button>
+                    </div>
+                </div>
+                <div class="txt1 text-center mt-4">
+                    Không có tài khoản?
+                    <span>
+							<a href="/register">Đăng ký</a>
+						</span>
+                </div>
+            </form>
+        </div>
+
+        <div th:if="${mess}" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true"
+             style=" position: fixed;bottom: 20px;right: 20px;">
+            <div class="toast-header">
+                <img src="/admin/images/nova.png" class="rounded me-2" alt="..." width="20px" height="20px">
+                <strong class="me-auto">Nova Store</strong>
+                <small>Now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" th:text="${mess}">
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+<div id="dropDownSelect1"></div>
 <script src="/admin/assets/js/forgor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!--===============================================================================================-->
+<!--<script src="vendor/jquery/jquery-3.2.1.min.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="vendor/animsition/js/animsition.min.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="vendor/bootstrap/js/popper.js"></script>-->
+<!--<script src="vendor/bootstrap/js/bootstrap.min.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="vendor/select2/select2.min.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="vendor/daterangepicker/moment.min.js"></script>-->
+<!--<script src="vendor/daterangepicker/daterangepicker.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="/admin/vendor/countdowntime/countdowntime.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="/admin/assets/js/main.js"></script>-->
+
 </body>
 </html>

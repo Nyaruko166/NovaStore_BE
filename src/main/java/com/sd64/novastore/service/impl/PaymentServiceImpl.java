@@ -43,16 +43,11 @@ public class PaymentServiceImpl implements PaymentService {
         momoPaymentRequest.setSignature(signature);
 
         String jsonPost = gson.toJson(momoPaymentRequest);
-//        System.out.println(json);
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(MomoPaymentConfig.paymentUrl);
         StringEntity requestEntity = new StringEntity(jsonPost, ContentType.APPLICATION_JSON);
         post.setEntity(requestEntity);
-
-        // Content-Type: application/x-www-form-urlencoded
-//        post.setEntity(new UrlEncodedFormEntity(params));
-
 
         CloseableHttpResponse res = client.execute(post);
         BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));

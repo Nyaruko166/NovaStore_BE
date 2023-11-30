@@ -65,11 +65,12 @@ public class AuthController {
         if (status == 0) {
             model.addAttribute("mess", "Reset mật khẩu thành công");
             System.out.println("Reset mật khẩu thành công");
+            return "redirect:/login";
         } else if (status == 1) {
-            model.addAttribute("err", "Mã xác minh đã hết hạn");
+            model.addAttribute("mess", "Mã xác minh đã hết hạn");
             System.out.println("Mã xác minh đã hết hạn");
         } else {
-            model.addAttribute("err", "Mã xác minh không khớp");
+            model.addAttribute("mess", "Mã xác minh không khớp");
             System.out.println("Mã xác minh không khớp");
         }
         return "/common/forgor";
@@ -134,7 +135,7 @@ public class AuthController {
         switch (authService.codeVerifyAndChangePass(email, currentPass, reNewPass, newPass, code, request)) {
             case 0:
                 model.addAttribute("mess", "Đổi mật khẩu thành công !!!");
-                break;
+                return "redirect:/login";
             case 1:
                 model.addAttribute("err", "Tài khoản không tồn tại !!!");
                 break;
