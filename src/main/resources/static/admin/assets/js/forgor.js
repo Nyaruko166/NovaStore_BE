@@ -91,7 +91,7 @@ function validateSubmit() {
     newPasswordError.textContent = '';
 
     if (rePasswordInput.value.trim() === '') {
-        rePasswordError.textContent = 'Vui lòng nhập lại mật khẩu mới.';
+        rePasswordError.textContent = 'Hãy xác nhận mật khẩu mới.';
         return false;
     }
 
