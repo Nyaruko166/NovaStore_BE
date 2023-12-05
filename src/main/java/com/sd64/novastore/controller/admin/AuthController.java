@@ -154,4 +154,9 @@ public class AuthController {
         return "redirect:/change-password";
     }
 
+    @GetMapping("/profile")
+    public String p5() {
+        return "/common/profile";
+    }
+
 }
