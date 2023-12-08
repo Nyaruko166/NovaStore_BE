@@ -6,11 +6,10 @@ import com.sd64.novastore.config.MomoPaymentConfig;
 import com.sd64.novastore.config.VNPaymentConfig;
 import com.sd64.novastore.config.ZaloPayConfig;
 import com.sd64.novastore.request.MomoPaymentRequest;
+import com.sd64.novastore.request.ZaloPaymentRequest;
 import com.sd64.novastore.service.PaymentService;
-import com.sd64.novastore.utils.payment.HMACUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -60,13 +59,16 @@ public class PaymentServiceImpl implements PaymentService {
 
         JsonObject jsonResult = gson.fromJson(resultJsonStr.toString(), JsonObject.class);
 
+//        System.out.println(jsonResult.toString());
+
 //        System.out.println(jsonResult.get("payUrl"));
 
 //        return resultJsonStr.toString();
         String payUrl = jsonResult.get("payUrl").toString().replaceAll("\"", "");
         JsonObject returnJson = new JsonObject();
-        returnJson.addProperty("payUrl",payUrl);
-        returnJson.addProperty("address",address);
+        returnJson.addProperty("payUrl", payUrl);
+        returnJson.addProperty("address", address);
+//        System.out.println(returnJson.toString());
         return returnJson;
     }
 
@@ -97,44 +99,45 @@ public class PaymentServiceImpl implements PaymentService {
             put("embed_data", embed_data);
         }};
 
-//        ZaloPaymentRequest zaloPaymentRequest = ZaloPaymentRequest.builder()
-//                .app_id(ZaloPayConfig.appid)
-//                .app_trans_id(ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id)
-//                .app_time(String.valueOf(System.currentTimeMillis()))
-//                .app_user("Nyaruko166")
-//                .amount(10000000L)
-//                .description("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
-//                .bank_code("")
-//                .item(new JsonArray())
-//                .embed_data(embed_data)
-//                .build();
-//        zaloPaymentRequest.setMac(zaloPaymentRequest.signatureGen(ZaloPayConfig.key1));
-//
-//        String jsonPost = gson.toJson(zaloPaymentRequest);
+        ZaloPaymentRequest zaloPaymentRequest = ZaloPaymentRequest.builder()
+                .app_id(Long.valueOf(ZaloPayConfig.appid))
+                .app_trans_id(ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id)
+                .app_time(Long.valueOf(String.valueOf(System.currentTimeMillis())))
+                .app_user("Nyaruko166")
+                .amount(amount)
+                .description("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
+                .bank_code("zalopayapp")
+                .item("[]")
+                .embed_data(embed_data.toString())
+                .build();
+        zaloPaymentRequest.setMac(zaloPaymentRequest.signatureGen(ZaloPayConfig.key1));
+
+        String jsonPost = gson.toJson(zaloPaymentRequest);
 
 //        System.out.println(zaloPaymentRequest.getItem());
 //        System.out.println(jsonPost);
 
-        String data = order.get("app_id") + "|" + order.get("app_trans_id") + "|" + order.get("app_user") + "|" + order.get("amount") + "|" + order.get("app_time") + "|" + order.get("embed_data") + "|" + order.get("item");
-        order.put("mac", HMACUtil.HMACSHA256Encode(ZaloPayConfig.key1, data));
-
-        System.out.println(order);
+//        String data = order.get("app_id") + "|" + order.get("app_trans_id") + "|" + order.get("app_user") + "|"
+//                + order.get("amount") + "|" + order.get("app_time") + "|" + order.get("embed_data") + "|"
+//                + order.get("item");
+//        order.put("mac", HMACUtil.HMACSHA256Encode(ZaloPayConfig.key1, data));
+//
+//        System.out.println(order);
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(ZaloPayConfig.endpointCreateOrder);
 
-//        StringEntity requestEntity = new StringEntity(jsonPost, ContentType.APPLICATION_JSON);
-//        post.setEntity(requestEntity);
+        StringEntity requestEntity = new StringEntity(jsonPost, ContentType.APPLICATION_JSON);
+        post.setEntity(requestEntity);
 
         List<NameValuePair> params = new ArrayList<>();
         for (Map.Entry<String, Object> e : order.entrySet()) {
             params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
         }
-
 //        System.out.println(params);
 
 //        Content - Type:application / x - www - form - urlencoded
-        post.setEntity(new UrlEncodedFormEntity(params));
+//        post.setEntity(new UrlEncodedFormEntity(params));
 
         CloseableHttpResponse res = client.execute(post);
         BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
@@ -146,12 +149,15 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         JsonObject jsonResult = gson.fromJson(resultJsonStr.toString(), JsonObject.class);
-        String payUrl = jsonResult.get("payUrl").toString().replaceAll("\"", "");
+        String payUrl = jsonResult.get("order_url").toString().replaceAll("\"", "");
 
         JsonObject returnJson = new JsonObject();
 
         returnJson.addProperty("payUrl",payUrl);
         returnJson.addProperty("address",address);
+
+        System.out.println(returnJson.toString());
+
         return returnJson;
     }
 
@@ -230,8 +236,8 @@ public class PaymentServiceImpl implements PaymentService {
         String payUrl = VNPaymentConfig.vnp_PayUrl + "?" + queryUrl;
 
         JsonObject returnJson = new JsonObject();
-        returnJson.addProperty("payUrl",payUrl);
-        returnJson.addProperty("address",address);
+        returnJson.addProperty("payUrl", payUrl);
+        returnJson.addProperty("address", address);
         return returnJson;
     }
 }

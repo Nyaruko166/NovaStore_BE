@@ -21,11 +21,11 @@
 //
 //    @Autowired
 //    private PaymentService paymentService;
-//
+
 //    @GetMapping("/momo/create-payment")
 //    ResponseEntity<?> momoCreate() throws IOException, URISyntaxException {
 //
-//        return ResponseEntity.ok(paymentService.MomoPayCreate(1000000L));
+//        return ResponseEntity.ok(paymentService.MomoPayCreate(100000L,"123"));
 //    }
 //
 //    @GetMapping("/vnpay/create-payment")
@@ -33,28 +33,28 @@
 //
 //        return ResponseEntity.ok(paymentService.vnpayCreate(req, 1000000L));
 //    }
+
+//    @GetMapping("/zalo/create-payment")
+//    ResponseEntity<?> zalopayCreate() throws IOException, URISyntaxException {
 //
-////    @GetMapping("/zalo/create-payment")
-////    ResponseEntity<?> zalopayCreate() throws IOException, URISyntaxException {
-////
-////        return ResponseEntity.ok(paymentService.zalopayCreate(1000000L));
-////    }
+//        return ResponseEntity.ok(paymentService.zalopayCreate(10000L,"123").get("pay_url"));
+//    }
+
+//    @GetMapping("/vnpay/return")
+//    ResponseEntity<?> vnpayReturn(VNPaymentResponse VNPaymentResponse) {
 //
-////    @GetMapping("/vnpay/return")
-////    ResponseEntity<?> vnpayReturn(VNPaymentResponse VNPaymentResponse) {
-////
-////        return ResponseEntity.ok(VNPaymentResponse);
-////    }
-//
+//        return ResponseEntity.ok(VNPaymentResponse);
+//    }
+
 //    @GetMapping("/zalo/return")
 //    ResponseEntity<?> zalopayReturn(ZaloPaymentResponse zaloPaymentResponse) {
 //
 //        return ResponseEntity.ok(zaloPaymentResponse);
 //    }
+
+//    @GetMapping("/momo/return")
+//    ResponseEntity<?> momoReturn(MomoPaymentResponse momoPaymentResponse) {
 //
-////    @GetMapping("/momo/return")
-////    ResponseEntity<?> momoReturn(MomoPaymentResponse momoPaymentResponse) {
-////
-////        return ResponseEntity.ok(momoPaymentResponse);
-////    }
+//        return ResponseEntity.ok(momoPaymentResponse);
+//    }
 //}
