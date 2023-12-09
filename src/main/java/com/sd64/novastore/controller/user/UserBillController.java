@@ -5,10 +5,12 @@ import com.sd64.novastore.model.Address;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.Customer;
+import com.sd64.novastore.model.SessionCart;
 import com.sd64.novastore.response.MomoPaymentResponse;
 import com.sd64.novastore.response.VNPaymentResponse;
 import com.sd64.novastore.service.AddressService;
 import com.sd64.novastore.service.BillService;
+import com.sd64.novastore.service.CartService;
 import com.sd64.novastore.service.CustomerService;
 import com.sd64.novastore.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +37,9 @@ public class UserBillController {
     private CustomerService customerService;
 
     @Autowired
+    private CartService cartService;
+
+    @Autowired
     private AddressService addressService;
 
     @Autowired
@@ -46,21 +51,20 @@ public class UserBillController {
     JsonObject jsonData = new JsonObject();
 
     @GetMapping("/checkout")
-    public String checkOut(Principal principal, Model model) {
+    public String checkOut(Principal principal, Model model, HttpSession session) {
         if (principal == null) {
-            return "redirect:/login";
+            SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+            model.addAttribute("cart", sessionCart);
+        } else {
+            Customer customer = customerService.findByEmail(principal.getName());
+            Cart cart = cartService.getCart(principal.getName());
+            Address defaultAddress = addressService.findAccountDefaultAddress(customer.getId());
+            List<Address> listAddress = addressService.findAccountAddress(customer.getId());
+            model.addAttribute("cart", cart);
+            model.addAttribute("defaultAddress", defaultAddress);
+            model.addAttribute("listAddress", listAddress);
         }
-        Customer customer = customerService.findByEmail(principal.getName());
-        Cart cart = customer.getCart();
-        Address defaultAddress = addressService.findAccountDefaultAddress(customer.getId());
-        List<Address> listAddress = addressService.findAccountAddress(customer.getId());
-        if (defaultAddress == null && listAddress.isEmpty()) {
-            return "redirect:/cart";
-        }
-        model.addAttribute("cart", cart);
-        model.addAttribute("defaultAddress", defaultAddress);
-        model.addAttribute("listAddress", listAddress);
-        return "/user/checkout2";
+        return "/user/checkout";
     }
 
     @GetMapping("/orders")
@@ -88,27 +92,47 @@ public class UserBillController {
     public String createOrder(Principal principal,
                               RedirectAttributes attributes,
                               HttpSession session,
-                              @RequestParam("address") String address,
+                              @RequestParam("name") String name,
+                              @RequestParam("email") String email,
+                              @RequestParam("phoneNumber") String phoneNumber,
+                              @RequestParam("specificAddress") String specificAddress,
+                              @RequestParam("city") String city,
+                              @RequestParam("district") String district,
+                              @RequestParam("ward") String ward,
                               @RequestParam("payment") String payment,
                               HttpServletRequest request) throws IOException, URISyntaxException {
+        String address = specificAddress + ", " + ward + ", " + district + ", " + city;
         if (principal == null){
-            return "redirect:/login";
+            SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+            if (payment.equals("VNPAY")){
+                //Long dok
+                jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), address, name, phoneNumber, email);
+                return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
+            }
+            if (payment.equals("Momo")){
+                //Long dok
+                jsonData = paymentService.MomoPayCreate(sessionCart.getTotalPrice().longValue(), address, name, phoneNumber, email);
+                return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
+            }
+            billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment);
+            session.removeAttribute("totalItems");
+            return "redirect:/home";
+        } else {
+            Cart cart = cartService.getCart(principal.getName());
+            if (payment.equals("VNPAY")){
+                //Long dok
+                jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), address, name, phoneNumber, email);
+                return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
+            }
+            if (payment.equals("Momo")){
+                //Long dok
+                jsonData = paymentService.MomoPayCreate(cart.getTotalPrice().longValue(), address, name, phoneNumber, email);
+                return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
+            }
+            billService.placeOrder(cart, name, address, phoneNumber, payment);
+            session.removeAttribute("totalItems");
+            attributes.addFlashAttribute("success", "Đặt hàng thành công!");
         }
-        Customer customer = customerService.findByEmail(principal.getName());
-        Cart cart = customer.getCart();
-        if (payment.equals("VNPAY")){
-            //Long dok
-            jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), address);
-            return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
-        }
-        if (payment.equals("Momo")){
-            //Long dok
-            jsonData = paymentService.MomoPayCreate(cart.getTotalPrice().longValue(), address);
-            return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
-        }
-        billService.placeOrder(cart, address, payment);
-        session.removeAttribute("totalItems");
-        attributes.addFlashAttribute("success", "Đặt hàng thành công!");
         return "redirect:/orders";
     }
 
@@ -121,35 +145,71 @@ public class UserBillController {
 
     @GetMapping("/vnpay/return")
     public String vnpayReturn(Principal principal, HttpSession session, VNPaymentResponse VNPaymentResponse, RedirectAttributes attributes) {
-        if (VNPaymentResponse.getVnp_ResponseCode().equals("00")) {
-            Customer customer = customerService.findByEmail(principal.getName());
-            Cart cart = customer.getCart();
-            String payment = "Thanh toán qua VNPAY";
-            String address = jsonData.get("address").toString().replaceAll("\"", "");
-            billService.placeOrder(cart, address, payment);
-            session.removeAttribute("totalItems");
-            attributes.addFlashAttribute("success", "Đặt hàng thành công!");
-            return "redirect:/orders";
+        if (principal == null) {
+            if (VNPaymentResponse.getVnp_ResponseCode().equals("00")) {
+                SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+                String payment = "Thanh toán qua VNPAY";
+                String address = jsonData.get("address").toString().replaceAll("\"", "");
+                String name = jsonData.get("name").toString().replaceAll("\"", "");
+                String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
+                String email = jsonData.get("email").toString().replaceAll("\"", "");
+                billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment);
+                session.removeAttribute("totalItems");
+                return "redirect:/home";
+            } else {
+                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                return "redirect:/checkout";
+            }
         } else {
-            attributes.addFlashAttribute("mess", "Thanh toán không thành công");
-            return "redirect:/checkout";
+            if (VNPaymentResponse.getVnp_ResponseCode().equals("00")) {
+                Cart cart = cartService.getCart(principal.getName());
+                String payment = "Thanh toán qua VNPAY";
+                String address = jsonData.get("address").toString().replaceAll("\"", "");
+                String name = jsonData.get("name").toString().replaceAll("\"", "");
+                String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
+                billService.placeOrder(cart, name, address, phoneNumber, payment);
+                session.removeAttribute("totalItems");
+                attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+                return "redirect:/orders";
+            } else {
+                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                return "redirect:/checkout";
+            }
         }
     }
 
     @GetMapping("/momo/return")
     public String momoReturn(Principal principal, HttpSession session,MomoPaymentResponse momoPaymentResponse, RedirectAttributes attributes) {
-        if (momoPaymentResponse.getResultCode().equals("0")) {
-            Customer customer = customerService.findByEmail(principal.getName());
-            Cart cart = customer.getCart();
-            String payment = "Thanh toán qua Momo";
-            String address = jsonData.get("address").toString().replaceAll("\"", "");
-            billService.placeOrder(cart, address, payment);
-            session.removeAttribute("totalItems");
-            attributes.addFlashAttribute("success", "Đặt hàng thành công!");
-            return "redirect:/orders";
+        if (principal == null){
+            if (momoPaymentResponse.getResultCode().equals("0")) {
+                SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+                String payment = "Thanh toán qua Momo";
+                String address = jsonData.get("address").toString().replaceAll("\"", "");
+                String name = jsonData.get("name").toString().replaceAll("\"", "");
+                String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
+                String email = jsonData.get("email").toString().replaceAll("\"", "");
+                billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment);
+                session.removeAttribute("totalItems");
+                return "redirect:/home";
+            } else {
+                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                return "redirect:/checkout";
+            }
         } else {
-            attributes.addFlashAttribute("mess", "Thanh toán không thành công");
-            return "redirect:/checkout";
+            if (momoPaymentResponse.getResultCode().equals("0")) {
+                Cart cart = cartService.getCart(principal.getName());
+                String payment = "Thanh toán qua Momo";
+                String address = jsonData.get("address").toString().replaceAll("\"", "");
+                String name = jsonData.get("name").toString().replaceAll("\"", "");
+                String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
+                billService.placeOrder(cart, name, address, phoneNumber, payment);
+                session.removeAttribute("totalItems");
+                attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+                return "redirect:/orders";
+            } else {
+                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                return "redirect:/checkout";
+            }
         }
     }
 }

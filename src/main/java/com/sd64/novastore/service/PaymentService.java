@@ -9,9 +9,9 @@ import java.net.URISyntaxException;
 
 public interface PaymentService {
 
-    JsonObject vnpayCreate(HttpServletRequest req, Long price, String address) throws UnsupportedEncodingException;
+    JsonObject vnpayCreate(HttpServletRequest req, Long price, String address, String name, String phoneNumber, String email) throws UnsupportedEncodingException;
 
     JsonObject zalopayCreate(Long amount, String address) throws IOException, URISyntaxException;
 
-    JsonObject MomoPayCreate(Long amount, String address) throws IOException, URISyntaxException;
+    JsonObject MomoPayCreate(Long amount, String address, String name, String phoneNumber, String email) throws IOException, URISyntaxException;
 }
