@@ -8,7 +8,7 @@
 <body>
     <div th:replace="~{/user/fragments::header}"></div>
 
-    <!-- Page Header Start -->
+<!--     Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Chi tiết sản phẩm</h1>
@@ -19,33 +19,27 @@
             </div>
         </div>
     </div>
-    <!-- Page Header End -->
+<!--     Page Header End -->
 
     <!-- Shop Detail Start -->
     <div class="container-fluid py-5">
         <!--            Notification-->
-        <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
-             style="margin: 5px">
-            <span th:text="${mess}"></span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+<!--        <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"-->
+<!--             style="margin: 5px">-->
+<!--            <span th:text="${mess}"></span>-->
+<!--            <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--                <span aria-hidden="true">&times;</span>-->
+<!--            </button>-->
+<!--        </div>-->
         <div class="row px-xl-5">
             <div class="col-lg-5 pb-5">
                 <div id="product-carousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner border">
-                        <div class="carousel-item active" th:each="product : ${product}">
-                            <img class="w-100 h-100" th:src="@{/image/product/}" alt="Image">
+                        <div class="carousel-item active">
+                            <img class="w-100 h-100" th:src="@{'/image/' + ${imageActive.id}}" alt="Image">
                         </div>
-                        <div class="carousel-item">
-                            <img class="w-100 h-100" th:src="@{/user/img/product-2.jpg}" alt="Image">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="w-100 h-100" th:src="@{/user/img/product-3.jpg}" alt="Image">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="w-100 h-100" th:src="@{/user/img/product-4.jpg}" alt="Image">
+                        <div class="carousel-item" th:if="${listImage.size() > 1 && image.id != imageActive.id}" th:each="image : ${listImage}">
+                            <img class="w-100 h-100" th:src="@{'/image/' + ${image.id}}" alt="Image">
                         </div>
                     </div>
                     <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
@@ -58,7 +52,7 @@
             </div>
 
             <div class="col-lg-7 pb-5 form-san-pham">
-                <h3 class="font-weight-semi-bold" th:text="${product.name}">Colorful Stylish Shirt</h3>
+                <h3 class="font-weight-semi-bold" th:text="${product.name}"></h3>
                 <div class="d-flex mb-3">
                     <div class="text-primary mr-2">
                         <small class="fas fa-star"></small>
@@ -68,30 +62,126 @@
                         <small class="far fa-star"></small>
                     </div>
                 </div>
-                <h3 class="font-weight-semi-bold mb-4" th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">$150.00</h3>
-                <p class="mb-4" th:text="${product.description}"></p>
+<!--                <h3 class="font-weight-semi-bold mb-4" th:text="'₫' + ${#numbers.formatDecimal(priceMin, 0, 'COMMA', 0, 'POINT')}"></h3>-->
+<!--                <p class="mb-4" th:text="${product.description}"></p>-->
+                <div class="font-weight-semi-bold mb-3">
+                    <div  th:if="${priceMax != priceMin}">
+                        <div id="price-top" class="d-flex font-weight-semi-bold">
+                            <h3 class="font-weight-semi-bold" th:text="'₫' + ${#numbers.formatDecimal(priceMin, 0, 'COMMA', 0, 'POINT')}">₫123</h3>
+                            <h3 class="ml-1 mr-1 font-weight-semi-bold"> ~ </h3>
+                            <h3 class="font-weight-semi-bold" th:text="'₫' + ${#numbers.formatDecimal(priceMax, 0, 'COMMA', 0, 'POINT')}">₫333</h3>
+                        </div>
+                    </div>
+                    <div  th:if="${priceMax == priceMin}">
+                        <div id="price-bottom" class="d-flex font-weight-semi-bold">
+                            <h3 th:text="'₫' + ${#numbers.formatDecimal(priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h3>
+                        </div>
+                    </div>
+                </div>
+
+<!--                <div class="font-weight-semi-bold mb-3">-->
+<!--                    <h3 th:id="changePrice" th:text="'₫' + ${#numbers.formatDecimal(priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h3>-->
+<!--                </div>-->
+                <div class="d-flex">
+                    <p class="text-dark font-weight-medium mb-0 mr-2">Mã:</p>
+                    <p id="product-code">CT1</p>
+                </div>
+                <div class="d-flex">
+                    <p class="text-dark font-weight-medium mb-0 mr-2">Số lượng:</p>
+                    <p id="product-quantity">13</p>
+                </div>
+
                 <form th:action="@{/add-to-cart}" method="post">
                     <input type="hidden" th:value="${product.id}" name="productId">
                     <div class="d-flex mb-3">
                         <p class="text-dark font-weight-medium mb-0 mr-3">Kích cỡ:</p>
-                        <div class="custom-control custom-radio custom-control-inline"
-                             th:each="size : ${listProductSize}">
-                            <input type="radio" class="custom-control-input"
-                                   th:id="${'size-' + size.id}" th:value="${size.id}" name="size">
-                            <label class="custom-control-label" th:for="${'size-' + size.id}"
-                                   th:text="${size.name}"></label>
+                        <div class="custom-control custom-radio custom-control-inline" th:each="size : ${listProductSize}">
+                            <input type="radio" th:onchange="sizeChange([[${size.id}]])" class="custom-control-input rad-size" th:id="${'size-' + size.id}" th:value="${size.id}" name="size">
+                            <label class="custom-control-label" th:for="${'size-' + size.id}" th:text="${size.name}"></label>
                         </div>
                     </div>
                     <div class="d-flex mb-4">
                         <p class="text-dark font-weight-medium mb-0 mr-3">Màu sắc:</p>
-                        <div class="custom-control custom-radio custom-control-inline"
-                             th:each="color : ${listProductColor}">
-                            <input type="radio" class="custom-control-input"
-                                   th:id="${'color-' + color.id}" th:value="${color.id}" name="color">
-                            <label class="custom-control-label" th:for="${'color-' + color.id}"
-                                   th:text="${color.name}"></label>
+                        <div class="custom-control custom-radio custom-control-inline" th:each="color : ${listProductColor}">
+                            <input type="radio" th:onchange="colorChange([[${color.id}]])" class="custom-control-input" th:id="${'color-' + color.id}" th:value="${color.id}" name="color">
+                            <label class="custom-control-label" th:for="${'color-' + color.id}" th:text="${color.name}"></label>
                         </div>
                     </div>
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        var listProductSize = [[${listProductSize}]];
+                        var listProductColor = [[${listProductColor}]];
+                        var colorSelected = null;
+                        var sizeSelected = null;
+                        console.log('listProductSize: ', listProductSize)
+                        console.log('listProductColor: ', listProductColor)
+                        /*]]>*/
+                        function disableColor() {
+                            for (let i = 0; i < listProductColor.length; i++) {
+                                console.log(i)
+                                document.getElementById('color-' + listProductColor[i].id).disabled = true
+                            }
+                        }
+                        disableColor()
+                        function sizeChange(id) {
+
+                            let index = -1;
+                            for (let i = 0; i < listProductSize.length; i++) {
+                                if (listProductSize[i].id === id) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            if (index === -1) return
+                            const listColorId = listProductSize[index].listColorId;
+                            for (let i = 0; i < listProductColor.length; i++) {
+                                document.getElementById('color-' + listProductColor[i].id).disabled = true
+                                document.getElementById('color-' + listProductColor[i].id).checked = false
+                            }
+                            for (let i = 0; i < listColorId.length; i++) {
+                                document.getElementById('color-' + listColorId[i]).disabled = false
+                            }
+                            sizeSelected = id;
+                            return id;
+                        }
+
+                        function colorChange(id) {
+                            console.log('id: ', id)
+                            let index = -1;
+                            for (let i = 0; i < listProductSize.length; i++) {
+                                if (listProductSize[i].id === sizeSelected) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            if (index === -1) return
+                            const size = listProductSize[index]
+                            const listColor = size.propertiesResponseList
+                            let color = null;
+                            console.log(id)
+                            console.log('list', listColor)
+                            for (let i = 0; i < listColor.length; i++) {
+                                if (listColor[i].id === id) {
+                                    color = listColor[i]
+                                }
+                            }
+                            console.log(color)
+                            if (color === null) return
+                            const code = color.code
+                            const quantity = color.quantity
+                            const price = color.price
+                            document.getElementById('product-code').innerText = code
+                            document.getElementById('product-quantity').innerText = quantity
+                            if (document.getElementById('price-top') != null) {
+                                document.getElementById('price-top').innerText = '₫' + price
+                            }
+                            if (document.getElementById('price-bottom') != null) {
+                                document.getElementById('price-bottom').innerText = '₫' + price
+                            }
+                            colorSelected = id;
+                            return id;
+                        }
+                    </script>
                     <span id="error-message" style="color: red;"></span>
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: 130px;">
@@ -111,7 +201,7 @@
                     </div>
                 </form>
                 <div class="d-flex pt-2">
-                    <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
+                    <p class="text-dark font-weight-medium mb-0 mr-2">Chia sẻ:</p>
                     <div class="d-inline-flex">
                         <a class="text-dark px-2" th:href="@{/}">
                             <i class="fab fa-facebook-f"></i>
@@ -151,7 +241,7 @@
                                     <li class="list-group-item px-0">
                                         <span th:text="'Thương hiệu: ' + ${product.brand.name}"></span>
                                     </li>
-                                  </ul> 
+                                  </ul>
                             </div>
                             <div class="col-md-6">
                                 <ul class="list-group list-group-flush">
@@ -174,149 +264,48 @@
 
     <!-- Products Start -->
     <div class="container-fluid py-5">
-        <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">Bạn Cũng Có Thể Thích</span></h2>
-        </div>
+        <!-- title start -->
+            <div class="px-xl-5 pb-3">
+                <div class="text-center mb-4">
+                    <h2 class="mb-4 font-weight-semi-bold">- Bạn có thể thích -</h2>
+                </div>
+            </div>
+        <!-- title end -->
+
         <div class="row px-xl-5">
             <div class="col">
                 <div class="owl-carousel related-carousel">
-                    <div class="card product-item border-0">
-                        <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" th:src="@{/user/img/cat-1.jpg}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
-                                    <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4 border-info-product-home">
-                            <div class="h5 text-decoration-none text-truncate" href="">Tên</div>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <div class="d-flex justify-content-center">
-                                    <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">
-                                        ₫123.00</h6>
+                    <div class="card product-item border-0" th:each="product: ${pageProductYouMayLikeResponse}">
+                        <div class="product-item mb-4 border-product-home">
+                            <div class="product-img position-relative overflow-hidden">
+                                <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.id}}">
+                                <div class="product-action">
+                                    <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
+                                        <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
+                                    </a>
                                 </div>
+
                             </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star-half-alt text-primary"></small>
-                                <small class="far fa-star text-primary"></small>
-                                <small> (99)</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card product-item border-0">
-                        <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" th:src="@{/user/img/cat-1.jpg}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
-                                    <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4 border-info-product-home">
-                            <div class="h5 text-decoration-none text-truncate" href="">Tên</div>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <div class="d-flex justify-content-center">
-                                    <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">
-                                        ₫123.00</h6>
+                            <div class="text-center py-4 border-info-product-home">
+                                <a class="h5 text-decoration-none text-truncate" th:href="@{'/product-detail/' + ${product.id}}" th:text="${product.name}"></a>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <div class="d-flex justify-content-center" th:if="${product.priceMax != product.priceMin}">
+                                        <h6 th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                                        <h6 class="ml-1 mr-1"> ~ </h6>
+                                        <h6 th:text="'₫' + ${#numbers.formatDecimal(product.priceMax.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                                    </div>
+                                    <div class="d-flex justify-content-center" th:if="${product.priceMax == product.priceMin}">
+                                        <h6 th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star-half-alt text-primary"></small>
-                                <small class="far fa-star text-primary"></small>
-                                <small> (99)</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card product-item border-0">
-                        <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" th:src="@{/user/img/cat-1.jpg}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
-                                    <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4 border-info-product-home">
-                            <div class="h5 text-decoration-none text-truncate" href="">Tên</div>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <div class="d-flex justify-content-center">
-                                    <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">
-                                        ₫123.00</h6>
+                                <div class="d-flex align-items-center justify-content-center mb-1">
+                                    <small class="fas fa-star text-primary"></small>
+                                    <small class="fas fa-star text-primary"></small>
+                                    <small class="fas fa-star text-primary"></small>
+                                    <small class="fas fa-star-half-alt text-primary"></small>
+                                    <small class="far fa-star text-primary"></small>
+                                    <small> (99)</small>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star-half-alt text-primary"></small>
-                                <small class="far fa-star text-primary"></small>
-                                <small> (99)</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card product-item border-0">
-                        <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" th:src="@{/user/img/cat-1.jpg}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
-                                    <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4 border-info-product-home">
-                            <div class="h5 text-decoration-none text-truncate" href="">Tên</div>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <div class="d-flex justify-content-center">
-                                    <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">
-                                        ₫123.00</h6>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star-half-alt text-primary"></small>
-                                <small class="far fa-star text-primary"></small>
-                                <small> (99)</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card product-item border-0">
-                        <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" th:src="@{/user/img/cat-1.jpg}" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
-                                    <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4 border-info-product-home">
-                            <div class="h5 text-decoration-none text-truncate" href="">Tên</div>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <div class="d-flex justify-content-center">
-                                    <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">
-                                        ₫123.00</h6>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star text-primary"></small>
-                                <small class="fas fa-star-half-alt text-primary"></small>
-                                <small class="far fa-star text-primary"></small>
-                                <small> (99)</small>
                             </div>
                         </div>
                     </div>

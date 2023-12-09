@@ -2,6 +2,7 @@ package com.sd64.novastore.repository;
 
 import com.sd64.novastore.dto.admin.ProductDetailDto;
 import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.response.ProductHomeResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,22 +15,25 @@ import java.util.Optional;
 
 @Repository
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Integer> {
-    List<ProductDetail> findAllByAndStatusOrderByIdDesc(Integer status);
-
     Page<ProductDetail> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
 
     Page<ProductDetail> getAllProductDetailByProduct_IdAndStatusOrderByUpdateDateDesc(Pageable pageable, Integer id, Integer status);
 
-    List<BigDecimal> getAllByProduct_Id(Integer productId);
+    List<ProductDetail> findAllByProductIdAndStatusOrderByUpdateDateDesc(Integer productId, Integer status);
 
-    Optional<ProductDetail> findAllByCode(String code);
+    @Query(value = "SELECT pd FROM ProductDetail pd\n" +
+            "INNER JOIN Product p ON pd.product.id = p.id\n" +
+            "INNER JOIN Image i ON i.product.id = p.id\n" +
+            "WHERE p.status = 1 AND pd.status = 1 AND p.id =:productId\n" +
+            "ORDER BY pd.price DESC")
+    List<ProductDetail> getAllProductDetailByProductIdOrderByPriceDesc(Integer productId);
 
-    ProductDetail findByCode(String code);
-
-    List<ProductDetail> findByProductIdAndStatusOrderByPriceDesc(Integer productId, Integer status);
-
-    List<ProductDetail> findByProductIdAndStatusOrderByPriceAsc(Integer productId, Integer status);
-
+    @Query(value = "SELECT pd FROM ProductDetail pd\n" +
+            "INNER JOIN Product p ON pd.product.id = p.id\n" +
+            "INNER JOIN Image i ON i.product.id = p.id\n" +
+            "WHERE p.status = 1 AND pd.status = 1 AND p.id =:productId\n" +
+            "ORDER BY pd.price ASC")
+    List<ProductDetail> getAllProductDetailByProductIdOrderByPriceAsc(Integer productId);
 
     @Query(value = "SELECT pd.id as id, " +
             " pd.code as code, " +

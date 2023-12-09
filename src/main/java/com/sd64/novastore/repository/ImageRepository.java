@@ -14,16 +14,16 @@ import java.util.List;
 public interface ImageRepository extends JpaRepository<Image, Integer> {
     List<Image> findAllByStatus(Integer status);
 
-    Page<Image> findAllByStatus(Pageable pageable, Integer status);
+    Image findByIdAndStatus(Integer id, Integer status);
 
-    Page<Image> findAllByStatusOrderByUpdateDateDesc(Pageable pageable, Integer status);
+    Page<Image> findAllByProductIdAndStatusOrderByUpdateDateDesc(Integer productId, Integer status, Pageable pageable);
 
     Page<Image> getAllImageByProduct_IdAndStatusOrderByUpdateDateDesc(Pageable pageable, Integer id, Integer status);
 
-    Image findTopByProductIdOrderByUpdateDateDesc(Integer productId);
+    Image findTopByProductIdAndStatusOrderByUpdateDateDesc(Integer productId, Integer status);
 
-    List<Image> findAllByProduct_IdOrderByUpdateDateDesc(Integer productId);
+    List<Image> findAllByProduct_IdAndStatusOrderByUpdateDateDesc(Integer productId, Integer status);
 
-    Image findTopByProduct_IdOrderByUpdateDateDesc(Integer productId);
+    Image findTopByProduct_IdAndStatusOrderByUpdateDateDesc(Integer productId, Integer status);
 
 }

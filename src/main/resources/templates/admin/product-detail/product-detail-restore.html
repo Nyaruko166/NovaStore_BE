@@ -65,7 +65,7 @@
                             <div th:if="${sizeId == null}" class="d-flex w-100">
                                 <div class="w-100">
                                     <select class="form-control" name="sizeId">
-                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="null">Tất cả</option>
                                         <option th:value="${size.id}" th:each="size: ${listSize}"
                                                 th:text="${size.name}"></option>
                                     </select>
@@ -80,7 +80,7 @@
                             <div th:if="${sizeId != null}" class="d-flex w-100">
                                 <div class="w-100">
                                     <select class="form-control" name="sizeId">
-                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="null">Tất cả</option>
                                         <option th:value="${size.id}" th:each="size: ${listSize}"
                                                 th:text="${size.name}" th:selected="${sizeId == size.id}"></option>
                                     </select>
@@ -98,7 +98,7 @@
                             <div th:if="${colorId == null}" class="d-flex w-100">
                                 <div class="w-100">
                                     <select class="form-control" name="colorId">
-                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="null">Tất cả</option>
                                         <option th:value="${color.id}" th:each="color: ${listColor}"
                                                 th:text="${color.name}"></option>
                                     </select>
@@ -113,7 +113,7 @@
                             <div th:if="${colorId != null}" class="d-flex w-100">
                                 <div class="w-100">
                                     <select class="form-control" name="colorId">
-                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="null">Tất cả</option>
                                         <option th:value="${color.id}" th:each="color: ${listColor}"
                                                 th:text="${color.name}" th:selected="${colorId == color.id}"></option>
                                     </select>

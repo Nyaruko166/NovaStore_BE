@@ -47,9 +47,9 @@ public class UserBillController {
 
     @GetMapping("/checkout")
     public String checkOut(Principal principal, Model model) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
+//        if (principal == null) {
+//            return "redirect:/login";
+//        }
         Customer customer = customerService.findByEmail(principal.getName());
         Cart cart = customer.getCart();
         Address defaultAddress = addressService.findAccountDefaultAddress(customer.getId());

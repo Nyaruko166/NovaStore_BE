@@ -20,7 +20,7 @@
                 </button>
             </div>
             <div class="card-body card-block">
-                <form id="sizeUpdate" th:object="${size}" th:action="@{/nova/${product.id}/size/update/{id}(id=${size.id})}" method="post"
+                <form id="sizeUpdate" th:object="${size}" th:action="@{/nova/size/update/{id}(id=${size.id})}" method="post"
                       class="form-horizontal">
                     <div class="row form-group">
                         <div class="col col-md-3"><label class="font-weight-bold  form-control-label">Mã kích cỡ</label></div>
@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button th:onclick="clickUpdate('sizeUpdate', 'size', 'name', 'errorName', [[${product.id}]], [[${size.id}]])"
+                        <button th:onclick="clickUpdate('sizeUpdate', 'size', 'name', 'errorName', [[${size.id}]])"
                                 type="button" class="btn btn-dark"><i class="fa-solid fa-pen px-4"></i>
                         </button>
                         <script th:inline="javascript">
@@ -52,7 +52,7 @@
                                 return true;
                             }
 
-                            clickUpdate = (idForm, entity, idInput, errorName, productId , idUpdate) => {
+                            clickUpdate = (idForm, entity, idInput, errorName , idUpdate) => {
                                 if (checkName(idInput, errorName, 'kích cỡ')) {
                                     swal({
                                         title: "Sửa dữ liệu",
@@ -63,7 +63,7 @@
                                         closeOnClickOutside: false,
                                     }).then((update) => {
                                         if (update) {
-                                            document.getElementById(idForm).action = '/nova/'+ productId+"/" + entity + "/update/" + idUpdate
+                                            document.getElementById(idForm).action = '/nova/' + entity + "/update/" + idUpdate
                                             document.getElementById(idForm).method = 'post'
                                             document.getElementById(idForm).submit()
                                         }
@@ -71,7 +71,7 @@
                                 }
                             }
                         </script>
-                        <a th:href="@{|/nova/product/${product.id}/size/page|}">
+                        <a th:href="@{|/nova/size/page|}">
                             <button type="button" class="btn btn-warning"><i
                                     class="fa-solid fa-circle-left px-4"></i>
                             </button>
