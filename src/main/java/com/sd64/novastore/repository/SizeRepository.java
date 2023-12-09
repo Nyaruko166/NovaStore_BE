@@ -21,10 +21,6 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
     //Search
     Page<Size> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 
-    Optional<Size> findByCode(String code);
-
-    Optional<Size> findByNameContains(String name);
-
     Optional<Size> findByName(String name);
 
 }

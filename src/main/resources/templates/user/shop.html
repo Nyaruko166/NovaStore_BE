@@ -26,132 +26,99 @@
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
         <!-- Shop Sidebar Start -->
-        <div class="col-lg-3 col-md-12 d-flex justify-content-between">
-            <!-- Price Start -->
-            <div class="border-bottom mb-4 pb-4">
+            <form action="/search" method=""
+                    class="col-lg-3 col-md-12 d-flex justify-content-between">
+                <div class="border-bottom mb-4 pb-4 w-100 pr-3">
+                    <!-- Price Start -->
+                    <div class="">
+                        <input type="text" class="form-control" name="productNameSearch" placeholder="Tìm kiếm theo tên...">
+                    </div>
+                    <div class="border-bottom mb-4 pb-4 mt-5">
+                        <h5 class="font-weight-semi-bold mb-4">Giá</h5>
+                        <div>
+                            <select class="form-control combobox-select" name="price">
+                                <option value="">Tất cả</option>
+                                <option value="1">₫0 ~ ₫100.000</option>
+                                <option value="2">₫100.000 ~ ₫500.000</option>
+                                <option value="3">₫500.000 ~ ₫1.000.000</option>
+                                <option value="4">₫1.000.000 ~ ₫5.000.000</option>
+                                <option value="5">₫5.000.000 ~ ₫10.000.000</option>
+                                <option value="6">₫10.000.000 ~ ₫50.000.000</option>
+                                <option value="7">₫50.000.000 ~ ₫100.000.000</option>
+                                <option value="8">₫100.000.000 ~ ₫500.000.000</option>
+                                <option value="9">₫500.000.000 ~ ₫2.000.000.000</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Price End -->
 
-                <h5 class="font-weight-semi-bold mb-4">Lọc theo giá</h5>
+                    <!-- Category Start -->
+                    <div class="border-bottom mb-4 pb-4 mt-5">
+                        <h5 class="font-weight-semi-bold mb-4">Thể loại</h5>
+                        <div th:if="${categoryId == null}">
+                            <select class="form-control combobox-select" name="categoryId">
+                                <option value="">Tất cả</option>
+                                <option th:value="${category.id}"
+                                        th:each="category: ${listCategory}" th:text="${category.name}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div th:if="${categoryId != null}">
+                            <select class="form-control combobox-select" name="categoryId">
+                                <option value="">Tất cả</option>
+                                <option th:value="${category.id}"
+                                        th:each="category: ${listCategory}" th:text="${category.name}"
+                                th:selected="${categoryId == category.id}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Category End -->
+
+                    <!-- Brand Start -->
+                    <div class="border-bottom mb-4 pb-4 mt-5">
+                        <h5 class="font-weight-semi-bold mb-4">Thương hiệu</h5>
+                        <select class="form-control combobox-select" name="brandId">
+                            <option value="">Tất cả</option>
+                            <option th:value="${brand.id}"
+                                    th:each="brand: ${listBrand}" th:text="${brand.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <!-- Brand End -->
+
+                    <!-- Material Start -->
+                    <div class="border-bottom mb-4 pb-4 mt-5">
+                        <h5 class="font-weight-semi-bold mb-4">Chất liệu</h5>
+                        <select class="form-control combobox-select" name="materialId">
+                            <option value="">Tất cả</option>
+                            <option th:value="${material.id}"
+                                    th:each="material: ${listMaterial}" th:text="${material.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <!-- Material End -->
+
+                    <!-- Form Start -->
+                    <div class="border-bottom mb-4 pb-4 mt-5">
+                        <h5 class="font-weight-semi-bold mb-4">Kiểu dáng</h5>
+                        <select class="form-control combobox-select" name="formId">
+                            <option value="">Tất cả</option>
+                            <option th:value="${form.id}"
+                                    th:each="form: ${listForm}" th:text="${form.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <!-- Form End -->
+                </div>
                 <div>
-                    <form>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="price-all">
-                            <label class="custom-control-label" for="price-all">All Price</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-1">
-                            <label class="custom-control-label" for="price-1">$0 - $100</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-2">
-                            <label class="custom-control-label" for="price-2">$100 - $200</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-3">
-                            <label class="custom-control-label" for="price-3">$200 - $300</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-4">
-                            <label class="custom-control-label" for="price-4">$300 - $400</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="price-5">
-                            <label class="custom-control-label" for="price-5">$400 - $500</label>
-                        </div>
-
-                    </form>
+                    <button class="btn btn-primary" type="submit" style="border-radius: 5px;">
+                        <i class="fa-solid fa-filter"></i>
+                    </button>
                 </div>
+            </form>
 
-                <!-- Price End -->
-
-                <!-- Color Start -->
-                <div class="border-bottom mb-4 pb-4 mt-5">
-                    <h5 class="font-weight-semi-bold mb-4">Lọc theo màu sắc</h5>
-                    <form>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="color-all">
-                            <label class="custom-control-label" for="price-all">All Color</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-1">
-                            <label class="custom-control-label" for="color-1">Black</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-2">
-                            <label class="custom-control-label" for="color-2">White</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-3">
-                            <label class="custom-control-label" for="color-3">Red</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-4">
-                            <label class="custom-control-label" for="color-4">Blue</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="color-5">
-                            <label class="custom-control-label" for="color-5">Green</label>
-                        </div>
-                    </form>
-                </div>
-                <!-- Color End -->
-
-                <!-- Size Start -->
-                <div class="mb-5">
-                    <h5 class="font-weight-semi-bold mb-4">Lọc theo kích thước</h5>
-                    <form>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="size-all">
-                            <label class="custom-control-label" for="size-all">All Size</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-1">
-                            <label class="custom-control-label" for="size-1">XS</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-2">
-                            <label class="custom-control-label" for="size-2">S</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-3">
-                            <label class="custom-control-label" for="size-3">M</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-4">
-                            <label class="custom-control-label" for="size-4">L</label>
-                        </div>
-                        <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="size-5">
-                            <label class="custom-control-label" for="size-5">XL</label>
-                        </div>
-                    </form>
-                </div>
-                <!-- Size End -->
-
-            </div>
-            <div>
-                <button class="btn btn-primary" style="border-radius: 5px;">
-                    <i class="fa-solid fa-filter"></i>
-                </button>
-            </div>
-        </div>
 
 
         <!-- Shop Product Start -->
@@ -159,49 +126,60 @@
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <form action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by name">
-                                <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                </div>
-                            </div>
-                        </form>
+<!--                            <div class="input-group">-->
+<!--                                <input type="text" class="form-control" name="productNameSearch" placeholder="Tìm kiếm sản phẩm...">-->
+<!--                                <div class="input-group-append">-->
+<!--                                        <span class="input-group-text bg-transparent text-primary">-->
+<!--                                            <i class="fa fa-search"></i>-->
+<!--                                        </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         <div class="dropdown ml-4">
                             <button class="btn border dropdown-toggle" type="button" id="triggerId"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Sort by
+                                Sắp xếp theo
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                <a class="dropdown-item" th:href="@{/#}">Latest</a>
-                                <a class="dropdown-item" th:href="@{/#}">Popularity</a>
-                                <a class="dropdown-item" th:href="@{/#}">Best Rating</a>
+                                <a class="dropdown-item" th:href="@{/#}">Giá cao nhất</a>
+                                <a class="dropdown-item" th:href="@{/#}">Giá thấp nhất</a>
+                                <!--                                <a class="dropdown-item" th:href="@{/#}">Best Rating</a>-->
                             </div>
                         </div>
                     </div>
 
-                    <div class=" pb-1 row" >
-                        <div class="card border-0 mb-4 col-4" th:each="product : ${productViews}">
+                    <div class=" pb-1 row">
+                        <div class="card border-0 mb-4 col-4" th:each="product : ${pageProductHomeResponse}">
                             <div class="product-item">
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img class="img-fluid w-100" src="" alt="">
+                                    <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.id}}" alt="">
                                     <div class="product-action">
-<!--                                        <a class="btn btn-detail-home" th:href="'/product-detail/' + $product.id">-->
-<!--                                            <i class="fa-solid fa-eye" style="color: #D19C97;"></i>-->
-<!--                                        </a>-->
+                                        <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
+                                            <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3 border-info-product-home">
-<!--                                    <a th:href="@{'/product-detail/' + ${product.id}}">-->
-<!--                                        <h6 class="text-truncate mb-3" th:text="${product.name}">Colorful Stylish-->
-<!--                                            Shirt-->
-<!--                                        </h6>-->
-<!--                                    </a>-->
-                                    <div class="d-flex justify-content-center">
-<!--                                        <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">-->
-<!--                                            ₫123.00</h6>-->
+                                    <a class="h5 text-decoration-none text-truncate"
+                                       th:href="@{'/product-detail/' + ${product.id}}" th:text="${product.name}"></a>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <div class="d-flex justify-content-center"
+                                             th:if="${product.priceMax != product.priceMin}">
+                                            <h6 th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                                            <h6 class="ml-1 mr-1"> ~ </h6>
+                                            <h6 th:text="'₫' + ${#numbers.formatDecimal(product.priceMax.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                                        </div>
+                                        <div class="d-flex justify-content-center"
+                                             th:if="${product.priceMax == product.priceMin}">
+                                            <h6 th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                        <small class="fas fa-star text-primary"></small>
+                                        <small class="fas fa-star text-primary"></small>
+                                        <small class="fas fa-star text-primary"></small>
+                                        <small class="fas fa-star-half-alt text-primary"></small>
+                                        <small class="far fa-star text-primary"></small>
+                                        <small> (99)</small>
                                     </div>
                                 </div>
                             </div>
@@ -209,31 +187,32 @@
                     </div>
                 </div>
                 <div class="col-12 pb-1">
-<!--                    <div class="d-flex justify-content-center align-items-center">-->
-<!--                        <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">-->
-<!--                            <a th:href="@{|?page=0&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">-->
-<!--                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>-->
-<!--                        </div>-->
-<!--                        <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">-->
-<!--                            <a th:href="@{|?page=${pageProductDetail.getNumber() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">-->
-<!--                                <i style="color: white" class="fa-solid fa-left-long"></i></a>-->
-<!--                        </div>-->
-<!--                        <div class="btn btn-dark d-flex">-->
-<!--                            <div th:text="${pageProductDetail.getNumber() + 1}"></div>-->
-<!--                            <span>/</span>-->
-<!--                            <div th:text="${pageProductDetail.getTotalPages()}"></div>-->
-<!--                        </div>-->
-<!--                        <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"-->
-<!--                             class="btn btn-dark ml-1">-->
-<!--                            <a th:href="@{|?page=${pageProductDetail.getNumber()+1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">-->
-<!--                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>-->
-<!--                        </div>-->
-<!--                        <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"-->
-<!--                             class="btn btn-dark ml-1">-->
-<!--                            <a th:href="@{|?page=${pageProductDetail.getTotalPages() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">-->
-<!--                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>-->
-<!--                        </div>-->
-<!--                    </div>-->
+<!--                    Pagination-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div th:if="${pageProductHomeResponse.getNumber() + 1 > 1}" class="btn btn-pagination mr-1">
+                            <a th:href="@{|?page=0&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                                </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
+                        </div>
+                        <div th:if="${pageProductHomeResponse.getNumber() + 1 > 1}" class="btn btn-pagination mr-1">
+                            <a th:href="@{|?page=${pageProductHomeResponse.getNumber() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                                <i style="color: white" class="fa-solid fa-left-long"></i></a>
+                        </div>
+                        <div class="btn btn-pagination d-flex">
+                            <div style="color: white;" th:text="${pageProductHomeResponse.getNumber() + 1}"></div>
+                            <span style="color: white;">/</span>
+                            <div style="color: white;" th:text="${pageProductHomeResponse.getTotalPages()}"></div>
+                        </div>
+                        <div th:if="${pageProductHomeResponse.getNumber() + 1 lt pageProductHomeResponse.getTotalPages()}"
+                             class="btn btn-pagination ml-1">
+                            <a th:href="@{|?page=${pageProductHomeResponse.getNumber()+1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                                <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
+                        </div>
+                        <div th:if="${pageProductHomeResponse.getNumber() + 1 lt pageProductHomeResponse.getTotalPages()}"
+                             class="btn btn-pagination ml-1">
+                            <a th:href="@{|?page=${pageProductHomeResponse.getTotalPages() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                                <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

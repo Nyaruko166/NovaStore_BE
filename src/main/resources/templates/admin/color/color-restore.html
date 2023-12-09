@@ -30,9 +30,9 @@
         <form id="colorForm" class="form-horizontal">
           <div class="card-footer">
 
-            <input type="hidden" class="form-control" th:value="${productId}" name="productId">
+<!--            <input type="hidden" class="form-control" th:value="${productId}" name="productId">-->
             <div>
-              <a th:href="@{|/nova/product/${productId}/color/page|}">
+              <a th:href="@{|/nova/color/page|}">
                 <button type="button" class="btn btn-warning"><i
                         class="fa-solid fa-circle-left px-4"></i>
                 </button>
@@ -42,18 +42,11 @@
           <br>
           <div class="border-search">
             <div class="col-md-1">
-              <button th:onclick="clickSearch('color', 'colorForm', [[${productId}]])" type="button"
+              <button onclick="clickSearchRestore('color', 'colorForm')" type="button"
                       class="btn btn-dark">
                 <i class="fa-solid fa-magnifying-glass px-4"></i>
               </button>
             </div>
-            <script th:inline="javascript">
-              clickSearch = (entity, idForm, productId) => {
-                document.getElementById(idForm).action = '/nova/product/' + productId + "/" + entity + '/search-restore'
-                document.getElementById(idForm).method = 'get'
-                document.getElementById(idForm).submit()
-              }
-            </script>
             <div class="col-md-11">
               <input type="text" placeholder="Nhập màu sắc..."
                      th:value="${colorNameSearch}" th:name="colorNameSearch"
@@ -93,12 +86,12 @@
                 <td th:text="${items.code}"></td>
                 <td th:text="${items.name}"></td>
                 <td>
-                  <button th:onclick="restore('color', 'colorRestore', [[${productId}]], [[${items.id}]])" type="button"
+                  <button th:onclick="restore('color', 'colorRestore', [[${items.id}]])" type="button"
                           class="btn btn-dark">
                     <i class="fa-solid fa-trash-can-arrow-up px-4"></i>
                   </button>
                   <script th:inline="javascript">
-                    restore = (entity, idForm, productId, idRestore) => {
+                    restore = (entity, idForm, idRestore) => {
                       swal({
                         title: "Khôi phục dữ liệu",
                         text: "Bạn có muốn khôi phục dữ liệu không ?",
@@ -108,7 +101,7 @@
                         closeOnClickOutside: false,
                       }).then((restore) => {
                         if (restore) {
-                          document.getElementById(idForm).action = '/nova/' +productId +"/" + entity + "/restore/" + idRestore
+                          document.getElementById(idForm).action = '/nova/' + entity + "/restore/" + idRestore
                           document.getElementById(idForm).method = 'post'
                           document.getElementById(idForm).submit()
                         }

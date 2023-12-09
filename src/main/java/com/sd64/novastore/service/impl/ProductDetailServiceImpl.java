@@ -90,15 +90,10 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return productDetailRepository.findById(id).orElse(null);
     }
 
-    @Override
-    public Page<ProductDetail> getProductDetailByProductId(int page, Integer productId) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return productDetailRepository.getAllProductDetailByProduct_IdAndStatusOrderByUpdateDateDesc(pageable, productId, 1);
-    }
 
     @Override
     public List<ProductDetail> getProductDetailByProductId(Integer productId) {
-        return null;
+        return productDetailRepository.findAllByProductIdAndStatusOrderByUpdateDateDesc(productId, 1);
     }
 
     @Override
@@ -188,20 +183,6 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return totalPage;
     }
 
-    @Override
-    public List<BigDecimal> getPriceActiveProductDetailByProductId(Integer productId) {
-        return null;
-    }
 
-    @Override
-    public BigDecimal getPriceMaxByProductId(Integer productId) {
-        List<ProductDetail> listProductDetail = productDetailRepository.findByProductIdAndStatusOrderByPriceDesc(productId, 1);
-        return listProductDetail.get(0).getPrice();
-    }
 
-    @Override
-    public BigDecimal getPriceMinByProductId(Integer productId) {
-        List<ProductDetail> listProductDetail = productDetailRepository.findByProductIdAndStatusOrderByPriceAsc(productId, 1);
-        return listProductDetail.get(0).getPrice();
-    }
 }

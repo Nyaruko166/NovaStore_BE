@@ -20,13 +20,17 @@ public interface ImageService {
 
     Image delete(Integer id);
 
-    byte[] get(Integer imageId);
+    byte[] getImage(Integer imageId);
+
+    byte[] getImageDeleted(Integer imageId);
 
     Image detail(Integer id);
 
     byte[] getImageByProductId(Integer productId);
 
-    Page<Image> getAllDeleted(int page);
+    byte[] getImageDeletedByProductId(Integer productId);
+
+    Page<Image> getAllDeletedByProductId(Integer productId, int page);
 
     Image restore(Integer id);
 

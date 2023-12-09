@@ -62,7 +62,7 @@
                             <div th:if="${materialId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="materialId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${material.id}" th:each="material: ${listMaterial}"
                                                 th:text="${material.name}"></option>
                                     </select>
@@ -77,7 +77,7 @@
                             <div th:if="${materialId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="materialId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${material.id}" th:each="material: ${listMaterial}"
                                                 th:text="${material.name}"
                                                 th:selected="${materialId == material.id}"></option>
@@ -96,7 +96,7 @@
                             <div th:if="${categoryId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="categoryId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${category.id}" th:each="category: ${listCategory}"
                                                 th:text="${category.name}"></option>
                                     </select>
@@ -111,7 +111,7 @@
                             <div th:if="${categoryId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="categoryId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${category.id}" th:each="category: ${listCategory}"
                                                 th:text="${category.name}"
                                                 th:selected="${categoryId == category.id}"></option>
@@ -130,7 +130,7 @@
                             <div th:if="${brandId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="brandId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${brand.id}" th:each="brand: ${listBrand}"
                                                 th:text="${brand.name}"></option>
                                     </select>
@@ -145,7 +145,7 @@
                             <div th:if="${brandId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="brandId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${brand.id}" th:each="brand: ${listBrand}"
                                                 th:text="${brand.name}" th:selected="${brandId == brand.id}"></option>
                                     </select>
@@ -163,7 +163,7 @@
                             <div th:if="${formId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="formId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${form.id}" th:each="form: ${listForm}"
                                                 th:text="${form.name}"></option>
                                     </select>
@@ -178,7 +178,7 @@
                             <div th:if="${formId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="formId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${form.id}" th:each="form: ${listForm}"
                                                 th:text="${form.name}" th:selected="${formId == form.id}"></option>
                                     </select>
@@ -195,7 +195,7 @@
                     <br>
                     <div class="card-footer d-flex justify-content-between">
                         <div class="mr-3">
-                            <button onclick="clickSearch('product', 'productForm')" type="button"
+                            <button onclick="clickSearchRestore('product', 'productForm')" type="button"
                                     class="btn btn-dark">
                                 <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
@@ -215,12 +215,6 @@
                                 //     }
                                 //     return true;
                                 // }
-
-                                function clickSearch(entity, id) {
-                                    document.getElementById(id).action = '/nova/' + entity + '/search-restore'
-                                    document.getElementById(id).method = 'get'
-                                    document.getElementById(id).submit()
-                                }
                             </script>
                             <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning"><i

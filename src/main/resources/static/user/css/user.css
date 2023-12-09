@@ -304,3 +304,29 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+
+.combobox-select {
+    border: 2px solid #d19c97;
+    border-radius: 8px;
+    width: 100%;
+    color: white;
+    background-color: #d19c97;
+}
+
+.combobox-select:active {
+    background-color: #d19c97;
+}
+
+input[type="radio"]:disabled {
+    background: #777777;
+}
+
+.btn-pagination {
+    background-color: #d19c97;
+    color: white;
+    border-radius: 8px;
+}
+
+.btn-pagination:hover {
+    background-color: #d17d75;
+}

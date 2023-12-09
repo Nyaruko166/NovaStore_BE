@@ -74,7 +74,7 @@ public class ImageController {
     @GetMapping("/product/{productId}/image/view-restore")
     public String viewRestore(@PathVariable Integer productId,
                               @RequestParam(defaultValue = "0") Integer page, Model model) {
-        Page<Image> pageImage = imageService.getAllDeleted(page);
+        Page<Image> pageImage = imageService.getAllDeletedByProductId(productId, page);
         model.addAttribute("pageImage", pageImage);
         model.addAttribute("productId", productId);
         return "admin/image/image-restore";

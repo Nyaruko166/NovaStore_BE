@@ -23,9 +23,6 @@ public interface ProductDetailService {
 
     ProductDetail getOne(Integer id);
 
-    Page<ProductDetail> getProductDetailByProductId(int page, Integer productId);
-
-    List<BigDecimal> getPriceActiveProductDetailByProductId(Integer productId);
 
     Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorId(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId);
 
@@ -38,9 +35,5 @@ public interface ProductDetailService {
     ProductDetail restore(Integer id);
 
     int getTotalPageDeleted(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId);
-
-    BigDecimal getPriceMaxByProductId(Integer productId);
-
-    BigDecimal getPriceMinByProductId(Integer productId);
 
 }

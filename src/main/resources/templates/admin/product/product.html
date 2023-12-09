@@ -29,25 +29,24 @@
             </div>
 
             <div class="card-body card-block">
-                <form id="productExcel" enctype="multipart/form-data" action="/nova/product/excel">
-                    <div class="card-footer">
-                        <div class="custom-file">
-                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx"
-                                   onchange="setFileName()">
-                            <label class="custom-file-label" for="importFile">Chọn tệp excel</label>
-                        </div>
-                        <div class="mt-2 d-flex align-items-center">
-                            <button type="button" onclick="importExcel('productExcel', 'importFile', 'errorExcel')"
-                                    class="btn btn-success">
-                                <i class="fa-solid fa-file-excel px-4"></i>
-                            </button>
-                            <div id="errorExcel" class="ml-2" style="color: red;"></div>
-                        </div>
+<!--                <form id="productExcel" enctype="multipart/form-data" action="/nova/product/excel">-->
+<!--                    <div class="card-footer">-->
+<!--                        <div class="custom-file">-->
+<!--                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx"-->
+<!--                                   onchange="setFileName()">-->
+<!--                            <label class="custom-file-label" for="importFile">Chọn tệp excel</label>-->
+<!--                        </div>-->
+<!--                        <div class="mt-2 d-flex align-items-center">-->
+<!--                            <button type="button" onclick="importExcel('productExcel', 'importFile', 'errorExcel')"-->
+<!--                                    class="btn btn-success">-->
+<!--                                <i class="fa-solid fa-file-excel px-4"></i>-->
+<!--                            </button>-->
+<!--                            <div id="errorExcel" class="ml-2" style="color: red;"></div>-->
+<!--                        </div>-->
 
-                    </div>
-                </form>
+<!--                    </div>-->
+<!--                </form>-->
                 <form id="productForm" class="form-horizontal">
-                    <br>
                     <div class="row">
                         <div class="form-group col-6">
                             <label class="font-weight-bold">Tên sản phẩm</label>
@@ -65,7 +64,7 @@
                             <div th:if="${materialId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="materialId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${material.id}" th:each="material: ${listMaterial}"
                                                 th:text="${material.name}"></option>
                                     </select>
@@ -80,7 +79,7 @@
                             <div th:if="${materialId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="materialId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${material.id}" th:each="material: ${listMaterial}"
                                                 th:text="${material.name}"
                                                 th:selected="${materialId == material.id}"></option>
@@ -99,7 +98,7 @@
                             <div th:if="${categoryId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="categoryId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${category.id}" th:each="category: ${listCategory}"
                                                 th:text="${category.name}"></option>
                                     </select>
@@ -114,7 +113,7 @@
                             <div th:if="${categoryId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="categoryId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${category.id}" th:each="category: ${listCategory}"
                                                 th:text="${category.name}"
                                                 th:selected="${categoryId == category.id}"></option>
@@ -133,7 +132,7 @@
                             <div th:if="${brandId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="brandId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${brand.id}" th:each="brand: ${listBrand}"
                                                 th:text="${brand.name}"></option>
                                     </select>
@@ -148,7 +147,7 @@
                             <div th:if="${brandId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="brandId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${brand.id}" th:each="brand: ${listBrand}"
                                                 th:text="${brand.name}" th:selected="${brandId == brand.id}"></option>
                                     </select>
@@ -166,7 +165,7 @@
                             <div th:if="${formId} == null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="formId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${form.id}" th:each="form: ${listForm}"
                                                 th:text="${form.name}"></option>
                                     </select>
@@ -181,7 +180,7 @@
                             <div th:if="${formId} != null" class="w-100 d-flex justify-content-between">
                                 <div class="w-80">
                                     <select class="form-control" name="formId">
-                                        <option value="">Lựa chọn</option>
+                                        <option value="">Tất cả</option>
                                         <option th:value="${form.id}" th:each="form: ${listForm}"
                                                 th:text="${form.name}" th:selected="${formId == form.id}"></option>
                                     </select>
@@ -196,18 +195,23 @@
                         </div>
                     </div>
                     <br>
-                    <div class="card-footer d-flex justify-content-between">
-                        <div class="mr-3">
+                    <div class="card-footer d-flex align-items-center">
+                        <div class="">
                             <button onclick="clickSearch('product', 'productForm')" type="button"
                                     class="btn btn-dark">
                                 <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
-                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card-footer d-flex justify-content-end">
+                        <div>
+                            <button type="button" class="btn btn-dark" data-toggle="modal"
+                                    data-target="#exampleModal">
                                 <i class="fa-solid fa-square-plus px-4"></i>
                             </button>
                         </div>
-
-                        <div>
+                        <div class="ml-2">
                             <a href="/nova/product/view-restore">
                                 <button type="button" class="btn btn-dark">
                                     <i class="fa-solid fa-warehouse px-4"></i>
@@ -235,15 +239,6 @@
                 </div>
                 <div class="modal-body">
                     <form id="productAdd" th:object="${product}" class="form-horizontal">
-<!--                        <div class="mb-3">-->
-<!--                            <div class="d-flex justify-content-between">-->
-<!--                                <label class="font-weight-bold form-control-label">Mã sản phẩm-->
-<!--                                </label>-->
-<!--                                <div class="" style="color: red" id="errorCode"></div>-->
-<!--                            </div>-->
-<!--                            <input type="text" id="code" name="code"-->
-<!--                                   class="form-control" oninput="onInputText('errorCode')">-->
-<!--                        </div>-->
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
                                 <label class="font-weight-bold form-control-label">Tên sản phẩm
@@ -263,17 +258,6 @@
                             <input type="text" id="description" name="description"
                                    class="form-control" oninput="onInputText('errorDescription')">
                         </div>
-
-
-                        <!--                        <div class="mb-3">-->
-                        <!--                            <div class="d-flex justify-content-between">-->
-                        <!--                                <label class="font-weight-bold form-control-label">Giá-->
-                        <!--                                </label>-->
-                        <!--                                <div class="" style="color: red" id="errorPrice"></div>-->
-                        <!--                            </div>-->
-                        <!--                            <input type="number" id="price" name="price"-->
-                        <!--                                   class="form-control" oninput="onInputText('errorPrice')">-->
-                        <!--                        </div>-->
 
 
                         <div class="mb-3">
@@ -381,12 +365,6 @@
                             });
                         }
 
-                    }
-
-                    function clickSearch(entity, id) {
-                        document.getElementById(id).action = '/nova/' + entity + '/search'
-                        document.getElementById(id).method = 'get'
-                        document.getElementById(id).submit()
                     }
                 </script>
             </div>

@@ -30,7 +30,7 @@
                 <form id="colorForm" class="form-horizontal">
                     <div class="card-footer d-flex justify-content-between">
 
-                        <input type="hidden" class="form-control" th:value="${product.id}" name="productId">
+<!--                        <input type="hidden" class="form-control" th:value="${product.id}" name="productId">-->
 
                         <div>
                             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
@@ -48,15 +48,6 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-<!--                                            <div class="mb-3">-->
-<!--                                                <div class="d-flex justify-content-between">-->
-<!--                                                    <label class="font-weight-bold form-control-label">Mã màu sắc-->
-<!--                                                    </label>-->
-<!--                                                    <div class="" style="color: red" id="errorCode"></div>-->
-<!--                                                </div>-->
-<!--                                                <input type="text" id="code" name="code"-->
-<!--                                                       class="form-control" oninput="onInputText('errorCode')">-->
-<!--                                            </div>-->
                                             <div class="mb-3">
                                                 <div class="d-flex justify-content-between">
                                                     <label class="font-weight-bold form-control-label">Màu sắc
@@ -75,14 +66,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <a th:href="@{|/nova/product/${product.id}/product-detail|}">
-                                <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left px-4"></i>
-                                </button>
-                            </a>
                         </div>
                         <div>
-                            <a th:href="@{|/nova/product/${product.id}/color/view-restore|}">
+                            <a th:href="@{|/nova/color/view-restore|}">
                                 <button type="button" class="btn btn-dark">
                                     <i class="fa-solid fa-warehouse px-4"></i>
                                 </button>
@@ -92,18 +78,18 @@
                     <br>
                     <div class="border-search">
                         <div class="col-md-1">
-                            <button th:onclick="clickSearch('color', 'colorForm', [[${product.id}]])" type="button"
+                            <button onclick="clickSearch('color', 'colorForm')" type="button"
                                     class="btn btn-dark">
                                 <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
                         </div>
-                        <script th:inline="javascript">
-                            clickSearch = (entity, idForm, productId) => {
-                                document.getElementById(idForm).action = '/nova/product/' + productId + "/" + entity + '/search'
-                                document.getElementById(idForm).method = 'get'
-                                document.getElementById(idForm).submit()
-                            }
-                        </script>
+<!--                        <script th:inline="javascript">-->
+<!--                            clickSearch = (entity, idForm, productId) => {-->
+<!--                                document.getElementById(idForm).action = '/nova/product/' + productId + "/" + entity + '/search'-->
+<!--                                document.getElementById(idForm).method = 'get'-->
+<!--                                document.getElementById(idForm).submit()-->
+<!--                            }-->
+<!--                        </script>-->
                         <div class="col-md-11">
                             <input type="text" placeholder="Nhập màu sắc..."
                                    th:value="${colorNameSearch}" th:name="colorNameSearch"
@@ -151,15 +137,15 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item"
-                                                   th:href="@{|/nova/product/${product.id}/color/detail/${items.id}|}">
+                                                   th:href="@{|/nova/color/detail/${items.id}|}">
                                                     <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
                                                 <button
-                                                        th:onclick="clickDeleted('color', 'colorDelete', [[${product.id}]] , [[${items.id}]])"
+                                                        th:onclick="clickDeleted('color', 'colorDelete', [[${items.id}]])"
                                                         type="button" class="dropdown-item"><i
                                                         class="fa-solid fa-trash mr-3"></i>Xóa
                                                 </button>
                                                 <script th:inline="javascript">
-                                                    clickDeleted = (entity, idForm, productId, idDelete) => {
+                                                    clickDeleted = (entity, idForm, idDelete) => {
                                                         swal({
                                                             title: "Xóa dữ liệu",
                                                             text: "Bạn có muốn xóa dữ liệu không ?",
@@ -169,7 +155,7 @@
                                                             closeOnClickOutside: false,
                                                         }).then((deleted) => {
                                                             if (deleted) {
-                                                                document.getElementById(idForm).action = '/nova/' + productId + "/" + entity + "/delete/" + idDelete
+                                                                document.getElementById(idForm).action = '/nova/' + entity + "/delete/" + idDelete
                                                                 document.getElementById(idForm).method = 'post'
                                                                 document.getElementById(idForm).submit()
                                                             }

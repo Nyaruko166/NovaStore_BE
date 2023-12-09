@@ -83,7 +83,7 @@
                             <div th:if="${sizeId == null}" class="d-flex w-100 justify-content-between">
                                 <div class="w-90">
                                     <select class="form-control" name="sizeId">
-                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="null">Tất cả</option>
                                         <option th:value="${size.id}" th:each="size: ${listSize}"
                                                 th:text="${size.name}"></option>
                                     </select>
@@ -98,7 +98,7 @@
                             <div th:if="${sizeId != null}" class="d-flex w-100 justify-content-between">
                                 <div class="w-90">
                                     <select class="form-control" name="sizeId">
-                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="null">Tất cả</option>
                                         <option th:value="${size.id}" th:each="size: ${listSize}"
                                                 th:text="${size.name}" th:selected="${sizeId == size.id}"></option>
                                     </select>
@@ -116,7 +116,7 @@
                             <div th:if="${colorId == null}" class="d-flex w-100 justify-content-between">
                                 <div class="w-90">
                                     <select class="form-control" name="colorId">
-                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="null">Tất cả</option>
                                         <option th:value="${color.id}" th:each="color: ${listColor}"
                                                 th:text="${color.name}"></option>
                                     </select>
@@ -131,7 +131,7 @@
                             <div th:if="${colorId != null}" class="d-flex w-100 justify-content-between">
                                 <div class="w-90">
                                     <select class="form-control" name="colorId">
-                                        <option th:value="null">Lựa chọn</option>
+                                        <option th:value="null">Tất cả</option>
                                         <option th:value="${color.id}" th:each="color: ${listColor}"
                                                 th:text="${color.name}" th:selected="${colorId == color.id}"></option>
                                     </select>
@@ -425,11 +425,11 @@
                     <!--                                Pagination-->
                     <div class="d-flex justify-content-center align-items-center">
                         <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=0&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                            <a th:href="@{|?page=0&productId=${productId == null ? '' : productId}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
                                 </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
                         </div>
                         <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=${pageProductDetail.getNumber() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                            <a th:href="@{|?page=${pageProductDetail.getNumber() - 1}&productId=${productId == null ? '' : productId}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
                                 <i style="color: white" class="fa-solid fa-left-long"></i></a>
                         </div>
                         <div class="btn btn-dark d-flex">
@@ -439,12 +439,12 @@
                         </div>
                         <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"
                              class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageProductDetail.getNumber()+1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                            <a th:href="@{|?page=${pageProductDetail.getNumber()+1}&productId=${productId == null ? '' : productId}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
                                 <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                         </div>
                         <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"
                              class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageProductDetail.getTotalPages() - 1}&productId=${productId == null ? '' : productId}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                            <a th:href="@{|?page=${pageProductDetail.getTotalPages() - 1}&productId=${productId == null ? '' : productId}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
                                 <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                         </div>
                     </div>

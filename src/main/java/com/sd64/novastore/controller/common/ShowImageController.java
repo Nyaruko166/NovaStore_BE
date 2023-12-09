@@ -19,7 +19,16 @@ public class ShowImageController {
 
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable Integer id) throws IOException {
-        byte[] imageData = imageService.get(id);
+        byte[] imageData = imageService.getImage(id);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(imageData);
+    }
+
+    @GetMapping("/deleted/{id}")
+    public ResponseEntity<byte[]> getImageDeleted(@PathVariable Integer id) throws IOException {
+        byte[] imageData = imageService.getImageDeleted(id);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_PNG)
@@ -29,6 +38,15 @@ public class ShowImageController {
     @GetMapping("/product/{productId}")
     public ResponseEntity<byte[]> getImageByProductId(@PathVariable Integer productId) throws IOException {
         byte[] imageData = imageService.getImageByProductId(productId);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(imageData);
+    }
+
+    @GetMapping("/product/deleted/{productId}")
+    public ResponseEntity<byte[]> getImageDeletedByProductId(@PathVariable Integer productId) throws IOException {
+        byte[] imageData = imageService.getImageDeletedByProductId(productId);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_PNG)

@@ -105,8 +105,23 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public byte[] get(Integer imageId) {
-        var image = imageRepository.findById(imageId).orElse(null);
+    public byte[] getImage(Integer imageId) {
+        var image = imageRepository.findByIdAndStatus(imageId, 1);
+        if (image == null) {
+            log.info("image id = {} is not exist on DB", imageId);
+            return null;
+        }
+        try {
+            return convert(getImagePath(image.getName()));
+        } catch (IOException e) {
+            log.error("Convert image fail, image id = {}", imageId);
+            return null;
+        }
+    }
+
+    @Override
+    public byte[] getImageDeleted(Integer imageId) {
+        var image = imageRepository.findByIdAndStatus(imageId, 0);
         if (image == null) {
             log.info("image id = {} is not exist on DB", imageId);
             return null;
@@ -162,7 +177,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public byte[] getImageByProductId(Integer productId) {
-        var image = imageRepository.findTopByProductIdOrderByUpdateDateDesc(productId);
+        var image = imageRepository.findTopByProductIdAndStatusOrderByUpdateDateDesc(productId, 1);
         if (image == null) {
             log.info("productId id = {} is not contain image", productId);
             return null;
@@ -176,9 +191,24 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Page<Image> getAllDeleted(int page) {
+    public byte[] getImageDeletedByProductId(Integer productId) {
+        var image = imageRepository.findTopByProductIdAndStatusOrderByUpdateDateDesc(productId, 0);
+        if (image == null) {
+            log.info("productId id = {} is not contain image", productId);
+            return null;
+        }
+        try {
+            return convert(getImagePath(image.getName()));
+        } catch (IOException e) {
+            log.error("Convert image fail, productId = {}", productId);
+            return null;
+        }
+    }
+
+    @Override
+    public Page<Image> getAllDeletedByProductId(Integer productId ,int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return imageRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
+        return imageRepository.findAllByProductIdAndStatusOrderByUpdateDateDesc(productId, 0, pageable);
     }
 
     @Override
@@ -196,11 +226,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<Image> getAllImageByProductId(Integer productId) {
-        return imageRepository.findAllByProduct_IdOrderByUpdateDateDesc(productId);
+        return imageRepository.findAllByProduct_IdAndStatusOrderByUpdateDateDesc(productId, 1);
     }
 
     @Override
     public Image getImageActiveByProductId(Integer productId) {
-        return imageRepository.findTopByProduct_IdOrderByUpdateDateDesc(productId);
+        return imageRepository.findTopByProduct_IdAndStatusOrderByUpdateDateDesc(productId, 1);
     }
 }
