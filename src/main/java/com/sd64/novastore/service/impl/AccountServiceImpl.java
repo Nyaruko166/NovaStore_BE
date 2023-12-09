@@ -159,6 +159,7 @@ public class AccountServiceImpl implements AccountService {
         return currentProjectPath + File.separator + "src/main/resources/static/assets/avatars"
                 + File.separator + fileName;
     }
+
     @Override
     public byte[] get(Integer accountId) {
         var account = accountRepository.findById(accountId).orElse(null);

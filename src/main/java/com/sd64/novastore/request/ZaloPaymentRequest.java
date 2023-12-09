@@ -13,15 +13,15 @@ import lombok.*;
 @NoArgsConstructor
 public class ZaloPaymentRequest {
 
-    private String app_id;
+    private Long app_id;
     private String app_trans_id;
-    private String app_time;
+    private Long app_time;
     private String app_user;
     private Long amount;
     private String description;
     private String bank_code;
-    private JsonArray item;
-    private JsonObject embed_data;
+    private String item;
+    private String embed_data;
     private String mac;
 
     public String signatureGen(String secretKey) {

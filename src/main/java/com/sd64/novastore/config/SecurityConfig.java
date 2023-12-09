@@ -74,6 +74,7 @@ public class SecurityConfig {
 
                             //Role base authority
                             req.requestMatchers("/nova/**").hasAuthority("Admin")
+                                    .requestMatchers("/profile").authenticated()
                                     .anyRequest().permitAll();
                         }
                 );

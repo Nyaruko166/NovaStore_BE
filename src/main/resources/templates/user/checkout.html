@@ -21,138 +21,301 @@
 <!-- Page Header End -->
 
 
-<!-- Checkout Start -->
-<div class="container-fluid pt-5">
-    <!--            Notification-->
-    <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
-         style="margin: 5px">
-        <span th:text="${mess}"></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <form th:action="@{/add-order}" method="post">
-        <div class="row px-xl-5">
-            <div class="col-lg-5">
-                <div class="mb-4">
-                    <h4 class="font-weight-semi-bold mb-4">Địa chỉ nhận hàng mặc định</h4>
-                    <div class="row">
-                        <div class="col-md-12 form-group">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input"
-                                       th:id="${'address-' + defaultAddress.id}"
-                                       th:value="${defaultAddress.id}"
-                                       checked
-                                       name="address">
-                                <label class="custom-control-label" th:for="${'address-' + defaultAddress.id}">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title" th:text="${defaultAddress.customerName + ' ' + defaultAddress.phoneNumber}"></h5>
-                                            <p class="card-text" th:text="${defaultAddress.specificAddress}"></p>
-                                            <p class="card-text"
-                                               th:text="${defaultAddress.ward + ', ' + defaultAddress.district + ', ' + defaultAddress.city}"></p>
+<div class=" container-fluid my-5 ">
+    <div class="row justify-content-center ">
+        <div class="col-xl-12">
+            <div class="card shadow-lg ">
+                <form onsubmit="return validateForm()" th:action="@{/add-order}" method="post">
+                    <div class="row justify-content-around">
+                        <div class="col-md-6">
+                            <div class="card border-0">
+                                <div class="card-header pb-0" style="background: none; border-bottom: none">
+                                    <p class="card-text text-muted mt-4  space">ĐỊA CHỈ NHẬN HÀNG</p>
+                                    <hr class="my-0">
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="name" class="small text-muted mb-1">TÊN</label>
+                                        <input type="text" class="form-control form-control-sm" name="name" id="name">
+                                        <span id="nameError" class="small text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email" class="small text-muted mb-1">EMAIL</label>
+                                        <input type="text" class="form-control form-control-sm" name="email" id="email">
+                                        <span id="emailError" class="small text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone-number" class="small text-muted mb-1">SỐ ĐIỆN THOẠI</label>
+                                        <input type="text" class="form-control form-control-sm" name="phoneNumber" id="phone-number">
+                                        <span id="phoneNumberError" class="small text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="specific-address" class="small text-muted mb-1">SỐ NHÀ, ĐƯỜNG</label>
+                                        <input type="text" class="form-control form-control-sm" name="specificAddress" id="specific-address">
+                                        <span id="specificAddressError" class="small text-danger"></span>
+                                    </div>
+                                    <div class="row no-gutters">
+                                        <div class="col-sm-4 pr-sm-2">
+                                            <div class="form-group">
+                                                <label for="city" class="small text-muted mb-1">TỈNH THÀNH</label>
+                                                <select class="form-control form-control-sm" name="city" id="city">
+                                                    <option value="" selected>Tỉnh thành</option>
+                                                </select>
+                                                <span id="cityError" class="small text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 pr-sm-2">
+                                            <div class="form-group">
+                                                <label for="district" class="small text-muted mb-1">QUẬN HUYỆN</label>
+                                                <select class="form-control form-control-sm" name="district" id="district">
+                                                    <option value="" selected>Quận huyện</option>
+                                                </select>
+                                                <span id="districtError" class="small text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="ward" class="small text-muted mb-1">PHƯỜNG XÃ</label>
+                                                <select class="form-control form-control-sm" name="ward" id="ward">
+                                                    <option value="" selected>Phường xã</option>
+                                                </select>
+                                                <span id="wardError" class="small text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </label>
+                                    <div class="row mt-4">
+                                        <div class="col"><p class="text-muted mb-2">PHƯƠNG THỨC THANH TOÁN</p>
+                                            <hr class="mt-0">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="radio" th:value="'Thanh toán khi nhận hàng'"
+                                               name="payment" id="cod" checked>
+                                        <label for="cod" class="small text-muted mb-1">Thanh toán khi nhận hàng</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="radio" th:value="'VNPAY'"
+                                               name="payment" id="vnpay">
+                                        <label for="vnpay" class="small text-muted mb-1">VNPAY</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="radio" th:value="'ZaloPay'"
+                                               name="payment" id="zalopay">
+                                        <label for="zalopay" class="small text-muted mb-1">ZaloPay</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="radio" th:value="'Momo'"
+                                               name="payment" id="momo">
+                                        <label for="momo" class="small text-muted mb-1">Momo</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 ">
+                                <div class="card-header card-2" style="background: none; border-bottom: none">
+                                    <p class="card-text text-muted mt-md-4  mb-2 space">TỔNG QUAN ĐƠN HÀNG</p>
+                                    <hr class="my-2">
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div th:each="item : ${cart.getCartDetails()}">
+                                        <div class="row  justify-content-between">
+                                            <div class="col-auto col-md-7">
+                                                <div class="media flex-column flex-sm-row">
+                                                    <img class=" img-fluid" src="https://i.imgur.com/6oHix28.jpg" width="62"
+                                                         height="62">
+                                                    <div class="media-body  my-auto">
+                                                        <div class="row ">
+                                                            <div class="col-auto">
+                                                                <p class="mb-0"><b
+                                                                        th:text="${item.productDetail.product.name}"></b>
+                                                                </p>
+                                                                <small class="text-muted" th:text="'Màu: ' + ${item.productDetail.color.name}
+                                + ', ' + 'Kích cỡ: ' + ${item.productDetail.size.name}"></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class=" pl-0 flex-sm-col col-auto  my-auto ">
+                                                <p>
+                                                    <b th:text="'₫' + ${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></b>
+                                                </p>
+                                            </div>
+                                            <div class=" pl-0 flex-sm-col col-auto  my-auto"><p class="boxed-1"
+                                                                                                th:text="'SL: ' + ${item.quantity}"></p>
+                                            </div>
+                                            <div class=" pl-0 flex-sm-col col-auto  my-auto ">
+                                                <p>
+                                                    <b th:text="'₫' + ${#numbers.formatDecimal(item.price*item.quantity, 0, 'COMMA', 0, 'POINT')}"></b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <hr class="my-2">
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col">
+                                            <div class="row justify-content-between">
+                                                <div class="col-4"><p class="mb-1"><b>Tổng tiền hàng</b></p></div>
+                                                <div class="flex-sm-col col-auto">
+                                                    <p class="mb-1">
+                                                        <b th:text="'₫' + ${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')}"></b>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-between">
+                                                <div class="col"><p class="mb-1"><b>Phí ship</b></p></div>
+                                                <div class="flex-sm-col col-auto"><p class="mb-1"><b>Sẽ phát sinh thêm</b>
+                                                </p></div>
+                                            </div>
+                                            <div class="row justify-content-between">
+                                                <div class="col-4"><p><b>Tạm tính</b></p></div>
+                                                <div class="flex-sm-col col-auto">
+                                                    <p class="mb-1">
+                                                        <b th:text="'₫' + ${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')}"></b>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <hr class="my-0">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-5 mt-4 ">
+                                        <div class="col-md-7 col-lg-6 mx-auto">
+                                            <button type="submit" class="btn btn-block btn-outline-primary btn-lg">ĐẶT
+                                                HÀNG
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="mb-4" id="shipping-address">
-                    <h4 class="font-weight-semi-bold mb-4">Địa chỉ nhận hàng khác</h4>
-                    <div class="row">
-                        <div class="col-md-12 form-group">
-                            <div class="custom-control custom-radio custom-control-inline"
-                                 th:each="address : ${listAddress}">
-                                <input type="radio" class="custom-control-input"
-                                       th:id="${'address-' + address.id}"
-                                       th:value="${address.specificAddress + ', ' + address.ward + ', '
-                                       + address.district + ', ' + address.city}"
-                                       name="address">
-                                <label class="custom-control-label" th:for="${'address-' + address.id}"
-                                       th:text="${address.specificAddress + ', ' + address.ward + ', '
-                                       + address.district + ', ' + address.city}"></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-7">
-                <div class="card border-secondary mb-5">
-                    <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Tổng quan đơn hàng</h4>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="font-weight-medium mb-3">Sản phẩm</h5>
-                        <div class="d-flex justify-content-between" th:each="item : ${cart.getCartDetails()}">
-                            <p th:text="${item.productDetail.product.name}"></p>
-                            <p th:text="'Màu: ' + ${item.productDetail.color.name}
-                                + ', ' + 'Kích cỡ: ' + ${item.productDetail.size.name}"></p>
-                            <p th:text="'Giá: ' + '₫' + ${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></p>
-                            <p th:text="'Số lượng: ' + ${item.quantity}"></p>
-                            <p th:text="'Thành tiền: ' + '₫' + ${#numbers.formatDecimal(item.price*item.quantity, 0, 'COMMA', 0, 'POINT')}"></p>
-                        </div>
-                        <hr class="mt-0">
-                        <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Tổng tiền hàng</h6>
-                            <h6 class="font-weight-medium"
-                                th:text="'₫' + ${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')}"></h6>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Phí ship</h6>
-                            <h6 class="font-weight-medium">Sẽ phát sinh thêm</h6>
-                        </div>
-                    </div>
-                    <div class="card-footer border-secondary bg-transparent">
-                        <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">Tạm tính</h5>
-                            <h5 class="font-weight-bold"
-                                th:text="'₫' + ${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')}"></h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="card border-secondary mb-5">
-                    <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Phương thức thanh toán</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" th:value="'Thanh toán khi nhận hàng'"
-                                       name="payment" id="cod" checked>
-                                <label class="custom-control-label" for="cod">Thanh toán khi nhận hàng</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" th:value="'VNPAY'"
-                                       name="payment" id="vnpay">
-                                <label class="custom-control-label" for="vnpay">VNPAY</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" th:value="'ZaloPay'"
-                                       name="payment" id="zalopay">
-                                <label class="custom-control-label" for="zalopay">ZaloPay</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" th:value="'Momo'"
-                                       name="payment" id="momo">
-                                <label class="custom-control-label" for="momo">Momo</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer border-secondary bg-transparent">
-                        <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Đặt hàng</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
 </div>
-<!-- Checkout End -->
 
 <div th:replace="~{/user/fragments::footer}"></div>
 
 <div th:replace="~{/user/fragments::script}"></div>
+<script>
+    const host = "https://provinces.open-api.vn/api/";
+    var callAPI = (api) => {
+        return axios.get(api)
+            .then((response) => {
+                renderData(response.data, "city");
+            });
+    }
+    callAPI('https://provinces.open-api.vn/api/?depth=1');
+    var callApiDistrict = (api) => {
+        return axios.get(api)
+            .then((response) => {
+                renderData(response.data.districts, "district");
+            });
+    }
+    var callApiWard = (api) => {
+        return axios.get(api)
+            .then((response) => {
+                renderData(response.data.wards, "ward");
+            });
+    }
 
+    var renderData = (array, select) => {
+        let row = ' <option disable value="">Chọn</option>';
+        array.forEach(element => {
+            row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`
+        });
+        document.querySelector("#" + select).innerHTML = row
+    }
+
+    $("#city").change(() => {
+        callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
+    });
+    $("#district").change(() => {
+        callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
+    });
+</script>
+<script>
+    function validateForm() {
+        // Get the input elements
+        var name = document.getElementById('name');
+        var nameError = document.getElementById('nameError');
+
+        var email = document.getElementById('email');
+        var emailError = document.getElementById('emailError');
+
+        var phoneNumber = document.getElementById('phone-number');
+        var phoneNumberError = document.getElementById('phoneNumberError');
+
+        var specificAddress = document.getElementById('specific-address');
+        var specificAddressError = document.getElementById('specificAddressError');
+
+        var city = document.getElementById('city');
+        var cityError = document.getElementById('cityError');
+
+        var district = document.getElementById('district');
+        var districtError = document.getElementById('districtError');
+
+        var ward = document.getElementById('ward');
+        var wardError = document.getElementById('wardError');
+
+        var hasError = false;
+
+        // Check if the input fields are empty
+        if (!name.value.trim()) {
+            nameError.textContent = 'Vui lòng nhập tên';
+            hasError = true;
+        } else {
+            nameError.textContent = '';
+        }
+        if (!email.value.trim()) {
+            emailError.textContent = 'Vui lòng nhập email';
+            hasError = true;
+        } else {
+            emailError.textContent = '';
+        }
+        if (!phoneNumber.value.trim()) {
+            phoneNumberError.textContent = 'Vui lòng nhập số điện thoại';
+            hasError = true;
+        } else {
+            phoneNumberError.textContent = '';
+        }
+        if (!specificAddress.value.trim()) {
+            specificAddressError.textContent = 'Vui lòng nhập số nhà, đường';
+            hasError = true;
+        } else {
+            specificAddressError.textContent = '';
+        }
+
+        // Check if the select fields are empty
+        if (city.value === "") {
+            cityError.textContent = 'Vui lòng chọn tỉnh thành';
+            hasError = true;
+        } else {
+            cityError.textContent = '';
+        }
+        if (district.value === "") {
+            districtError.textContent = 'Vui lòng chọn quận huyện';
+            hasError = true;
+        } else {
+            districtError.textContent = '';
+        }
+        if (ward.value === "") {
+            wardError.textContent = 'Vui lòng chọn phường xã';
+            hasError = true;
+        } else {
+            wardError.textContent = '';
+        }
+
+        if (hasError){
+            return false;
+        }
+
+        // If everything is filled out, return true
+        return true;
+    }
+</script>
 </body>
 
 </html>

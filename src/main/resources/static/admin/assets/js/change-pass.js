@@ -87,21 +87,21 @@ function validateSubmitC() {
     codeError.textContent = '';
 
     if (currentPassInput.value.trim() === '') {
-        currentPassError.textContent = 'Vui lòng nhập mật khẩu hiện tại.';
+        currentPassError.textContent = 'Mật khẩu hiện tại đang trống.';
         return false;
     }
 
     currentPassError.textContent = '';
 
     if (newPasswordInput.value.trim() === '') {
-        newPasswordError.textContent = 'Vui lòng nhập mật khẩu mới.';
+        newPasswordError.textContent = 'Mật khẩu mới đang trống.';
         return false;
     }
 
     newPasswordError.textContent = '';
 
     if (reNewPassInput.value.trim() === '') {
-        reNewPassError.textContent = 'Vui lòng nhập lại mật khẩu mới.';
+        reNewPassError.textContent = 'Hãy xác nhận mật khẩu mới.';
         return false;
     }
 

@@ -63,16 +63,16 @@ public class AuthController {
     ) {
         Integer status = authService.codeVerifyAndNewPass(email, newPassword, code, request);
         if (status == 0) {
-            model.addAttribute("mess", "Reset mật khẩu thành công");
-            System.out.println("Reset mật khẩu thành công");
+            redirectAttributes.addFlashAttribute("mess", "Reset mật khẩu thành công");
+            return "redirect:/login";
         } else if (status == 1) {
-            model.addAttribute("err", "Mã xác minh đã hết hạn");
+            redirectAttributes.addFlashAttribute("mess", "Mã xác minh đã hết hạn");
             System.out.println("Mã xác minh đã hết hạn");
         } else {
-            model.addAttribute("err", "Mã xác minh không khớp");
+            redirectAttributes.addFlashAttribute("mess", "Mã xác minh không khớp");
             System.out.println("Mã xác minh không khớp");
         }
-        return "/common/forgor";
+        return "redirect:/forgot";
     }
 
     @GetMapping("/register")
@@ -105,7 +105,7 @@ public class AuthController {
         }
 
         redirectAttributes.addFlashAttribute("mess", "Email đã tồn tại !!");
-//        redirectAttributes.addFlashAttribute("x", user);
+//        redirectAttributes.addFlashAttribute("x", user);tttttt
         return "redirect:/register";
     }
 
@@ -119,7 +119,7 @@ public class AuthController {
             model.addAttribute("mess", "Đã gửi mã xác minh đến email của bạn...");
             return "/common/change-pass";
         }
-        model.addAttribute("err", "Email này chưa được đăng ký !!!");
+        model.addAttribute("mess", "Email này chưa được đăng ký !!!");
         return "/common/change-pass";
     }
 
@@ -133,25 +133,30 @@ public class AuthController {
                                  HttpServletRequest request, Model model) {
         switch (authService.codeVerifyAndChangePass(email, currentPass, reNewPass, newPass, code, request)) {
             case 0:
-                model.addAttribute("mess", "Đổi mật khẩu thành công !!!");
-                break;
+                redirectAttributes.addFlashAttribute("mess", "Đổi mật khẩu thành công !!!");
+                return "redirect:/login";
             case 1:
-                model.addAttribute("err", "Tài khoản không tồn tại !!!");
+                redirectAttributes.addFlashAttribute("mess", "Tài khoản không tồn tại !!!");
                 break;
             case 2:
-                model.addAttribute("err", "Mật khẩu mới không khớp !!!");
+                redirectAttributes.addFlashAttribute("mess", "Mật khẩu mới không khớp !!!");
                 break;
             case 3:
-                model.addAttribute("err", "Mật khẩu hiện tại không khớp !!!");
+                redirectAttributes.addFlashAttribute("mess", "Mật khẩu hiện tại không khớp !!!");
                 break;
             case 4:
-                model.addAttribute("err", "Mã xác minh hết hạn !!!");
+                redirectAttributes.addFlashAttribute("mess", "Mã xác minh hết hạn !!!");
                 break;
             case 5:
-                model.addAttribute("err", "Mã xác minh không khớp !!!");
+                redirectAttributes.addFlashAttribute("mess", "Mã xác minh không khớp !!!");
                 break;
         }
-        return "/common/change-pass";
+        return "redirect:/change-password";
+    }
+
+    @GetMapping("/profile")
+    public String p5() {
+        return "/common/profile";
     }
 
 }

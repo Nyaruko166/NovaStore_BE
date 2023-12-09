@@ -145,7 +145,6 @@ CREATE TABLE [dbo].[Bill](
     [CreateDate] [datetime] NULL,
     [UpdateDate] [datetime] NULL,
     [Status] [int] NULL,
-    [AccountId] [int] NULL,
     [CustomerId] [int] NULL,
     [VoucherId] [int] NULL,
     PRIMARY KEY CLUSTERED
@@ -166,26 +165,6 @@ CREATE TABLE [dbo].[BillDetail](
     [Status] [int] NULL,
     [BillId] [int] NULL,
     [ProductDetailId] [int] NULL,
-    PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[BillHistory]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[BillHistory](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Name] [nvarchar](50) NULL,
-    [Describe] [nvarchar](255) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
-    [BillId] [int] NULL,
-    [AccountId] [int] NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
@@ -508,11 +487,6 @@ ALTER TABLE [dbo].[Bill]  WITH CHECK ADD  CONSTRAINT [FK5mrre5s0gacpqu6737kfocwk
     GO
 ALTER TABLE [dbo].[Bill] CHECK CONSTRAINT [FK5mrre5s0gacpqu6737kfocwkl]
     GO
-ALTER TABLE [dbo].[Bill]  WITH CHECK ADD  CONSTRAINT [FKdlpt4y8nuurj83nht236onfi6] FOREIGN KEY([AccountId])
-    REFERENCES [dbo].[Account] ([Id])
-    GO
-ALTER TABLE [dbo].[Bill] CHECK CONSTRAINT [FKdlpt4y8nuurj83nht236onfi6]
-    GO
 ALTER TABLE [dbo].[Bill]  WITH CHECK ADD  CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob] FOREIGN KEY([VoucherId])
     REFERENCES [dbo].[Voucher] ([Id])
     GO
@@ -527,16 +501,6 @@ ALTER TABLE [dbo].[BillDetail]  WITH CHECK ADD  CONSTRAINT [FKnt7lacod5l24jdnfgx
     REFERENCES [dbo].[ProductDetail] ([Id])
     GO
 ALTER TABLE [dbo].[BillDetail] CHECK CONSTRAINT [FKnt7lacod5l24jdnfgxfydqiu2]
-    GO
-ALTER TABLE [dbo].[BillHistory]  WITH CHECK ADD  CONSTRAINT [FKdwtgkov1ar5uki43w7okh9xqi] FOREIGN KEY([BillId])
-    REFERENCES [dbo].[Bill] ([Id])
-    GO
-ALTER TABLE [dbo].[BillHistory] CHECK CONSTRAINT [FKdwtgkov1ar5uki43w7okh9xqi]
-    GO
-ALTER TABLE [dbo].[BillHistory]  WITH CHECK ADD  CONSTRAINT [FKowiek2xkcm34kzm23jlzms92j] FOREIGN KEY([AccountId])
-    REFERENCES [dbo].[Account] ([Id])
-    GO
-ALTER TABLE [dbo].[BillHistory] CHECK CONSTRAINT [FKowiek2xkcm34kzm23jlzms92j]
     GO
 ALTER TABLE [dbo].[Cart]  WITH CHECK ADD  CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i] FOREIGN KEY([AccountId])
     REFERENCES [dbo].[Account] ([Id])

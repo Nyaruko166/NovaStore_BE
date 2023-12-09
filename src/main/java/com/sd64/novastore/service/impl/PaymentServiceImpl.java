@@ -33,7 +33,7 @@ public class PaymentServiceImpl implements PaymentService {
     Gson gson = new Gson();
 
     @Override
-    public JsonObject MomoPayCreate(Long amount, String address) throws IOException, URISyntaxException {
+    public JsonObject MomoPayCreate(Long amount, String address, String name, String phoneNumber, String email) throws IOException, URISyntaxException {
 
         int random_id = new Random().nextInt(1000000);
 
@@ -43,16 +43,11 @@ public class PaymentServiceImpl implements PaymentService {
         momoPaymentRequest.setSignature(signature);
 
         String jsonPost = gson.toJson(momoPaymentRequest);
-//        System.out.println(json);
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(MomoPaymentConfig.paymentUrl);
         StringEntity requestEntity = new StringEntity(jsonPost, ContentType.APPLICATION_JSON);
         post.setEntity(requestEntity);
-
-        // Content-Type: application/x-www-form-urlencoded
-//        post.setEntity(new UrlEncodedFormEntity(params));
-
 
         CloseableHttpResponse res = client.execute(post);
         BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
@@ -72,6 +67,9 @@ public class PaymentServiceImpl implements PaymentService {
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("payUrl",payUrl);
         returnJson.addProperty("address",address);
+        returnJson.addProperty("name",name);
+        returnJson.addProperty("phoneNumber",phoneNumber);
+        returnJson.addProperty("email",email);
         return returnJson;
     }
 
@@ -161,7 +159,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public JsonObject vnpayCreate(HttpServletRequest req, Long price, String address) throws UnsupportedEncodingException {
+    public JsonObject vnpayCreate(HttpServletRequest req, Long price, String address, String name, String phoneNumber, String email) throws UnsupportedEncodingException {
         String vnp_Version = VNPaymentConfig.vnp_Version;
         String vnp_Command = VNPaymentConfig.vnp_Command;
         String orderType = VNPaymentConfig.orderType;
@@ -237,6 +235,9 @@ public class PaymentServiceImpl implements PaymentService {
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("payUrl",payUrl);
         returnJson.addProperty("address",address);
+        returnJson.addProperty("name",name);
+        returnJson.addProperty("phoneNumber",phoneNumber);
+        returnJson.addProperty("email",email);
         return returnJson;
     }
 }

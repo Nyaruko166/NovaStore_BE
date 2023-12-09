@@ -4,14 +4,21 @@ import com.sd64.novastore.model.Address;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.CartDetail;
+import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.PaymentMethod;
 import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.model.Role;
+import com.sd64.novastore.model.SessionCart;
+import com.sd64.novastore.model.SessionCartItem;
+import com.sd64.novastore.repository.AccountRepository;
 import com.sd64.novastore.repository.AddressRepository;
 import com.sd64.novastore.repository.BillDetailRepository;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.repository.BillRepository;
+import com.sd64.novastore.repository.CustomerRepository;
 import com.sd64.novastore.repository.PaymentMethodRepository;
 import com.sd64.novastore.repository.ProductDetailRepository;
+import com.sd64.novastore.repository.RoleRepository;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +56,15 @@ public class BillServiceImpl implements BillService {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Bill> getAllBill() {
@@ -132,15 +149,11 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public Bill placeOrder(Cart cart, String address, String payment) {
+    public Bill placeOrder(Cart cart, String name, String address, String phoneNumber, String payment) {
         Bill bill = new Bill();
-        Address customerAddress = addressRepository.findById(Integer.valueOf(address)).orElse(null);
-        bill.setCustomerName(customerAddress.getCustomerName());
-        bill.setAddress(customerAddress.getSpecificAddress() + ", "
-                + customerAddress.getWard() + ", "
-                + customerAddress.getDistrict() + ", "
-                + customerAddress.getCity());
-        bill.setPhoneNumber(customerAddress.getPhoneNumber());
+        bill.setCustomerName(name);
+        bill.setAddress(address);
+        bill.setPhoneNumber(phoneNumber);
         bill.setOrderDate(new Date());
         bill.setPrice(cart.getTotalPrice());
         bill.setDiscountAmount(BigDecimal.ZERO);
@@ -177,6 +190,76 @@ public class BillServiceImpl implements BillService {
 
         bill.setBillDetails(billDetailList);
         cartService.deleteCartById(cart.getId());
+        PaymentMethod paymentMethod = new PaymentMethod();
+        paymentMethod.setBill(bill);
+        paymentMethod.setName(payment);
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo")){
+            paymentMethod.setMoney(bill.getTotalPrice());
+            paymentMethod.setStatus(1);
+        } else {
+            paymentMethod.setStatus(10);
+        }
+        paymentMethod.setDescription(payment);
+        paymentMethodRepository.save(paymentMethod);
+        return billRepository.save(bill);
+    }
+
+    @Override
+    @Transactional
+    public Bill placeOrderSession(SessionCart cart, String email, String name, String address, String phoneNumber, String payment) {
+        Bill bill = new Bill();
+        bill.setCustomerName(name);
+        bill.setAddress(address);
+        bill.setPhoneNumber(phoneNumber);
+        bill.setOrderDate(new Date());
+        bill.setPrice(cart.getTotalPrice());
+        bill.setDiscountAmount(BigDecimal.ZERO);
+        bill.setShippingFee(BigDecimal.ZERO);
+        bill.setTotalPrice(cart.getTotalPrice());
+        bill.setCreateDate(new Date());
+        bill.setUpdateDate(new Date());
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo")){
+            bill.setPaymentDate(new Date());
+            bill.setConfirmationDate(new Date());
+            bill.setStatus(3);
+        } else {
+            bill.setStatus(10);
+        }
+        Customer customer = customerRepository.findByEmail(email);
+        if (customer == null){
+            customer = new Customer();
+            customer.setName(name);
+            customer.setEmail(email);
+            customer.setPhoneNumber(phoneNumber);
+            customer.setCreateDate(new Date());
+            customer.setUpdateDate(new Date());
+            customer.setStatus(1);
+            Role role = roleRepository.findFirstByName("User");
+            customer.setRole(role);
+            customer.setPassword(passwordEncoder.encode("123456"));
+            customerRepository.save(customer);
+        }
+        bill.setCustomer(customer);
+        List<BillDetail> billDetailList = new ArrayList<>();
+        for (SessionCartItem item : cart.getCartDetails()){
+            BillDetail billDetail = new BillDetail();
+            billDetail.setBill(bill);
+            ProductDetail productDetail = productDetailRepository.findById(item.getProductDetail().getId()).orElse(null);
+            billDetail.setProductDetail(productDetail);
+            billDetail.setPrice(item.getPrice());
+            billDetail.setQuantity(item.getQuantity());
+            billDetail.setStatus(1);
+            billDetailRepository.save(billDetail);
+            billDetailList.add(billDetail);
+            productDetail.setQuantity(productDetail.getQuantity() - item.getQuantity());
+            if (productDetail.getQuantity() == 0){
+                productDetail.setStatus(0);
+            }
+            productDetailRepository.save(productDetail);
+        }
+
+        bill.setBillDetails(billDetailList);
+        cart.clear();
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setBill(bill);
         paymentMethod.setName(payment);
