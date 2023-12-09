@@ -72,10 +72,6 @@ public class Bill {
     @Column(name = "Status")
     private Integer status;
 
-    @ManyToOne
-    @JoinColumn(name = "AccountId", referencedColumnName = "Id")
-    private Account account;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CustomerId", referencedColumnName = "Id")
     private Customer customer;

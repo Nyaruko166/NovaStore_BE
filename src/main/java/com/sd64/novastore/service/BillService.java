@@ -3,6 +3,7 @@ package com.sd64.novastore.service;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.Cart;
+import com.sd64.novastore.model.SessionCart;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
@@ -33,7 +34,9 @@ public interface BillService {
 
     Bill delete(Integer id);
 
-    Bill placeOrder(Cart cart, String address, String payment);
+    Bill placeOrder(Cart cart, String name, String address, String phoneNumber, String payment);
+
+    Bill placeOrderSession(SessionCart cart, String email, String name, String address, String phoneNumber, String payment);
 
     List<Bill> getNoConfirmOrders(Integer customerId);
 

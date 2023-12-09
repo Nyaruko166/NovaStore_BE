@@ -19,4 +19,10 @@ public class SessionCart {
     private Integer totalItems;
 
     private Set<SessionCartItem> cartDetails;
+
+    public void clear(){
+        this.cartDetails.clear();
+        this.totalPrice = BigDecimal.ZERO;
+        this.totalItems = 0;
+    }
 }

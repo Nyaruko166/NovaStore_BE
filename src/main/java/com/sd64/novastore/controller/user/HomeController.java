@@ -46,6 +46,7 @@ public class HomeController {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
     private CartService cartService;
 
     @GetMapping("/home")
