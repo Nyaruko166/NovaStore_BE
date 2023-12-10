@@ -21,6 +21,12 @@ public class Bill {
     @Column(name = "Id")
     private Integer id;
 
+    @Column(name = "Code")
+    private String code;
+
+    @Column(name = "type")
+    private Integer type;
+
     @Column(name = "CustomerName")
     private String customerName;
 
