@@ -128,6 +128,8 @@ CREATE TABLE [dbo].[Address](
     GO
 CREATE TABLE [dbo].[Bill](
     [Id] [int] IDENTITY(1,1) NOT NULL,
+    [Code] [varchar](50) NULL,
+    [Type] [int] NULL,
     [CustomerName] [nvarchar](50) NULL,
     [Address] [nvarchar](100) NULL,
     [PhoneNumber] [nvarchar](15) NULL,
