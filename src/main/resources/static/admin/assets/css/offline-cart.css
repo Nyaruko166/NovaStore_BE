@@ -108,3 +108,30 @@ label.radio input:checked + span {
     font-size: 11px;
 }
 
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#reader {
+    width: 600px;
+}
+
+#result {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+#collapseExample {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 500px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: 20px;
+    z-index: 1;
+}
+
+
