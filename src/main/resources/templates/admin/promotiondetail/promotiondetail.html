@@ -32,7 +32,7 @@
                                 <label class="form-control-label">Promotion Name</label>
                             </div>
                             <div class="col-md-9">
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                <button type="button"  class="btn btn-dark" data-toggle="modal"
                                         data-target="#productModal">
                                     Xem sản phẩm
                                 </button>
@@ -61,7 +61,6 @@
                                                 </th>
                                                 <th class="form-control-label">Name</th>
                                                 <th class="form-control-label">Description</th>
-                                                <th class="form-control-label">Price</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -75,7 +74,6 @@
                                                 </td>
                                                 <td th:text="${product.name}"></td>
                                                 <td th:text="${product.description}"></td>
-                                                <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -129,12 +127,12 @@
 
                     <div class="card-footer">
                         <a th:href="@{/nova/promotion/page}">
-                            <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
+                            <button type="button"  class="btn btn-dark"><i class="fa-solid fa-refresh"></i>
                                 Mã khuyến mãi
                             </button>
                         </a>
                         <a th:href="@{/nova/product/page}">
-                            <button type="button" class="btn btn-success"><i class="fa-solid fa-refresh"></i>
+                            <button type="button"  class="btn btn-dark"><i class="fa-solid fa-refresh"></i>
                                 Sản phẩm
                             </button>
                         </a>
@@ -142,8 +140,7 @@
 
                     <div class="card-footer d-flex">
                         <div>
-                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
-                                Add
+                            <button type="submit" class="btn btn-dark"><i class="fa-solid fa-square-plus px-4"></i>
                             </button>
                         </div>
                     </div>
@@ -151,9 +148,6 @@
             </div>
         </div>
     </div>
-    <br>
-    <br>
-    <br>
     <div class="col">
         <div class="card">
             <div class="card-header" th:if="${pagePromotionDetail.isEmpty()}">

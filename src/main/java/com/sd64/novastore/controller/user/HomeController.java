@@ -62,6 +62,7 @@ public class HomeController {
     @Autowired
     private BrandService brandService;
 
+    @Autowired
     private CartService cartService;
 
     @Autowired
