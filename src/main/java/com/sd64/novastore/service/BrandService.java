@@ -10,7 +10,7 @@ public interface BrandService {
 
     Page<Brand> getPage(Integer page);
 
-    Boolean add(Brand brand);
+    Boolean add(String name);
 
     Boolean update(Integer id, String name);
 

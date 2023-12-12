@@ -3,7 +3,9 @@ package com.sd64.novastore.service;
 import com.sd64.novastore.model.Form;
 import com.sd64.novastore.model.Material;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface MaterialService {
@@ -11,7 +13,7 @@ public interface MaterialService {
 
     Page<Material> getPage(Integer page);
 
-    Boolean add(Material material);
+    Boolean add(String name);
 
     Boolean update(Material material, Integer id);
 
@@ -26,4 +28,8 @@ public interface MaterialService {
     Material restore(Integer id);
 
     Page<Material> searchDelete(String name, int page);
+
+    Material getOne(Integer id);
+
+    Integer importExcel(MultipartFile file) throws IOException;
 }

@@ -66,7 +66,7 @@
 <!--                <p class="mb-4" th:text="${product.description}"></p>-->
                 <div class="font-weight-semi-bold mb-3">
                     <div  th:if="${priceMax != priceMin}">
-                        <div id="price-top" class="d-flex font-weight-semi-bold">
+                        <div id="price-top" class="d-flex font-weight-semi-bold price-product-detail">
                             <h3 class="font-weight-semi-bold" th:text="'₫' + ${#numbers.formatDecimal(priceMin, 0, 'COMMA', 0, 'POINT')}">₫123</h3>
                             <h3 class="ml-1 mr-1 font-weight-semi-bold"> ~ </h3>
                             <h3 class="font-weight-semi-bold" th:text="'₫' + ${#numbers.formatDecimal(priceMax, 0, 'COMMA', 0, 'POINT')}">₫333</h3>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="d-flex">
                     <p class="text-dark font-weight-medium mb-0 mr-2">Số lượng:</p>
-                    <p id="product-quantity">13</p>
+                    <p id="productDetail-quantity">13</p>
                 </div>
 
                 <form th:action="@{/add-to-cart}" method="post">
@@ -169,11 +169,14 @@
                             if (color === null) return
                             const code = color.code
                             const quantity = color.quantity
-                            const price = color.price
+                            let price = color.price
+                            let formattedPrice = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            formattedPrice = formattedPrice.toString().replaceAll("₫", "")
+                            formattedPrice = formattedPrice.toString().replaceAll(".", ",")
                             document.getElementById('product-code').innerText = code
-                            document.getElementById('product-quantity').innerText = quantity
+                            document.getElementById('productDetail-quantity').innerText = quantity
                             if (document.getElementById('price-top') != null) {
-                                document.getElementById('price-top').innerText = '₫' + price
+                                document.getElementById('price-top').innerText = '₫' + formattedPrice
                             }
                             if (document.getElementById('price-bottom') != null) {
                                 document.getElementById('price-bottom').innerText = '₫' + price

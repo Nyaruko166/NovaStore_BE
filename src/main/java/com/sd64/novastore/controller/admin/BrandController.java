@@ -38,14 +38,26 @@ public class BrandController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute Brand brand,
+    public String add(@RequestParam String name,
                       RedirectAttributes redirectAttributes) {
-        if (brandService.add(brand)) {
+        if (brandService.add(name)) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
             return "redirect:/nova/brand/page";
         } else {
             redirectAttributes.addFlashAttribute("error", "Tên thương hiệu đã tồn tại");
             return "redirect:/nova/brand/page";
+        }
+    }
+
+    @PostMapping("/attribute")
+    public String attribute(@RequestParam String brandName,
+                            RedirectAttributes redirectAttributes) {
+        if (brandService.add(brandName)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/product/view-add";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên chất liệu đã tồn tại");
+            return "redirect:/nova/product/view-add";
         }
     }
 

@@ -11,7 +11,7 @@ public interface FormService {
 
     Page<Form> getPage(Integer page);
 
-    Boolean add(Form form);
+    Boolean add(String name);
 
     Boolean update(Form form, Integer id);
 

@@ -40,14 +40,26 @@ public class CategoryController {
 
 
     @PostMapping("/add")
-    public String add(@ModelAttribute Category category,
+    public String add(@RequestParam String name,
                       RedirectAttributes redirectAttributes) {
-        if (categoryService.add(category)) {
+        if (categoryService.add(name)) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
             return "redirect:/nova/category/page";
         } else {
             redirectAttributes.addFlashAttribute("error", "Tên loại đã tồn tại");
             return "redirect:/nova/category/page";
+        }
+    }
+
+    @PostMapping("/attribute")
+    public String attribute(@RequestParam String categoryName,
+                            RedirectAttributes redirectAttributes) {
+        if (categoryService.add(categoryName)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/product/view-add";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên chất liệu đã tồn tại");
+            return "redirect:/nova/product/view-add";
         }
     }
 
