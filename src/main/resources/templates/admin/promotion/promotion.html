@@ -37,8 +37,8 @@
                                    class="form-control">
                         </div>
                         <div class="ml-2">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal">
-                                <i class="fa-solid fa-square-plus"></i> Thêm mới
+                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addModal">
+                                <i class="fa-solid fa-square-plus px-4"></i>
                             </button>
                         </div>
 
@@ -143,9 +143,8 @@
                                                             data-dismiss="modal">Đóng
                                                     </button>
                                                     <button onclick="clickAdd('promotion', 'promotionForm')"
-                                                            type="button" class="btn btn-success"><i
-                                                            class="fa-solid fa-square-plus"></i>
-                                                        THÊM
+                                                            type="button" class="btn btn-dark">
+                                                        <i class="fa-solid fa-square-plus px-4"></i>
                                                     </button>
                                                 </div>
                                                 <script th:inline="javascript">
@@ -198,10 +197,10 @@
                                                         let currentDate = new Date();
                                                         let startDate = new Date(startDateValue);
 
-                                                        if (startDate <= currentDate) {
-                                                            errorStartDate.innerHTML = `Ngày bắt đầu phải lớn hơn ngày hiện tại`;
-                                                            return false;
-                                                        }
+                                                        // if (startDate <= currentDate) {
+                                                        //     errorStartDate.innerHTML = `Ngày bắt đầu phải lớn hơn ngày hiện tại`;
+                                                        //     return false;
+                                                        // }
 
                                                         errorStartDate.innerHTML = '';
                                                         return true;
@@ -314,20 +313,27 @@
                                 <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td th:text="${items.status}"></td>
+
                                 <td class="d-flex justify-content-center">
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/promotion/detail/' + ${items.id}}">
-                                            <button type="button" class="btn btn-warning"><i
-                                                    class="fa-solid fa-edit mr-1"></i></button>
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <button th:onclick="clickDelete('promotion', 'promotionDelete', [[${items.id}]])"
-                                                type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>
+                                    <div class="dropdown">
+                                        <button class="btn btn-dark" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
                                         </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item"
+                                               th:href="@{'/nova/promotion/detail/' + ${items.id}}">
+                                                <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
+                                            <button
+                                                    th:onclick="clickDelete('promotion', 'promotionDelete', [[${items.id}]])"
+                                                    type="button" class="dropdown-item"><i
+                                                    class="fa-solid fa-trash mr-3"></i>Xóa
+                                            </button>
+                                        </div>
                                     </div>
                                 </td>
+
                             </tr>
                             </tbody>
                         </table>

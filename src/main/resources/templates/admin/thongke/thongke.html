@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống Kê</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Doanh số hôm nay</h6>
+                <p class="card-text">Doanh thu: <span
+                        th:text="${tkNgay.getDoanhThu() == null ? 0 : tkNgay.getDoanhThu()}"></span> VNĐ</p>
+                <p class="card-text"><span
+                        th:text="${tkNgay.getSoLuongThanhCong() == null ? 0 : tkNgay.getSoLuongThanhCong()}"></span> đơn
+                    hàng thành công</p>
+                <p class="card-text"><span
+                        th:text="${tkNgay.getSoLuongHuy() == null ? 0 : tkNgay.getSoLuongHuy()}"></span> đơn hàng bị hủy
+                </p>
+                <p class="card-text"><span
+                        th:text="${tkNgay.getSoSanPham() == null ? 0 : tkNgay.getSoSanPham()}"></span> sản phẩm được bán
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Doanh số tuần này</h6>
+                <p class="card-text">Doanh thu: <span
+                        th:text="${tkTuan.getDoanhThu() == null ? 0 : tkTuan.getDoanhThu()}"></span> VNĐ</p>
+                <p class="card-text"><span
+                        th:text="${tkTuan.getSoLuongThanhCong() == null ? 0 : tkTuan.getSoLuongThanhCong()}"></span> đơn
+                    hàng thành công</p>
+                <p class="card-text"><span
+                        th:text="${tkTuan.getSoLuongHuy() == null ? 0 : tkTuan.getSoLuongHuy()}"></span> đơn hàng bị hủy
+                </p>
+                <p class="card-text"><span
+                        th:text="${tkTuan.getSoSanPham() == null ? 0 : tkTuan.getSoSanPham()}"></span> sản phẩm được bán
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Doanh số tháng này</h6>
+                <p class="card-text">Doanh thu: <span
+                        th:text="${tkThang.getDoanhThu() == null ? 0 : tkThang.getDoanhThu()}"></span> VNĐ</p>
+                <p class="card-text"><span
+                        th:text="${tkThang.getSoLuongThanhCong() == null ? 0 : tkThang.getSoLuongThanhCong()}"></span>
+                    đơn hàng thành công</p>
+                <p class="card-text"><span
+                        th:text="${tkThang.getSoLuongHuy() == null ? 0 : tkThang.getSoLuongHuy()}"></span> đơn hàng bị
+                    hủy</p>
+                <p class="card-text"><span
+                        th:text="${tkThang.getSoSanPham() == null ? 0 : tkThang.getSoSanPham()}"></span> sản phẩm được
+                    bán</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Doanh số năm nay</h6>
+                <p class="card-text">Doanh thu: <span
+                        th:text="${tkNam.getDoanhThu() == null ? 0 : tkNam.getDoanhThu()}"></span> VNĐ</p>
+                <p class="card-text"><span
+                        th:text="${tkNam.getSoLuongThanhCong() == null ? 0 : tkNam.getSoLuongThanhCong()}"></span> đơn
+                    hàng thành công</p>
+                <p class="card-text"><span
+                        th:text="${tkNam.getSoLuongHuy() == null ? 0 : tkNam.getSoLuongHuy()}"></span> đơn hàng bị hủy
+                </p>
+                <p class="card-text"><span th:text="${tkNam.getSoSanPham() == null ? 0 : tkNam.getSoSanPham()}"></span>
+                    sản phẩm được bán</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="col-md-8 ">
+        <h5 style="color: #333;">Thống kê theo khoảng ngày</h5>
+        <form th:action="@{/nova/thong-ke/thongke}" method="get" style="margin-bottom: 20px;">
+            <label style="display: inline-block; margin-bottom: 5px;">Từ ngày:</label>
+            <input type="date" name="tungay" th:value="${tungay}" style="padding: 8px; margin-bottom: 10px;">
+
+            <label style="display: inline-block; margin-bottom: 5px;">Đến ngày:</label>
+            <input type="date" name="denngay" th:value="${denngay}" style="padding: 8px; margin-bottom: 10px;">
+
+            <button type="submit"
+                    style="display: inline-block; padding: 10px; background-color: #000; color: white; border: none; cursor: pointer;"
+                    onmouseover="this.style.backgroundColor='#333'" onmouseout="this.style.backgroundColor='#000'">Tìm
+                kiếm
+            </button>
+        </form>
+    </div>
+    <div class="col-md-4  ">
+        <div class="card">
+            <div class="card-body " th:each="thongKeItem : ${thongKeKhoangNgayList}">
+                <p class="card-text">Doanh thu: <span
+                        th:text="${thongKeItem.doanhThu == null ? 0 : thongKeItem.doanhThu}"></span> VNĐ</p>
+                <p class="card-text"><span
+                        th:text="${thongKeItem.soLuongThanhCong == null ? 0 : thongKeItem.soLuongThanhCong}"></span>
+                    đơn
+                    hàng thành công</p>
+                <p class="card-text"><span
+                        th:text="${thongKeItem.soLuongHuy == null ? 0 : thongKeItem.soLuongHuy}"></span> đơn hàng bị
+                    hủy
+                </p>
+                <p class="card-text"><span
+                        th:text="${thongKeItem.soSanPham == null ? 0 : thongKeItem.soSanPham}"></span>
+                    sản phẩm được bán</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <div class="col-md-4">
+            <canvas id="myPieChart" width="400px" height="400px"></canvas>
+        </div>
+        <div class="col-md-8">
+            <h5 style="text-align: left;">Top 5 sản phẩm bán chạy nhất</h5>
+            <table style=" margin-top: 20px;">
+                <thead>
+                <tr style=" border-bottom: 1px solid #dddddd;">
+                    <td style=" text-align: left; padding: 10px;">#
+                    </td>
+                    <td style=" text-align: left; padding: 10px;">Mã
+                        sản phẩm
+                    </td>
+                    <td style=" text-align: left; padding: 10px;">
+                        Sản phẩm
+                    </td>
+                    <td style=" text-align: left; padding: 10px;">
+                        Tên Sản phẩm
+                    </td>
+                    <td style=" text-align: left; padding: 10px; ">Số
+                        lượng đã Bán
+                    </td>
+                    <td style=" text-align: left; padding: 10px; ">Doanh
+                        thu
+                    </td>
+                </tr>
+                </thead>
+
+
+                <tr style=" border-bottom: 1px solid #dddddd;" th:each="sanPham, index : ${tkSanPhamList}">
+                    <td style="padding: 10px;text-align: left; " th:text="${index.index + 1}"></td>
+                    <td style="padding: 10px;text-align: left;" th:text="${sanPham.getCode()}"></td>
+                    <td style="padding: 10px;">
+                        <img th:src="@{'/image/product/' + ${sanPham.getId()}}"
+                             style="width: 100px; height: 100px; display: block; margin: 0 auto;">
+                    </td>
+                    <td style="padding: 10px; text-align: left;" th:text="${sanPham.getName()}"></td>
+                    <td style="padding: 10px; text-align: left;" th:text="${sanPham.getSoLuong()}"></td>
+                    <td style="padding: 10px; text-align: left;" th:text="${sanPham.getDoanhThu()}"></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        var tkTrangThaiHoaDonList = /*[[${tkTrangThaiHoaDonList}]]*/ [];
+
+        function getStatusName(status) {
+            switch (status) {
+                case 0:
+                    return 'Đã hủy';
+                case 1:
+                    return 'Đã giao hàng';
+                case 2:
+                    return 'Đang giao hàng';
+                case 3:
+                    return 'Chờ giao hàng';
+                case 10:
+                    return 'Chờ xác nhận';
+                default:
+                    return 'Không xác định';
+            }
+        }
+
+        var labels = tkTrangThaiHoaDonList.map(function (item) {
+            return getStatusName(item.status);
+        });
+
+        var data = tkTrangThaiHoaDonList.map(function (item) {
+            return item.percentage;
+        });
+
+        var backgroundColors = ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#FF9800"];
+
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'top',
+                    labels: {
+                        generateLabels: function (chart) {
+                            var data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function (label, i) {
+                                    var meta = chart.getDatasetMeta(0);
+                                    var ds = data.datasets[0];
+                                    var currentValue = ds.data[i];
+                                    var color = ds.backgroundColor[i];
+
+                                    return {
+                                        text: label + ' (' + currentValue.toFixed(2) + '%)',
+                                        fillStyle: color,
+                                        strokeStyle: color,
+                                        lineWidth: 2,
+                                        hidden: isNaN(currentValue),
+                                        index: i
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Biểu đồ Trạng thái Hóa đơn'
+                }
+            }
+        });
+    </script>
+
+</div>
+</body>
+</html>

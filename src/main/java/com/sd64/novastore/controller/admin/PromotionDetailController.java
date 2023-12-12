@@ -48,6 +48,24 @@ public class PromotionDetailController {
         model.addAttribute("productList", productList);
         return "admin/promotiondetail/promotiondetail";
     }
+    @GetMapping("/thongke")
+    public String ThongKe(){
+        return "admin/thongke/thongke";
+    }
+    @GetMapping("/thongke-hang")
+    public String ThongKeHang(){
+        return "admin/thongke/thongke-hang";
+    }
+    @GetMapping("/thongke-khachhang")
+    public String ThongKeKH(){
+        return "admin/thongke/thongke-khachhang";
+    }
+
+    @GetMapping("/thongke-sanpham")
+    public String ThongKeSP(){
+        return "admin/thongke/thongke-sanpham";
+    }
+
 
 
 
