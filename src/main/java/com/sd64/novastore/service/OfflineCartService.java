@@ -5,18 +5,18 @@
 package com.sd64.novastore.service;
 
 import com.sd64.novastore.model.OfflineCart;
-import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.model.OfflineCartView;
 
 import java.util.List;
 import java.util.Map;
 
 public interface OfflineCartService {
 
-    void addToCart(String codeCtsp, Integer qty);
+    String addToCart(String billId, String detailProductId, Integer qty);
 
-    List<OfflineCart> getCart();
+    List<OfflineCartView> getCart();
 
     void deleteCart(String codeCtsp);
 
-    void emptyCart(Map<String, Integer> empty);
+    void emptyCart(List<OfflineCart> empty);
 }

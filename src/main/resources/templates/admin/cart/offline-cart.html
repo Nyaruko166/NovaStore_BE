@@ -11,33 +11,6 @@
 </head>
 <body>
 <div layout:fragment="content">
-
-    <!-- Button trigger modal -->
-    <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">-->
-    <!--        Launch demo modal-->
-    <!--    </button>-->
-
-    <!--    &lt;!&ndash; Modal &ndash;&gt;-->
-    <!--    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"-->
-    <!--         aria-hidden="true">-->
-    <!--        <div class="modal-dialog" role="document">-->
-    <!--            <div class="modal-content">-->
-    <!--                <div class="modal-header">-->
-    <!--                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>-->
-    <!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-    <!--                        <span aria-hidden="true">&times;</span>-->
-    <!--                    </button>-->
-    <!--                </div>-->
-    <!--                <div class="modal-body">-->
-    <!--                    ...-->
-    <!--                </div>-->
-    <!--                <div class="modal-footer">-->
-    <!--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-    <!--                    <button type="button" class="btn btn-primary">Save changes</button>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
     <div class="container mt-5 p-3 rounded cart">
         <div class="row no-gutters">
             <div class="col-md-8">
@@ -60,23 +33,25 @@
                     </div>
                     <hr>
                     <h6 class="mb-0">Shopping cart</h6>
-                    <div class="d-flex justify-content-between"><span>You have 4 items in your cart</span>
-                        <div class="d-flex flex-row align-items-center"><span class="text-black-50">Sort by:</span>
-                            <div class="price ml-2"><span class="mr-1">price</span><i class="fa fa-angle-down"></i>
+                    <div id="output">
+                        <div class="d-flex justify-content-between"><span>You have 4 items in your cart</span>
+                            <div class="d-flex flex-row align-items-center"><span class="text-black-50">Sort by:</span>
+                                <div class="price ml-2"><span class="mr-1">price</span><i class="fa fa-angle-down"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div th:each="x:${lstCart}"
-                         class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded">
-                        <div class="d-flex flex-row"><img class="rounded" src="https://i.imgur.com/QRwjbm5.jpg"
-                                                          width="40">
-                            <div class="ml-2"><span th:text="${x.name}" class="font-weight-bold d-block"></span><span
-                                    class="spec" th:text="${x.fieldCombine()}"></span></div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center"><span th:text="${x.qty}" class="d-block"></span><span
-                                th:text="${x.calTotalPrice() + ' VNĐ'}" class="d-block ml-5 font-weight-bold"></span>
-                            <i class="fa fa-trash-o ml-3 text-black-50"></i>
+                        <div th:each="x:${lstCart}"
+                             class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded">
+                            <div class="d-flex flex-row"><img class="rounded" src="https://i.imgur.com/QRwjbm5.jpg"
+                                                              width="40">
+                                <div class="ml-2"><span th:text="${x.name}" class="font-weight-bold d-block"></span><span
+                                        class="spec" th:text="${x.fieldCombine()}"></span></div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center"><span th:text="${x.qty}" class="d-block"></span><span
+                                    th:text="${x.calTotalPrice() + ' VNĐ'}" class="d-block ml-5 font-weight-bold"></span>
+                                <i class="fa fa-trash-o ml-3 text-black-50"></i>
+                            </div>
                         </div>
                     </div>
                 </div>

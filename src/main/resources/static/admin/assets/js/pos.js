@@ -21,16 +21,26 @@ function onScanSuccess(decodedText) {
         ++countResults;
         lastResult = decodedText;
         // Handle on success condition with the decoded message.
+        var url = "/nova/pos/add?detail=" + decodedText;
+        console.log(decodedText)
+
         fetch("/nova/pos/add", {
             method: "POST",
             body: JSON.stringify({
-                codeCtsp: decodedText
+                data: decodedText,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        });
+        }).then(updateOutput);
     }
+}
+
+function updateOutput() {
+    $.post("/nova/pos/frag").done(function (fragment) {
+        console.log(fragment);
+        $("#output").replaceWith(fragment);
+    });
 }
 
 function playSound(soundName) {

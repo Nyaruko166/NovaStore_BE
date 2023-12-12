@@ -4,18 +4,19 @@
 
 package com.sd64.novastore.repository;
 
+import com.sd64.novastore.model.OfflineCart;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 @Getter
 @Setter
 public class OfflineCartRepository {
 
-    private Map<String, Integer> cartSP = new HashMap<>();
+    private List<OfflineCart> cartSP = new ArrayList<>();
 
 }
