@@ -14,6 +14,14 @@
     width: 10%;
 }
 
+.w-5 {
+    width: 5%;
+}
+
+.w-95 {
+    width: 95%;
+}
+
 .link-option-admin {
     text-align: center;
 }
@@ -51,30 +59,41 @@
     padding: 10px;
 }
 
-
 li a {
     text-decoration: none;
     color: white;
 }
 
 nav {
-    /* width : 300px; */
     background: #272c33;
     padding: 10px;
-    /* margin : 40px auto; */
 }
 
 .border-product-admin {
     padding-left: 15px;
     display: flex;
     align-items: center;
+    transition: 0.4s all;
+    background-color: transparent;
+    border-radius: 8px;
 }
 
 .border-product-admin:hover {
-    background-color: white;
     color: black !important;
     border-radius: 8px;
+    background: white;
+    color: #272c33;
+}
+.border-product-admin span {
     transition: 0.4s all;
+
+}
+
+.border-product-admin:hover span{
+    color: black !important;
+    border-radius: 8px;
+    background: white;
+    color: #272c33;
 }
 
 .option-admin-product {
@@ -85,12 +104,15 @@ nav {
     font-size: 15px;
     font-weight: bold;
     display: block;
+    font-family: "Open Sans";
 }
 
 .option-admin-product::after {
     float: right;
     right: 10%;
     content: "+";
+}
+.option-admin-product:hover {
 }
 
 .slide {
@@ -117,4 +139,66 @@ nav {
 
 #touch:checked + .slide {
     height: 350px;
+}
+
+.label-select-img {
+    border: 1px solid #888;
+    padding: 40px;
+    cursor: pointer;
+    font-size: 25px;
+}
+
+.image-upload > input {
+    display: none;
+}
+
+.file-details {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.selected-file {
+    position: relative;
+}
+
+.title-name-product {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.info-product {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.btn-show-description {
+    border-radius: 6px;
+    background-color: #272c33;
+    color: white;
+}
+
+
+/*Sweet Alert 2*/
+.swal2-popup-error {
+    /* Màu nền */
+    background-color: white !important;
+    border: 2px solid red;
+}
+
+.swal2-title-error {
+    /* Màu chữ */
+    color: red !important;
+}
+
+.swal2-timer-progress-bar-error {
+    /* Màu thanh thời gian chạy */
+    background-color: red;
+}
+
+.swal2-icon-error {
+    /* Màu icon */
+    /*background-color: white;*/
 }

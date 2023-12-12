@@ -10,70 +10,100 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>CHẤT LIỆU</strong>
+                <h5 style="font-weight: bold">CHẤT LIỆU</h5>
             </div>
-            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${mess}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
+            <div th:if="${mess}">
+                <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnSuccess = document.getElementById("btnSuccess");
+                        btnSuccess.click();
+                    }
+                    alertSuccess = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thành công",
+                            icon: "success",
+                            confirmButtonColor: "#0DC149"
+                        });
+                    }
+                </script>
             </div>
-            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${error}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
+            <div th:if="${error}">
+                <button hidden id="btnError" th:onclick="alertError1([[${error}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnError = document.getElementById("btnError");
+                        btnError.click();
+                    }
+                    alertError1 = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thất bại",
+                            text: content,
+                            icon: "error",
+                            confirmButtonColor: "#d33"
+                        });
+                    }
+                </script>
             </div>
 
             <div class="card-body card-block">
+                <form id="materialExcel" enctype="multipart/form-data">
+                    <div class="card-footer">
+                        <div class="custom-file">
+                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx"
+                                   onchange="setFileName()">
+                            <label class="custom-file-label" for="importFile">Chọn tệp excel</label>
+                        </div>
+                        <div class="mt-2 d-flex justify-content-between">
+                            <div class="d-flex align-content-center">
+                                <button type="button"
+                                        onclick="importExcel('materialExcel', 'importFile', 'errorExcel', 'material')"
+                                        class="btn btn-success">
+                                    <i class="fa-solid fa-file-excel px-4"></i>
+                                </button>
+                                <div id="errorExcel" class="ml-2" style="color: red;"></div>
+                            </div>
+                            <div>
+                                <button class="btn btn-danger" type="button"
+                                        onclick="downLoadTemplate('materialExcel', 'material')">
+                                    <i class="fa-solid fa-table px-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <br>
                 <form id="materialForm" class="form-horizontal">
-                    <div class="card-footer d-flex justify-content-between">
-                        <div>
-                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
-                                <i class="fa-solid fa-square-plus px-4"></i>
-                            </button>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="font-weight-bold form-control-label">Tên chất
+                                                liệu</label>
+                                            <div class="" style="color: red" id="errorName"></div>
                                         </div>
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between">
-                                                    <label class="font-weight-bold form-control-label">Tên chất
-                                                        liệu</label>
-                                                    <div class="" style="color: red" id="errorName"></div>
-                                                </div>
-                                                <input type="text" id="name" name="name"
-                                                       class="form-control" oninput="onInputText('errorName')">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button onclick="clickAdd('material', 'materialForm', 'name', 'errorName', 'tên chất liệu')"
-                                                    type="button" class="btn btn-dark"><i
-                                                    class="fa-solid fa-square-plus px-4"></i></button>
-                                        </div>
+                                        <input type="text" id="name" name="name"
+                                               class="form-control" oninput="onInputText('errorName')">
                                     </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="clickAdd('material', 'materialForm', 'name', 'errorName', 'tên chất liệu')"
+                                            type="button" class="btn btn-dark"><i
+                                            class="fa-solid fa-square-plus px-4"></i></button>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <a href="/nova/material/view-restore">
-                                <button type="button" class="btn btn-dark">
-                                    <i class="fa-solid fa-warehouse px-4"></i>
-                                </button>
-                            </a>
-                        </div>
                     </div>
-                    <br>
                     <div class="border-search">
                         <div class="col-md-1">
                             <button onclick="clickSearch('material', 'materialForm')" type="button"
@@ -87,13 +117,28 @@
                                    class="form-control">
                         </div>
                     </div>
+                    <br>
+                    <div class="card-footer d-flex justify-content-end">
+                        <div>
+                            <button type="button" class="btn btn-dark" data-toggle="modal"
+                                    data-target="#exampleModal">
+                                <i class="fa-solid fa-square-plus px-4"></i>
+                            </button>
+                        </div>
+                        <div class="ml-2">
+                            <a href="/nova/material/view-restore">
+                                <button type="button" class="btn btn-dark">
+                                    <i class="fa-solid fa-warehouse px-4"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
     </h1>
-
 
     <div class="col">
         <div class="card">

@@ -13,11 +13,22 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class ColorServiceImpl implements ColorService {
     @Autowired
     private ColorRepository colorRepository;
+
+    private static final String PREFIX = "M";
+    private static final int INITIAL_COUNTER = 1;
+    private static final int PADDING_LENGTH = 4;
+    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
+    public static String generateProductCode() {
+        int currentCounter = counter.getAndIncrement();
+        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
+        return PREFIX + paddedCounter;
+    }
 
     @Override
     public List<Color> getAll(){
@@ -26,7 +37,7 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public Page<Color> getPage(Integer page){
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return colorRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
@@ -46,8 +57,7 @@ public class ColorServiceImpl implements ColorService {
             color.setStatus(1);
             color.setCreateDate(new java.util.Date());
             color.setUpdateDate(new java.util.Date());
-            colorRepository.save(color);
-            color.setCode("M"+color.getId());
+            color.setCode(generateProductCode());
             colorRepository.save(color);
             return true;
         } else {
@@ -85,7 +95,7 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public Page<Color> search(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return colorRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 1, pageable);
     }
 
@@ -101,7 +111,7 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public Page<Color> getAllSizeDelete(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return colorRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
     }
 
@@ -120,7 +130,7 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public Page<Color> searchDeleted(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return colorRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Service
@@ -88,22 +89,29 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public Cart updateCart(ProductDetail productDetail, Integer quantity, String email) {
+    public boolean updateCart(ProductDetail productDetail, Integer quantity, String email) {
         Customer customer = customerService.findByEmail(email);
         Cart cart = customer.getCart();
         Set<CartDetail> cardItemList = cart.getCartDetails();
         CartDetail item = find(cardItemList, productDetail.getId());
         int itemQuantity = quantity;
 
-        item.setQuantity(itemQuantity);
-        itemRepository.save(item);
-        cart.setCartDetails(cardItemList);
-        int totalItems = totalItem(cardItemList);
-        BigDecimal totalPrice = totalPrice(cardItemList);
-        cart.setTotalItems(totalItems);
-        cart.setTotalPrice(totalPrice);
-        return cartRepository.save(cart);
+        // Kiểm tra số lượng tồn
+        if (itemQuantity <= productDetail.getQuantity()) {
+            item.setQuantity(itemQuantity);
+            itemRepository.save(item);
+            cart.setCartDetails(cardItemList);
+            int totalItems = totalItem(cardItemList);
+            BigDecimal totalPrice = totalPrice(cardItemList);
+            cart.setTotalItems(totalItems);
+            cart.setTotalPrice(totalPrice);
+            cartRepository.save(cart);
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -169,18 +177,64 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public SessionCart updateCartSession(SessionCart sessionCart, ProductDetail productDetail, Integer quantity) {
+    public boolean updateCartSession(SessionCart sessionCart, ProductDetail productDetail, Integer quantity) {
         Set<SessionCartItem> cardItemList = sessionCart.getCartDetails();
         SessionCartItem item = findInSession(sessionCart, productDetail.getId());
         int itemQuantity = quantity;
-        int totalItems = totalItemSession(cardItemList);
-        BigDecimal totalPrice = totalPriceSession(cardItemList);
-        item.setQuantity(itemQuantity);
-        sessionCart.setCartDetails(cardItemList);
-        sessionCart.setTotalPrice(totalPrice);
-        sessionCart.setTotalItems(totalItems);
-        return sessionCart;
+
+        // Kiểm tra số lượng tồn
+        if (itemQuantity <= productDetail.getQuantity()) {
+            item.setQuantity(itemQuantity);
+            sessionCart.setCartDetails(cardItemList);
+            int totalItems = totalItemSession(cardItemList);
+            BigDecimal totalPrice = totalPriceSession(cardItemList);
+            sessionCart.setTotalPrice(totalPrice);
+            sessionCart.setTotalItems(totalItems);
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    @Override
+    public void reloadCartDetail(Cart cart) {
+        Set<CartDetail> cartDetails = cart.getCartDetails();
+        Iterator<CartDetail> iterator = cartDetails.iterator();
+
+        while (iterator.hasNext()) {
+            CartDetail cartDetail = iterator.next();
+            ProductDetail productDetail = cartDetail.getProductDetail();
+            int currentQuantity = cartDetail.getQuantity();
+            int stockQuantity = productDetail.getQuantity();
+            BigDecimal currentPrice = cartDetail.getPrice();
+            BigDecimal productPrice = productDetail.getPrice();
+
+            // Nếu số lượng tồn là 0, xóa CartDetail
+            if (stockQuantity == 0) {
+                iterator.remove();
+                itemRepository.delete(cartDetail);
+            }
+            // Nếu số lượng hiện tại vượt quá số lượng tồn, cập nhật lại số lượng
+            else if (currentQuantity > stockQuantity) {
+                cartDetail.setQuantity(stockQuantity);
+                itemRepository.save(cartDetail);
+            }
+
+            // Nếu giá của CartDetail khác giá của ProductDetail, cập nhật lại giá
+            if (!currentPrice.equals(productPrice)) {
+                cartDetail.setPrice(productPrice);
+                itemRepository.save(cartDetail);
+            }
+        }
+
+        // Cập nhật lại tổng số lượng và tổng giá của giỏ hàng
+        int totalItems = totalItem(cartDetails);
+        BigDecimal totalPrice = totalPrice(cartDetails);
+        cart.setTotalItems(totalItems);
+        cart.setTotalPrice(totalPrice);
+        cartRepository.save(cart);
+    }
+
 
     @Override
     public SessionCart removeFromCartSession(SessionCart sessionCart, ProductDetail productDetail) {

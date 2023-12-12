@@ -10,21 +10,40 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>KÍCH CỠ</strong>
+                <h5 style="font-weight: bold">KÍCH CỠ</h5>
             </div>
-            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${mess}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
+            <div th:if="${mess}">
+                <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnSuccess = document.getElementById("btnSuccess");
+                        btnSuccess.click();
+                    }
+                    alertSuccess = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thành công",
+                            icon: "success",
+                            confirmButtonColor: "#0DC149"
+                        });
+                    }
+                </script>
             </div>
-            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${error}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
+            <div th:if="${error}">
+                <button hidden id="btnError" th:onclick="alertError([[${error}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnError = document.getElementById("btnError");
+                        btnError.click();
+                    }
+                    alertError = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thất bại",
+                            text: content,
+                            icon: "error",
+                            confirmButtonColor: "#d33"
+                        });
+                    }
+                </script>
             </div>
             <div class="card-body card-block">
                 <form id="sizeForm" class="form-horizontal">

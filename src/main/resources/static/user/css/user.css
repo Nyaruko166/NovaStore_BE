@@ -9,7 +9,6 @@
 .btn-shopnow {
     background-color: #d19c97;
     color: black;
-    border-radius: 5px;
 }
 
 .btn-shopnow:hover {
@@ -24,6 +23,19 @@
     padding-block: 2px;
 }
 
+.btn-pagination {
+
+}
+
+.title-detail {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+}
 
 .nova {
     color: white;
@@ -46,8 +58,8 @@
 
 .btn-detail-home {
     border: 2px solid;
+    border-radius: 8px;
     padding-block: 5px;
-    border-radius: 5px;
 }
 
 .btn-detail-home:hover {
@@ -317,9 +329,11 @@
     background-color: #d19c97;
 }
 
-input[type="radio"]:disabled {
-    background: #777777;
+.combobox-select:focus {
+    background-color: #d19c97;
+    color: white;
 }
+
 
 .btn-pagination {
     background-color: #d19c97;
@@ -329,4 +343,9 @@ input[type="radio"]:disabled {
 
 .btn-pagination:hover {
     background-color: #d17d75;
+}
+
+.price-product-detail {
+    font-size: 28px;
+    color: #1C1C1C;
 }

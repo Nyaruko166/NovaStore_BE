@@ -35,14 +35,26 @@ public class FormController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute Form form,
+    public String add(@RequestParam String name,
                       RedirectAttributes redirectAttributes) {
-        if (formService.add(form)) {
+        if (formService.add(name)) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
             return "redirect:/nova/form/page";
         } else {
             redirectAttributes.addFlashAttribute("error", "Tên kiểu dáng đã tồn tại");
             return "redirect:/nova/form/page";
+        }
+    }
+
+    @PostMapping("/attribute")
+    public String attribute(@RequestParam String formName,
+                            RedirectAttributes redirectAttributes) {
+        if (formService.add(formName)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/product/view-add";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên chất liệu đã tồn tại");
+            return "redirect:/nova/product/view-add";
         }
     }
 

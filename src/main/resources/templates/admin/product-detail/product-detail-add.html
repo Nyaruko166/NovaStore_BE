@@ -10,136 +10,412 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>THÊM SẢN PHẨM CHI TIẾT</strong>
+                <h5 style="font-weight: bold">THÊM CHI TIẾT SẢN PHẨM</h5>
             </div>
             <div class="card-body card-block">
-                <form id="productDetailAdd" th:object="${product}" class="form-horizontal">
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <input type="hidden" class="form-control" th:value="${product.id}" name="productId">
+                <form th:object="${createProductDetailForm}" id="productDetailForm" class="form-horizontal"
+                      enctype="multipart/form-data">
+                    <div class="form-detail">
+                        <div class="form-table " th:each="productDetail, iterStat : *{listProductDetail}">
+                            <div class="row form-row">
+                                <div class="form-group col-2">
+                                    <label class="font-weight-bold">Số thứ tự</label>
+<!--                                    <input type="text" class="form-control code-select"-->
+<!--                                           th:field="*{listProductDetail[__${iterStat.index}__].code}" disabled>-->
+                                    <input type="text" class="form-control code-select" disabled>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label class="font-weight-bold">Số lượng</label>
+                                    <input type="number" class="form-control productDetail-quantity" min="0" value="1"
+                                           th:field="*{listProductDetail[__${iterStat.index}__].quantity}">
+                                </div>
+                                <div class="form-group col-2">
+                                    <label class="font-weight-bold">Giá tiền</label>
+                                    <input type="number" class="form-control productDetail-price" min="0" value="0"
+                                           th:field="*{listProductDetail[__${iterStat.index}__].price}">
+                                </div>
+                                <div class="form-group col-2">
+                                    <label class="font-weight-bold">Màu sắc</label>
+                                    <select class="form-control color-select"
+                                            th:field="*{listProductDetail[__${iterStat.index}__].color}">
+                                        <option th:value="${color.id}" th:each="color: ${listColor}"
+                                                th:text="${color.name}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label class="font-weight-bold">Kích cỡ</label>
+                                    <select class="form-control size-select"
+                                            th:field="*{listProductDetail[__${iterStat.index}__].size}">
+                                        <option th:value="${size.id}" th:each="size: ${listSize}" th:text="${size.name}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Mã sản phẩm</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" th:value="*{code}" disabled>
-                        </div>
-                    </div>
+                    <br>
+                    <div class="card-footer d-flex align-items-center form-row">
+                        <button type="button" onclick="addItem()" class="btn btn-dark">
+                            <i class="fa-solid fa-file-circle-plus px-4"></i>
+                        </button>
+                        <div id="error" style="color: red; margin-left: 10px">
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" th:value="*{name}" disabled>
                         </div>
                     </div>
+                    <br>
+                    <div class="card-footer d-flex align-items-center">
+                        <div class="form-section">
+                            <div class="d-flex">
+                                <div class="title title-name-product mr-3">Hình ảnh</div>
+                                <div id="errorImage" style="color: red">
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Mã chi tiết</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="code" name="code" oninput="onInputText('errorCode')">
-                            <small class="" style="color: red"
-                                   id="errorCode" ></small>
-                        </div>
-                    </div>
+                                </div>
+                            </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Số lượng</label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" id="quantity" name="quantity" oninput="onInputText('errorQuantity')">
-                            <small class="" style="color: red"
-                                   id="errorQuantity" ></small>
-                        </div>
-                    </div>
+                            <label class="control-label">
+                                Chọn 1 hoặc nhiều hình ảnh
+                            </label>
+                            <div class="image-group d-flex">
+                                <div class="selected-files row" id="selected-images">
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Kích cỡ</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="sizeId">
-                                <option th:value="${size.id}" th:each="size: ${listSize}"
-                                        th:text="${size.name}"></option>
-                            </select>
+                                </div>
+                                <div class="image-upload" style="margin-left: 20px">
+                                    <label for="file-input" class="label-select-img">
+                                        <i class="fa fa-plus"></i>
+                                    </label>
+                                    <input id="file-input" type="file" multiple accept="image/png, image/jpg, image/jpeg"
+                                    oninput="onInputText('errorImage')"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Màu sắc</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="colorId">
-                                <option th:value="${color.id}" th:each="color: ${listColor}"
-                                        th:text="${color.name}"></option>
-                            </select>
-                        </div>
-                    </div>
+                    <br>
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickAdd()" type="button" class="btn btn-success"><i
-                                    class="fa-solid fa-square-plus"></i>
-                                THÊM
+                            <button type="submit" class="btn btn-dark">
+                                <i class="fa-solid fa-square-plus px-4"></i>
                             </button>
-                            <script th:inline="javascript">
-
-                                checkQuantity = () => {
-                                    let quantity = document.getElementById('quantity').value
-                                    if (quantity === "") {
-                                        document.getElementById('errorQuantity').innerHTML = `Chưa nhập số lượng`
-                                        return false;
-                                    }
-                                    if (quantity < 0) {
-                                        document.getElementById('errorQuantity').innerHTML = `Số lượng phải lớn hơn 0`
-                                        return false;
-                                    }
-                                    if (Number.isInteger(quantity)) {
-                                        document.getElementById('errorQuantity').innerHTML = `Số lượng phải là số nguyên`
-                                        return false;
-                                    }
-                                    return true;
-                                }
-
-                                checkCode = () => {
-                                    let code = document.getElementById('code').value
-                                    if (code.trim() === '') {
-                                        document.getElementById('errorCode').innerHTML = `Chưa nhập mã chi tiết`
-                                        return false;
-                                    }
-                                    return true;
-                                }
-
-                                validate = () => {
-                                    let isCode = checkCode();
-                                    let isQuantity = checkQuantity();
-                                    if (isCode === true && isQuantity === true) {
-                                        return true;
-                                    }
-                                }
-
-                                clickAdd = () => {
-                                    if (validate()) {
-                                        swal({
-                                            title: "Thêm dữ liệu",
-                                            text: "Bạn có muốn thêm dữ liệu không ?",
-                                            icon: "warning",
-                                            buttons: ["Không", "Có"],
-                                            dangerMode: true,
-                                            closeOnClickOutside: false,
-                                        }).then((add) => {
-                                            if (add) {
-                                                document.getElementById('productDetailAdd').action = '/nova/product-detail/add'
-                                                document.getElementById('productDetailAdd').method = 'post'
-                                                document.getElementById('productDetailAdd').submit()
-                                            }
-                                        });
-                                    }
-                                }
-                            </script>
-                            <a th:href="@{|/nova/product/*{id}/product-detail|}">
-                                <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> SẢN PHẨM CHI TIẾT
+                        </div>
+                        <div class="ml-2">
+                            <a href="/nova/product/view-add">
+                                <button type="button" class="btn btn-warning">
+                                    <i class="fa-solid fa-circle-left px-4"></i>
                                 </button>
                             </a>
                         </div>
                     </div>
+                    <script th:inline="javascript">
+                        function onlyAllowNumberInput(e) {
+                            const key = e.key;
+                            if (key === '-') {
+                                e.preventDefault();
+                            }
+                        }
+
+                        function onlyAllowNumberInput2(e) {
+                            const key = e.key;
+                            if (!/[\d\b]/.test(key)) {
+                                e.preventDefault();
+                            }
+                        }
+
+                        $('.productDetail-quantity').on('keydown', function (e) {
+                            onlyAllowNumberInput(e)
+                        })
+                        $('.productDetail-quantity').on('input change', function (e) {
+                            if ($(this).val() < 0) {
+                                $(this).val(0)
+                            }
+                        })
+                        $('.productDetail-quantity').on('focusout', function (e) {
+                            if ($(this).val() == "") {
+                                $(this).val(0)
+                            }
+                        })
+
+                        $('.productDetail-price').on('keydown', function (e) {
+                            onlyAllowNumberInput2(e)
+                        })
+
+                        $('.productDetail-price').on('focusout', function (e) {
+                            if ($(this).val() == "") {
+                                $(this).val(0)
+                            }
+                        })
+
+                        //Handle add product detail
+                        document.querySelector('.productDetail-price').value = 1000
+                        document.querySelector('.productDetail-quantity').value = 1
+                        var listDetail = []
+                        var detail = {}
+                        var colorFirst = document.getElementById('listProductDetail0.color').value
+                        var sizeFirst = document.getElementById('listProductDetail0.size').value
+                        detail.color = colorFirst
+                        detail.size = sizeFirst
+                        debugger
+                        listDetail.push(detail)
+                        document.querySelector(".color-select").addEventListener('change', function (e) {
+                            colorFirst = e.target.value
+                            if (colorFirst != '' && document.querySelector(".size-select").value != '') {
+                                listDetail[0].color = colorFirst
+                                listDetail[0].size = document.querySelector(".size-select").value
+                            }
+                        })
+
+                        document.querySelector(".size-select").addEventListener('change', function (e) {
+                            sizeFirst = e.target.value
+                            if (sizeFirst != '' && document.querySelector(".color-select").value != '') {
+                                listDetail[0].color = document.querySelector(".color-select").value
+                                listDetail[0].size = sizeFirst
+                            }
+
+                        })
+
+                        // function generateRandomBarcode() {
+                        //     return Math.floor(100000000000 + Math.random() * 900000000000).toString();
+                        // }
+
+                        // Autofill barcode when the page loads
+                        var numberical = 1
+                        $('.code-select').val(numberical);
+
+                        function addItem() {
+                            var detailId = detail.id + 1;
+                            var template = document.querySelector('.form-table').cloneNode(true);
+                            var formRows = template.querySelectorAll('.form-row');
+                            numberical++
+                            // Update the index to ensure uniqueness for the new product detail
+                            var newIndex = document.querySelectorAll('.form-table').length;
+
+                            // Update the names of input fields to ensure uniqueness
+                            template.querySelectorAll('input, select').forEach(function (input) {
+                                var name = input.getAttribute('name');
+                                if (name) {
+                                    input.setAttribute('name', name.replace('listProductDetail[0]', 'listProductDetail[' + newIndex + ']'));
+                                    input.value = ''; // Clear input values if needed
+                                }
+                            });
+
+                            template.querySelector('.productDetail-price').value = 1000
+                            template.querySelector('.productDetail-quantity').value = 1
+
+                            $('.productDetail-quantity').on('keydown', function (e) {
+                                onlyAllowNumberInput(e)
+                            })
+                            $('.productDetail-quantity').on('input change', function (e) {
+                                if ($(this).val() < 0) {
+                                    $(this).val(0)
+                                }
+                            })
+                            $('.productDetail-quantity').on('focusout', function (e) {
+                                if ($(this).val() == "") {
+                                    $(this).val(0)
+                                }
+                            })
+                            const deleteButtonContainer = document.createElement('div')
+                            const deleteButton = document.createElement('button');
+                            deleteButton.type = 'button';
+                            deleteButton.classList.add('btn', 'btn-danger');
+                            deleteButton.style.marginTop = '32px'
+                            deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+                            deleteButtonContainer.appendChild(deleteButton)
+
+                            template.querySelector('.form-row').appendChild(deleteButtonContainer)
+
+                            document.querySelector('.form-detail').appendChild(template);
+                            var color = ''
+                            var size = ''
+                            template.querySelector(".color-select").addEventListener('change', function (e) {
+                                color = e.target.value
+                                if (!checkDuplicateSizeAndColor(color, size, template) && color != '' && template.querySelector(".size-select").value != '') {
+                                    listDetail.push({
+                                        color: color,
+                                        size: size
+                                    })
+                                }
+                            })
+
+                            template.querySelector(".size-select").addEventListener('change', function (e) {
+                                size = e.target.value
+                                if (!checkDuplicateSizeAndColor(color, size, template) && size != '' && template.querySelector(".color-select").value != '') {
+                                    listDetail.push({
+                                        color: color,
+                                        size: size
+                                    })
+                                }
+
+                            })
+
+                            deleteButton.onclick = function () {
+                                document.querySelector('.form-detail').removeChild(template)
+                                removeDetailObj(color, size)
+                            }
+
+                            template.querySelector('.code-select').value = numberical
+                        }
+
+                        function removeDetailObj(color, size) {
+
+                            listDetail = listDetail.filter(function (obj) {
+                                return obj.color !== color || obj.size !== size;
+                            });
+                        }
+
+                        function checkDuplicateSizeAndColor(color, size, template) {
+                            listDetail.forEach(item => {
+                                debugger
+                                if (item.color == color && item.size == size) {
+                                    document.querySelector('.form-detail').removeChild(template)
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        },
+                                        customClass: {
+                                            popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                            title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                            icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                            timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                        }
+                                    });
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: "Màu sắc và kích cỡ đã tồn tại !"
+                                    });
+                                    return true
+                                }
+                            })
+                            return false
+                        }
+
+
+                        //Handle file input
+                        const fileInput = document.getElementById("file-input")
+                        fileInput.addEventListener('change', (e) => displaySelectedImages(e))
+                        const selectedFileNames = new Set();
+                        var fileSend = [];
+
+                        function displaySelectedImages(event) {
+                            const selectedImagesContainer = document.getElementById('selected-images');
+
+                            const files = event.target.files;
+
+                            for (let i = 0; i < files.length; i++) {
+                                const file = files[i];
+
+                                // Check if the selected file is an image
+                                if (file.type.startsWith('image/')) {
+                                    const fileSizeInMB = file.size / (1024 * 1024);
+                                    if (fileSizeInMB > 3) {
+                                        Swal.fire("Lỗi", "Vui lòng chọn ảnh có dung lượng < 3MB")
+                                    } else {
+                                        const fileName = file.name
+                                        if (!selectedFileNames.has(fileName)) {
+                                            fileSend.push(file);
+                                            const reader = new FileReader();
+
+                                            reader.onload = function (e) {
+                                                // Create a new div for the image
+                                                const imageDiv = document.createElement('div');
+                                                imageDiv.className = 'selected-file me-2';
+
+                                                // Create an image element
+                                                const image = document.createElement('img');
+                                                image.src = e.target.result;
+                                                image.alt = 'Selected Image';
+                                                image.width = 100;
+                                                image.height = 120;
+
+                                                // Create a div for file details
+
+
+                                                // Create a button to remove the image
+                                                const removeButton = document.createElement('button');
+                                                removeButton.className = 'btn btn-sm btn-outline-danger rounded-circle';
+                                                removeButton.type = 'button';
+                                                removeButton.innerText = 'X';
+                                                removeButton.onclick = function () {
+                                                    // Remove the selected image when the button is clicked
+                                                    selectedImagesContainer.removeChild(imageDiv);
+                                                };
+                                                const fileDetailsDiv = document.createElement('div');
+                                                fileDetailsDiv.className = 'file-details';
+                                                // Append the image and remove button to the div
+                                                fileDetailsDiv.appendChild(removeButton);
+                                                imageDiv.appendChild(fileDetailsDiv);
+                                                imageDiv.appendChild(image);
+
+                                                // Append the image div to the selectedImagesContainer
+                                                selectedImagesContainer.appendChild(imageDiv);
+                                            };
+
+                                            reader.readAsDataURL(file);
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+                        clickAddProductFinal = () => {
+
+                        }
+
+                        document.getElementById("productDetailForm").addEventListener('submit', async function (e) {
+                            e.preventDefault()
+                            if (fileSend.length < 1) {
+                                // Swal.fire('Lỗi', "Vui lòng chọn ít nhất một hình ảnh", "error")
+                                document.getElementById('errorImage').innerHTML = 'Vui lòng chọn nhất 1 ảnh'
+                                return
+                            }
+                            var canAdd = true
+                            $('.color-select').each(function (index, item) {
+                                console.log($(item).val())
+                                if ($(item).val() == null) {
+                                    // Swal.fire("Lỗi", "Vui lòng chọn màu cho sản phẩm");
+                                    document.getElementById('error').innerHTML = 'Vui lòng chọn màu cho sản phẩm'
+                                    canAdd = false;
+                                    return false; // To break out of the loop
+                                }
+                            });
+
+                            $('.size-select').each(function (index, item) {
+                                if ($(item).val() == null) {
+                                    // swal("Lỗi", "Vui lòng chọn kích cỡ cho sản phẩm");
+                                    document.getElementById('error').innerHTML = 'Vui lòng chọn kích cỡ cho sản phẩm'
+                                    canAdd = false;
+                                    return false; // To break out of the loop
+                                }
+                            });
+                            if (!canAdd) {
+                                return false
+                            }
+
+                            var formData = new FormData(this)
+                            fileSend.forEach(file => formData.append("files", file))
+                            await fetch("/admin/product-save", {
+                                method: "POST",
+                                body: formData,
+                            })
+
+                            window.location = "/admin/product-all";
+                        })
+
+                    </script>
                 </form>
+                <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+                        crossorigin="anonymous"></script>
+                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"
+                        th:inline="javascript"></script>
             </div>
         </div>
     </div>

@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +30,16 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Autowired
     private ProductDetailExcelUtil productDetailExcelUtil;
+
+    private static final String PREFIX = "CT";
+    private static final int INITIAL_COUNTER = 1;
+    private static final int PADDING_LENGTH = 4;
+    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
+    public static String generateProductCode() {
+        int currentCounter = counter.getAndIncrement();
+        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
+        return PREFIX + paddedCounter;
+    }
 
 
     @Override
@@ -118,7 +129,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Override
     public Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorId(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMin, priceMax, sizeId, colorId, pageable)
                 .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
         long totalElements = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMin, priceMax, sizeId, colorId).stream().count();
@@ -149,7 +160,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Override
     public Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorIdDeleted(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorIdDeleted(productId, priceMin, priceMax, sizeId, colorId, pageable)
                 .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
         long totalElements = productDetailRepository.getProductByPriceAndSizeIdAndColorIdDeleted(productId, priceMin, priceMax, sizeId, colorId).stream().count();
@@ -182,7 +193,5 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         }
         return totalPage;
     }
-
-
 
 }

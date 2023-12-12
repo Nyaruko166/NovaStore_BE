@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -26,6 +27,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductExcelUtil productExcelUtil;
+
+    private static final String PREFIX = "SP";
+    private static final int INITIAL_COUNTER = 1;
+    private static final int PADDING_LENGTH = 4;
+    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
+    public static String generateProductCode() {
+        int currentCounter = counter.getAndIncrement();
+        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
+        return PREFIX + paddedCounter;
+    }
 
 
     @Override
@@ -40,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDto> getAll(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return productRepository.getAllProduct(pageable);
     }
 
@@ -56,8 +67,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(Category.builder().id(categoryId).build());
         product.setBrand(Brand.builder().id(brandId).build());
         product.setForm(Form.builder().id(formId).build());
-        productRepository.save(product);
-        product.setCode("SP"+product.getId());
+        product.setCode(generateProductCode());
         productRepository.save(product);
         return true;
     }
@@ -95,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return productRepository.search(pageable, brandId, categoryId, formId, materialId, productName.trim(), description.trim());
     }
 
@@ -124,13 +134,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDto> getAllProductDeleted(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return productRepository.getAllProductDeleted(pageable);
     }
 
     @Override
     public Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return productRepository.searchProductDeleted(pageable, brandId, categoryId, formId, materialId, productName.trim(), description.trim());
     }
 
@@ -146,4 +156,5 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
     }
+
 }

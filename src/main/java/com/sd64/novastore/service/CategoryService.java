@@ -10,7 +10,7 @@ public interface CategoryService {
 
     Page<Category> getPage(Integer page);
 
-    Boolean add(Category category);
+    Boolean add(String name);
 
     Boolean update(Category category, Integer id);
 

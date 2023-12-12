@@ -93,17 +93,30 @@ public class UserCartController {
     public String updateCart(@RequestParam("id") Integer id,
                              @RequestParam("quantity") Integer quantity,
                              Principal principal,
+                             RedirectAttributes redirectAttributes,
                              HttpSession session){
         ProductDetail productDetail = userProductDetailService.getProductDetailById(id);
         if (principal == null){
             SessionCart oldSessionCart = (SessionCart) session.getAttribute("sessionCart");
-            SessionCart sessionCart = cartService.updateCartSession(oldSessionCart, productDetail, quantity);
-            session.setAttribute("sessionCart", sessionCart);
-            session.setAttribute("totalItems", sessionCart.getTotalItems());
+            boolean check = cartService.updateCartSession(oldSessionCart, productDetail, quantity);
+            if (check){
+                SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+                session.setAttribute("sessionCart", sessionCart);
+                session.setAttribute("totalItems", sessionCart.getTotalItems());
+                redirectAttributes.addFlashAttribute("success","Đã update số lượng sản phẩm");
+            } else {
+                redirectAttributes.addFlashAttribute("success","Số lượng phải nhỏ hơn hoặc bằng số lượng tồn");
+            }
         } else {
             String email = principal.getName();
-            Cart cart = cartService.updateCart(productDetail, quantity, email);
-            session.setAttribute("totalItems", cart.getTotalItems());
+            boolean check = cartService.updateCart(productDetail, quantity, email);
+            if (check){
+                redirectAttributes.addFlashAttribute("success","Đã update số lượng sản phẩm");
+                Cart cart = cartService.getCart(email);
+                session.setAttribute("totalItems", cart.getTotalItems());
+            } else {
+                redirectAttributes.addFlashAttribute("success","Số lượng phải nhỏ hơn hoặc bằng số lượng tồn");
+            }
         }
         return "redirect:/cart";
     }

@@ -79,8 +79,10 @@ public class HomeController {
             Cart cart = customer.getCart();
             SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
             if (sessionCart != null) {
-                cartService.combineCart(sessionCart, principal.getName());
-                session.removeAttribute("sessionCart");
+                if (sessionCart.getCartDetails() != null){
+                    cartService.combineCart(sessionCart, principal.getName());
+                    session.removeAttribute("sessionCart");
+                }
             }
             if (cart != null) {
                 session.setAttribute("totalItems", cart.getTotalItems());

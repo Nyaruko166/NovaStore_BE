@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -73,5 +74,15 @@ public class VoucherServiceImpl implements VoucherService {
     public Page<Voucher> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return voucherRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public List<Voucher> getVoucherByCartPrice(BigDecimal cartPrice) {
+        return voucherRepository.getVoucherByCartPrice(cartPrice);
+    }
+
+    @Override
+    public Voucher getVoucherById(Integer id) {
+        return voucherRepository.findById(id).orElse(null);
     }
 }

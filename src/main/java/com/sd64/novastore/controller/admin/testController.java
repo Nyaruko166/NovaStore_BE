@@ -105,4 +105,9 @@ public class testController {
     }
 
 
+//    @GetMapping("/test")
+    public ResponseEntity<?> test() {
+        Page<ProductHomeResponse> pageProductYouMayLikeResponse = productViewService.getAllProductYouMayLike(0);
+        return ResponseEntity.ok(pageProductYouMayLikeResponse.getContent());
+    }
 }

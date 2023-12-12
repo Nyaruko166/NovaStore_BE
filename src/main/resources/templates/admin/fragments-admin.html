@@ -6,7 +6,7 @@
     <!-- Favicon -->
     <link th:href="@{/admin/images/nova.png}" rel="icon">
 
-<!--    <link rel="shortcut icon" th:href="@{/admin/images/favicon.ico}">-->
+    <!--    <link rel="shortcut icon" th:href="@{/admin/images/favicon.ico}">-->
 
     <link rel="stylesheet" th:href="@{/admin/vendors/bootstrap/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/admin/vendors/font-awesome/css/font-awesome.min.css}">
@@ -16,12 +16,19 @@
     <link rel="stylesheet" th:href="@{/admin/vendors/jqvmap/dist/jqvmap.min.css}">
 
     <!--    css-->
+    <link rel="stylesheet" th:href="@{/admin/assets/css/offline-cart.css}">
     <link rel="stylesheet" th:href="@{/admin/assets/css/style.css}">
     <link rel="stylesheet" th:href="@{/admin/assets/css/index.css}">
 
     <!--    fontawesome-->
     <script th:src="@{https://kit.fontawesome.com/1943ac9f5b.js}" crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/@popperjs/core@2" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:inline="javascript" th:src="@{/admin/assets/js/html5-qrcode.min.js}"></script>
     <script th:inline="javascript" th:src="@{/admin/vendors/jquery/dist/jquery.min.js}"></script>
     <script th:inline="javascript" th:src="@{/admin/vendors/popper.js/dist/umd/popper.min.js}"></script>
     <script th:inline="javascript" th:src="@{/admin/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
@@ -99,31 +106,29 @@
 
         function clickAdd(entity, idForm, idName, errorName, textName) {
             if (checkName(idName, errorName, textName)) {
-                swal({
+                Swal.fire({
                     title: "Thêm dữ liệu",
                     text: "Bạn có muốn thêm dữ liệu không ?",
-                    icon: "warning",
-                    buttons: ["Không", "Có"],
-                    dangerMode: true,
-                    closeOnClickOutside: false,
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#0DC149",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Có",
+                    cancelButtonText: "Không",
+                    allowOutsideClick: false
                 }).then((add) => {
                     if (add) {
                         document.getElementById(idForm).action = '/nova/' + entity + '/add'
                         document.getElementById(idForm).method = 'post'
                         document.getElementById(idForm).submit()
-                        // swal("Thêm dữ liệu thành công", {
-                        //     icon: "success",
-                        // })
                     }
                 });
             }
         }
 
         function validateFile(idInputFile, errorName) {
-            debugger
             let fileInput = document.getElementById(idInputFile);
             let file = fileInput.files;
-            debugger
             if (file.length === 0) {
                 document.getElementById(errorName).innerHTML = `Vui lòng chọn file`
                 return false;
@@ -139,13 +144,16 @@
 
         function clickUpdate(idForm, idName, errorName, textName) {
             if (checkName(idName, errorName, textName)) {
-                swal({
+                Swal.fire({
                     title: "Sửa dữ liệu",
                     text: "Bạn có muốn sửa dữ liệu không ?",
-                    icon: "warning",
-                    buttons: ["Không", "Có"],
-                    dangerMode: true,
-                    closeOnClickOutside: false,
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#0DC149",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Có",
+                    cancelButtonText: "Không",
+                    allowOutsideClick: false
                 }).then((update) => {
                     if (update) {
                         document.getElementById(idForm).submit()
@@ -155,15 +163,18 @@
         }
 
         function clickDelete(entity, idForm, idDelete) {
-            swal({
+            Swal.fire({
                 title: "Xóa dữ liệu",
                 text: "Bạn có muốn xóa dữ liệu không ?",
-                icon: "warning",
-                buttons: ["Không", "Có"],
-                dangerMode: true,
-                closeOnClickOutside: false,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#0DC149",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có",
+                cancelButtonText: "Không",
+                allowOutsideClick: false
             }).then((deleted) => {
-                if (deleted) {
+                if (deleted.isConfirmed) {
                     document.getElementById(idForm).action = '/nova/' + entity + "/delete/" + idDelete
                     document.getElementById(idForm).method = 'post'
                     document.getElementById(idForm).submit()
@@ -172,13 +183,16 @@
         }
 
         clickRestore = (entity, idForm, idRestore) => {
-            swal({
+            Swal.fire({
                 title: "Khôi phục dữ liệu",
                 text: "Bạn có muốn khôi phục dữ liệu không ?",
-                icon: "warning",
-                buttons: ["Không", "Có"],
-                dangerMode: true,
-                closeOnClickOutside: false,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#0DC149",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có",
+                cancelButtonText: "Không",
+                allowOutsideClick: false
             }).then((restore) => {
                 if (restore) {
                     document.getElementById(idForm).action = '/nova/' + entity + "/restore/" + idRestore
@@ -188,17 +202,21 @@
             });
         }
 
-        function importExcel(idForm, name, error) {
+        function importExcel(idForm, name, error, entity) {
             if (validateFile(name, error)) {
-                swal({
+                Swal.fire({
                     title: "Thêm dữ liệu Excel",
                     text: "Bạn có muốn thêm dữ liệu excel không ?",
-                    icon: "warning",
-                    buttons: ["Không", "Có"],
-                    dangerMode: true,
-                    closeOnClickOutside: false,
-                }).then((update) => {
-                    if (update) {
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#0DC149",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Có",
+                    cancelButtonText: "Không",
+                    allowOutsideClick: false
+                }).then((excel) => {
+                    if (excel) {
+                        document.getElementById(idForm).action = '/nova/' + entity + '/excel'
                         document.getElementById(idForm).method = 'post'
                         document.getElementById(idForm).submit()
                     }
@@ -218,6 +236,11 @@
             document.getElementById(id).submit()
         }
 
+        downLoadTemplate = (idForm, entity) => {
+            document.getElementById(idForm).action = '/template/' + entity
+            document.getElementById(idForm).method = 'get'
+            document.getElementById(idForm).submit()
+        }
     </script>
 
     <link th:href='@{https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800}' rel='stylesheet'
