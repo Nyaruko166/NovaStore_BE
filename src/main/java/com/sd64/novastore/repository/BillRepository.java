@@ -16,6 +16,8 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
     Page<Bill> findAllByStatus(Pageable pageable, Integer status);
 
+    Bill findTopByOrderByIdDesc();
+
     @Query("SELECT b FROM Bill b WHERE b.status = :status AND b.customer.id = :customerId")
     List<Bill> getOrders(@Param("status") Integer status, @Param("customerId") Integer customerId);
 

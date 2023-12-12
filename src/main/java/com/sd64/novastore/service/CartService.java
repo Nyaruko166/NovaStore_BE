@@ -7,13 +7,15 @@ import com.sd64.novastore.model.SessionCart;
 public interface CartService {
     Cart addToCart(ProductDetail productDetail, Integer quantity, String email);
 
-    Cart updateCart(ProductDetail productDetail, Integer quantity, String email);
+    boolean updateCart(ProductDetail productDetail, Integer quantity, String email);
 
     Cart removeFromCart(ProductDetail productDetail, String email);
 
     SessionCart addToCartSession(SessionCart sessionCart, ProductDetail productDetail, Integer quantity);
 
-    SessionCart updateCartSession(SessionCart sessionCart, ProductDetail productDetail, Integer quantity);
+    boolean updateCartSession(SessionCart sessionCart, ProductDetail productDetail, Integer quantity);
+
+    void reloadCartDetail(Cart cart);
 
     SessionCart removeFromCartSession(SessionCart sessionCart, ProductDetail productDetail);
 

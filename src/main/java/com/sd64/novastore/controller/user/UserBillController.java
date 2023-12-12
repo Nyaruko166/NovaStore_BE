@@ -6,6 +6,7 @@ import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.SessionCart;
+import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.response.MomoPaymentResponse;
 import com.sd64.novastore.response.VNPaymentResponse;
 import com.sd64.novastore.service.AddressService;
@@ -13,6 +14,7 @@ import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.CartService;
 import com.sd64.novastore.service.CustomerService;
 import com.sd64.novastore.service.PaymentService;
+import com.sd64.novastore.service.VoucherService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.security.Principal;
 import java.util.List;
@@ -48,19 +51,30 @@ public class UserBillController {
     @Autowired
     private PaymentService paymentService;
 
+    @Autowired
+    private VoucherService voucherService;
+
     JsonObject jsonData = new JsonObject();
 
     @GetMapping("/checkout")
     public String checkOut(Principal principal, Model model, HttpSession session) {
         if (principal == null) {
             SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+            List<Voucher> listVoucher = voucherService.getVoucherByCartPrice(sessionCart.getTotalPrice());
             model.addAttribute("cart", sessionCart);
+            model.addAttribute("listVoucher", listVoucher);
+            model.addAttribute("loggedIn", false);
+            model.addAttribute("email", "");
         } else {
             Customer customer = customerService.findByEmail(principal.getName());
             Cart cart = cartService.getCart(principal.getName());
             Address defaultAddress = addressService.findAccountDefaultAddress(customer.getId());
             List<Address> listAddress = addressService.findAccountAddress(customer.getId());
+            List<Voucher> listVoucher = voucherService.getVoucherByCartPrice(cart.getTotalPrice());
             model.addAttribute("cart", cart);
+            model.addAttribute("listVoucher", listVoucher);
+            model.addAttribute("loggedIn", true);
+            model.addAttribute("email", principal.getName());
             model.addAttribute("defaultAddress", defaultAddress);
             model.addAttribute("listAddress", listAddress);
         }
@@ -100,36 +114,61 @@ public class UserBillController {
                               @RequestParam("district") String district,
                               @RequestParam("ward") String ward,
                               @RequestParam("payment") String payment,
+                              @RequestParam(value = "voucher", required = false) Integer voucher,
                               HttpServletRequest request) throws IOException, URISyntaxException {
         String address = specificAddress + ", " + ward + ", " + district + ", " + city;
         if (principal == null){
             SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
             if (payment.equals("VNPAY")){
                 //Long dok
-                jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), address, name, phoneNumber, email);
+                if (voucher == null){
+                    jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                } else {
+                    Voucher uuDai = voucherService.getVoucherById(voucher);
+                    BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
+                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
             if (payment.equals("Momo")){
                 //Long dok
-                jsonData = paymentService.MomoPayCreate(sessionCart.getTotalPrice().longValue(), address, name, phoneNumber, email);
+                if (voucher == null){
+                    jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                } else {
+                    Voucher uuDai = voucherService.getVoucherById(voucher);
+                    BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
+                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
-            billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment);
+            billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment, voucher);
             session.removeAttribute("totalItems");
             return "redirect:/home";
         } else {
             Cart cart = cartService.getCart(principal.getName());
             if (payment.equals("VNPAY")){
                 //Long dok
-                jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), address, name, phoneNumber, email);
+                if (voucher == null){
+                    jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                } else {
+                    Voucher uuDai = voucherService.getVoucherById(voucher);
+                    BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
+                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
             if (payment.equals("Momo")){
                 //Long dok
-                jsonData = paymentService.MomoPayCreate(cart.getTotalPrice().longValue(), address, name, phoneNumber, email);
+                if (voucher == null){
+                    jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                } else {
+                    Voucher uuDai = voucherService.getVoucherById(voucher);
+                    BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
+                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
-            billService.placeOrder(cart, name, address, phoneNumber, payment);
+            billService.placeOrder(cart, name, address, phoneNumber, payment, voucher);
             session.removeAttribute("totalItems");
             attributes.addFlashAttribute("success", "Đặt hàng thành công!");
         }
@@ -153,7 +192,8 @@ public class UserBillController {
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String email = jsonData.get("email").toString().replaceAll("\"", "");
-                billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment);
+                String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
+                billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment, Integer.valueOf(voucher));
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
@@ -167,7 +207,8 @@ public class UserBillController {
                 String address = jsonData.get("address").toString().replaceAll("\"", "");
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
-                billService.placeOrder(cart, name, address, phoneNumber, payment);
+                String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
+                billService.placeOrder(cart, name, address, phoneNumber, payment, Integer.valueOf(voucher));
                 session.removeAttribute("totalItems");
                 attributes.addFlashAttribute("success", "Đặt hàng thành công!");
                 return "redirect:/orders";
@@ -188,7 +229,8 @@ public class UserBillController {
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String email = jsonData.get("email").toString().replaceAll("\"", "");
-                billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment);
+                String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
+                billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment, Integer.valueOf(voucher));
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
@@ -202,7 +244,8 @@ public class UserBillController {
                 String address = jsonData.get("address").toString().replaceAll("\"", "");
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
-                billService.placeOrder(cart, name, address, phoneNumber, payment);
+                String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
+                billService.placeOrder(cart, name, address, phoneNumber, payment, Integer.valueOf(voucher));
                 session.removeAttribute("totalItems");
                 attributes.addFlashAttribute("success", "Đặt hàng thành công!");
                 return "redirect:/orders";

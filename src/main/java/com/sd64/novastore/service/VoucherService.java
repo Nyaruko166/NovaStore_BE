@@ -4,6 +4,7 @@ import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.Voucher;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface VoucherService {
@@ -20,4 +21,8 @@ public interface VoucherService {
 
     Voucher getOne(Integer id);
     Page<Voucher> search(String name, int page);
+
+    List<Voucher> getVoucherByCartPrice(BigDecimal cartPrice);
+
+    Voucher getVoucherById(Integer id);
 }
