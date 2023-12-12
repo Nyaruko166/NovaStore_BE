@@ -26,12 +26,24 @@
         <div th:if="${check}">
             <h4 class="text-center" style="color: darkslategray" th:text="${check}"><i class="text-info font-weight-bold text-center"></i></h4>
         </div>
+        <div th:if="${check}" class="text-center">
+            <a th:href="@{/shop}" class="btn btn-success">MUA NGAY</a>
+        </div>
+        <!--            Notification-->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert"
+             style="margin: 5px">
+            <span th:text="${success}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         <div class="row px-xl-5">
             <div class="col-lg-9 table-responsive mb-5">
                 <table class="table table-bordered text-center mb-0" th:if="${grandTotal}">
                     <thead class="bg-secondary text-dark">
                         <tr>
                             <th></th>
+                            <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th>Phân loại sản phẩm</th>
                             <th>Đơn giá</th>
@@ -43,6 +55,7 @@
                     <tbody class="align-middle">
                         <tr th:each="cartItem : ${cart.cartDetails}">
                             <td class="align-middle"><img th:src="@{/user/img/product-1.jpg}" alt="" style="width: 50px;"></td>
+                            <td class="align-middle" th:text="${cartItem.productDetail.code}"></td>
                             <td class="align-middle" th:text="${cartItem.productDetail.product.name}"></td>
                             <td class="align-middle"
                                 th:text="'Màu: ' + ${cartItem.productDetail.color.name}
@@ -65,6 +78,9 @@
                                             </button>
                                         </div>
                                     </div>
+                                    <div class="mt-2 text-center">
+                                        Số lượng tồn: <span th:text="${cartItem.productDetail.quantity}"></span>
+                                    </div>
                                 </td>
                                 <td class="align-middle"
                                     th:text="'₫' + ${#numbers.formatDecimal(cartItem.price * cartItem.quantity, 0, 'COMMA', 0, 'POINT')}"
@@ -81,14 +97,6 @@
                 </table>
             </div>
             <div class="col-lg-3" th:if="${grandTotal}">
-                <form class="mb-5" action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control p-4" placeholder="Coupon Code">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary">Áp dụng Voucher</button>
-                        </div>
-                    </div>
-                </form>
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Tổng quan giỏ hàng</h4>
