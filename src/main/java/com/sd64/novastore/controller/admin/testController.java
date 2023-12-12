@@ -104,7 +104,7 @@ public class testController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/test")
+//    @GetMapping("/test")
     public ResponseEntity<?> test() {
         Page<ProductHomeResponse> pageProductYouMayLikeResponse = productViewService.getAllProductYouMayLike(0);
         return ResponseEntity.ok(pageProductYouMayLikeResponse.getContent());

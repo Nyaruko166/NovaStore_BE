@@ -4,20 +4,33 @@ import com.sd64.novastore.model.Form;
 import com.sd64.novastore.model.Material;
 import com.sd64.novastore.repository.MaterialRepository;
 import com.sd64.novastore.service.MaterialService;
+import com.sd64.novastore.utils.FileUtil;
+import com.sd64.novastore.utils.product.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class MaterialServiceImpl implements MaterialService {
     @Autowired
     private MaterialRepository materialRepository;
+
+    @Autowired
+    private ExcelUtil excelUtil;
+
+    public String generateProductCode(Integer id) {
+        String code = String.format("%04d", id);
+        return "CL"+code;
+    }
 
     @Override
     public List<Material> getAll() {
@@ -26,7 +39,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Page<Material> getPage(Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return materialRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
@@ -39,13 +52,15 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public Boolean add(Material material) {
-        if (checkName(material.getName())) {
+    public Boolean add(String name) {
+        if (checkName(name)) {
+            Material material = new Material();
+            material.setName(name);
             material.setStatus(1);
             material.setCreateDate(new java.util.Date());
             material.setUpdateDate(new java.util.Date());
             materialRepository.save(material);
-            material.setCode("C"+material.getId());
+            material.setCode(generateProductCode(material.getId()));
             materialRepository.save(material);
             return true;
         } else {
@@ -83,7 +98,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Page<Material> search(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return materialRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 1, pageable);
     }
 
@@ -99,7 +114,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Page<Material> getAllDeleted(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return materialRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
     }
 
@@ -118,7 +133,31 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Page<Material> searchDelete(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return materialRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
+    }
+
+    @Override
+    public Material getOne(Integer id) {
+        return materialRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Integer importExcel(MultipartFile file) throws IOException {
+        if (excelUtil.isValidExcel(file)) {
+            String uploadDir = "./src/main/resources/static/filecustom/material/";
+            String fileName = file.getOriginalFilename();
+            String excelPath = FileUtil.copyFile(file, fileName, uploadDir);
+            String status = excelUtil.getFromExcel(excelPath);
+            if (status.contains("Sai dữ liệu")) {
+                return -1;
+            } else if (status.contains("Trùng tên")) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0; // Lỗi file
+        }
     }
 }

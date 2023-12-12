@@ -12,11 +12,22 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class FormServiceImpl implements FormService {
     @Autowired
     private FormRepository formRepository;
+
+    private static final String PREFIX = "KD";
+    private static final int INITIAL_COUNTER = 1;
+    private static final int PADDING_LENGTH = 4;
+    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
+    public static String generateProductCode() {
+        int currentCounter = counter.getAndIncrement();
+        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
+        return PREFIX + paddedCounter;
+    }
 
     @Override
     public List<Form> getAll(){
@@ -25,7 +36,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Page<Form> getPage(Integer page){
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return formRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
@@ -38,13 +49,14 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public Boolean add(Form form) {
-        if (checkName(form.getName())) {
+    public Boolean add(String name) {
+        if (checkName(name)) {
+            Form form = new Form();
+            form.setName(name);
             form.setStatus(1);
             form.setCreateDate(new java.util.Date());
             form.setUpdateDate(new java.util.Date());
-            formRepository.save(form);
-            form.setCode("K"+form.getId());
+            form.setCode(generateProductCode());
             formRepository.save(form);
             return true;
         } else {
@@ -82,7 +94,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Page<Form> search(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return formRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 1, pageable);
     }
 
@@ -98,7 +110,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Page<Form> getAllDeleted(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return formRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
     }
 
@@ -117,7 +129,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Page<Form> searchDelete(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return formRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
     }
 }

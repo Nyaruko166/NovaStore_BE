@@ -13,11 +13,22 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
+
+    private static final String PREFIX = "L";
+    private static final int INITIAL_COUNTER = 1;
+    private static final int PADDING_LENGTH = 4;
+    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
+    public static String generateProductCode() {
+        int currentCounter = counter.getAndIncrement();
+        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
+        return PREFIX + paddedCounter;
+    }
 
     @Override
     public List<Category> getAll() {
@@ -26,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Page<Category> getPage(Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return categoryRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
@@ -39,13 +50,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Boolean add(Category category) {
-        if (checkName(category.getName())) {
+    public Boolean add(String name) {
+        if (checkName(name)) {
+            Category category = new Category();
+            category.setName(name);
             category.setStatus(1);
             category.setCreateDate(new java.util.Date());
             category.setUpdateDate(new java.util.Date());
-            categoryRepository.save(category);
-            category.setCode("L"+category.getId());
+            category.setCode(generateProductCode());
             categoryRepository.save(category);
             return true;
         } else {
@@ -83,7 +95,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Page<Category> search(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return categoryRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 1, pageable);
     }
 
@@ -99,7 +111,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Page<Category> getAllDeleted(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return categoryRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
     }
 
@@ -118,7 +130,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Page<Category> searchDelete(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return categoryRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
     }
 }

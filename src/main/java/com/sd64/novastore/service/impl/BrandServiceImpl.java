@@ -12,11 +12,22 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
     private BrandRepository brandRepository;
+
+    private static final String PREFIX = "TH";
+    private static final int INITIAL_COUNTER = 1;
+    private static final int PADDING_LENGTH = 4;
+    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
+    public static String generateProductCode() {
+        int currentCounter = counter.getAndIncrement();
+        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
+        return PREFIX + paddedCounter;
+    }
 
     @Override
     public List<Brand> getAll() {
@@ -25,7 +36,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Page<Brand> getPage(Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable,1);
     }
 
@@ -38,13 +49,14 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Boolean add(Brand brand) {
-        if (checkName(brand.getName())) {
+    public Boolean add(String name) {
+        if (checkName(name)) {
+            Brand brand = new Brand();
+            brand.setName(name);
             brand.setStatus(1);
             brand.setCreateDate(new Date());
             brand.setUpdateDate(new Date());
-            brandRepository.save(brand);
-            brand.setCode("T"+brand.getId());
+            brand.setCode(generateProductCode());
             brandRepository.save(brand);
             return true;
         }
@@ -80,13 +92,13 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Page<Brand> search(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return brandRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 1, pageable);
     }
 
     @Override
     public Page<Brand> searchDelete(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return brandRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
     }
 
@@ -102,7 +114,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Page<Brand> getAllDeleted(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
     }
 

@@ -13,12 +13,23 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class SizeServiceImpl implements SizeService {
 
     @Autowired
     private SizeRepository sizeRepository;
+
+    private static final String PREFIX = "S";
+    private static final int INITIAL_COUNTER = 1;
+    private static final int PADDING_LENGTH = 4;
+    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
+    public static String generateProductCode() {
+        int currentCounter = counter.getAndIncrement();
+        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
+        return PREFIX + paddedCounter;
+    }
 
     @Override
     public List<Size> getAll() {
@@ -27,7 +38,7 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public Page<Size> getPage(Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return sizeRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
@@ -47,8 +58,7 @@ public class SizeServiceImpl implements SizeService {
             size.setStatus(1);
             size.setCreateDate(new Date());
             size.setUpdateDate(new Date());
-            sizeRepository.save(size);
-            size.setCode("S"+size.getId());
+            size.setCode(generateProductCode());
             sizeRepository.save(size);
             return true;
         } else {
@@ -86,7 +96,7 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public Page<Size> search(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return sizeRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 1, pageable);
     }
 
@@ -102,7 +112,7 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public Page<Size> getAllSizeDelete(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return sizeRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 0);
     }
 
@@ -121,7 +131,7 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public Page<Size> searchDeleted(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 10);
         return sizeRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
     }
 }

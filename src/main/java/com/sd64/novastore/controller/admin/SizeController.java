@@ -34,8 +34,7 @@ public class SizeController {
     }
 
     @PostMapping("/add")
-    public String add(@RequestParam Integer productId,
-                      @RequestParam String name,
+    public String add(@RequestParam String name,
                       RedirectAttributes redirectAttributes) {
         if (sizeService.add(name)) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");

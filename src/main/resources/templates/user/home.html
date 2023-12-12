@@ -113,68 +113,6 @@
 
 <hr class="w-90">
 
-<!-- Categories Start -->
-<!--<div class="container-fluid pt-5">-->
-<!--    <div class="row px-xl-5 pb-3">-->
-<!--        <div class="col-lg-4 col-md-6 pb-1">-->
-<!--            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                <p class="text-right">15 Products</p>-->
-<!--                <a th:href="@{/}" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                    <img class="img-fluid" th:src="@{/user/img/cat-1.jpg}" alt="">-->
-<!--                </a>-->
-<!--                <h5 class="font-weight-semi-bold m-0">Men's dresses</h5>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-lg-4 col-md-6 pb-1">-->
-<!--            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                <p class="text-right">15 Products</p>-->
-<!--                <a th:href="@{/}" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                    <img class="img-fluid" th:src="@{/user/img/cat-2.jpg}" alt="">-->
-<!--                </a>-->
-<!--                <h5 class="font-weight-semi-bold m-0">Women's dresses</h5>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-lg-4 col-md-6 pb-1">-->
-<!--            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                <p class="text-right">15 Products</p>-->
-<!--                <a th:href="@{/}" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                    <img class="img-fluid" th:src="@{/user/img/cat-3.jpg}" alt="">-->
-<!--                </a>-->
-<!--                <h5 class="font-weight-semi-bold m-0">Baby's dresses</h5>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-lg-4 col-md-6 pb-1">-->
-<!--            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                <p class="text-right">15 Products</p>-->
-<!--                <a th:href="@{/}" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                    <img class="img-fluid" th:src="@{/user/img/cat-4.jpg}" alt="">-->
-<!--                </a>-->
-<!--                <h5 class="font-weight-semi-bold m-0">Accerssories</h5>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-lg-4 col-md-6 pb-1">-->
-<!--            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                <p class="text-right">15 Products</p>-->
-<!--                <a th:href="@{/}" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                    <img class="img-fluid" th:src="@{/user/img/cat-5.jpg}" alt="">-->
-<!--                </a>-->
-<!--                <h5 class="font-weight-semi-bold m-0">Bags</h5>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-lg-4 col-md-6 pb-1">-->
-<!--            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">-->
-<!--                <p class="text-right">15 Products</p>-->
-<!--                <a th:href="@{/}" class="cat-img position-relative overflow-hidden mb-3">-->
-<!--                    <img class="img-fluid" th:src="@{/user/img/cat-6.jpg}" alt="">-->
-<!--                </a>-->
-<!--                <h5 class="font-weight-semi-bold m-0">Shoes</h5>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!-- Categories End -->
-
-
 <!-- Product Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
@@ -217,38 +155,6 @@
 <!-- Product End -->
 
 
-<!-- pagination start -->
-<!--<div class="d-flex justify-content-center align-items-center">-->
-<!--    <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-primary mr-1" style="border-radius: 8px;">-->
-<!--        <a-->
-<!--                th:href="@{|?page=0&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">-->
-<!--            <i style="color: white" class="fa-solid fa-backward-fast"></i></a>-->
-<!--    </div>-->
-<!--    <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-primary mr-1" style="border-radius: 8px;">-->
-<!--        <a-->
-<!--                th:href="@{|?page=${pageProduct.getNumber() - 1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">-->
-<!--            <i style="color: white" class="fa-solid fa-left-long"></i></a>-->
-<!--    </div>-->
-<!--    <div class="btn btn-primary d-flex" style="border-radius: 8px;">-->
-<!--        <div th:text="${pageProduct.getNumber() + 1}" style="color: white"></div>-->
-<!--        <span style="color: white">/</span>-->
-<!--        <div th:text="${pageProduct.getTotalPages()}" style="color: white"></div>-->
-<!--    </div>-->
-<!--    <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}" class="btn btn-primary ml-1"-->
-<!--         style="border-radius: 8px;">-->
-<!--        <a-->
-<!--                th:href="@{|?page=${pageProduct.getNumber()+1}&productName=${productName == null ? '' : productName }&materialId=${materialId== null ? '' : materialId}&categoryId=${categoryId== null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">-->
-<!--            <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>-->
-<!--    </div>-->
-<!--    <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}" class="btn btn-primary ml-1"-->
-<!--         style="border-radius: 8px;">-->
-<!--        <a-->
-<!--                th:href="@{|?page=${pageProduct.getTotalPages()-1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">-->
-<!--            <i style="color: white" class="fa-solid fa-forward-fast"></i></a>-->
-<!--    </div>-->
-<!--</div>-->
-<!-- pagination end -->
-
 <!-- Offer Start -->
 <div class="container-fluid offer pt-5">
     <div class="row px-xl-5">
@@ -276,33 +182,6 @@
 </div>
 <!-- Offer End -->
 
-
-<!-- Products Start -->
-<!--<div class="container-fluid pt-5">-->
-<!--    <div class="text-center mb-4">-->
-<!--        <h2 class="section-title px-5"><span class="px-2">Gợi Ý Sản Phẩm</span></h2>-->
-<!--    </div>-->
-<!--    <div class="row px-xl-5 pb-3">-->
-<!--        <div class="col-lg-3 col-md-6 col-sm-12 pb-1" th:each="product : ${productViews}">-->
-<!--            <div class="card product-item border-0 mb-4">-->
-<!--                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">-->
-<!--                    <img class="img-fluid w-100" th:src="@{/user/img/product-1.jpg}" alt="">-->
-<!--                </div>-->
-<!--                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">-->
-<!--                    <a th:href="@{'/product-detail/' + ${product.id}}">-->
-<!--                        <h6 class="text-truncate mb-3" th:text="${product.name}">Colorful Stylish Shirt</h6>-->
-<!--                    </a>-->
-<!--                    <div class="d-flex justify-content-center">-->
-<!--                        <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">₫123.00</h6>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="d-flex justify-content-between bg-light border">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!-- Products End -->
 
 <!-- title start -->
 <div class="container-fluid pt-5">
@@ -334,34 +213,6 @@
     </div>
 </div>
 <!-- Subscribe End -->
-
-
-<!-- Products Start -->
-<!--<div class="container-fluid pt-5">-->
-<!--    <div class="text-center mb-4">-->
-<!--        <h2 class="section-title px-5"><span class="px-2">Sản Phẩm Mới</span></h2>-->
-<!--    </div>-->
-<!--    <div class="row px-xl-5 pb-3">-->
-<!--        <div class="col-lg-3 col-md-6 col-sm-12 pb-1" th:each="product : ${productViews}">-->
-<!--            <div class="card product-item border-0 mb-4">-->
-<!--                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">-->
-<!--                    <img class="img-fluid w-100" th:src="@{/user/img/product-1.jpg}" alt="">-->
-<!--                </div>-->
-<!--                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">-->
-<!--                    <a th:href="@{'/product-detail/' + ${product.id}}">-->
-<!--                        <h6 class="text-truncate mb-3" th:text="${product.name}">Colorful Stylish Shirt</h6>-->
-<!--                    </a>-->
-<!--                    <div class="d-flex justify-content-center">-->
-<!--                        <h6 th:text="'₫' + ${#numbers.formatDecimal(product.price.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}">₫123.00</h6>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="d-flex justify-content-between bg-light border">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!-- Products End -->
 
 
 <!-- Vendor Start -->

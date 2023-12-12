@@ -10,22 +10,40 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>SẢN PHẨM</strong>
+                <h5 style="font-weight: bold">SẢN PHẨM</h5>
             </div>
-            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${mess}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
-
+            <div th:if="${mess}">
+                <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnSuccess = document.getElementById("btnSuccess");
+                        btnSuccess.click();
+                    }
+                    alertSuccess = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thành công",
+                            icon: "success",
+                            confirmButtonColor: "#0DC149"
+                        });
+                    }
+                </script>
             </div>
-            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${error}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
+            <div th:if="${error}">
+                <button hidden id="btnError" th:onclick="alertError([[${error}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnError = document.getElementById("btnError");
+                        btnError.click();
+                    }
+                    alertError = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thất bại",
+                            text: content,
+                            icon: "error",
+                            confirmButtonColor: "#d33"
+                        });
+                    }
+                </script>
             </div>
 
             <div class="card-body card-block">
@@ -43,157 +61,98 @@
 <!--                            </button>-->
 <!--                            <div id="errorExcel" class="ml-2" style="color: red;"></div>-->
 <!--                        </div>-->
-
 <!--                    </div>-->
 <!--                </form>-->
                 <form id="productForm" class="form-horizontal">
                     <div class="row">
-                        <div class="form-group col-6">
+                        <div class="form-group col-2">
                             <label class="font-weight-bold">Tên sản phẩm</label>
-                            <input type="text" class="form-control" th:name="productName" th:value="${productName}">
+                            <input type="text" class="form-control" th:name="productName"
+                                   th:value="${productName}">
                         </div>
-                        <div class="form-group col-6">
+                        <div class="form-group col-2">
                             <label class="font-weight-bold">Mô tả</label>
-                            <input type="text" class="form-control" th:name="description" th:value="${description}">
+                            <input type="text" class="form-control" th:name="description"
+                                   th:value="${description}">
+                        </div>
+                        <div class="form-group col-2">
+                            <label class="font-weight-bold">Chất liệu</label>
+                            <div th:if="${materialId} == null">
+                                <select class="form-control" name="materialId">
+                                    <option value="">Tất cả</option>
+                                    <option th:value="${material.id}" th:each="material: ${listMaterial}"
+                                            th:text="${material.name}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div th:if="${materialId} != null">
+                                <select class="form-control" name="materialId">
+                                    <option value="">Tất cả</option>
+                                    <option th:value="${material.id}" th:each="material: ${listMaterial}"
+                                            th:text="${material.name}"
+                                            th:selected="${materialId == material.id}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-2">
+                            <label class="font-weight-bold">Loại sản phẩm</label>
+                            <div th:if="${categoryId} == null">
+                                <select class="form-control" name="categoryId">
+                                    <option value="">Tất cả</option>
+                                    <option th:value="${category.id}" th:each="category: ${listCategory}"
+                                            th:text="${category.name}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div th:if="${categoryId} != null">
+                                <select class="form-control" name="categoryId">
+                                    <option value="">Tất cả</option>
+                                    <option th:value="${category.id}" th:each="category: ${listCategory}"
+                                            th:text="${category.name}"
+                                            th:selected="${categoryId == category.id}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-2">
+                            <label class="font-weight-bold">Thương hiệu</label>
+                            <div th:if="${brandId} == null">
+                                <select class="form-control" name="brandId">
+                                    <option value="">Tất cả</option>
+                                    <option th:value="${brand.id}" th:each="brand: ${listBrand}"
+                                            th:text="${brand.name}"></option>
+                                </select>
+                            </div>
+                            <div th:if="${brandId} != null">
+                                <select class="form-control" name="brandId">
+                                    <option value="">Tất cả</option>
+                                    <option th:value="${brand.id}" th:each="brand: ${listBrand}"
+                                            th:text="${brand.name}" th:selected="${brandId == brand.id}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-2">
+                            <label class="font-weight-bold">Kiểu dáng</label>
+                            <div th:if="${formId} == null">
+                                <select class="form-control" name="formId">
+                                    <option value="">Tất cả</option>
+                                    <option th:value="${form.id}" th:each="form: ${listForm}"
+                                            th:text="${form.name}"></option>
+                                </select>
+                            </div>
+                            <div th:if="${formId} != null">
+                                <select class="form-control" name="formId">
+                                    <option value="">Tất cả</option>
+                                    <option th:value="${form.id}" th:each="form: ${listForm}"
+                                            th:text="${form.name}" th:selected="${formId == form.id}">
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-3">
-                            <label class="font-weight-bold">Chất liệu</label>
-                            <div th:if="${materialId} == null" class="w-100 d-flex justify-content-between">
-                                <div class="w-80">
-                                    <select class="form-control" name="materialId">
-                                        <option value="">Tất cả</option>
-                                        <option th:value="${material.id}" th:each="material: ${listMaterial}"
-                                                th:text="${material.name}"></option>
-                                    </select>
-                                </div>
-                                <div class="w-20 d-flex justify-content-end">
-                                    <a href="/nova/material/page">
-                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                            <div th:if="${materialId} != null" class="w-100 d-flex justify-content-between">
-                                <div class="w-80">
-                                    <select class="form-control" name="materialId">
-                                        <option value="">Tất cả</option>
-                                        <option th:value="${material.id}" th:each="material: ${listMaterial}"
-                                                th:text="${material.name}"
-                                                th:selected="${materialId == material.id}"></option>
-                                    </select>
-                                </div>
-                                <div class="w-20 d-flex justify-content-end">
-                                    <a href="/nova/material/page">
-                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <label class="font-weight-bold">Loại sản phẩm</label>
-                            <div th:if="${categoryId} == null" class="w-100 d-flex justify-content-between">
-                                <div class="w-80">
-                                    <select class="form-control" name="categoryId">
-                                        <option value="">Tất cả</option>
-                                        <option th:value="${category.id}" th:each="category: ${listCategory}"
-                                                th:text="${category.name}"></option>
-                                    </select>
-                                </div>
-                                <div class="w-20 d-flex justify-content-end">
-                                    <a href="/nova/category/page">
-                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                            <div th:if="${categoryId} != null" class="w-100 d-flex justify-content-between">
-                                <div class="w-80">
-                                    <select class="form-control" name="categoryId">
-                                        <option value="">Tất cả</option>
-                                        <option th:value="${category.id}" th:each="category: ${listCategory}"
-                                                th:text="${category.name}"
-                                                th:selected="${categoryId == category.id}"></option>
-                                    </select>
-                                </div>
-                                <div class="w-20 d-flex justify-content-end">
-                                    <a href="/nova/category/page">
-                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <label class="font-weight-bold">Thương hiệu</label>
-                            <div th:if="${brandId} == null" class="w-100 d-flex justify-content-between">
-                                <div class="w-80">
-                                    <select class="form-control" name="brandId">
-                                        <option value="">Tất cả</option>
-                                        <option th:value="${brand.id}" th:each="brand: ${listBrand}"
-                                                th:text="${brand.name}"></option>
-                                    </select>
-                                </div>
-                                <div class="w-20 d-flex justify-content-end">
-                                    <a href="/nova/brand/page">
-                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                            <div th:if="${brandId} != null" class="w-100 d-flex justify-content-between">
-                                <div class="w-80">
-                                    <select class="form-control" name="brandId">
-                                        <option value="">Tất cả</option>
-                                        <option th:value="${brand.id}" th:each="brand: ${listBrand}"
-                                                th:text="${brand.name}" th:selected="${brandId == brand.id}"></option>
-                                    </select>
-                                </div>
-                                <div class="w-20 d-flex justify-content-end">
-                                    <a href="/nova/brand/page">
-                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <label class="font-weight-bold">Kiểu dáng</label>
-                            <div th:if="${formId} == null" class="w-100 d-flex justify-content-between">
-                                <div class="w-80">
-                                    <select class="form-control" name="formId">
-                                        <option value="">Tất cả</option>
-                                        <option th:value="${form.id}" th:each="form: ${listForm}"
-                                                th:text="${form.name}"></option>
-                                    </select>
-                                </div>
-                                <div class="w-20 d-flex justify-content-end">
-                                    <a href="/nova/form/page">
-                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                            <div th:if="${formId} != null" class="w-100 d-flex justify-content-between">
-                                <div class="w-80">
-                                    <select class="form-control" name="formId">
-                                        <option value="">Tất cả</option>
-                                        <option th:value="${form.id}" th:each="form: ${listForm}"
-                                                th:text="${form.name}" th:selected="${formId == form.id}"></option>
-                                    </select>
-                                </div>
-                                <div class="w-20 d-flex justify-content-center">
-                                    <a href="/nova/form/page">
-                                        <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <br>
                     <div class="card-footer d-flex align-items-center">
                         <div class="">
@@ -206,10 +165,11 @@
                     <br>
                     <div class="card-footer d-flex justify-content-end">
                         <div>
-                            <button type="button" class="btn btn-dark" data-toggle="modal"
-                                    data-target="#exampleModal">
-                                <i class="fa-solid fa-square-plus px-4"></i>
-                            </button>
+                            <a href="/nova/product/view-add">
+                                <button type="button" class="btn btn-dark">
+                                    <i class="fa-solid fa-square-plus px-4"></i>
+                                </button>
+                            </a>
                         </div>
                         <div class="ml-2">
                             <a href="/nova/product/view-restore">

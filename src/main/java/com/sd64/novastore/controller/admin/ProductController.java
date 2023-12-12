@@ -3,6 +3,7 @@ package com.sd64.novastore.controller.admin;
 import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.model.*;
 import com.sd64.novastore.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -12,9 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/nova/product")
@@ -33,6 +33,9 @@ public class ProductController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ProductDetailService productDetailService;
 
     @GetMapping("/page")
     public String getPage(@RequestParam(defaultValue = "0") int page, Model model) {
@@ -64,6 +67,16 @@ public class ProductController {
         return "admin/product/product-add";
     }
 
+
+    // Chuyển sang trang add product detail => Controller ProductDetail (view-add)
+    @PostMapping("/next-add")
+    public String nextAddProduct(@ModelAttribute Product product,
+                                 HttpSession httpSession) {
+        String randomKey = UUID.randomUUID().toString();
+        httpSession.setAttribute("randomKey", randomKey);
+        httpSession.setAttribute("productAdd" + randomKey, product);
+        return "redirect:/nova/product-detail/view-add";
+    }
 
     @PostMapping("/add")
     public String add(@RequestParam String name,
