@@ -22,7 +22,7 @@ function onScanSuccess(decodedText) {
         lastResult = decodedText;
         // Handle on success condition with the decoded message.
         var url = "/nova/pos/add?detail=" + decodedText;
-        console.log(decodedText)
+        // console.log(decodedText)
 
         fetch("/nova/pos/add", {
             method: "POST",
@@ -38,7 +38,7 @@ function onScanSuccess(decodedText) {
 
 function updateOutput() {
     $.post("/nova/pos/frag").done(function (fragment) {
-        console.log(fragment);
+        // console.log(fragment);
         $("#output").replaceWith(fragment);
     });
 }

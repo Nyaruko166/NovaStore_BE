@@ -11,7 +11,8 @@
 <body>
 <div th:fragment="frag">
     <div id="output">
-        <div class="d-flex justify-content-between"><span th:text="${'You have ' + lstCart.size() + ' items in your cart'}"></span>
+        <div class="d-flex justify-content-between"><span
+                th:text="${'You have ' + lstCart.size() + ' items in your cart'}"></span>
             <div class="d-flex flex-row align-items-center"><span class="text-black-50">Sort by:</span>
                 <div class="price ml-2"><span class="mr-1">price</span><i class="fa fa-angle-down"></i>
                 </div>
@@ -27,7 +28,8 @@
             </div>
             <div class="d-flex flex-row align-items-center"><span th:text="${x.qty}" class="d-block"></span><span
                     th:text="${x.calTotalPrice() + ' VNĐ'}" class="d-block ml-5 font-weight-bold"></span>
-                <i class="fa fa-trash-o ml-3 text-black-50"></i>
+                <a th:href="@{'/nova/pos/remove/' + ${x.codeCtsp}}" class="trash"><i
+                        class="fa fa-trash-o ml-3 text-black-50"></i></a>
             </div>
         </div>
     </div>

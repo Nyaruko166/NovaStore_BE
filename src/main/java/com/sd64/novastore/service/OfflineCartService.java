@@ -8,7 +8,6 @@ import com.sd64.novastore.model.OfflineCart;
 import com.sd64.novastore.model.OfflineCartView;
 
 import java.util.List;
-import java.util.Map;
 
 public interface OfflineCartService {
 
@@ -16,7 +15,7 @@ public interface OfflineCartService {
 
     List<OfflineCartView> getCart();
 
-    void deleteCart(String codeCtsp);
+    String deleteCart(String codeCtsp);
 
     void emptyCart(List<OfflineCart> empty);
 }
