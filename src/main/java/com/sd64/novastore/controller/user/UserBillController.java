@@ -9,6 +9,7 @@ import com.sd64.novastore.model.SessionCart;
 import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.response.MomoPaymentResponse;
 import com.sd64.novastore.response.VNPaymentResponse;
+import com.sd64.novastore.response.ZaloPaymentResponse;
 import com.sd64.novastore.service.AddressService;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.CartService;
@@ -137,26 +138,37 @@ public class UserBillController {
             if (payment.equals("VNPAY")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
-                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
             if (payment.equals("Momo")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.MomoPayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
-                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.MomoPayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
-            billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment, voucher);
+            if (payment.equals("ZaloPay")){
+                //Long dok
+                if (voucher == null){
+                    jsonData = paymentService.zalopayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                } else {
+                    Voucher uuDai = voucherService.getVoucherById(voucher);
+                    BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
+                    jsonData = paymentService.zalopayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                }
+                return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
+            }
+            billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, voucher);
             session.removeAttribute("totalItems");
             return "redirect:/home";
         } else {
@@ -164,26 +176,37 @@ public class UserBillController {
             if (payment.equals("VNPAY")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
-                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
             if (payment.equals("Momo")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.MomoPayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
-                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), address, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.MomoPayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
-            billService.placeOrder(cart, name, address, phoneNumber, payment, voucher);
+            if (payment.equals("ZaloPay")){
+                //Long dok
+                if (voucher == null){
+                    jsonData = paymentService.zalopayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                } else {
+                    Voucher uuDai = voucherService.getVoucherById(voucher);
+                    BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
+                    jsonData = paymentService.zalopayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                }
+                return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
+            }
+            billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, voucher);
             session.removeAttribute("totalItems");
             attributes.addFlashAttribute("success", "Đặt hàng thành công!");
         }
@@ -203,12 +226,15 @@ public class UserBillController {
             if (VNPaymentResponse.getVnp_ResponseCode().equals("00")) {
                 SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
                 String payment = "Thanh toán qua VNPAY";
-                String address = jsonData.get("address").toString().replaceAll("\"", "");
+                String specificAddress = jsonData.get("specificAddress").toString().replaceAll("\"", "");
+                String ward = jsonData.get("ward").toString().replaceAll("\"", "");
+                String district = jsonData.get("district").toString().replaceAll("\"", "");
+                String city = jsonData.get("city").toString().replaceAll("\"", "");
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String email = jsonData.get("email").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment, Integer.valueOf(voucher));
+                billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
@@ -219,11 +245,14 @@ public class UserBillController {
             if (VNPaymentResponse.getVnp_ResponseCode().equals("00")) {
                 Cart cart = cartService.getCart(principal.getName());
                 String payment = "Thanh toán qua VNPAY";
-                String address = jsonData.get("address").toString().replaceAll("\"", "");
+                String specificAddress = jsonData.get("specificAddress").toString().replaceAll("\"", "");
+                String ward = jsonData.get("ward").toString().replaceAll("\"", "");
+                String district = jsonData.get("district").toString().replaceAll("\"", "");
+                String city = jsonData.get("city").toString().replaceAll("\"", "");
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrder(cart, name, address, phoneNumber, payment, Integer.valueOf(voucher));
+                billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 session.removeAttribute("totalItems");
                 attributes.addFlashAttribute("success", "Đặt hàng thành công!");
                 return "redirect:/orders";
@@ -240,12 +269,15 @@ public class UserBillController {
             if (momoPaymentResponse.getResultCode().equals("0")) {
                 SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
                 String payment = "Thanh toán qua Momo";
-                String address = jsonData.get("address").toString().replaceAll("\"", "");
+                String specificAddress = jsonData.get("specificAddress").toString().replaceAll("\"", "");
+                String ward = jsonData.get("ward").toString().replaceAll("\"", "");
+                String district = jsonData.get("district").toString().replaceAll("\"", "");
+                String city = jsonData.get("city").toString().replaceAll("\"", "");
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String email = jsonData.get("email").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrderSession(sessionCart, email, name, address, phoneNumber, payment, Integer.valueOf(voucher));
+                billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
@@ -256,11 +288,57 @@ public class UserBillController {
             if (momoPaymentResponse.getResultCode().equals("0")) {
                 Cart cart = cartService.getCart(principal.getName());
                 String payment = "Thanh toán qua Momo";
-                String address = jsonData.get("address").toString().replaceAll("\"", "");
+                String specificAddress = jsonData.get("specificAddress").toString().replaceAll("\"", "");
+                String ward = jsonData.get("ward").toString().replaceAll("\"", "");
+                String district = jsonData.get("district").toString().replaceAll("\"", "");
+                String city = jsonData.get("city").toString().replaceAll("\"", "");
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrder(cart, name, address, phoneNumber, payment, Integer.valueOf(voucher));
+                billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                session.removeAttribute("totalItems");
+                attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+                return "redirect:/orders";
+            } else {
+                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                return "redirect:/checkout";
+            }
+        }
+    }
+
+    @GetMapping("/zalo/return")
+    public String zaloReturn(Principal principal, HttpSession session, ZaloPaymentResponse zaloPaymentResponse, RedirectAttributes attributes) {
+        if (principal == null){
+            if (zaloPaymentResponse.getStatus().equals("0")) {
+                SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+                String payment = "Thanh toán qua ZaloPay";
+                String specificAddress = jsonData.get("specificAddress").toString().replaceAll("\"", "");
+                String ward = jsonData.get("ward").toString().replaceAll("\"", "");
+                String district = jsonData.get("district").toString().replaceAll("\"", "");
+                String city = jsonData.get("city").toString().replaceAll("\"", "");
+                String name = jsonData.get("name").toString().replaceAll("\"", "");
+                String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
+                String email = jsonData.get("email").toString().replaceAll("\"", "");
+                String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
+                billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                session.removeAttribute("totalItems");
+                return "redirect:/home";
+            } else {
+                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                return "redirect:/checkout";
+            }
+        } else {
+            if (zaloPaymentResponse.getStatus().equals("0")) {
+                Cart cart = cartService.getCart(principal.getName());
+                String payment = "Thanh toán qua ZaloPay";
+                String specificAddress = jsonData.get("specificAddress").toString().replaceAll("\"", "");
+                String ward = jsonData.get("ward").toString().replaceAll("\"", "");
+                String district = jsonData.get("district").toString().replaceAll("\"", "");
+                String city = jsonData.get("city").toString().replaceAll("\"", "");
+                String name = jsonData.get("name").toString().replaceAll("\"", "");
+                String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
+                String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
+                billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 session.removeAttribute("totalItems");
                 attributes.addFlashAttribute("success", "Đặt hàng thành công!");
                 return "redirect:/orders";

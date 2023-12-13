@@ -34,9 +34,9 @@ public interface BillService {
 
     Bill delete(Integer id);
 
-    Bill placeOrder(Cart cart, String name, String address, String phoneNumber, String payment, Integer voucher);
+    Bill placeOrder(Cart cart, String name, String specificAddress, String ward, String district, String city, String phoneNumber, String payment, Integer voucher);
 
-    Bill placeOrderSession(SessionCart cart, String email, String name, String address, String phoneNumber, String payment, Integer voucher);
+    Bill placeOrderSession(SessionCart cart, String email, String name, String specificAddress, String ward, String district, String city, String phoneNumber, String payment, Integer voucher);
 
     List<Bill> getNoConfirmOrders(Integer customerId);
 
