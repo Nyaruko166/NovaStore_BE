@@ -134,4 +134,14 @@ main {
     z-index: 1;
 }
 
+.trash > i {
+    padding: 5px;
+}
+
+.trash > i:hover {
+    border-radius: 0.25rem;
+    background-color: red;
+}
+
+
 

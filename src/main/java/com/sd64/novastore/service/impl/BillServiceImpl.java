@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Address;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Cart;
@@ -61,6 +62,9 @@ public class BillServiceImpl implements BillService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -154,11 +158,12 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public Bill placeOrder(Cart cart, String name, String address, String phoneNumber, String payment, Integer voucher) {
+    public Bill placeOrder(Cart cart, String name, String specificAddress, String ward, String district, String city, String phoneNumber, String payment, Integer voucher) {
         Bill bill = new Bill();
         bill.setCode(generateBillCode());
         bill.setType(0);
         bill.setCustomerName(name);
+        String address = specificAddress + ", " + ward + ", " + district + ", " + city;
         bill.setAddress(address);
         bill.setPhoneNumber(phoneNumber);
         bill.setOrderDate(new Date());
@@ -188,6 +193,23 @@ public class BillServiceImpl implements BillService {
             bill.setStatus(10);
         }
         bill.setCustomer(cart.getCustomer());
+        List<Address> listAccountAddress = addressRepository.findAllAccountAddress(cart.getCustomer().getId());
+        if (listAccountAddress.isEmpty()){
+            Account account = accountRepository.findById(cart.getCustomer().getId()).orElse(null);
+            Address newAddress = new Address();
+            newAddress.setCustomerName(name);
+            newAddress.setPhoneNumber(phoneNumber);
+            newAddress.setSpecificAddress(specificAddress);
+            newAddress.setWard(ward);
+            newAddress.setDistrict(district);
+            newAddress.setCity(city);
+            newAddress.setCreateDate(new Date());
+            newAddress.setUpdateDate(new Date());
+            newAddress.setStatus(1);
+            newAddress.setAccount(account);
+            addressRepository.save(newAddress);
+        }
+
         List<BillDetail> billDetailList = new ArrayList<>();
         for (CartDetail item : cart.getCartDetails()){
             BillDetail billDetail = new BillDetail();
@@ -225,11 +247,12 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public Bill placeOrderSession(SessionCart cart, String email, String name, String address, String phoneNumber, String payment, Integer voucher) {
+    public Bill placeOrderSession(SessionCart cart, String email, String name, String specificAddress, String ward, String district, String city, String phoneNumber, String payment, Integer voucher) {
         Bill bill = new Bill();
         bill.setCode(generateBillCode());
         bill.setType(0);
         bill.setCustomerName(name);
+        String address = specificAddress + ", " + ward + ", " + district + ", " + city;
         bill.setAddress(address);
         bill.setPhoneNumber(phoneNumber);
         bill.setOrderDate(new Date());
@@ -273,6 +296,23 @@ public class BillServiceImpl implements BillService {
             customerRepository.save(customer);
         }
         bill.setCustomer(customer);
+        List<Address> listAccountAddress = addressRepository.findAllAccountAddress(bill.getCustomer().getId());
+        if (listAccountAddress.isEmpty()){
+            Account account = accountRepository.findById(bill.getCustomer().getId()).orElse(null);
+            Address newAddress = new Address();
+            newAddress.setCustomerName(name);
+            newAddress.setPhoneNumber(phoneNumber);
+            newAddress.setSpecificAddress(specificAddress);
+            newAddress.setWard(ward);
+            newAddress.setDistrict(district);
+            newAddress.setCity(city);
+            newAddress.setCreateDate(new Date());
+            newAddress.setUpdateDate(new Date());
+            newAddress.setStatus(1);
+            newAddress.setAccount(account);
+            addressRepository.save(newAddress);
+        }
+
         List<BillDetail> billDetailList = new ArrayList<>();
         for (SessionCartItem item : cart.getCartDetails()){
             BillDetail billDetail = new BillDetail();

@@ -28,6 +28,7 @@ public class OfflineCartController {
 
     @GetMapping()
     public String cart(Model model) {
+//        offlineCartService.addToCart("1","CT33",1);
         List<OfflineCartView> lstCart = offlineCartService.getCart();
         model.addAttribute("lstCart", lstCart);
         return "/admin/cart/offline-cart";
@@ -38,6 +39,12 @@ public class OfflineCartController {
         List<OfflineCartView> lstCart = offlineCartService.getCart();
         model.addAttribute("lstCart", lstCart);
         return "/admin/cart/offline-cart-fragment :: frag";
+    }
+
+    @GetMapping("/remove/{code}")
+    public String removeFromCart(@PathVariable("code") String data) {
+        System.out.println(offlineCartService.deleteCart(data));
+        return "redirect:/nova/pos";
     }
 
 }

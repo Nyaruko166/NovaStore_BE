@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OfflineCartServiceImpl implements OfflineCartService {
@@ -74,9 +73,15 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     }
 
     @Override
-    public void deleteCart(String codeCtsp) {
+    public String deleteCart(String codeCtsp) {
         List<OfflineCart> cart = repository.getCartSP();
-        cart.remove(codeCtsp);
+        for (OfflineCart x : cart) {
+            if (x.getDetailProductId().equals(codeCtsp)){
+                cart.remove(x);
+                return "Xoá Thành Công!";
+            }
+        }
+        return "Xoá Thất Bại!";
     }
 
     @Override
