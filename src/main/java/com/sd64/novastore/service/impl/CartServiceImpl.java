@@ -4,10 +4,15 @@ import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.CartDetail;
 import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.model.Promotion;
+import com.sd64.novastore.model.PromotionDetail;
 import com.sd64.novastore.model.SessionCart;
 import com.sd64.novastore.model.SessionCartItem;
 import com.sd64.novastore.repository.CartDetailRepository;
 import com.sd64.novastore.repository.CartRepository;
+import com.sd64.novastore.repository.ProductDetailRepository;
+import com.sd64.novastore.repository.PromotionDetailRepository;
+import com.sd64.novastore.repository.PromotionRepository;
 import com.sd64.novastore.service.CartService;
 import com.sd64.novastore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +36,15 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
+
+    @Autowired
+    private PromotionDetailRepository promotionDetailRepository;
+
+    @Autowired
+    private PromotionRepository promotionRepository;
 
     @Override
     @Transactional
@@ -197,6 +211,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void reloadCartDetail(Cart cart) {
         Set<CartDetail> cartDetails = cart.getCartDetails();
         Iterator<CartDetail> iterator = cartDetails.iterator();
@@ -206,11 +221,19 @@ public class CartServiceImpl implements CartService {
             ProductDetail productDetail = cartDetail.getProductDetail();
             int currentQuantity = cartDetail.getQuantity();
             int stockQuantity = productDetail.getQuantity();
-            BigDecimal currentPrice = cartDetail.getPrice();
             BigDecimal productPrice = productDetail.getPrice();
 
+//            if (productDetail.getProduct().getStatus() == 2){
+//                PromotionDetail promotionDetail = promotionDetailRepository.findByProductIdAndStatus(productDetail.getProduct().getId(), 1);
+//                Promotion promotion = promotionRepository.findById(promotionDetail.getId()).orElse(null);
+//                double discount = productDetail.getPrice().doubleValue() * promotion.getValue().doubleValue() / 100;
+//                productPrice = BigDecimal.valueOf(productDetail.getPrice().doubleValue() - discount);
+//            }
+            cartDetail.setPrice(productPrice);
+            itemRepository.save(cartDetail);
+
             // Nếu số lượng tồn là 0, xóa CartDetail
-            if (stockQuantity == 0) {
+            if (stockQuantity == 0 || productDetail.getStatus() == 0) {
                 iterator.remove();
                 itemRepository.delete(cartDetail);
             }
@@ -220,13 +243,8 @@ public class CartServiceImpl implements CartService {
                 itemRepository.save(cartDetail);
             }
 
-            // Nếu giá của CartDetail khác giá của ProductDetail, cập nhật lại giá
-            if (!currentPrice.equals(productPrice)) {
-                cartDetail.setPrice(productPrice);
-                itemRepository.save(cartDetail);
-            }
         }
-
+        cart.setCartDetails(cartDetails);
         // Cập nhật lại tổng số lượng và tổng giá của giỏ hàng
         int totalItems = totalItem(cartDetails);
         BigDecimal totalPrice = totalPrice(cartDetails);
@@ -235,6 +253,41 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
     }
 
+    @Override
+    public void reloadCartDetailSession(SessionCart sessionCart) {
+        Set<SessionCartItem> cartItems = sessionCart.getCartDetails();
+        Iterator<SessionCartItem> iterator = cartItems.iterator();
+
+        while (iterator.hasNext()) {
+            SessionCartItem cartItem = iterator.next();
+            ProductDetail productDetail = productDetailRepository.findById(cartItem.getProductDetail().getId()).orElse(null);
+            int currentQuantity = cartItem.getQuantity();
+            int stockQuantity = productDetail.getQuantity();
+            BigDecimal productPrice = productDetail.getPrice();
+            cartItem.setProductDetail(productDetail);
+//            if (productDetail.getProduct().getStatus() == 2){
+//                PromotionDetail promotionDetail = promotionDetailRepository.findByProductIdAndStatus(productDetail.getProduct().getId(), 1);
+//                Promotion promotion = promotionRepository.findById(promotionDetail.getId()).orElse(null);
+//                double discount = productDetail.getPrice().doubleValue() * promotion.getValue().doubleValue() / 100;
+//                productPrice = BigDecimal.valueOf(productDetail.getPrice().doubleValue() - discount);
+//            }
+            cartItem.setPrice(productPrice);
+
+            // Nếu số lượng tồn là 0, xóa CartDetail
+            if (stockQuantity == 0 || productDetail.getStatus() == 0) {
+                iterator.remove();
+            }
+            // Nếu số lượng hiện tại vượt quá số lượng tồn, cập nhật lại số lượng
+            else if (currentQuantity > stockQuantity) {
+                cartItem.setQuantity(stockQuantity);
+            }
+        }
+        sessionCart.setCartDetails(cartItems);
+        int totalItems = totalItemSession(cartItems);
+        BigDecimal totalPrice = totalPriceSession(cartItems);
+        sessionCart.setTotalItems(totalItems);
+        sessionCart.setTotalPrice(totalPrice);
+    }
 
     @Override
     public SessionCart removeFromCartSession(SessionCart sessionCart, ProductDetail productDetail) {

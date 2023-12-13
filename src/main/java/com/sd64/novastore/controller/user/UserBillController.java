@@ -60,6 +60,14 @@ public class UserBillController {
     public String checkOut(Principal principal, Model model, HttpSession session) {
         if (principal == null) {
             SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+            if (sessionCart.getCartDetails().isEmpty()){
+                return "redirect:/cart";
+            }
+            if (!sessionCart.getCartDetails().isEmpty()){
+                cartService.reloadCartDetailSession(sessionCart);
+                session.setAttribute("sessionCart", sessionCart);
+                session.setAttribute("totalItems", sessionCart.getTotalItems());
+            }
             List<Voucher> listVoucher = voucherService.getVoucherByCartPrice(sessionCart.getTotalPrice());
             model.addAttribute("cart", sessionCart);
             model.addAttribute("listVoucher", listVoucher);
@@ -68,6 +76,13 @@ public class UserBillController {
         } else {
             Customer customer = customerService.findByEmail(principal.getName());
             Cart cart = cartService.getCart(principal.getName());
+            if (cart.getCartDetails().isEmpty()){
+                return "redirect:/cart";
+            }
+            if (!cart.getCartDetails().isEmpty()){
+                cartService.reloadCartDetail(cart);
+                session.setAttribute("totalItems", cart.getTotalItems());
+            }
             Address defaultAddress = addressService.findAccountDefaultAddress(customer.getId());
             List<Address> listAddress = addressService.findAccountAddress(customer.getId());
             List<Voucher> listVoucher = voucherService.getVoucherByCartPrice(cart.getTotalPrice());
