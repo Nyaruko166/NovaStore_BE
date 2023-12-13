@@ -24,4 +24,7 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
 
     @Query("SELECT a FROM Address a WHERE a.status = 2 AND a.account.id = :accountId")
     List<Address> findAccountAddress(@Param("accountId") Integer accountId);
+
+    @Query("SELECT a FROM Address a WHERE a.status = 1 AND a.status = 2 AND a.account.id = :accountId")
+    List<Address> findAllAccountAddress(@Param("accountId") Integer accountId);
 }
