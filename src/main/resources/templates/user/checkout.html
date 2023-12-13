@@ -22,6 +22,50 @@
 
 
 <div class=" container-fluid my-5 ">
+    <!-- Modal -->
+    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addressModalLabel">Địa chỉ của tôi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Hiển thị defaultAddress và listAddress ở đây -->
+                    <div th:if="${defaultAddress != null}" class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <input type="radio" id="defaultAddress" name="address" th:value="${defaultAddress.id}" checked>
+                                <h5 class="card-title ml-2" th:text="${defaultAddress.customerName} + ' | ' + ${defaultAddress.phoneNumber}"></h5>
+                            </div>
+                            <p class="card-text" th:text="${defaultAddress.specificAddress}"></p>
+                            <p class="card-text" th:text="${defaultAddress.ward} + ', ' + ${defaultAddress.district} + ', ' + ${defaultAddress.city}"></p>
+                        </div>
+                    </div>
+                    <div th:each="address : ${listAddress}" class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <input type="radio" th:id="${address.id}" name="address" th:value="${address.id}">
+                                <h5 class="card-title ml-2" th:text="${address.customerName} + ' | ' + ${address.phoneNumber}"></h5>
+                            </div>
+                            <p class="card-text" th:text="${address.specificAddress}"></p>
+                            <p class="card-text" th:text="${address.ward} + ', ' + ${address.district} + ', ' + ${address.city}"></p>
+                        </div>
+                    </div>
+                    <!-- Form thêm địa chỉ mới -->
+                    <a class="btn btn-primary">Quản lý địa chỉ</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" id="confirmButton" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row justify-content-center ">
         <div class="col-xl-12">
             <div class="card shadow-lg ">
@@ -30,13 +74,18 @@
                         <div class="col-md-6">
                             <div class="card border-0">
                                 <div class="card-header pb-0" style="background: none; border-bottom: none">
-                                    <p class="card-text text-muted mt-4  space">ĐỊA CHỈ NHẬN HÀNG</p>
+                                    <p class="card-text text-muted mt-4  space">ĐỊA CHỈ NHẬN HÀNG
+                                        <a th:if="${loggedIn}" href="#" data-toggle="modal" data-target="#addressModal">
+                                            Chọn địa chỉ
+                                        </a>
+                                    </p>
                                     <hr class="my-0">
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="name" class="small text-muted mb-1">TÊN</label>
-                                        <input type="text" class="form-control form-control-sm" name="name" id="name">
+                                        <input type="text" class="form-control form-control-sm" th:if="${defaultAddress != null}" th:value="${defaultAddress.customerName}" name="name" id="name"/>
+                                        <input type="text" class="form-control form-control-sm" th:unless="${defaultAddress != null}" name="name" id="name"/>
                                         <span id="nameError" class="small text-danger"></span>
                                     </div>
                                     <div class="form-group">
@@ -47,12 +96,14 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="phone-number" class="small text-muted mb-1">SỐ ĐIỆN THOẠI</label>
-                                        <input type="text" class="form-control form-control-sm" name="phoneNumber" id="phone-number">
+                                        <input type="text" class="form-control form-control-sm" th:if="${defaultAddress != null}" th:value="${defaultAddress.phoneNumber}" name="phoneNumber" id="phone-number">
+                                        <input type="text" class="form-control form-control-sm" th:unless="${defaultAddress != null}" name="phoneNumber" id="phone-number"/>
                                         <span id="phoneNumberError" class="small text-danger"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="specific-address" class="small text-muted mb-1">SỐ NHÀ, ĐƯỜNG</label>
-                                        <input type="text" class="form-control form-control-sm" name="specificAddress" id="specific-address">
+                                        <input type="text" class="form-control form-control-sm" th:if="${defaultAddress != null}" th:value="${defaultAddress.specificAddress}" name="specificAddress" id="specific-address">
+                                        <input type="text" class="form-control form-control-sm" th:unless="${defaultAddress != null}" name="specificAddress" id="specific-address"/>
                                         <span id="specificAddressError" class="small text-danger"></span>
                                     </div>
                                     <div class="row no-gutters">
@@ -98,6 +149,11 @@
                                                         + ' - Còn ' + voucher.quantity}"></option>
                                         </select>
                                     </div>
+                                    <!-- Thêm các input ẩn vào HTML -->
+                                    <input type="hidden" id="defaultCity" th:value="${defaultAddress != null ? defaultAddress.city : ''}" />
+                                    <input type="hidden" id="defaultDistrict" th:value="${defaultAddress != null ? defaultAddress.district : ''}" />
+                                    <input type="hidden" id="defaultWard" th:value="${defaultAddress != null ? defaultAddress.ward : ''}" />
+
                                     <div class="row mt-4">
                                         <div class="col"><p class="text-muted mb-2">PHƯƠNG THỨC THANH TOÁN</p>
                                             <hr class="mt-0">
@@ -124,8 +180,6 @@
                                         <label for="momo" class="small text-muted mb-1">Momo</label>
                                     </div>
                                     <input type="text" id="tongTienHang" th:hidden="true" th:value="${cart.totalPrice}">
-                                    <input type="text" id="totalPriceHidden" name="totalPrice" th:hidden="true" th:value="${cart.totalPrice}">
-                                    <input type="text" id="voucherValue" name="voucherValue" th:hidden="true">
                                 </div>
                             </div>
                         </div>
@@ -140,7 +194,7 @@
                                         <div class="row  justify-content-between">
                                             <div class="col-auto col-md-7">
                                                 <div class="media flex-column flex-sm-row">
-                                                    <img class=" img-fluid" src="https://i.imgur.com/6oHix28.jpg" width="62"
+                                                    <img class=" img-fluid" th:src="@{'/image/product/' + ${item.productDetail.product.id}}" width="62"
                                                          height="62">
                                                     <div class="media-body  my-auto">
                                                         <div class="row ">
@@ -227,10 +281,16 @@
 <div th:replace="~{/user/fragments::script}"></div>
 <script>
     const host = "https://provinces.open-api.vn/api/";
+
+    var defaultCity = document.getElementById('defaultCity').value;
+    var defaultDistrict = document.getElementById('defaultDistrict').value;
+    var defaultWard = document.getElementById('defaultWard').value;
+
     var callAPI = (api) => {
         return axios.get(api)
             .then((response) => {
                 renderData(response.data, "city");
+                $("#city").val(defaultCity).change();
             });
     }
     callAPI('https://provinces.open-api.vn/api/?depth=1');
@@ -238,12 +298,14 @@
         return axios.get(api)
             .then((response) => {
                 renderData(response.data.districts, "district");
+                $("#district").val(defaultDistrict).change();
             });
     }
     var callApiWard = (api) => {
         return axios.get(api)
             .then((response) => {
                 renderData(response.data.wards, "ward");
+                $("#ward").val(defaultWard);
             });
     }
 
@@ -362,6 +424,37 @@
             textGiam.innerText = '-₫0';
             textTamTinh.innerText = '₫' + Number(tongTienHang.value).toLocaleString('en');
         }
+    });
+</script>
+<script>
+    // Hàm xử lý khi nút "Xác nhận" được nhấn
+    document.getElementById('confirmButton').addEventListener('click', function() {
+        // Lấy giá trị của input radio được chọn
+        var selectedAddressId = document.querySelector('input[name="address"]:checked').value;
+
+        // Gửi yêu cầu GET đến API để lấy địa chỉ tương ứng
+        fetch('/api/address/' + selectedAddressId)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(selectedAddress) {
+                // Cập nhật các trường input trong trang HTML của bạn với thông tin của địa chỉ được chọn
+                document.getElementById('name').value = selectedAddress.customerName;
+                document.getElementById('phone-number').value = selectedAddress.phoneNumber;
+                document.getElementById('specific-address').value = selectedAddress.specificAddress;
+
+                const host = "https://provinces.open-api.vn/api/";
+                // Cập nhật các select city, district, ward
+                callAPI('https://provinces.open-api.vn/api/?depth=1').then(() => {
+                    $("#city").val(selectedAddress.city).change();
+                    callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2").then(() => {
+                        $("#district").val(selectedAddress.district).change();
+                        callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2").then(() => {
+                            $("#ward").val(selectedAddress.ward);
+                        });
+                    });
+                });
+            });
     });
 </script>
 </body>

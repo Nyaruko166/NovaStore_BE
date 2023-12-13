@@ -39,6 +39,10 @@ public class UserCartController {
                 model.addAttribute("check", "Giỏ hàng của bạn đang trống");
             }
             if (sessionCart != null){
+                if (!sessionCart.getCartDetails().isEmpty()){
+                    cartService.reloadCartDetailSession(sessionCart);
+                    session.setAttribute("sessionCart", sessionCart);
+                }
                 model.addAttribute("grandTotal", sessionCart.getTotalPrice());
                 model.addAttribute("cart", sessionCart);
                 session.setAttribute("totalItems", sessionCart.getTotalItems());
@@ -53,6 +57,9 @@ public class UserCartController {
                 model.addAttribute("check", "Giỏ hàng của bạn đang trống");
             }
             if (cart != null){
+                if (!cart.getCartDetails().isEmpty()){
+                    cartService.reloadCartDetail(cart);
+                }
                 model.addAttribute("grandTotal", cart.getTotalPrice());
                 model.addAttribute("cart", cart);
                 session.setAttribute("totalItems", cart.getTotalItems());
