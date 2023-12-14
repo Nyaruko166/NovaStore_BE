@@ -12,7 +12,6 @@
             <div class="card-header">
                 <h5 style="font-weight: bold">KHUYẾN MÃI</h5>
             </div>
-            <!--            Notification-->
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
                  style="margin: 5px">
                 <span th:text="${mess}"></span>
@@ -28,11 +27,10 @@
                             <button onclick="clickSearch('promotion', 'promotionForm')" type="button"
                                     class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
-                                Tìm
                             </button>
                         </div>
                         <div class="flex-grow-1 ml-2">
-                            <input type="text" placeholder="Search by name..."
+                            <input type="text" placeholder="Nhập tên khuyến mãi"
                                    th:value="${promotionNameSearch}" th:name="promotionNameSearch"
                                    class="form-control">
                         </div>
@@ -49,7 +47,6 @@
                             <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="addModalLabel">Thêm mới khuyến mãi</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -148,12 +145,23 @@
                                                     </button>
                                                 </div>
                                                 <script th:inline="javascript">
-                                                    checkCode = () => {
-                                                        let isCode = document.getElementById('code').value
-                                                        if (isCode.trim() === '') {
-                                                            document.getElementById('errorCode').innerHTML = `Chưa nhập mã`
+                                                    let enteredCodes = new Set();
+
+                                                    function onInputText(errorElementId) {
+                                                        document.getElementById(errorElementId).innerHTML = '';
+                                                    }
+
+                                                    function checkCode() {
+                                                        let isCode = document.getElementById('code').value;
+                                                        if (enteredCodes.has(isCode)) {
+                                                            document.getElementById('errorCode').innerHTML = `Mã đã được nhập trước đó`;
                                                             return false;
                                                         }
+                                                        if (isCode.trim() === '') {
+                                                            document.getElementById('errorCode').innerHTML = `Chưa nhập mã`;
+                                                            return false;
+                                                        }
+                                                        enteredCodes.add(isCode);
                                                         return true;
                                                     }
 
@@ -167,23 +175,28 @@
                                                     }
 
                                                     checkValue = () => {
-                                                        let isValue = document.getElementById('value').value
+                                                        let isValue = document.getElementById('value').value;
+                                                        let errorElement = document.getElementById('errorValue');
+                                                        errorElement.innerHTML = '';
                                                         if (isValue.trim() === '') {
-                                                            document.getElementById('errorValue').innerHTML = `Chưa nhập giá trị`
+                                                            errorElement.innerHTML = 'Chưa nhập giá trị';
                                                             return false;
                                                         }
-                                                        if (isValue < 5) {
-                                                            document.getElementById('errorValue').innerHTML = `Phần trăm giảm lớn hơn 5 %`
+                                                        if (isNaN(isValue)) {
+                                                            errorElement.innerHTML = 'Vui lòng nhập một giá trị số';
                                                             return false;
                                                         }
-                                                        if (isValue > 70) {
-                                                            document.getElementById('errorValue').innerHTML = `Phần trăm giảm lớn hơn 70 %`
+                                                        isValue = parseFloat(isValue);
+                                                        if (isValue <= 0) {
+                                                            errorElement.innerHTML = 'Phần trăm giảm phải lớn hơn  bằng 0 %';
+                                                            return false;
+                                                        }
+                                                        if (isValue > 100) {
+                                                            errorElement.innerHTML = 'Phần trăm giảm phải nhỏ hơn hoặc bằng 100 %';
                                                             return false;
                                                         }
                                                         return true;
-                                                    }
-
-
+                                                    };
                                                     checkStartDate = () => {
                                                         let startDateInput = document.getElementById('startDate');
                                                         let errorStartDate = document.getElementById('errorStartDate');
@@ -193,14 +206,6 @@
                                                             errorStartDate.innerHTML = `Chưa nhập ngày bắt đầu`;
                                                             return false;
                                                         }
-
-                                                        let currentDate = new Date();
-                                                        let startDate = new Date(startDateValue);
-
-                                                        // if (startDate <= currentDate) {
-                                                        //     errorStartDate.innerHTML = `Ngày bắt đầu phải lớn hơn ngày hiện tại`;
-                                                        //     return false;
-                                                        // }
 
                                                         errorStartDate.innerHTML = '';
                                                         return true;
@@ -269,10 +274,17 @@
                     </div>
                 </form>
             </div>
+            <br>
+            <div class="card-footer">
+                <a th:href="@{/nova/promotion-detail/page}">
+                    <button type="button" class="btn btn-dark"><i class="fa-solid fa-square-plus px-4"></i>
+                        Thêm giảm giá cho sản phẩm
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
-    <br>
-    <br>
+
     <br>
     <div class="col">
         <div class="card">
@@ -296,8 +308,6 @@
                                 <th scope="col">Phần trăm giảm</th>
                                 <th scope="col">Ngày bắt đầu</th>
                                 <th scope="col">Ngày kết thúc</th>
-                                <th scope="col">Ngày tạo</th>
-                                <th scope="col">Ngày cập nhật</th>
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Chức năng</th>
                             </tr>
@@ -310,9 +320,7 @@
                                 <td th:text="${#numbers.formatDecimal(items.value, 0, 0)}"></td>
                                 <td th:text="${#dates.format(items.startDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td th:text="${#dates.format(items.endDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                                <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                                <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                                <td th:text="${items.status}"></td>
+                                <td th:text="${items.getStatusName()}"></td>
 
                                 <td class="d-flex justify-content-center">
                                     <div class="dropdown">
@@ -325,6 +333,9 @@
                                             <a class="dropdown-item"
                                                th:href="@{'/nova/promotion/detail/' + ${items.id}}">
                                                 <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
+                                            <a class="dropdown-item"
+                                               th:href="@{'/nova/promotion/promotionChiTiet/' + ${items.id}}">
+                                                <i class="fa-solid fa-pen mr-3"></i>Chi tiết</a>
                                             <button
                                                     th:onclick="clickDelete('promotion', 'promotionDelete', [[${items.id}]])"
                                                     type="button" class="dropdown-item"><i

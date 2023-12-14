@@ -28,16 +28,15 @@
                             <button onclick="clickSearch('voucher', 'voucherForm')" type="button"
                                     class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
-                                Tìm
                             </button>
                         </div>
                         <div class="flex-grow-1 ml-2">
-                            <input type="text" placeholder="Search by name..."
+                            <input type="text" placeholder="Tìm voucher theo tên"
                                    th:value="${voucherNameSearch}" th:name="voucherNameSearch"
                                    class="form-control">
                         </div>
                         <div class="ml-2">
-                            <button type="button"  class="btn btn-dark" data-toggle="modal" data-target="#addModal">
+                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addModal">
                                 <i class="fa-solid fa-square-plus px-4"></i>
                             </button>
                         </div>
@@ -46,7 +45,7 @@
                         <div class="modal fade" id="addModal" tabindex="-1" role="dialog"
                              aria-labelledby="addModalLabel"
                              aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-lg "   role="document">
+                            <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="addModalLabel">Thêm mới voucher</h5>
@@ -62,7 +61,8 @@
                                             </div>
                                             <div class="card-body card-block">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label font-weight-bold">Mã voucher</label>
+                                                    <label class="col-sm-2 col-form-label font-weight-bold">Mã
+                                                        voucher</label>
                                                     <div class="col-sm-10">
                                                         <input type="text" class="form-control" name="code"
                                                                id="code"
@@ -95,24 +95,26 @@
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label font-weight-bold">Số tiền giảm</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="value"
-                                                               id="value"
-                                                               oninput="onInputText('errorValue')">
-                                                        <small class="" style="color: red"
-                                                               id="errorValue"></small>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label font-weight-bold">Giá tối thiểu</label>
+                                                    <label class="col-sm-2 col-form-label font-weight-bold">Giá tối
+                                                        thiểu</label>
                                                     <div class="col-sm-10">
                                                         <input type="text" class="form-control" name="minimumPrice"
                                                                id="minimumPrice"
                                                                oninput="onInputText('errorMinimumPrice')">
                                                         <small class="" style="color: red"
                                                                id="errorMinimumPrice"></small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label font-weight-bold">Số tiền
+                                                        giảm</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="value"
+                                                               id="value"
+                                                               oninput="onInputText('errorValue')">
+                                                        <small class="" style="color: red"
+                                                               id="errorValue"></small>
                                                     </div>
                                                 </div>
 
@@ -164,16 +166,33 @@
                                                     <button onclick="clickAdd('voucher', 'voucherForm')"
                                                             type="button" class="btn btn-dark"><i
                                                             class="fa-solid fa-square-plus px-4"></i>
-                                                        THÊM
                                                     </button>
                                                 </div>
                                                 <script th:inline="javascript">
-                                                    checkCode = () => {
-                                                        let isCode = document.getElementById('code').value
-                                                        if (isCode.trim() === '') {
-                                                            document.getElementById('errorCode').innerHTML = `Chưa nhập mã`
+                                                    let enteredCodes = new Set();
+
+                                                    function onInputText(errorElementId) {
+                                                        document.getElementById(errorElementId).innerHTML = '';
+                                                    }
+
+                                                    function checkCode() {
+                                                        let isCode = document.getElementById('code').value.trim();
+
+                                                        // Kiểm tra trống
+                                                        if (isCode === '') {
+                                                            document.getElementById('errorCode').innerHTML = 'Chưa nhập mã';
                                                             return false;
                                                         }
+
+                                                        // Kiểm tra trùng mã
+                                                        if (enteredCodes.has(isCode)) {
+                                                            document.getElementById('errorCode').innerHTML = 'Mã đã được nhập trước đó';
+                                                            return false;
+                                                        }
+
+                                                        // Thêm mã vào Set để kiểm tra trùng lặp
+                                                        enteredCodes.add(isCode);
+
                                                         return true;
                                                     }
 
@@ -187,49 +206,83 @@
                                                     }
 
                                                     checkQuantity = () => {
-                                                        let isQuantity = document.getElementById('quantity').value
-                                                        if (isQuantity.trim() === '') {
-                                                            document.getElementById('errorQuantity').innerHTML = `Chưa nhập số lượng`
+                                                        let isQuantity = document.getElementById('quantity').value;
+                                                        if (!isNonNegativeInteger(isQuantity)) {
+                                                            document.getElementById('errorQuantity').innerHTML = 'Vui lòng nhập một số nguyên không âm';
                                                             return false;
                                                         }
-                                                        if (isQuantity < 0) {
-                                                            document.getElementById('errorQuantity').innerHTML = `Số lượng lớn hơn 0`
+
+                                                        isQuantity = parseInt(isQuantity);
+
+                                                        if (isQuantity <= 0) {
+                                                            document.getElementById('errorQuantity').innerHTML = 'Số lượng phải lớn hơn   0';
                                                             return false;
                                                         }
+
                                                         if (isQuantity > 30) {
-                                                            document.getElementById('errorQuantity').innerHTML = `Số lượng phiếu mua cao nhất là 30`
+                                                            document.getElementById('errorQuantity').innerHTML = 'Số lượng voucher cao nhất là 30';
                                                             return false;
                                                         }
+
                                                         return true;
                                                     }
+                                                    function isNonNegativeInteger(value) {
+                                                        return /^\d+$/.test(value);
+                                                    }
+
                                                     checkValue = () => {
-                                                        let isValue = document.getElementById('value').value
-                                                        if (isValue.trim() === '') {
-                                                            document.getElementById('errorValue').innerHTML = `Chưa nhập giá trị`
+                                                        let isValue = document.getElementById('value').value;
+                                                        let minimumPrice = document.getElementById('minimumPrice').value;
+
+                                                        if (!isNumeric(isValue)) {
+                                                            document.getElementById('errorValue').innerHTML = 'Vui lòng nhập một giá trị số';
                                                             return false;
                                                         }
-                                                        if (isValue < 10000) {
-                                                            document.getElementById('errorValue').innerHTML = `Giá trị lớn hơn 10000đ`
+
+                                                        isValue = parseFloat(isValue);
+
+                                                        if (isValue <= 10000) {
+                                                            document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải lớn hơn 10000đ';
                                                             return false;
                                                         }
-                                                        if (isValue > 200000) {
-                                                            document.getElementById('errorValue').innerHTML = `SGiá trị lớn nhất là 200000đ`
+
+                                                        if (isValue !== '' && minimumPrice !== '' && isValue >= parseFloat(minimumPrice)) {
+                                                            document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải nhỏ hơn giá tối thiểu.';
                                                             return false;
                                                         }
+
                                                         return true;
                                                     }
 
+                                                    function isNumeric(value) {
+                                                        return !isNaN(parseFloat(value)) && isFinite(value);
+                                                    }
+
                                                     checkMinimumPrice = () => {
-                                                        let isMinimumPrice = document.getElementById('minimumPrice').value
-                                                        if (isMinimumPrice.trim() === '') {
-                                                            document.getElementById('errorMinimumPrice').innerHTML = `Chưa nhập giá thấp nhất`
+                                                        let isValue = document.getElementById('value').value;
+                                                        let isMinimumPrice = document.getElementById('minimumPrice').value;
+                                                        if (!isNumeric(isMinimumPrice)) {
+                                                            document.getElementById('errorMinimumPrice').innerHTML = 'Vui lòng nhập một giá trị số';
                                                             return false;
                                                         }
+
+                                                        isMinimumPrice = parseFloat(isMinimumPrice);
+
                                                         if (isMinimumPrice < 100000) {
-                                                            document.getElementById('errorMinimumPrice').innerHTML = `Giá trị lớn hơn 100000đ`
+                                                            document.getElementById('errorMinimumPrice').innerHTML = 'Giá trị tối thiểu lớn hơn 100000đ';
                                                             return false;
                                                         }
+
+                                                        if (isValue !== '' && isMinimumPrice !== '' && parseFloat(isValue) >= isMinimumPrice) {
+                                                            document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải nhỏ hơn giá tối thiểu.';
+                                                            return false;
+                                                        }
+
                                                         return true;
+                                                    }
+
+                                                    function isNumeric(value) {
+                                                        return !isNaN(parseFloat(value)) && isFinite(value);
                                                     }
 
                                                     checkStartDate = () => {
@@ -242,15 +295,7 @@
                                                             return false;
                                                         }
 
-                                                        let currentDate = new Date();
-                                                        let startDate = new Date(startDateValue);
-
-                                                        if (startDate <= currentDate) {
-                                                            errorStartDate.innerHTML = `Ngày bắt đầu phải lớn hơn ngày hiện tại`;
-                                                            return false;
-                                                        }
-
-                                                        errorStartDate.innerHTML = ''; // Reset lỗi nếu có
+                                                        errorStartDate.innerHTML = '';
                                                         return true;
                                                     }
 
@@ -272,8 +317,7 @@
                                                             errorEndDate.innerHTML = `Ngày kết thúc phải lớn hơn ngày bắt đầu`;
                                                             return false;
                                                         }
-
-                                                        errorEndDate.innerHTML = ''; // Reset lỗi nếu có
+                                                        errorEndDate.innerHTML = '';
                                                         return true;
                                                     }
 
@@ -341,12 +385,10 @@
                                 <th scope="col">Mã voucher</th>
                                 <th scope="col">Tên voucher</th>
                                 <th scope="col">Số lượng</th>
-                                <th scope="col">Giá trị</th>
+                                <th scope="col">Giá trị giảm</th>
                                 <th scope="col">Giá thấp nhất</th>
                                 <th scope="col">Ngày bắt đầu</th>
                                 <th scope="col">Ngày kết thúc</th>
-                                <th scope="col">Ngày tạo</th>
-                                <th scope="col">Ngày sửa</th>
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Chức năng</th>
                             </tr>
@@ -361,9 +403,7 @@
                                 <td th:text="${#numbers.formatDecimal(items.minimumPrice, 0, 0)}"></td>
                                 <td th:text="${#dates.format(items.startDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td th:text="${#dates.format(items.endDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                                <td th:text="${#dates.format(items.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                                <td th:text="${#dates.format(items.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                                <td th:text="${items.status}"></td>
+                                <td th:text="${items.getStatusName()}"></td>
                                 <td class="d-flex justify-content-center">
                                     <div class="dropdown">
                                         <button class="btn btn-dark" type="button"

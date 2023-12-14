@@ -9,20 +9,24 @@
 </head>
 <body>
 <div layout:fragment="content">
-
+    <h5 style="font-weight: bold"><i class="fas fa-chart-bar" style="padding-right: 8px;"></i>Thống kê</h5>
+    <br>
     <div class="col-md-3">
-        <div class="card">
+        <div class="card" style=" border-radius: 20px;background-color: #98ff98;">
             <div class="card-body">
-                <h6 class="card-title">Doanh số hôm nay</h6>
-                <p class="card-text">Doanh thu: <span
-                        th:text="${tkNgay.getDoanhThu() == null ? 0 : tkNgay.getDoanhThu()}"></span> VNĐ</p>
-                <p class="card-text"><span
+                <h6 class="card-title" style="font-weight: bold">Doanh số hôm nay</h6>
+                <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
+                    thu: <span
+                            th:text="${tkNgay.getDoanhThu() != null ?   #numbers.formatDecimal(tkNgay.getDoanhThu(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
+                </p>
+                <p class="card-text" style="color: black"><i class="fas fa-check" style="padding-right: 8px;"></i><span
                         th:text="${tkNgay.getSoLuongThanhCong() == null ? 0 : tkNgay.getSoLuongThanhCong()}"></span> đơn
                     hàng thành công</p>
-                <p class="card-text"><span
+                <p class="card-text" style="color: black"><i class="fas fa-times" style="padding-right: 8px;"></i><span
                         th:text="${tkNgay.getSoLuongHuy() == null ? 0 : tkNgay.getSoLuongHuy()}"></span> đơn hàng bị hủy
                 </p>
-                <p class="card-text"><span
+                <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
+                                                             style="padding-right: 8px;"></i><span
                         th:text="${tkNgay.getSoSanPham() == null ? 0 : tkNgay.getSoSanPham()}"></span> sản phẩm được bán
                 </p>
             </div>
@@ -30,18 +34,21 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card">
+        <div class="card" style=" border-radius: 20px;background-color: #ffb6c1;">
             <div class="card-body">
-                <h6 class="card-title">Doanh số tuần này</h6>
-                <p class="card-text">Doanh thu: <span
-                        th:text="${tkTuan.getDoanhThu() == null ? 0 : tkTuan.getDoanhThu()}"></span> VNĐ</p>
-                <p class="card-text"><span
+                <h6 class="card-title" style="font-weight: bold">Doanh số tuần này</h6>
+                <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
+                    thu: <span
+                            th:text="${tkTuan.getDoanhThu() != null ?   #numbers.formatDecimal(tkTuan.getDoanhThu(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
+                </p>
+                <p class="card-text" style="color: black"><i class="fas fa-check" style="padding-right: 8px;"></i><span
                         th:text="${tkTuan.getSoLuongThanhCong() == null ? 0 : tkTuan.getSoLuongThanhCong()}"></span> đơn
                     hàng thành công</p>
-                <p class="card-text"><span
+                <p class="card-text" style="color: black"><i class="fas fa-times" style="padding-right: 8px;"></i><span
                         th:text="${tkTuan.getSoLuongHuy() == null ? 0 : tkTuan.getSoLuongHuy()}"></span> đơn hàng bị hủy
                 </p>
-                <p class="card-text"><span
+                <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
+                                                             style="padding-right: 8px;"></i><span
                         th:text="${tkTuan.getSoSanPham() == null ? 0 : tkTuan.getSoSanPham()}"></span> sản phẩm được bán
                 </p>
             </div>
@@ -49,93 +56,110 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card">
+        <div class="card" style=" border-radius: 20px;background-color: #fffacd;">
             <div class="card-body">
-                <h6 class="card-title">Doanh số tháng này</h6>
-                <p class="card-text">Doanh thu: <span
-                        th:text="${tkThang.getDoanhThu() == null ? 0 : tkThang.getDoanhThu()}"></span> VNĐ</p>
-                <p class="card-text"><span
+                <h6 class="card-title" style="font-weight: bold">Doanh số tháng này</h6>
+                <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
+                    thu: <span
+                            th:text="${tkThang.getDoanhThu() != null ?   #numbers.formatDecimal(tkThang.getDoanhThu(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
+                </p>
+                <p class="card-text" style="color: black"><i class="fas fa-check" style="padding-right: 8px;"></i><span
                         th:text="${tkThang.getSoLuongThanhCong() == null ? 0 : tkThang.getSoLuongThanhCong()}"></span>
-                    đơn hàng thành công</p>
-                <p class="card-text"><span
+                    đơn
+                    hàng thành công</p>
+                <p class="card-text" style="color: black"><i class="fas fa-times" style="padding-right: 8px;"></i><span
                         th:text="${tkThang.getSoLuongHuy() == null ? 0 : tkThang.getSoLuongHuy()}"></span> đơn hàng bị
-                    hủy</p>
-                <p class="card-text"><span
+                    hủy
+                </p>
+                <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
+                                                             style="padding-right: 8px;"></i><span
                         th:text="${tkThang.getSoSanPham() == null ? 0 : tkThang.getSoSanPham()}"></span> sản phẩm được
-                    bán</p>
+                    bán
+                </p>
             </div>
         </div>
     </div>
 
     <div class="col-md-3">
-        <div class="card">
+        <div class="card" style=" border-radius: 20px;background-color: #87ceeb;">
             <div class="card-body">
-                <h6 class="card-title">Doanh số năm nay</h6>
-                <p class="card-text">Doanh thu: <span
-                        th:text="${tkNam.getDoanhThu() == null ? 0 : tkNam.getDoanhThu()}"></span> VNĐ</p>
-                <p class="card-text"><span
+                <h6 class="card-title" style="font-weight: bold">Doanh số năm nay</h6>
+                <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
+                    thu: <span
+                            th:text="${tkNam.getDoanhThu() != null ?   #numbers.formatDecimal(tkNam.getDoanhThu(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
+                </p>
+                <p class="card-text" style="color: black"><i class="fas fa-check" style="padding-right: 8px;"></i><span
                         th:text="${tkNam.getSoLuongThanhCong() == null ? 0 : tkNam.getSoLuongThanhCong()}"></span> đơn
                     hàng thành công</p>
-                <p class="card-text"><span
+                <p class="card-text" style="color: black"><i class="fas fa-times" style="padding-right: 8px;"></i><span
                         th:text="${tkNam.getSoLuongHuy() == null ? 0 : tkNam.getSoLuongHuy()}"></span> đơn hàng bị hủy
                 </p>
-                <p class="card-text"><span th:text="${tkNam.getSoSanPham() == null ? 0 : tkNam.getSoSanPham()}"></span>
-                    sản phẩm được bán</p>
+                <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
+                                                             style="padding-right: 8px;"></i><span
+                        th:text="${tkNam.getSoSanPham() == null ? 0 : tkNam.getSoSanPham()}"></span> sản phẩm được bán
+                </p>
             </div>
         </div>
     </div>
     <br>
     <br>
-    <div class="col-md-8 ">
+    <div class="col-md-7 ">
         <h5 style="color: #333;">Thống kê theo khoảng ngày</h5>
+        <br>
+        <br>
         <form th:action="@{/nova/thong-ke/thongke}" method="get" style="margin-bottom: 20px;">
-            <label style="display: inline-block; margin-bottom: 5px;">Từ ngày:</label>
-            <input type="date" name="tungay" th:value="${tungay}" style="padding: 8px; margin-bottom: 10px;">
+            <label style="border-radius: 10px;display: inline-block; margin-bottom: 5px;">Từ ngày:</label>
+            <input type="date" name="tungay" th:value="${tungay}"
+                   style="border-radius: 10px;padding: 8px; margin-bottom: 10px;">
 
-            <label style="display: inline-block; margin-bottom: 5px;">Đến ngày:</label>
-            <input type="date" name="denngay" th:value="${denngay}" style="padding: 8px; margin-bottom: 10px;">
+            <label style="border-radius: 10px;display: inline-block; margin-bottom: 5px;">Đến ngày:</label>
+            <input type="date" name="denngay" th:value="${denngay}"
+                   style="border-radius: 10px;padding: 8px; margin-bottom: 10px;">
 
             <button type="submit"
-                    style="display: inline-block; padding: 10px; background-color: #000; color: white; border: none; cursor: pointer;"
-                    onmouseover="this.style.backgroundColor='#333'" onmouseout="this.style.backgroundColor='#000'">Tìm
-                kiếm
+                    style="border-radius: 10px;display: inline-block; padding: 10px; background-color: #000; color: white; border: none; cursor: pointer;"
+                    onmouseover="this.style.backgroundColor='#333'" onmouseout="this.style.backgroundColor='#000'"><i
+                    class="fas fa-search"></i>
             </button>
         </form>
     </div>
-    <div class="col-md-4  ">
-        <div class="card">
-            <div class="card-body " th:each="thongKeItem : ${thongKeKhoangNgayList}">
-                <p class="card-text">Doanh thu: <span
-                        th:text="${thongKeItem.doanhThu == null ? 0 : thongKeItem.doanhThu}"></span> VNĐ</p>
-                <p class="card-text"><span
-                        th:text="${thongKeItem.soLuongThanhCong == null ? 0 : thongKeItem.soLuongThanhCong}"></span>
-                    đơn
-                    hàng thành công</p>
-                <p class="card-text"><span
-                        th:text="${thongKeItem.soLuongHuy == null ? 0 : thongKeItem.soLuongHuy}"></span> đơn hàng bị
-                    hủy
+    <div class="col-md-5">
+        <div class="card"
+             style="justify-content: center; text-align: left; border-radius: 20px;background-color: #fff0f5;padding-left: 40px">
+            <div class="card-body" th:each="thongKeItem : ${thongKeKhoangNgayList}">
+                <h6 class="card-title" style="font-weight: bold">Doanh số theo khoảng ngày</h6>
+                <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
+                    thu: <span
+                            th:text="${thongKeItem.doanhThu != null ?   #numbers.formatDecimal(thongKeItem.doanhThu, 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
                 </p>
-                <p class="card-text"><span
-                        th:text="${thongKeItem.soSanPham == null ? 0 : thongKeItem.soSanPham}"></span>
-                    sản phẩm được bán</p>
+                <p class="card-text" style="color: black"><i class="fas fa-check" style="padding-right: 8px;"></i><span
+                        th:text="${thongKeItem.soLuongThanhCong == null ? 0 : thongKeItem.soLuongThanhCong}"></span> đơn
+                    hàng thành công</p>
+                <p class="card-text" style="color: black"><i class="fas fa-times" style="padding-right: 8px;"></i><span
+                        th:text="${thongKeItem.soLuongHuy == null ? 0 : thongKeItem.soLuongHuy}"></span> đơn hàng bị hủy
+                </p>
+                <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
+                                                             style="padding-right: 8px;"></i><span
+                        th:text="${thongKeItem.soSanPham == null ? 0 : thongKeItem.soSanPham}"></span> sản phẩm được bán
+                </p>
             </div>
         </div>
     </div>
     <br>
     <br>
     <div class="col-md-12">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <canvas id="myPieChart" width="400px" height="400px"></canvas>
         </div>
-        <div class="col-md-8">
-            <h5 style="text-align: left;">Top 5 sản phẩm bán chạy nhất</h5>
+        <div class="col-md-7">
+            <h5 style="text-align: left;"><i class="fas fa-chart-line" style="padding-right: 8px;"></i>Top 5 sản phẩm
+                bán chạy nhất</h5>
             <table style=" margin-top: 20px;">
                 <thead>
                 <tr style=" border-bottom: 1px solid #dddddd;">
                     <td style=" text-align: left; padding: 10px;">#
                     </td>
                     <td style=" text-align: left; padding: 10px;">Mã
-                        sản phẩm
                     </td>
                     <td style=" text-align: left; padding: 10px;">
                         Sản phẩm
@@ -158,11 +182,12 @@
                     <td style="padding: 10px;text-align: left;" th:text="${sanPham.getCode()}"></td>
                     <td style="padding: 10px;">
                         <img th:src="@{'/image/product/' + ${sanPham.getId()}}"
-                             style="width: 100px; height: 100px; display: block; margin: 0 auto;">
+                             style="width: 100px; height: 100px; display: block; margin: 0 auto;border-radius: 8px">
                     </td>
                     <td style="padding: 10px; text-align: left;" th:text="${sanPham.getName()}"></td>
                     <td style="padding: 10px; text-align: left;" th:text="${sanPham.getSoLuong()}"></td>
-                    <td style="padding: 10px; text-align: left;" th:text="${sanPham.getDoanhThu()}"></td>
+                    <td style="padding: 10px; text-align: left;"
+                        th:text="${sanPham.getDoanhThu() != null ?   #numbers.formatDecimal(sanPham.getDoanhThu(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></td>
                 </tr>
 
             </table>
@@ -196,7 +221,7 @@
             return item.percentage;
         });
 
-        var backgroundColors = ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#FF9800"];
+        var backgroundColors = ["#3498db", "#e74c3c", "#2ecc71", "#f1c40f", "#9b59b6"];
 
         var ctx = document.getElementById('myPieChart').getContext('2d');
         var myPieChart = new Chart(ctx, {
@@ -240,7 +265,9 @@
                 },
                 title: {
                     display: true,
-                    text: 'Biểu đồ Trạng thái Hóa đơn'
+                    text: 'Biểu đồ Trạng thái Hóa đơn',
+                    fontSize: 15,
+                    fontColor: 'black'
                 }
             }
         });

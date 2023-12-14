@@ -69,4 +69,23 @@ public class Voucher {
     @Column(name = "Status")
     private Integer status;
 
+    public String getStatusName(){
+        if (this.status == 1){
+            return "Hoạt động";
+        } else if (this.status == 2) {
+            return "Đang chờ";
+        }else {
+            return "Đã hủy";
+        }
+    }
+    public void updateStatus() {
+        Date currentDate = new Date();
+
+        if (currentDate.before(startDate)) {
+            status = 2;
+        } else if (currentDate.equals(startDate) || currentDate.after(startDate)) {
+            status = 1;
+        }
+    }
+
 }
