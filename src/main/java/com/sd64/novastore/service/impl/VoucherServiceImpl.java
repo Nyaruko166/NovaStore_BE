@@ -3,10 +3,12 @@ package com.sd64.novastore.service.impl;
 import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.repository.VoucherRepository;
 import com.sd64.novastore.service.VoucherService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,6 +22,32 @@ public class VoucherServiceImpl implements VoucherService {
     private VoucherRepository voucherRepository;
 
     @Override
+    @Transactional
+    @Scheduled(cron = "0 * * * * ?")
+    public void scheduleUpdateExpiredVouchers() {
+        List<Voucher> expiredVouchers = getExpiredVouchers();
+        for (Voucher voucher : expiredVouchers) {
+            updateExpiredVoucher(voucher);
+        }
+    }
+
+    @Override
+    public List<Voucher> getExpiredVouchers() {
+        Date currentDate = new Date();
+        return voucherRepository.findByEndDateBeforeAndStatus(currentDate, 1);
+    }
+
+    @Override
+    public void updateExpiredVoucher(Voucher voucher) {
+        voucher.setStatus(0);
+        try {
+            voucherRepository.save(voucher);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public List<Voucher> getAll() {
         return voucherRepository.findAllByStatusOrderByIdDesc(1);
     }
@@ -27,26 +55,41 @@ public class VoucherServiceImpl implements VoucherService {
     @Override
     public Page<Voucher> getAll(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return voucherRepository.findAllByStatusOrderByIdDesc(pageable, 1);
+        return voucherRepository.findAllByStatusOrderByIdDesc(pageable);
+    }
+
+    @Scheduled(cron = "0 * * * * ?")
+    @Transactional
+    public void updatePromotionStatus() {
+        List<Voucher> vouchersToUpdate = voucherRepository.findAllByStatusOrderByIdDesc(2);
+        Date currentDate = new Date();
+
+        for (Voucher voucher : vouchersToUpdate) {
+            if (voucher.getStartDate().before(currentDate)) {
+                voucher.setStatus(1);
+                voucherRepository.save(voucher);
+            }
+        }
     }
 
     @Override
     public Voucher add(Voucher voucher) {
         voucher.setCreateDate(new Date());
         voucher.setUpdateDate(new Date());
-        voucher.setStatus(1);
+        voucher.updateStatus();
         return voucherRepository.save(voucher);
     }
 
     @Override
     public Voucher update(Voucher voucher, Integer id) {
         Optional<Voucher> optional = voucherRepository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             Voucher oldVoucher = optional.get();
             voucher.setId(oldVoucher.getId());
             voucher.setCreateDate(oldVoucher.getCreateDate());
             voucher.setUpdateDate(new Date());
             voucher.setStatus(oldVoucher.getStatus());
+            voucher.updateStatus();
             return voucherRepository.save(voucher);
         } else {
             return null;
@@ -56,7 +99,7 @@ public class VoucherServiceImpl implements VoucherService {
     @Override
     public Voucher delete(Integer id) {
         Optional<Voucher> optional = voucherRepository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             Voucher voucher = optional.get();
             voucher.setStatus(0);
             return voucherRepository.save(voucher);
@@ -85,4 +128,6 @@ public class VoucherServiceImpl implements VoucherService {
     public Voucher getVoucherById(Integer id) {
         return voucherRepository.findById(id).orElse(null);
     }
+
+
 }

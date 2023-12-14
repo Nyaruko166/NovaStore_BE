@@ -1,9 +1,7 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.model.Promotion;
 import org.springframework.data.domain.Page;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 

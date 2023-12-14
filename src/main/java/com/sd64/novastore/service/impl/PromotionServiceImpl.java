@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -36,7 +35,7 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     @Transactional
-    @Scheduled(cron = "0 38 16 * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     public void scheduleDeleteExpiredPromotions() {
         List<Promotion> expiredPromotions = getExpiredPromotions();
         for (Promotion promotion : expiredPromotions) {
@@ -78,15 +77,29 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public Page<Promotion> getAllPT(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return promotionRepository.findAllByStatusOrderByIdDesc(pageable, 1);
+        return promotionRepository.findAllByStatusOrderByIdDesc(pageable);
     }
 
     @Override
     public Promotion add(Promotion promotion) {
         promotion.setCreateDate(new Date());
         promotion.setUpdateDate(new Date());
-        promotion.setStatus(1);
+        promotion.updateStatus();
         return promotionRepository.save(promotion);
+    }
+
+    @Scheduled(cron = "0 * * * * ?")
+    @Transactional
+    public void updatePromotionStatus() {
+        List<Promotion> promotionsToUpdate = promotionRepository.findAllByStatusOrderByIdDesc(2);
+        Date currentDate = new Date();
+
+        for (Promotion promotion : promotionsToUpdate) {
+            if (promotion.getStartDate().before(currentDate)) {
+                promotion.setStatus(1);
+                promotionRepository.save(promotion);
+            }
+        }
     }
 
     @Override
@@ -98,11 +111,23 @@ public class PromotionServiceImpl implements PromotionService {
             promotion.setCreateDate(oldPromotion.getCreateDate());
             promotion.setUpdateDate(new Date());
             promotion.setStatus(oldPromotion.getStatus());
+            promotion.updateStatus();
+            if (oldPromotion.getStatus() != promotion.getStatus() && promotion.getStatus() == 2) {
+                for (PromotionDetail promotionDetail : oldPromotion.getPromotionDetails()) {
+                    Product product = promotionDetail.getProduct();
+                    if (product.getStatus() == 2) {
+                        product.setStatus(1);
+                        productRepository.save(product);
+                    }
+                }
+            }
+
             return promotionRepository.save(promotion);
         } else {
             return null;
         }
     }
+
 
     @Override
     @Transactional

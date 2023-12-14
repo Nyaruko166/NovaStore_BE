@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Promotion Management</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <strong>Chi tiết giảm giá</strong>
+            </div>
+            <div style="display: flex;padding-left: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+                <div style="margin-right: 20px; margin-bottom: 10px;">
+                    <span style="font-weight: bold; margin-bottom: 5px; display: block;">Mã khuyến mãi:</span>
+                    <span style="font-style: italic; display: block;" th:text="${promotion.code}"></span>
+                </div>
+
+                <div style="margin-right: 20px; margin-bottom: 10px;">
+                    <span style="font-weight: bold; margin-bottom: 5px; display: block;">Tên khuyến mãi:</span>
+                    <span style="font-style: italic; display: block;" th:text="${promotion.name}"></span>
+                </div>
+
+                <div style="margin-right: 20px; margin-bottom: 10px;">
+                    <span style="font-weight: bold; margin-bottom: 5px; display: block;">Trạng thái:</span>
+                    <span style="font-style: italic; display: block;" th:text="${promotion.getStatusName()}"></span>
+                </div>
+
+                <div style="margin-right: 20px; margin-bottom: 10px;">
+                    <span style="font-weight: bold; margin-bottom: 5px; display: block;">Phần trăm giảm:</span>
+                    <span style="font-style: italic; display: block;" th:text="${promotion.value}"></span>
+                </div>
+
+                <div style="margin-right: 20px; margin-bottom: 10px;">
+                    <span style="font-weight: bold; margin-bottom: 5px; display: block;">Ngày bắt đầu:</span>
+                    <span style="font-style: italic; display: block;" th:text="${promotion.startDate}"></span>
+                </div>
+
+                <div style="margin-right: 20px; margin-bottom: 10px;">
+                    <span style="font-weight: bold; margin-bottom: 5px; display: block;">Ngày kết thúc:</span>
+                    <span style="font-style: italic; display: block;" th:text="${promotion.endDate}"></span>
+                </div>
+            </div>
+            <span style="margin-right: 10px;padding-left: 20px; font-weight: bold; display: block;">Sản phẩm áp dụng:</span>
+            <br>
+            <div class="product-list">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Mã sản phẩm</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giảm (%)</th>
+                        <th>Bắt đầu</th>
+                        <th>Kết thúc</th>
+                        <th>Giá</th>
+                        <th>Giá sau giảm</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="promotionDetail : ${promotion.promotionDetails}" th:if="${promotionDetail.product.status == 2}">
+                        <td style="padding: 10px;">
+                            <img th:src="@{'/image/product/' + ${promotionDetail.product.id}}"
+                                 style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
+                        </td>
+                        <td th:text="${promotionDetail.product.code}"></td>
+                        <td th:text="${promotionDetail.product.name}"></td>
+                        <td th:text="${promotionDetail.promotion.value}"></td>
+                        <td th:text="${promotionDetail.promotion.startDate}"></td>
+                        <td th:text="${promotionDetail.promotion.endDate}"></td>
+                        <td th:text="${#numbers.formatDecimal(promotionDetail.product.listProductDetail[0].price, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
+                        <td th:text="${#numbers.formatDecimal((promotionDetail.product.listProductDetail[0].price * (100 - promotionDetail.promotion.value) / 100), 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
