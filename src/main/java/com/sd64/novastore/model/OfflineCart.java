@@ -14,8 +14,6 @@ import lombok.*;
 @ToString
 public class OfflineCart {
 
-    private String billId;
-
     private String detailProductId;
 
     private Integer qty;

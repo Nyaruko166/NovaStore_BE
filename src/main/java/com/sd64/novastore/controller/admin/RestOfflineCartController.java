@@ -29,7 +29,7 @@ public class RestOfflineCartController {
     @PostMapping("/add")
     public ResponseEntity<?> addToCart(@RequestBody Map<String, String> response) {
 
-        System.out.println(offlineCartService.addToCart("1", response.get("data"), 1));
+        System.out.println(offlineCartService.addToCart(response.get("data"), 1));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

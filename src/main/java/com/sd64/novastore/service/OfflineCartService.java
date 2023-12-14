@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface OfflineCartService {
 
-    String addToCart(String billId, String detailProductId, Integer qty);
+    String addToCart(String detailProductId, Integer qty);
 
     List<OfflineCartView> getCart();
 

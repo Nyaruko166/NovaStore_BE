@@ -7,6 +7,7 @@ package com.sd64.novastore.controller.admin;
 import com.google.gson.Gson;
 import com.sd64.novastore.model.OfflineCartView;
 import com.sd64.novastore.service.OfflineCartService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,10 @@ public class OfflineCartController {
     Gson gson = new Gson();
 
     @GetMapping()
-    public String cart(Model model) {
+    public String cart(Model model, HttpSession session) {
 //        offlineCartService.addToCart("1","CT33",1);
         List<OfflineCartView> lstCart = offlineCartService.getCart();
+        session.setAttribute("posCart",lstCart);
         model.addAttribute("lstCart", lstCart);
         return "/admin/cart/offline-cart";
     }

@@ -28,7 +28,7 @@ public class OfflineCartServiceImpl implements OfflineCartService {
 //    List<OfflineCart> testCart = new ArrayList<>();
 
     @Override
-    public String addToCart(String billId, String detailProductId, Integer qty) {
+    public String addToCart(String detailProductId, Integer qty) {
         List<OfflineCart> cart = repository.getCartSP();
         for (OfflineCart x : cart) {
             if (x.getDetailProductId().equals(detailProductId)) {
@@ -38,7 +38,7 @@ public class OfflineCartServiceImpl implements OfflineCartService {
 
             }
         }
-        cart.add(new OfflineCart(billId, detailProductId, qty));
+        cart.add(new OfflineCart(detailProductId, qty));
         return "Ngol";
     }
 
@@ -76,7 +76,7 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     public String deleteCart(String codeCtsp) {
         List<OfflineCart> cart = repository.getCartSP();
         for (OfflineCart x : cart) {
-            if (x.getDetailProductId().equals(codeCtsp)){
+            if (x.getDetailProductId().equals(codeCtsp)) {
                 cart.remove(x);
                 return "Xoá Thành Công!";
             }

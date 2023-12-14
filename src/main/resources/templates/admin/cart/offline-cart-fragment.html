@@ -26,7 +26,8 @@
                 <div class="ml-2"><span th:text="${x.name}" class="font-weight-bold d-block"></span><span
                         class="spec" th:text="${x.fieldCombine()}"></span></div>
             </div>
-            <div class="d-flex flex-row align-items-center"><span th:text="${x.qty}" class="d-block"></span><span
+            <div class="d-flex flex-row align-items-center"><span th:value="${x.qty}"
+                                                                  class="d-block"></span><span
                     th:text="${x.calTotalPrice() + ' VNĐ'}" class="d-block ml-5 font-weight-bold"></span>
                 <a th:href="@{'/nova/pos/remove/' + ${x.codeCtsp}}" class="trash"><i
                         class="fa fa-trash-o ml-3 text-black-50"></i></a>
