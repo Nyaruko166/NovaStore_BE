@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -115,5 +117,22 @@ public class FormController {
         model.addAttribute("formNameSearch", formNameSearch);
         model.addAttribute("pageForm", pageForm);
         return "admin/form/form-restore";
+    }
+
+    @PostMapping("/excel")
+    public String importExcel(RedirectAttributes redirectAttributes, @RequestParam MultipartFile excelFile) throws IOException {
+        if (formService.importExcel(excelFile) == 1) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
+            return "redirect:/nova/form/page";
+        } else if (formService.importExcel(excelFile) == -1) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại dữ liệu trong file");
+            return "redirect:/nova/form/page";
+        } else if (formService.importExcel(excelFile) == 2) {
+            redirectAttributes.addFlashAttribute("error", "Dữ liệu đang bị trùng");
+            return "redirect:/nova/form/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");
+            return "redirect:/nova/form/page";
+        }
     }
 }

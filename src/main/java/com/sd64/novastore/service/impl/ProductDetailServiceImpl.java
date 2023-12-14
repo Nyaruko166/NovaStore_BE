@@ -10,11 +10,15 @@ import com.sd64.novastore.response.ProductDetailSearchResponse;
 import com.sd64.novastore.service.ProductDetailService;
 import com.sd64.novastore.utils.FileUtil;
 import com.sd64.novastore.utils.productdetail.ProductDetailExcelUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,22 +28,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ProductDetailServiceImpl implements ProductDetailService {
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
     @Autowired
     private ProductDetailExcelUtil productDetailExcelUtil;
-
-    private static final String PREFIX = "CT";
-    private static final int INITIAL_COUNTER = 1;
-    private static final int PADDING_LENGTH = 4;
-    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
-    public static String generateProductCode() {
-        int currentCounter = counter.getAndIncrement();
-        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
-        return PREFIX + paddedCounter;
-    }
 
 
     @Override
@@ -194,4 +189,47 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return totalPage;
     }
 
+    @Override
+    public byte[] getProductDetail(Integer id) {
+        var productDetail = productDetailRepository.findByIdAndStatus(id, 1);
+        if (productDetail == null) {
+            log.info("ProductDetailId = {} is not exist on DB", id);
+            return null;
+        }
+        try {
+            return convert(getQRPath(productDetail.getCode()));
+        } catch (IOException e) {
+            log.error("Convert qrCode fail, ProductDetailId = {}", id);
+            return null;
+        }
+    }
+
+    private byte[] convert(String qrCodePath) throws IOException {
+        // Create a FileInputStream object to read the image file.
+        qrCodePath = qrCodePath + ".png";
+        FileInputStream fis = new FileInputStream(qrCodePath);
+
+        // Create a ByteArrayOutputStream object to store the image data in bytes.
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        // Read the image data from the FileInputStream object and write it to the ByteArrayOutputStream object.
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = fis.read(buffer)) != -1) {
+            bos.write(buffer, 0, bytesRead);
+        }
+        // Close the FileInputStream and ByteArrayOutputStream objects.
+        fis.close();
+        bos.close();
+
+        // Get the byte array containing the image data from the ByteArrayOutputStream object.
+        byte[] qrData = bos.toByteArray();
+        return qrData;
+    }
+
+    private String getQRPath(String fileName) {
+        String currentProjectPath = System.getProperty("user.dir");
+        return currentProjectPath + File.separator + "src/main/resources/static/assets/qrcode"
+                + File.separator + fileName;
+    }
 }

@@ -18,6 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Optional<Product> findAllByCode(String code);
 
+    Product findTopByOrderByIdDesc();
+
     @Query(value = "SELECT p.id as id, " +
             "p.code as code, " +
             "p.name as name, " +

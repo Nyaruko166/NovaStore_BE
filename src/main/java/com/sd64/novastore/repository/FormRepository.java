@@ -18,4 +18,6 @@ public interface FormRepository extends JpaRepository<Form, Integer> {
     Form findByName(String name);
 
     Optional<Form> findByCode(String code);
+
+    Form findTopByOrderByIdDesc();
 }

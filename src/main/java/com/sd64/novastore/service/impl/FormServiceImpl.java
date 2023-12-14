@@ -3,31 +3,28 @@ package com.sd64.novastore.service.impl;
 import com.sd64.novastore.model.Form;
 import com.sd64.novastore.repository.FormRepository;
 import com.sd64.novastore.service.FormService;
+import com.sd64.novastore.utils.FileUtil;
+import com.sd64.novastore.utils.attribute.FormExcelUtil;
+import com.sd64.novastore.utils.attribute.MaterialExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class FormServiceImpl implements FormService {
     @Autowired
     private FormRepository formRepository;
 
-    private static final String PREFIX = "KD";
-    private static final int INITIAL_COUNTER = 1;
-    private static final int PADDING_LENGTH = 4;
-    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
-    public static String generateProductCode() {
-        int currentCounter = counter.getAndIncrement();
-        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
-        return PREFIX + paddedCounter;
-    }
+    @Autowired
+    private FormExcelUtil excelUtil;
 
     @Override
     public List<Form> getAll(){
@@ -48,6 +45,16 @@ public class FormServiceImpl implements FormService {
         return true;
     }
 
+    public String generateCode() {
+        Form formFinalPresent = formRepository.findTopByOrderByIdDesc();
+        if (formFinalPresent == null) {
+            return "KD00001";
+        }
+        Integer idFinalPresent = formFinalPresent.getId() + 1;
+        String code = String.format("%04d", idFinalPresent);
+        return "KD"+code;
+    }
+
     @Override
     public Boolean add(String name) {
         if (checkName(name)) {
@@ -56,7 +63,7 @@ public class FormServiceImpl implements FormService {
             form.setStatus(1);
             form.setCreateDate(new java.util.Date());
             form.setUpdateDate(new java.util.Date());
-            form.setCode(generateProductCode());
+            form.setCode(generateCode());
             formRepository.save(form);
             return true;
         } else {
@@ -131,5 +138,24 @@ public class FormServiceImpl implements FormService {
     public Page<Form> searchDelete(String name, int page) {
         Pageable pageable = PageRequest.of(page, 10);
         return formRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
+    }
+
+    @Override
+    public Integer importExcel(MultipartFile file) throws IOException {
+        if (excelUtil.isValidExcel(file)) {
+            String uploadDir = "./src/main/resources/static/filecustom/form/";
+            String fileName = file.getOriginalFilename();
+            String excelPath = FileUtil.copyFile(file, fileName, uploadDir);
+            String status = excelUtil.getFromExcel(excelPath);
+            if (status.contains("Sai dữ liệu")) {
+                return -1;
+            } else if (status.contains("Trùng tên")) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0; // Lỗi file
+        }
     }
 }

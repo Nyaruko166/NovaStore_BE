@@ -76,11 +76,11 @@ public class ProductDetailExcelUtil {
                         case 2:
                             if (cell.getCellType() == CellType.NUMERIC) {
                                 String sizeStr = String.valueOf(new Double(cell.getNumericCellValue()).intValue());
-                                Size size = sizeRepository.findByName(sizeStr).orElse(null);
+                                Size size = sizeRepository.findByName(sizeStr);
                                 productDetail.setSize(size);
                             } else {
                                 String sizeStr = cell.getStringCellValue();
-                                Size size = sizeRepository.findByName(sizeStr).orElse(null);
+                                Size size = sizeRepository.findByName(sizeStr);
                                 productDetail.setSize(size);
                             }
                             break;

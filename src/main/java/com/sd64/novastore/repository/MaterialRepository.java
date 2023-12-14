@@ -19,4 +19,6 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
     Material findByName(String name);
 
     Optional<Material> findByCode(String code);
+
+    Material findTopByOrderByIdDesc();
 }

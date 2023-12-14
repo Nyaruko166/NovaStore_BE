@@ -2,6 +2,7 @@ package com.sd64.novastore.service;
 
 import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.ProductDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,4 +33,9 @@ public interface ProductService {
 
     Product restore(Integer id);
 
+    void saveFinal(Product product, List<ProductDetail> listProductDetail, List<MultipartFile> files) throws IOException;
+
+    void updateFinal(Product product, List<ProductDetail> listProductDetail, List<MultipartFile> files, List<Integer> imageRemoveIds) throws IOException;
+
+    void update(Product product, Integer productId);
 }

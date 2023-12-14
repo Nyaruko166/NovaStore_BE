@@ -21,7 +21,7 @@
                     }
                     alertSuccess = (content) => {
                         Swal.fire({
-                            title: "Thêm dữ liệu thành công",
+                            title: content,
                             icon: "success",
                             confirmButtonColor: "#0DC149"
                         });
@@ -46,55 +46,62 @@
                 </script>
             </div>
             <div class="card-body card-block">
+                <form id="colorExcel" enctype="multipart/form-data">
+                    <div class="card-footer">
+                        <div class="custom-file">
+                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx"
+                                   onchange="setFileName()">
+                            <label class="custom-file-label" for="importFile">Chọn tệp excel</label>
+                        </div>
+                        <div class="mt-2 d-flex justify-content-between">
+                            <div class="d-flex align-content-center">
+                                <button type="button"
+                                        onclick="importExcel('colorExcel', 'importFile', 'errorExcel', 'color')"
+                                        class="btn btn-success">
+                                    <i class="fa-solid fa-file-excel px-4"></i>
+                                </button>
+                                <div id="errorExcel" class="ml-2" style="color: red;"></div>
+                            </div>
+                            <div>
+                                <button class="btn btn-danger" type="button"
+                                        onclick="downLoadTemplate('colorExcel', 'color')">
+                                    <i class="fa-solid fa-table px-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <br>
                 <form id="colorForm" class="form-horizontal">
-                    <div class="card-footer d-flex justify-content-between">
-
-<!--                        <input type="hidden" class="form-control" th:value="${product.id}" name="productId">-->
-
-                        <div>
-                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
-                                <i class="fa-solid fa-square-plus px-4"></i>
-                            </button>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="font-weight-bold form-control-label">Tên màu sắc</label>
+                                            <div class="" style="color: red" id="errorName"></div>
                                         </div>
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between">
-                                                    <label class="font-weight-bold form-control-label">Màu sắc
-                                                    </label>
-                                                    <div class="" style="color: red" id="errorName"></div>
-                                                </div>
-                                                <input type="text" id="name" name="name"
-                                                       class="form-control" oninput="onInputText('errorName')">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button onclick="clickAdd('color', 'colorForm', 'name', 'errorName', 'màu sắc')"
-                                                    type="button" class="btn btn-dark"><i
-                                                    class="fa-solid fa-square-plus px-4"></i></button>
-                                        </div>
+                                        <input type="text" id="name" name="name"
+                                               class="form-control" oninput="onInputText('errorName')">
                                     </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="clickAdd('color', 'colorForm', 'name', 'errorName', 'tên màu sắc')"
+                                            type="button" class="btn btn-dark"><i
+                                            class="fa-solid fa-square-plus px-4"></i></button>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <a th:href="@{|/nova/color/view-restore|}">
-                                <button type="button" class="btn btn-dark">
-                                    <i class="fa-solid fa-warehouse px-4"></i>
-                                </button>
-                            </a>
-                        </div>
                     </div>
-                    <br>
                     <div class="border-search">
                         <div class="col-md-1">
                             <button onclick="clickSearch('color', 'colorForm')" type="button"
@@ -102,17 +109,26 @@
                                 <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
                         </div>
-<!--                        <script th:inline="javascript">-->
-<!--                            clickSearch = (entity, idForm, productId) => {-->
-<!--                                document.getElementById(idForm).action = '/nova/product/' + productId + "/" + entity + '/search'-->
-<!--                                document.getElementById(idForm).method = 'get'-->
-<!--                                document.getElementById(idForm).submit()-->
-<!--                            }-->
-<!--                        </script>-->
                         <div class="col-md-11">
-                            <input type="text" placeholder="Nhập màu sắc..."
+                            <input type="text" placeholder="Nhập tên màu sắc..."
                                    th:value="${colorNameSearch}" th:name="colorNameSearch"
                                    class="form-control">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card-footer d-flex justify-content-end">
+                        <div>
+                            <button type="button" class="btn btn-dark" data-toggle="modal"
+                                    data-target="#exampleModal">
+                                <i class="fa-solid fa-square-plus px-4"></i>
+                            </button>
+                        </div>
+                        <div class="ml-2">
+                            <a href="/nova/color/view-restore">
+                                <button type="button" class="btn btn-dark">
+                                    <i class="fa-solid fa-warehouse px-4"></i>
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </form>

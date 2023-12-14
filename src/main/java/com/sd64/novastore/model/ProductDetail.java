@@ -38,7 +38,7 @@ public class ProductDetail {
     @Column(name = "Status")
     private Integer status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductId", referencedColumnName = "Id")
     private Product product;
 

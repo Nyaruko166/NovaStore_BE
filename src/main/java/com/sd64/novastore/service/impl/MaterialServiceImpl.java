@@ -1,11 +1,10 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.model.Form;
 import com.sd64.novastore.model.Material;
 import com.sd64.novastore.repository.MaterialRepository;
 import com.sd64.novastore.service.MaterialService;
 import com.sd64.novastore.utils.FileUtil;
-import com.sd64.novastore.utils.product.ExcelUtil;
+import com.sd64.novastore.utils.attribute.MaterialExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class MaterialServiceImpl implements MaterialService {
@@ -25,12 +23,7 @@ public class MaterialServiceImpl implements MaterialService {
     private MaterialRepository materialRepository;
 
     @Autowired
-    private ExcelUtil excelUtil;
-
-    public String generateProductCode(Integer id) {
-        String code = String.format("%04d", id);
-        return "CL"+code;
-    }
+    private MaterialExcelUtil excelUtil;
 
     @Override
     public List<Material> getAll() {
@@ -51,6 +44,16 @@ public class MaterialServiceImpl implements MaterialService {
         return true;
     }
 
+    public String generateCode() {
+        Material materialFinalPresent = materialRepository.findTopByOrderByIdDesc();
+        if (materialFinalPresent == null) {
+            return "CL00001";
+        }
+        Integer idFinalPresent = materialFinalPresent.getId() + 1;
+        String code = String.format("%04d", idFinalPresent);
+        return "CL"+code;
+    }
+
     @Override
     public Boolean add(String name) {
         if (checkName(name)) {
@@ -60,7 +63,7 @@ public class MaterialServiceImpl implements MaterialService {
             material.setCreateDate(new java.util.Date());
             material.setUpdateDate(new java.util.Date());
             materialRepository.save(material);
-            material.setCode(generateProductCode(material.getId()));
+            material.setCode(generateCode());
             materialRepository.save(material);
             return true;
         } else {

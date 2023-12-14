@@ -202,3 +202,62 @@ nav {
     /* Màu icon */
     /*background-color: white;*/
 }
+
+.qrcode-container {
+    position: fixed;
+    border: 1px solid black;
+    top: 50%;
+    left: 50%;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    transform: translateX(-50%);
+    transform: translateY(-50%);
+    margin: 0 auto;
+    background-color: #fff;
+
+    z-index: 2;
+    display: none;
+}
+
+.qrcode-container.active {
+    display: block;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.close-qr {
+    color: red;
+    font-size: 20px;
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-qr:hover {
+    background-color: red;
+    color: white;
+}
+
+.print-qr {
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.version-item {
+    padding: 8px 8px;
+    border: 1px solid #FAFAFA;
+    box-shadow: 0px 2px 4px rgba(168, 168, 168, 0.25);
+    margin-bottom: 4px;
+}
+
+.version-item p {
+    color: #000;
+    margin-bottom: 0;
+}
+
+.version-list {
+    max-height: 400px;
+    overflow-y: scroll;
+}
