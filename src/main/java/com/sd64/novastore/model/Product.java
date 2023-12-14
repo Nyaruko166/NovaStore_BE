@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "Product")
 @Entity
@@ -53,4 +54,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "FormId", referencedColumnName = "Id")
     private Form form;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductDetail> listProductDetail;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> listImage;
 }

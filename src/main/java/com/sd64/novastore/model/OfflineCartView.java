@@ -44,7 +44,7 @@ public class OfflineCartView {
     }
 
     public String fieldCombine() {
-        return String.join(", ", size, color);
+        return String.join(", ", codeCtsp, size, color);
     }
 
 }

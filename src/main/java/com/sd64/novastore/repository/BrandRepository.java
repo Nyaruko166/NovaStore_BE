@@ -21,4 +21,6 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
     Brand findByName(String name);
 
     Optional<Brand> findByCode(String code);
+
+    Brand findTopByOrderByIdDesc();
 }

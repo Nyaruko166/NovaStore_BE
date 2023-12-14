@@ -2,7 +2,9 @@ package com.sd64.novastore.service;
 
 import com.sd64.novastore.model.Category;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface CategoryService {
@@ -25,4 +27,6 @@ public interface CategoryService {
     Category restore(Integer id);
 
     Page<Category> searchDelete(String name, int page);
+
+    Integer importExcel(MultipartFile file) throws IOException;
 }

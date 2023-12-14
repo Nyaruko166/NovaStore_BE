@@ -1,3 +1,178 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{admin/admin-layout.html}">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div layout:fragment="content">-->
+<!--    <div class="col">-->
+<!--        <div class="card">-->
+<!--            <div class="card-header">-->
+<!--                <strong>CẬP NHẬT SẢN PHẨM</strong>-->
+<!--            </div>-->
+<!--            <div class="card-body card-block">-->
+<!--                <form id="productUpdate" th:object="${productUpdate}" th:action="@{/nova/product/update/{id}(id=*{id})}" method="post" class="form-horizontal">-->
+<!--                    <div class="form-group row">-->
+<!--                        <label class="col-sm-2 col-form-label font-weight-bold">Mã sản phẩm</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input type="hidden" class="form-control" name="code" id="code" th:value="*{code}" oninput="onInputText('errorCode')">-->
+<!--                            <input type="text" class="form-control" th:value="*{code}" disabled>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group row">-->
+<!--                        <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input type="text" class="form-control" id="name" name="name"-->
+<!--                                   th:value="*{name}" oninput="onInputText('errorName')">-->
+<!--                            <div class="" style="color: red"-->
+<!--                                   id="errorName" ></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group row">-->
+<!--                        <label class="col-sm-2 col-form-label font-weight-bold">Mô tả</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input type="text" class="form-control" id="description" name="description"-->
+<!--                                   th:value="*{description}" oninput="onInputText('errorDescription')">-->
+<!--                            <div class="" style="color: red"-->
+<!--                                   id="errorDescription" ></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--&lt;!&ndash;                    <div class="form-group row">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label class="col-sm-2 col-form-label font-weight-bold">Giá</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="col-sm-10">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <input type="number" class="form-control" id="price" name="price"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   th:value="*{price}" oninput="onInputText('errorPrice')">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="" style="color: red"&ndash;&gt;-->
+<!--&lt;!&ndash;                                   id="errorPrice" ></div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+<!--                    <div class="form-group row">-->
+<!--                        <label class="col-sm-2 col-form-label font-weight-bold">Chất liệu</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <select class="form-control" name="materialId">-->
+<!--                                <option th:value="${material.id}" th:each="material: ${listMaterial}"-->
+<!--                                        th:text="${material.name}" th:selected="(*{material.id} == ${material.id})"></option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="row form-group">-->
+<!--                        <label class="col-sm-2 col-form-label font-weight-bold">Loại sản phẩm</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <select class="form-control" name="categoryId" >-->
+<!--                                <option th:value="${category.id}" th:each="category: ${listCategory}"-->
+<!--                                        th:text="${category.name}" th:selected="(*{category.id} == ${category.id})"></option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="row form-group">-->
+<!--                        <label class="col-sm-2 col-form-label font-weight-bold">Thương hiệu</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <select class="form-control" name="brandId">-->
+<!--                                <option th:value="${brand.id}" th:each="brand: ${listBrand}"-->
+<!--                                        th:text="${brand.name}" th:selected="(*{brand.id} == ${brand.id})"></option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="row form-group">-->
+<!--                        <label class="col-sm-2 col-form-label font-weight-bold">Kiểu dáng</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <select class="form-control" name="formId">-->
+<!--                                <option th:value="${form.id}" th:each="form: ${listForm}"-->
+<!--                                        th:text="${form.name}" th:selected="(*{form.id} == ${form.id})"></option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <script th:inline="javascript">-->
+<!--                        checkName = () => {-->
+<!--                            let isName = document.getElementById('name').value-->
+<!--                            if (isName.trim() === '') {-->
+<!--                                document.getElementById('errorName').innerHTML = `Chưa nhập tên`-->
+<!--                                return false;-->
+<!--                            }-->
+<!--                            return true;-->
+<!--                        }-->
+
+<!--                        checkDescription = () => {-->
+<!--                            let isDescription = document.getElementById('description').value-->
+<!--                            if (isDescription.trim() === '') {-->
+<!--                                document.getElementById('errorDescription').innerHTML = `Chưa nhập mô tả`-->
+<!--                                return false;-->
+<!--                            }-->
+<!--                            return true;-->
+<!--                        }-->
+
+<!--                        // checkPrice = () => {-->
+<!--                        //     let isPrice = document.getElementById('price').value-->
+<!--                        //     if (isPrice.trim() === '') {-->
+<!--                        //         document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`-->
+<!--                        //         return false;-->
+<!--                        //     }-->
+<!--                        //     if (isPrice < 0) {-->
+<!--                        //         document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn 0`-->
+<!--                        //         return false;-->
+<!--                        //     }-->
+<!--                        //     if (isPrice > 2147483647) {-->
+<!--                        //         document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`-->
+<!--                        //         return false;-->
+<!--                        //     }-->
+<!--                        //     return true;-->
+<!--                        // }-->
+
+<!--                        validate = () => {-->
+<!--                            let isName = checkName();-->
+<!--                            let isDescription = checkDescription();-->
+<!--                            if (isName === true && isDescription === true) {-->
+<!--                                return true;-->
+<!--                            }-->
+<!--                        }-->
+
+<!--                        clickUpdate = (idForm) => {-->
+<!--                            if (validate()) {-->
+<!--                                swal({-->
+<!--                                    title: "Sửa dữ liệu",-->
+<!--                                    text: "Bạn có muốn sửa dữ liệu không ?",-->
+<!--                                    icon: "warning",-->
+<!--                                    buttons: ["Không", "Có"],-->
+<!--                                    dangerMode: true,-->
+<!--                                    closeOnClickOutside: false,-->
+<!--                                }).then((update) => {-->
+<!--                                    if (update) {-->
+<!--                                        document.getElementById(idForm).submit()-->
+<!--                                    }-->
+<!--                                });-->
+<!--                            }-->
+<!--                        }-->
+<!--                    </script>-->
+<!--                    <div class="card-footer d-flex">-->
+<!--                        <div>-->
+<!--                            <button onclick="clickUpdate('productUpdate')" type="button" class="btn btn-dark">-->
+<!--                                <i class="fa-solid fa-pen px-4"></i>-->
+<!--                            </button>-->
+<!--                            <a href="/nova/product/page">-->
+<!--                                <button type="button" class="btn btn-warning"><i-->
+<!--                                        class="fa-solid fa-circle-left px-4"></i>-->
+<!--                                </button>-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/admin-layout.html}">
@@ -10,92 +185,168 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>CẬP NHẬT SẢN PHẨM</strong>
+                <h5 style="font-weight: bold">CẬP NHẬT SẢN PHẨM</h5>
+            </div>
+            <div th:if="${mess}">
+                <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnSuccess = document.getElementById("btnSuccess");
+                        btnSuccess.click();
+                    }
+                    alertSuccess = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thành công",
+                            icon: "success",
+                            confirmButtonColor: "#0DC149"
+                        });
+                    }
+                </script>
+            </div>
+            <div th:if="${error}">
+                <button hidden id="btnError" th:onclick="alertError([[${error}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnError = document.getElementById("btnError");
+                        btnError.click();
+                    }
+                    alertError = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thất bại",
+                            text: content,
+                            icon: "error",
+                            confirmButtonColor: "#d33"
+                        });
+                    }
+                </script>
             </div>
             <div class="card-body card-block">
                 <form id="productUpdate" th:object="${productUpdate}" th:action="@{/nova/product/update/{id}(id=*{id})}" method="post" class="form-horizontal">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Mã sản phẩm</label>
-                        <div class="col-sm-10">
-                            <input type="hidden" class="form-control" name="code" id="code" th:value="*{code}" oninput="onInputText('errorCode')">
-                            <input type="text" class="form-control" th:value="*{code}" disabled>
+                    <input hidden th:field="*{id}">
+                    <input hidden th:field="*{code}">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Tên sản phẩm
+                            </label>
+                            <div class="" style="color: red" id="errorName"></div>
+                        </div>
+                        <input type="text" id="name" th:field="*{name}"
+                               class="form-control" oninput="onInputText('errorName')">
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Mô tả
+                            </label>
+                            <div class="" style="color: red" id="errorDescription"></div>
+                        </div>
+                        <input type="text" id="description" th:field="*{description}"
+                               class="form-control" oninput="onInputText('errorDescription')">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="font-weight-bold">Chất liệu</label>
+                        <div class="w-100 d-flex justify-content-between">
+                            <div class="w-95">
+                                <select class="form-control" th:field="*{material}">
+                                    <option th:value="${material.id}" th:each="material: ${listMaterial}"
+                                            th:text="${material.name}"></option>
+                                </select>
+                            </div>
+                            <div class="w-5 d-flex justify-content-end">
+                                <button type="button" class="btn btn-dark" data-toggle="modal"
+                                        data-target="#exampleModalMaterial">
+                                    <i class="fa-solid fa-square-plus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Tên sản phẩm</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="name" name="name"
-                                   th:value="*{name}" oninput="onInputText('errorName')">
-                            <div class="" style="color: red"
-                                   id="errorName" ></div>
+                    <div class="mb-3">
+                        <label class="font-weight-bold">Loại sản phẩm</label>
+                        <div class="w-100 d-flex justify-content-between">
+                            <div class="w-95">
+                                <select class="form-control" th:field="*{category}">
+                                    <option th:value="${category.id}" th:each="category: ${listCategory}"
+                                            th:text="${category.name}"></option>
+                                </select>
+                            </div>
+                            <div class="w-5 d-flex justify-content-end">
+                                <button type="button" class="btn btn-dark" data-toggle="modal"
+                                        data-target="#exampleModalCategory">
+                                    <i class="fa-solid fa-square-plus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Mô tả</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="description" name="description"
-                                   th:value="*{description}" oninput="onInputText('errorDescription')">
-                            <div class="" style="color: red"
-                                   id="errorDescription" ></div>
+                    <div class="mb-3">
+                        <label class="font-weight-bold">Thương hiệu</label>
+                        <div class="w-100 d-flex justify-content-between">
+                            <div class="w-95">
+                                <select class="form-control" th:field="*{brand}">
+                                    <option th:value="${brand.id}" th:each="brand: ${listBrand}"
+                                            th:text="${brand.name}"></option>
+                                </select>
+                            </div>
+                            <div class="w-5 d-flex justify-content-end">
+                                <button type="button" class="btn btn-dark" data-toggle="modal"
+                                        data-target="#exampleModalBrand">
+                                    <i class="fa-solid fa-square-plus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-<!--                    <div class="form-group row">-->
-<!--                        <label class="col-sm-2 col-form-label font-weight-bold">Giá</label>-->
-<!--                        <div class="col-sm-10">-->
-<!--                            <input type="number" class="form-control" id="price" name="price"-->
-<!--                                   th:value="*{price}" oninput="onInputText('errorPrice')">-->
-<!--                            <div class="" style="color: red"-->
-<!--                                   id="errorPrice" ></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Chất liệu</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="materialId">
-                                <option th:value="${material.id}" th:each="material: ${listMaterial}"
-                                        th:text="${material.name}" th:selected="(*{material.id} == ${material.id})"></option>
-                            </select>
+                    <div class="mb-3">
+                        <label class="font-weight-bold">Kiểu dáng</label>
+                        <div class="w-100 d-flex justify-content-between">
+                            <div class="w-95">
+                                <select class="form-control" th:field="*{form}">
+                                    <option th:value="${form.id}" th:each="form: ${listForm}"
+                                            th:text="${form.name}"></option>
+                                </select>
+                            </div>
+                            <div class="w-5 d-flex justify-content-end">
+                                <button type="button" class="btn btn-dark" data-toggle="modal"
+                                        data-target="#exampleModalForm">
+                                    <i class="fa-solid fa-square-plus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Loại sản phẩm</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="categoryId" >
-                                <option th:value="${category.id}" th:each="category: ${listCategory}"
-                                        th:text="${category.name}" th:selected="(*{category.id} == ${category.id})"></option>
-                            </select>
+                    <div class="card-footer d-flex justify-content-between">
+                        <div>
+                            <a th:href="@{|/nova/product/${productUpdate.id}/product-detail|}">
+                                <button type="button" class="btn btn-warning">
+                                    <i class="fa-solid fa-circle-left px-4"></i>
+                                </button>
+                            </a>
                         </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Thương hiệu</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="brandId">
-                                <option th:value="${brand.id}" th:each="brand: ${listBrand}"
-                                        th:text="${brand.name}" th:selected="(*{brand.id} == ${brand.id})"></option>
-                            </select>
+                        <div>
+                            <button type="submit" class="btn btn-dark" >
+                                UDPATE
+                            </button>
                         </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Kiểu dáng</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="formId">
-                                <option th:value="${form.id}" th:each="form: ${listForm}"
-                                        th:text="${form.name}" th:selected="(*{form.id} == ${form.id})"></option>
-                            </select>
+                        <div>
+                            <button th:onclick="clickNextUpdateProduct('product', 'productUpdate', [[${productUpdate.id}]])" type="button"
+                                    class="btn btn-dark">
+                                <i class="fa-solid fa-circle-right px-4"></i>
+                            </button>
                         </div>
                     </div>
                     <script th:inline="javascript">
-                        checkName = () => {
+
+                        updateHaha = (idForm) => {
+                            document.getElementById(idForm).method = 'post'
+                            document.getElementById(idForm).submit()
+                        }
+
+                        checkProductName = () => {
                             let isName = document.getElementById('name').value
                             if (isName.trim() === '') {
-                                document.getElementById('errorName').innerHTML = `Chưa nhập tên`
+                                document.getElementById('errorName').innerHTML = `Chưa nhập tên sản phẩm`
                                 return false;
                             }
                             return true;
@@ -110,64 +361,196 @@
                             return true;
                         }
 
-                        // checkPrice = () => {
-                        //     let isPrice = document.getElementById('price').value
-                        //     if (isPrice.trim() === '') {
-                        //         document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`
-                        //         return false;
-                        //     }
-                        //     if (isPrice < 0) {
-                        //         document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn 0`
-                        //         return false;
-                        //     }
-                        //     if (isPrice > 2147483647) {
-                        //         document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`
-                        //         return false;
-                        //     }
-                        //     return true;
-                        // }
 
                         validate = () => {
-                            let isName = checkName();
+                            let isName = checkProductName();
                             let isDescription = checkDescription();
                             if (isName === true && isDescription === true) {
                                 return true;
                             }
                         }
 
-                        clickUpdate = (idForm) => {
-                            if (validate()) {
-                                swal({
-                                    title: "Sửa dữ liệu",
-                                    text: "Bạn có muốn sửa dữ liệu không ?",
-                                    icon: "warning",
-                                    buttons: ["Không", "Có"],
-                                    dangerMode: true,
-                                    closeOnClickOutside: false,
-                                }).then((update) => {
-                                    if (update) {
+                        checkName = (materialName, errorMaterial, title) => {
+                            let isName = document.getElementById(materialName).value
+                            if (isName.trim() === '') {
+                                document.getElementById(errorMaterial).innerHTML = `Chưa nhập ${title}`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        clickAttribute = (entity, idForm, attributeName, errorAttributeName, title) => {
+                            if (checkName(attributeName, errorAttributeName, title)) {
+                                Swal.fire({
+                                    title: "Thêm dữ liệu",
+                                    text: "Bạn có muốn thêm dữ liệu không ?",
+                                    icon: "question",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#0DC149",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Có",
+                                    cancelButtonText: "Không",
+                                    allowOutsideClick: false
+                                }).then((add) => {
+                                    if (add.isConfirmed) {
+                                        document.getElementById(idForm).action = '/nova/' + entity + '/attribute'
+                                        document.getElementById(idForm).method = 'post'
                                         document.getElementById(idForm).submit()
                                     }
                                 });
                             }
                         }
+
+                        clickNextUpdateProduct = (entity, idForm, idUpdate) => {
+                            if (validate()) {
+                                document.getElementById(idForm).action = '/nova/product/' + idUpdate +'/next-update'
+                                document.getElementById(idForm).method = 'post'
+                                document.getElementById(idForm).submit()
+                            }
+                        }
                     </script>
-                    <div class="card-footer d-flex">
-                        <div>
-                            <button onclick="clickUpdate('productUpdate')" type="button" class="btn btn-dark">
-                                <i class="fa-solid fa-pen px-4"></i>
-                            </button>
-                            <a href="/nova/product/page">
-                                <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left px-4"></i>
-                                </button>
-                            </a>
+                </form>
+
+                <!--Material Add Start-->
+                <form id="materialForm">
+                    <div class="modal fade" id="exampleModalMaterial" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelMaterial">Thêm dữ liệu</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="font-weight-bold form-control-label">Tên chất
+                                                liệu</label>
+                                            <div class="" style="color: red" id="errorMaterialName"></div>
+                                        </div>
+                                        <input type="text" id="materialName" name="materialName"
+                                               class="form-control" oninput="onInputText('errorMaterialName')">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="clickAttribute('material', 'materialForm', 'materialName', 'errorMaterialName', 'tên chất liệu')"
+                                            type="button" class="btn btn-dark"><i
+                                            class="fa-solid fa-square-plus px-4"></i></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
+                <!--Material Add Start-->
+
+                <!--Category Add Start-->
+                <form id="categoryForm">
+                    <div class="modal fade" id="exampleModalCategory" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelCategory">Thêm dữ liệu</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="font-weight-bold form-control-label">Tên loại sản phẩm</label>
+                                            <div class="" style="color: red" id="errorCategoryName"></div>
+                                        </div>
+                                        <input type="text" id="categoryName" name="categoryName"
+                                               class="form-control" oninput="onInputText('errorCategoryName')">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="clickAttribute('category', 'categoryForm', 'categoryName', 'errorCategoryName', 'tên loại sản phẩm')"
+                                            type="button" class="btn btn-dark"><i
+                                            class="fa-solid fa-square-plus px-4"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--Category Add Start-->
+
+                <!--Brand Add Start-->
+                <form id="brandForm">
+                    <div class="modal fade" id="exampleModalBrand" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelBrand">Thêm dữ liệu</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="font-weight-bold form-control-label">Tên thương hiệu</label>
+                                            <div class="" style="color: red" id="errorBrandName"></div>
+                                        </div>
+                                        <input type="text" id="brandName" name="brandName"
+                                               class="form-control" oninput="onInputText('errorBrandName')">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="clickAttribute('brand', 'brandForm', 'brandName', 'errorBrandName', 'tên thương hiệu')"
+                                            type="button" class="btn btn-dark"><i
+                                            class="fa-solid fa-square-plus px-4"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--Brand Add Start-->
+
+                <!--Material Add Start-->
+                <form id="formForm">
+                    <div class="modal fade" id="exampleModalForm" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelForm">Thêm dữ liệu</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="font-weight-bold form-control-label">Tên kiểu dáng</label>
+                                            <div class="" style="color: red" id="errorFormName"></div>
+                                        </div>
+                                        <input type="text" id="formName" name="formName"
+                                               class="form-control" oninput="onInputText('errorFormName')">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="clickAttribute('form', 'formForm', 'formName', 'errorFormName', 'tên kiểu dáng')"
+                                            type="button" class="btn btn-dark"><i
+                                            class="fa-solid fa-square-plus px-4"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--                Material Add Start-->
             </div>
         </div>
     </div>
 </div>
 </body>
 </html>
+
