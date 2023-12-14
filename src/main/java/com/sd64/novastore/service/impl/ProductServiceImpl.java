@@ -2,9 +2,14 @@ package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.model.*;
+import com.sd64.novastore.repository.ImageRepository;
+import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.repository.ProductRepository;
+import com.sd64.novastore.service.ImageService;
+import com.sd64.novastore.service.ProductDetailService;
 import com.sd64.novastore.service.ProductService;
 import com.sd64.novastore.utils.FileUtil;
+import com.sd64.novastore.utils.QRCodeUtil;
 import com.sd64.novastore.utils.product.ProductExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -28,15 +34,12 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductExcelUtil productExcelUtil;
 
-    private static final String PREFIX = "SP";
-    private static final int INITIAL_COUNTER = 1;
-    private static final int PADDING_LENGTH = 4;
-    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
-    public static String generateProductCode() {
-        int currentCounter = counter.getAndIncrement();
-        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
-        return PREFIX + paddedCounter;
-    }
+
+    @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
 
 
     @Override
@@ -53,6 +56,126 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductDto> getAll(int page) {
         Pageable pageable = PageRequest.of(page, 10);
         return productRepository.getAllProduct(pageable);
+    }
+
+    public String generateProductCode() {
+        Product productFinalPresent = productRepository.findTopByOrderByIdDesc();
+        if (productFinalPresent == null) {
+            return "SP00001";
+        }
+        Integer idFinalPresent = productFinalPresent.getId() + 1;
+        String code = String.format("%05d", idFinalPresent);
+        return "SP"+code;
+    }
+
+    public String generateProductDetailCode(int count) {
+        ProductDetail productDetailFinalPresent = productDetailRepository.findTopByOrderByIdDesc();
+        if (productDetailFinalPresent == null) {
+            return "CT00001";
+        }
+        Integer idFinalPresent = productDetailFinalPresent.getId() + count;
+        String code = String.format("%05d", idFinalPresent);
+        return "CT"+code;
+    }
+
+    @Override
+    public void saveFinal(Product productAdd, List<ProductDetail> listProductDetailAdd, List<MultipartFile> filesAdd) throws IOException {
+        List<ProductDetail> listProductDetail = new ArrayList<>();
+        int count = 1;
+        for (ProductDetail productDetail: listProductDetailAdd) {
+            productDetail.setProduct(productAdd);
+            productDetail.setCode(generateProductCode());
+            productDetail.setCreateDate(new Date());
+            productDetail.setUpdateDate(new Date());
+            productDetail.setStatus(1);
+            productDetail.setCode(generateProductDetailCode(count));
+            listProductDetail.add(productDetail);
+            count++;
+        }
+        productAdd.setListProductDetail(listProductDetail);
+        productAdd.setCode(generateProductCode());
+        List<Image> listImage = new ArrayList<>();
+        String uploadDir = "./src/main/resources/static/assets/product/";
+        for (MultipartFile file: filesAdd) {
+            String fileName = file.getOriginalFilename();
+            String uid = "product_" + new Date().getTime();
+            String avtPath = FileUtil.copyFile(file, fileName, uploadDir);
+            String imageUrl = FileUtil.rename(avtPath, uid);
+            listImage.add(new Image(null, imageUrl, new Date(), new Date(), 1, productAdd));
+        }
+        productAdd.setListImage(listImage);
+        for (ProductDetail productDetail: productAdd.getListProductDetail()) {
+            QRCodeUtil.generateQRCode(productDetail.getCode(), productDetail.getCode());
+        }
+        productAdd.setCreateDate(new Date());
+        productAdd.setUpdateDate(new Date());
+        productAdd.setStatus(1);
+        productRepository.save(productAdd);
+    }
+
+    @Override
+    public void updateFinal(Product productUpdate, List<ProductDetail> listProductDetailUpdate, List<MultipartFile> filesUpdate, List<Integer> imageRemoveIds) throws IOException {
+        List<ProductDetail> listProductDetailBefore = productDetailRepository.findAllByProductIdAndStatusOrderByUpdateDateDesc(productUpdate.getId(), 1);
+        int count = 1;
+//        if (listProductDetailBefore.size() == listProductDetailUpdate.size()) {
+//            for (ProductDetail productDetail: listProductDetailBefore) {
+//                productDetail.setProduct(productUpdate);
+//                productDetail.setUpdateDate(new Date());
+//                productDetail.setStatus(1);
+//                productDetail.setCreateDate();
+//            }
+//        }
+//        for (ProductDetail productDetail: listProductDetailUpdate) {
+//            productDetail.setProduct(productUpdate);
+//            productDetail.setCode(generateProductCode());
+//            productDetail.setCreateDate(new Date());
+//            productDetail.setUpdateDate(new Date());
+//            productDetail.setStatus(1);
+//            productDetail.setCode(generateProductDetailCode(count));
+//            listProductDetail.add(productDetail);
+//            count++;
+//        }
+//        productAdd.setListProductDetail(listProductDetail);
+//        productAdd.setCode(generateProductCode());
+//        List<Image> listImage = new ArrayList<>();
+//        String uploadDir = "./src/main/resources/static/assets/product/";
+//        for (MultipartFile file: filesAdd) {
+//            String fileName = file.getOriginalFilename();
+//            String uid = "product_" + new Date().getTime();
+//            String avtPath = FileUtil.copyFile(file, fileName, uploadDir);
+//            String imageUrl = FileUtil.rename(avtPath, uid);
+//            listImage.add(new Image(null, imageUrl, new Date(), new Date(), 1, productAdd));
+//        }
+//        productAdd.setListImage(listImage);
+//        for (ProductDetail productDetail: productAdd.getListProductDetail()) {
+//            QRCodeUtil.generateQRCode(productDetail.getCode(), productDetail.getCode());
+//        }
+//        productAdd.setCreateDate(new Date());
+//        productAdd.setUpdateDate(new Date());
+//        productAdd.setStatus(1);
+        productRepository.save(productUpdate);
+    }
+
+    @Override
+    public void update(Product productUpdate, Integer productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setName(productUpdate.getName());
+            product.setStatus(1);
+            product.setDescription(productUpdate.getDescription());
+            product.setCreateDate(productUpdate.getCreateDate());
+            product.setUpdateDate(new Date());
+            product.setMaterial(productUpdate.getMaterial());
+            product.setCategory(product.getCategory());
+            product.setBrand(productUpdate.getBrand());
+            product.setForm(productUpdate.getForm());
+            product.setCode(productUpdate.getCode());
+            product.setId(productId);
+            productRepository.save(product);
+        }
+
+
     }
 
     @Override

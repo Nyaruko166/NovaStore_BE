@@ -20,5 +20,5 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     Optional<Category> findByCode(String code);
 
-
+    Category findTopByOrderByIdDesc();
 }

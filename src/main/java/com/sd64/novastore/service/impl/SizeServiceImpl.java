@@ -1,19 +1,22 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Size;
 import com.sd64.novastore.repository.SizeRepository;
 import com.sd64.novastore.service.SizeService;
+import com.sd64.novastore.utils.FileUtil;
+import com.sd64.novastore.utils.attribute.MaterialExcelUtil;
+import com.sd64.novastore.utils.attribute.SizeExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class SizeServiceImpl implements SizeService {
@@ -21,16 +24,8 @@ public class SizeServiceImpl implements SizeService {
     @Autowired
     private SizeRepository sizeRepository;
 
-    private static final String PREFIX = "S";
-    private static final int INITIAL_COUNTER = 1;
-    private static final int PADDING_LENGTH = 4;
-    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
-    public static String generateProductCode() {
-        int currentCounter = counter.getAndIncrement();
-        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
-        return PREFIX + paddedCounter;
-    }
-
+    @Autowired
+    private SizeExcelUtil excelUtil;
     @Override
     public List<Size> getAll() {
         return sizeRepository.findAllByStatusOrderByUpdateDateDesc(1);
@@ -43,13 +38,22 @@ public class SizeServiceImpl implements SizeService {
     }
 
     private Boolean checkName(String name) {
-        Optional<Size> optionalSize = sizeRepository.findByName(name);
-        if (optionalSize.isPresent()) {
+        Size size = sizeRepository.findByName(name);
+        if (size != null) {
             return false;
         }
         return true;
     }
 
+    public String generateCode() {
+        Size sizeFinalPresent = sizeRepository.findTopByOrderByIdDesc();
+        if (sizeFinalPresent == null) {
+            return "S00001";
+        }
+        Integer idFinalPresent = sizeFinalPresent.getId() + 1;
+        String code = String.format("%04d", idFinalPresent);
+        return "S"+code;
+    }
     @Override
     public Boolean add(String name) {
         if (checkName(name)) {
@@ -58,7 +62,7 @@ public class SizeServiceImpl implements SizeService {
             size.setStatus(1);
             size.setCreateDate(new Date());
             size.setUpdateDate(new Date());
-            size.setCode(generateProductCode());
+            size.setCode(generateCode());
             sizeRepository.save(size);
             return true;
         } else {
@@ -133,5 +137,24 @@ public class SizeServiceImpl implements SizeService {
     public Page<Size> searchDeleted(String name, int page) {
         Pageable pageable = PageRequest.of(page, 10);
         return sizeRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
+    }
+
+    @Override
+    public Integer importExcel(MultipartFile file) throws IOException {
+        if (excelUtil.isValidExcel(file)) {
+            String uploadDir = "./src/main/resources/static/filecustom/size/";
+            String fileName = file.getOriginalFilename();
+            String excelPath = FileUtil.copyFile(file, fileName, uploadDir);
+            String status = excelUtil.getFromExcel(excelPath);
+            if (status.contains("Sai dữ liệu")) {
+                return -1;
+            } else if (status.contains("Trùng tên")) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0; // Lỗi file
+        }
     }
 }

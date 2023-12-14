@@ -20,4 +20,6 @@ public interface ColorRepository extends JpaRepository<Color, Integer> {
     Optional<Color> findByCode(String code);
 
     Color findByName(String name);
+
+    Color findTopByOrderByIdDesc();
 }

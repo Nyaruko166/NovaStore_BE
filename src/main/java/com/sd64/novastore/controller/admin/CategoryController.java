@@ -7,7 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
 
 
 @Controller
@@ -113,5 +116,22 @@ public class CategoryController {
         model.addAttribute("categoryNameSearch", categoryNameSearch);
         model.addAttribute("pageCategory", pageCategory);
         return "admin/category/category-restore";
+    }
+
+    @PostMapping("/excel")
+    public String importExcel(RedirectAttributes redirectAttributes, @RequestParam MultipartFile excelFile) throws IOException {
+        if (categoryService.importExcel(excelFile) == 1) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
+            return "redirect:/nova/category/page";
+        } else if (categoryService.importExcel(excelFile) == -1) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại dữ liệu trong file");
+            return "redirect:/nova/category/page";
+        } else if (categoryService.importExcel(excelFile) == 2) {
+            redirectAttributes.addFlashAttribute("error", "Dữ liệu đang bị trùng");
+            return "redirect:/nova/category/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");
+            return "redirect:/nova/category/page";
+        }
     }
 }

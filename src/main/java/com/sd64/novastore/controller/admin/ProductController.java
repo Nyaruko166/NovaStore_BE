@@ -78,20 +78,20 @@ public class ProductController {
         return "redirect:/nova/product-detail/view-add";
     }
 
-    @PostMapping("/add")
-    public String add(@RequestParam String name,
-                      @RequestParam String description,
-                      @RequestParam Integer materialId,
-                      @RequestParam Integer categoryId,
-                      @RequestParam Integer brandId,
-                      @RequestParam Integer formId,
-                      RedirectAttributes redirectAttributes) {
-        productService.add(name, description, materialId, categoryId, brandId, formId);
-        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
-        return "redirect:/nova/product/page";
-    }
+//    @PostMapping("/add")
+//    public String add(@RequestParam String name,
+//                      @RequestParam String description,
+//                      @RequestParam Integer materialId,
+//                      @RequestParam Integer categoryId,
+//                      @RequestParam Integer brandId,
+//                      @RequestParam Integer formId,
+//                      RedirectAttributes redirectAttributes) {
+//        productService.add(name, description, materialId, categoryId, brandId, formId);
+//        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+//        return "redirect:/nova/product/page";
+//    }
 
-    @GetMapping("/view-update/{id}")
+    @GetMapping("/{id}/view-update")
     public String viewUpdate(@PathVariable Integer id, Model model) {
         Product product = productService.getOne(id);
         model.addAttribute("productUpdate", product);
@@ -106,21 +106,39 @@ public class ProductController {
         return "admin/product/product-update";
     }
 
+    @PostMapping("/{id}/next-update")
+    public String nextUpdateProduct(@ModelAttribute Product product,
+                                 HttpSession httpSession,
+                                    @PathVariable Integer id) {
+        String randomKey = UUID.randomUUID().toString();
+        httpSession.setAttribute("randomKey", randomKey);
+        httpSession.setAttribute("productUpdate" + randomKey, product);
+        return "redirect:/nova/product/" + id + "/product-detail/view-update";
+    }
 
-    @PostMapping("/update/{id}")
-    public String update(@RequestParam String code,
-                         @PathVariable Integer id,
-                         @RequestParam String name,
-                         @RequestParam String description,
-                         @RequestParam Integer materialId,
-                         @RequestParam Integer categoryId,
-                         @RequestParam Integer brandId,
-                         @RequestParam Integer formId,
-                         RedirectAttributes redirectAttributes) {
-        productService.update(id, code, name, description, materialId, categoryId, brandId, formId);
+
+    @PostMapping("/update/{productId}")
+    public String update(@PathVariable Integer productId,
+                         @ModelAttribute Product product, RedirectAttributes redirectAttributes) {
+        productService.update(product, productId);
         redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
         return "redirect:/nova/product/page";
     }
+
+//    @PostMapping("/update/{id}")
+//    public String update(@RequestParam String code,
+//                         @PathVariable Integer id,
+//                         @RequestParam String name,
+//                         @RequestParam String description,
+//                         @RequestParam Integer materialId,
+//                         @RequestParam Integer categoryId,
+//                         @RequestParam Integer brandId,
+//                         @RequestParam Integer formId,
+//                         RedirectAttributes redirectAttributes) {
+//        productService.update(id, code, name, description, materialId, categoryId, brandId, formId);
+//        redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+//        return "redirect:/nova/product/page";
+//    }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id,

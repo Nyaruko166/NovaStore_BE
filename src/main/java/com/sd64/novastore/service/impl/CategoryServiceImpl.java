@@ -1,34 +1,29 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.model.Brand;
 import com.sd64.novastore.model.Category;
 import com.sd64.novastore.repository.CategoryRepository;
 import com.sd64.novastore.service.CategoryService;
+import com.sd64.novastore.utils.FileUtil;
+import com.sd64.novastore.utils.attribute.CategoryExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    private static final String PREFIX = "L";
-    private static final int INITIAL_COUNTER = 1;
-    private static final int PADDING_LENGTH = 4;
-    private static AtomicInteger counter = new AtomicInteger(INITIAL_COUNTER);
-    public static String generateProductCode() {
-        int currentCounter = counter.getAndIncrement();
-        String paddedCounter = String.format("%0" + PADDING_LENGTH + "d", currentCounter);
-        return PREFIX + paddedCounter;
-    }
+    @Autowired
+    private CategoryExcelUtil excelUtil;
 
     @Override
     public List<Category> getAll() {
@@ -49,6 +44,16 @@ public class CategoryServiceImpl implements CategoryService {
         return true;
     }
 
+    public String generateCode() {
+        Category categoryFinalPresent = categoryRepository.findTopByOrderByIdDesc();
+        if (categoryFinalPresent == null) {
+            return "L00001";
+        }
+        Integer idFinalPresent = categoryFinalPresent.getId() + 1;
+        String code = String.format("%04d", idFinalPresent);
+        return "L"+code;
+    }
+
     @Override
     public Boolean add(String name) {
         if (checkName(name)) {
@@ -57,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
             category.setStatus(1);
             category.setCreateDate(new java.util.Date());
             category.setUpdateDate(new java.util.Date());
-            category.setCode(generateProductCode());
+            category.setCode(generateCode());
             categoryRepository.save(category);
             return true;
         } else {
@@ -132,5 +137,24 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<Category> searchDelete(String name, int page) {
         Pageable pageable = PageRequest.of(page, 10);
         return categoryRepository.findAllByNameContainsAndStatusOrderByIdDesc(name.trim(), 0, pageable);
+    }
+
+    @Override
+    public Integer importExcel(MultipartFile file) throws IOException {
+        if (excelUtil.isValidExcel(file)) {
+            String uploadDir = "./src/main/resources/static/filecustom/category/";
+            String fileName = file.getOriginalFilename();
+            String excelPath = FileUtil.copyFile(file, fileName, uploadDir);
+            String status = excelUtil.getFromExcel(excelPath);
+            if (status.contains("Sai dữ liệu")) {
+                return -1;
+            } else if (status.contains("Trùng tên")) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0; // Lỗi file
+        }
     }
 }

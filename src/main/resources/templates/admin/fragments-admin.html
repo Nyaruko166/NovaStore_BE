@@ -117,7 +117,7 @@
                     cancelButtonText: "Không",
                     allowOutsideClick: false
                 }).then((add) => {
-                    if (add) {
+                    if (add.isConfirmed) {
                         document.getElementById(idForm).action = '/nova/' + entity + '/add'
                         document.getElementById(idForm).method = 'post'
                         document.getElementById(idForm).submit()
@@ -155,7 +155,7 @@
                     cancelButtonText: "Không",
                     allowOutsideClick: false
                 }).then((update) => {
-                    if (update) {
+                    if (update.isConfirmed) {
                         document.getElementById(idForm).submit()
                     }
                 });
@@ -194,7 +194,7 @@
                 cancelButtonText: "Không",
                 allowOutsideClick: false
             }).then((restore) => {
-                if (restore) {
+                if (restore.isConfirmed) {
                     document.getElementById(idForm).action = '/nova/' + entity + "/restore/" + idRestore
                     document.getElementById(idForm).method = 'post'
                     document.getElementById(idForm).submit()
@@ -215,7 +215,7 @@
                     cancelButtonText: "Không",
                     allowOutsideClick: false
                 }).then((excel) => {
-                    if (excel) {
+                    if (excel.isConfirmed) {
                         document.getElementById(idForm).action = '/nova/' + entity + '/excel'
                         document.getElementById(idForm).method = 'post'
                         document.getElementById(idForm).submit()

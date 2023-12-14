@@ -21,6 +21,10 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
 
     List<ProductDetail> findAllByProductIdAndStatusOrderByUpdateDateDesc(Integer productId, Integer status);
 
+    ProductDetail findTopByOrderByIdDesc();
+
+    ProductDetail findByIdAndStatus(Integer id, Integer status);
+
     @Query(value = "SELECT pd FROM ProductDetail pd\n" +
             "INNER JOIN Product p ON pd.product.id = p.id\n" +
             "INNER JOIN Image i ON i.product.id = p.id\n" +

@@ -85,7 +85,7 @@
                                     <label for="file-input" class="label-select-img">
                                         <i class="fa fa-plus"></i>
                                     </label>
-                                    <input id="file-input" type="file" multiple accept="image/png, image/jpg, image/jpeg"
+                                    <input id="file-input" name="files" type="file" multiple accept="image/png, image/jpg, image/jpeg"
                                     oninput="onInputText('errorImage')"/>
                                 </div>
                             </div>
@@ -107,6 +107,7 @@
                         </div>
                     </div>
                     <script th:inline="javascript">
+                        // Không cho nhập dấu trừ
                         function onlyAllowNumberInput(e) {
                             const key = e.key;
                             if (key === '-') {
@@ -114,6 +115,7 @@
                             }
                         }
 
+                        // Không cho nhập chữ
                         function onlyAllowNumberInput2(e) {
                             const key = e.key;
                             if (!/[\d\b]/.test(key)) {
@@ -145,7 +147,7 @@
                             }
                         })
 
-                        //Handle add product detail
+                        //Tạo dòng chi tiết sản phẩm đầu tiên
                         document.querySelector('.productDetail-price').value = 1000
                         document.querySelector('.productDetail-quantity').value = 1
                         var listDetail = []
@@ -173,11 +175,8 @@
 
                         })
 
-                        // function generateRandomBarcode() {
-                        //     return Math.floor(100000000000 + Math.random() * 900000000000).toString();
-                        // }
 
-                        // Autofill barcode when the page loads
+                        // Thêm số thứ tự
                         var numberical = 1
                         $('.code-select').val(numberical);
 
@@ -314,7 +313,8 @@
                                 if (file.type.startsWith('image/')) {
                                     const fileSizeInMB = file.size / (1024 * 1024);
                                     if (fileSizeInMB > 3) {
-                                        Swal.fire("Lỗi", "Vui lòng chọn ảnh có dung lượng < 3MB")
+                                        // Swal.fire("Lỗi", "Vui lòng chọn ảnh có dung lượng < 3MB")
+                                        document.getElementById('errorImage').innerHTML = 'Vui lòng chọn ảnh có dung lượng < 3MB'
                                     } else {
                                         const fileName = file.name
                                         if (!selectedFileNames.has(fileName)) {
@@ -364,10 +364,6 @@
                             }
                         }
 
-                        clickAddProductFinal = () => {
-
-                        }
-
                         document.getElementById("productDetailForm").addEventListener('submit', async function (e) {
                             e.preventDefault()
                             if (fileSend.length < 1) {
@@ -398,14 +394,51 @@
                                 return false
                             }
 
-                            var formData = new FormData(this)
-                            fileSend.forEach(file => formData.append("files", file))
-                            await fetch("/admin/product-save", {
-                                method: "POST",
-                                body: formData,
-                            })
+                            // Swal.fire({
+                            //     title: "Thêm dữ liệu",
+                            //     text: "Bạn có muốn thêm dữ liệu không ?",
+                            //     icon: "question",
+                            //     showCancelButton: true,
+                            //     confirmButtonColor: "#0DC149",
+                            //     cancelButtonColor: "#d33",
+                            //     confirmButtonText: "Có",
+                            //     cancelButtonText: "Không",
+                            //     allowOutsideClick: false
+                            // }).then(async (add) => {
+                            //     if (add.isConfirmed) {
+                            //         var formData = new FormData(this)
+                            //         fileSend.forEach(file => formData.append("files", file))
+                            //         await fetch("/nova/product-detail/add", {
+                            //             method: "POST",
+                            //             body: formData,
+                            //         })
+                            //         window.location = "/nova/product/page";
+                            //         Swal.fire({
+                            //             title: "Thêm dữ liệu thành công",
+                            //             icon: "success",
+                            //             confirmButtonColor: "#0DC149"
+                            //         });
+                            //     }
+                            // });
 
-                            window.location = "/admin/product-all";
+                            Swal.fire({
+                                title: "Thêm dữ liệu",
+                                text: "Bạn có muốn thêm dữ liệu không ?",
+                                icon: "question",
+                                showCancelButton: true,
+                                confirmButtonColor: "#0DC149",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Có",
+                                cancelButtonText: "Không",
+                                allowOutsideClick: false
+                            }).then((add) => {
+                                if (add.isConfirmed) {
+                                    document.getElementById('productDetailForm').action = '/nova/product-detail/add'
+                                    document.getElementById('productDetailForm').method = 'post'
+                                    document.getElementById('productDetailForm').submit()
+                                }
+                            });
+
                         })
 
                     </script>

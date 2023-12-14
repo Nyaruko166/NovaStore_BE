@@ -21,7 +21,7 @@
                     }
                     alertSuccess = (content) => {
                         Swal.fire({
-                            title: "Thêm dữ liệu thành công",
+                            title: content,
                             icon: "success",
                             confirmButtonColor: "#0DC149"
                         });
@@ -356,7 +356,7 @@
                                 <th scope="col">Chất liệu</th>
                                 <th scope="col">Loại sản phẩm</th>
                                 <th scope="col">Kiểu dáng</th>
-                                <th scope="col">Ảnh</th>
+<!--                                <th scope="col">Ảnh</th>-->
                                 <th scope="col">Chức năng</th>
                             </tr>
                             </thead>
@@ -369,13 +369,13 @@
                                 <td th:text="${items.materialName}"></td>
                                 <td th:text="${items.categoryName}"></td>
                                 <td th:text="${items.formName}"></td>
-                                <td>
-                                    <a th:href="@{'/nova/product/' + ${items.id} + '/image'}">
-                                        <button type="button" class="btn btn-dark px-4">
-                                            <i class="fa-solid fa-image"></i>
-                                        </button>
-                                    </a>
-                                </td>
+<!--                                <td>-->
+<!--                                    <a th:href="@{'/nova/product/' + ${items.id} + '/image'}">-->
+<!--                                        <button type="button" class="btn btn-dark px-4">-->
+<!--                                            <i class="fa-solid fa-image"></i>-->
+<!--                                        </button>-->
+<!--                                    </a>-->
+<!--                                </td>-->
                                 <td class="d-flex justify-content-center">
                                     <div class="dropdown">
                                         <button class="btn btn-dark" type="button"
@@ -388,7 +388,7 @@
                                                th:href="@{'/nova/product/' + ${items.id} + '/product-detail'}"><i
                                                     class="fa-solid fa-eye mr-2"></i> Chi tiết</a>
                                             <a class="dropdown-item"
-                                               th:href="@{'/nova/product/view-update/' + ${items.id}}"><i
+                                               th:href="@{'/nova/product/' + ${items.id} + '/view-update'}"><i
                                                     class="fa-solid fa-pen mr-3"></i>Sửa</a>
                                             <button
                                                     th:onclick="clickDelete('product', 'productDelete', [[${items.id}]])"

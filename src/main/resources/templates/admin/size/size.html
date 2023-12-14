@@ -21,7 +21,7 @@
                     }
                     alertSuccess = (content) => {
                         Swal.fire({
-                            title: "Thêm dữ liệu thành công",
+                            title: content,
                             icon: "success",
                             confirmButtonColor: "#0DC149"
                         });
@@ -46,55 +46,62 @@
                 </script>
             </div>
             <div class="card-body card-block">
-                <form id="sizeForm" class="form-horizontal">
-                    <div class="card-footer d-flex justify-content-between">
-
-<!--                        <input type="hidden" class="form-control" th:value="${product.id}" name="productId">-->
-
-                        <div>
-                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
-                                <i class="fa-solid fa-square-plus px-4"></i>
-                            </button>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                <form id="sizeExcel" enctype="multipart/form-data">
+                    <div class="card-footer">
+                        <div class="custom-file">
+                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx"
+                                   onchange="setFileName()">
+                            <label class="custom-file-label" for="importFile">Chọn tệp excel</label>
+                        </div>
+                        <div class="mt-2 d-flex justify-content-between">
+                            <div class="d-flex align-content-center">
+                                <button type="button"
+                                        onclick="importExcel('sizeExcel', 'importFile', 'errorExcel', 'size')"
+                                        class="btn btn-success">
+                                    <i class="fa-solid fa-file-excel px-4"></i>
+                                </button>
+                                <div id="errorExcel" class="ml-2" style="color: red;"></div>
+                            </div>
+                            <div>
+                                <button class="btn btn-danger" type="button"
+                                        onclick="downLoadTemplate('sizeExcel', 'size')">
+                                    <i class="fa-solid fa-table px-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <form id="sizeeForm" class="form-horizontal">
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="font-weight-bold form-control-label">Tên kích cỡ</label>
+                                            <div class="" style="color: red" id="errorName"></div>
                                         </div>
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between">
-                                                    <label class="font-weight-bold form-control-label">Kích cỡ
-                                                    </label>
-                                                    <div class="" style="color: red" id="errorName"></div>
-                                                </div>
-                                                <input type="text" id="name" name="name"
-                                                       class="form-control" oninput="onInputText('errorName')">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button onclick="clickAdd('size', 'sizeForm', 'name', 'errorName', 'kích cỡ')"
-                                                    type="button" class="btn btn-dark"><i
-                                                    class="fa-solid fa-square-plus px-4"></i></button>
-                                        </div>
+                                        <input type="text" id="name" name="name"
+                                               class="form-control" oninput="onInputText('errorName')">
                                     </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="clickAdd('size', 'sizeForm', 'name', 'errorName', 'tên kích cỡ')"
+                                            type="button" class="btn btn-dark"><i
+                                            class="fa-solid fa-square-plus px-4"></i></button>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <a th:href="@{|/nova/size/view-restore|}">
-                                <button type="button" class="btn btn-dark">
-                                    <i class="fa-solid fa-warehouse px-4"></i>
-                                </button>
-                            </a>
-                        </div>
                     </div>
-                    <br>
                     <div class="border-search">
                         <div class="col-md-1">
                             <button onclick="clickSearch('size', 'sizeForm')" type="button"
@@ -102,17 +109,26 @@
                                 <i class="fa-solid fa-magnifying-glass px-4"></i>
                             </button>
                         </div>
-<!--                        <script th:inline="javascript">-->
-<!--                            clickSearch = (entity, idForm) => {-->
-<!--                                document.getElementById(idForm).action = '/search'-->
-<!--                                document.getElementById(idForm).method = 'get'-->
-<!--                                document.getElementById(idForm).submit()-->
-<!--                            }-->
-<!--                        </script>-->
                         <div class="col-md-11">
-                            <input type="text" placeholder="Nhập kích cỡ..."
+                            <input type="text" placeholder="Nhập tên kích cỡ..."
                                    th:value="${sizeNameSearch}" th:name="sizeNameSearch"
                                    class="form-control">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card-footer d-flex justify-content-end">
+                        <div>
+                            <button type="button" class="btn btn-dark" data-toggle="modal"
+                                    data-target="#exampleModal">
+                                <i class="fa-solid fa-square-plus px-4"></i>
+                            </button>
+                        </div>
+                        <div class="ml-2">
+                            <a href="/nova/size/view-restore">
+                                <button type="button" class="btn btn-dark">
+                                    <i class="fa-solid fa-warehouse px-4"></i>
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </form>

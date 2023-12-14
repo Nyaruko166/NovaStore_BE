@@ -4,7 +4,9 @@ import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Size;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface SizeService {
@@ -28,4 +30,6 @@ public interface SizeService {
     Size restore(Integer id);
 
     Page<Size> searchDeleted(String name, int page);
+
+    Integer importExcel(MultipartFile file) throws IOException;
 }
