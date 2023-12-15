@@ -16,7 +16,11 @@ public interface ProductViewService {
 
     Page<ProductHomeResponse> getAllProductHomeResponse(int page);
 
-    List<ProductHomeResponse> getAllProductHomeResponse2();
+    Page<ProductHomeResponse> getAllProductShopResponse(int page);
+
+    List<ProductHomeResponse> getAllProductHomeResponse();
+
+    List<ProductHomeResponse> getAllProductDiscountHomeResponse();
 
     List<SizeDetailResponse> getAllSizeDetailResponse(Integer productId);
     List<ColorDetailResponse> getAllColorDetailResponse(Integer productId);
@@ -29,7 +33,7 @@ public interface ProductViewService {
 
     BigDecimal getPriceProductDetailResponseByProductIdAndSizeIdAndColorId(Integer productId, Integer sizeId, Integer colorId);
 
-    Page<ProductHomeResponse> searchProductResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
+    Page<ProductHomeResponse> searchProductShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
 
     BigDecimal getPriceMaxBySelected(Integer price);
 

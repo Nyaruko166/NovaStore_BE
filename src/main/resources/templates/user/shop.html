@@ -148,7 +148,7 @@
                     </div>
 
                     <div class=" pb-1 row">
-                        <div class="card border-0 mb-4 col-4" th:each="product : ${pageProductHomeResponse}">
+                        <div class="card border-0 mb-4 col-4" th:each="product : ${pageProductShopResponse}">
                             <div class="product-item">
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                                     <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.id}}" alt="">
@@ -189,27 +189,27 @@
                 <div class="col-12 pb-1">
 <!--                    Pagination-->
                     <div class="d-flex justify-content-center align-items-center">
-                        <div th:if="${pageProductHomeResponse.getNumber() + 1 > 1}" class="btn btn-pagination mr-1">
+                        <div th:if="${pageProductShopResponse.getNumber() + 1 > 1}" class="btn btn-pagination mr-1">
                             <a th:href="@{|?page=0&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
                                 </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
                         </div>
-                        <div th:if="${pageProductHomeResponse.getNumber() + 1 > 1}" class="btn btn-pagination mr-1">
-                            <a th:href="@{|?page=${pageProductHomeResponse.getNumber() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                        <div th:if="${pageProductShopResponse.getNumber() + 1 > 1}" class="btn btn-pagination mr-1">
+                            <a th:href="@{|?page=${pageProductShopResponse.getNumber() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
                                 <i style="color: white" class="fa-solid fa-left-long"></i></a>
                         </div>
                         <div class="btn btn-pagination d-flex">
-                            <div style="color: white;" th:text="${pageProductHomeResponse.getNumber() + 1}"></div>
+                            <div style="color: white;" th:text="${pageProductShopResponse.getNumber() + 1}"></div>
                             <span style="color: white;">/</span>
-                            <div style="color: white;" th:text="${pageProductHomeResponse.getTotalPages()}"></div>
+                            <div style="color: white;" th:text="${pageProductShopResponse.getTotalPages()}"></div>
                         </div>
-                        <div th:if="${pageProductHomeResponse.getNumber() + 1 lt pageProductHomeResponse.getTotalPages()}"
+                        <div th:if="${pageProductShopResponse.getNumber() + 1 lt pageProductShopResponse.getTotalPages()}"
                              class="btn btn-pagination ml-1">
-                            <a th:href="@{|?page=${pageProductHomeResponse.getNumber()+1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                            <a th:href="@{|?page=${pageProductShopResponse.getNumber()+1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
                                 <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                         </div>
-                        <div th:if="${pageProductHomeResponse.getNumber() + 1 lt pageProductHomeResponse.getTotalPages()}"
+                        <div th:if="${pageProductShopResponse.getNumber() + 1 lt pageProductShopResponse.getTotalPages()}"
                              class="btn btn-pagination ml-1">
-                            <a th:href="@{|?page=${pageProductHomeResponse.getTotalPages() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                            <a th:href="@{|?page=${pageProductShopResponse.getTotalPages() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
                                 <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                         </div>
                     </div>
