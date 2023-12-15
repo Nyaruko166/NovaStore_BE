@@ -146,21 +146,23 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public Integer importExcel(MultipartFile file) throws IOException {
+    public String importExcel(MultipartFile file) throws IOException {
         if (excelUtil.isValidExcel(file)) {
-            String uploadDir = "./src/main/resources/static/filecustom/material/";
+            String uploadDir = "./src/main/resources/static/filecustom/size/";
             String fileName = file.getOriginalFilename();
             String excelPath = FileUtil.copyFile(file, fileName, uploadDir);
             String status = excelUtil.getFromExcel(excelPath);
             if (status.contains("Sai dữ liệu")) {
-                return -1;
-            } else if (status.contains("Trùng tên")) {
-                return 2;
+                return "Sai dữ liệu";
+            } else if (status.contains("Trùng")) {
+                return "Trùng";
+            } else if (status.contains("Tồn tại")){
+                return "Tồn tại";
             } else {
-                return 1;
+                return "Oke";
             }
         } else {
-            return 0; // Lỗi file
+            return "Lỗi file"; // Lỗi file
         }
     }
 }

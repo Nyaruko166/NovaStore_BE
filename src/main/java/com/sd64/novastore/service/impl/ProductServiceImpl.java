@@ -41,6 +41,12 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private ProductDetailService productDetailService;
+
 
     @Override
     public List<Product> getAll() {
@@ -65,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
         }
         Integer idFinalPresent = productFinalPresent.getId() + 1;
         String code = String.format("%05d", idFinalPresent);
-        return "SP"+code;
+        return "SP" + code;
     }
 
     public String generateProductDetailCode(int count) {
@@ -75,14 +81,14 @@ public class ProductServiceImpl implements ProductService {
         }
         Integer idFinalPresent = productDetailFinalPresent.getId() + count;
         String code = String.format("%05d", idFinalPresent);
-        return "CT"+code;
+        return "CT" + code;
     }
 
     @Override
     public void saveFinal(Product productAdd, List<ProductDetail> listProductDetailAdd, List<MultipartFile> filesAdd) throws IOException {
         List<ProductDetail> listProductDetail = new ArrayList<>();
         int count = 1;
-        for (ProductDetail productDetail: listProductDetailAdd) {
+        for (ProductDetail productDetail : listProductDetailAdd) {
             productDetail.setProduct(productAdd);
             productDetail.setCode(generateProductCode());
             productDetail.setCreateDate(new Date());
@@ -96,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
         productAdd.setCode(generateProductCode());
         List<Image> listImage = new ArrayList<>();
         String uploadDir = "./src/main/resources/static/assets/product/";
-        for (MultipartFile file: filesAdd) {
+        for (MultipartFile file : filesAdd) {
             String fileName = file.getOriginalFilename();
             String uid = "product_" + new Date().getTime();
             String avtPath = FileUtil.copyFile(file, fileName, uploadDir);
@@ -104,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
             listImage.add(new Image(null, imageUrl, new Date(), new Date(), 1, productAdd));
         }
         productAdd.setListImage(listImage);
-        for (ProductDetail productDetail: productAdd.getListProductDetail()) {
+        for (ProductDetail productDetail : productAdd.getListProductDetail()) {
             QRCodeUtil.generateQRCode(productDetail.getCode(), productDetail.getCode());
         }
         productAdd.setCreateDate(new Date());
@@ -114,45 +120,74 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateFinal(Product productUpdate, List<ProductDetail> listProductDetailUpdate, List<MultipartFile> filesUpdate, List<Integer> imageRemoveIds) throws IOException {
-        List<ProductDetail> listProductDetailBefore = productDetailRepository.findAllByProductIdAndStatusOrderByUpdateDateDesc(productUpdate.getId(), 1);
+    public void updateFinal(Product productBefore, Product productUpdate, List<ProductDetail> listProductDetailUpdate, List<MultipartFile> filesUpdate, List<Integer> imageRemoveIds) throws IOException {
+        List<Image> listImage = imageService.getAllImageByProductIdNoStatus(productBefore.getId());
+        if (filesUpdate != null) {
+            String uploadDir = "./src/main/resources/static/assets/product/";
+            for (MultipartFile file : filesUpdate) {
+                String fileName = file.getOriginalFilename();
+                String uid = "product_" + new Date().getTime();
+                String avtPath = FileUtil.copyFile(file, fileName, uploadDir);
+                String imageUrl = FileUtil.rename(avtPath, uid);
+                listImage.add(new Image(null, imageUrl, new Date(), new Date(), 1, productUpdate));
+            }
+        }
+        if (!imageRemoveIds.isEmpty()) {
+            for (Integer items : imageRemoveIds) {
+                imageService.delete(items);
+            }
+        }
+
+        // List hiển thị tất cả phần tử không quan tâm trang thái
+        List<ProductDetail> listProductDetailBefore = productDetailRepository.findAllByProduct_IdOrderByIdAsc(productBefore.getId());
+        for (ProductDetail productDetail : listProductDetailBefore) {
+            productDetail.setProduct(productUpdate);
+        }
+        for (ProductDetail productDetail : listProductDetailUpdate) {
+            productDetail.setProduct(productUpdate);
+        }
+//        productBefore.setListProductDetail(listProductDetailUpdate);
+//        productUpdate.setListProductDetail(listProductDetailUpdate);
+        int index = 0;
+
+        // List hiển thị tất cả các phần tử trang thái 1
+        List<ProductDetail> listProductDetailNoDelete = productDetailService.getProductDetailNoDeleteResponse(listProductDetailBefore);
+        for (int i = 0; i < listProductDetailNoDelete.size(); i++) {
+            ProductDetail productDetail = new ProductDetail();
+            productDetail.setId(listProductDetailBefore.get(i).getId());
+            productDetail.setCode(listProductDetailBefore.get(i).getCode());
+            productDetail.setCreateDate(listProductDetailBefore.get(i).getCreateDate());
+            productDetail.setUpdateDate(new Date());
+            productDetail.setStatus(1);
+            productDetail.setProduct(productUpdate);
+            productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
+            productDetail.setPrice(listProductDetailUpdate.get(i).getPrice());
+            productDetail.setSize(listProductDetailUpdate.get(i).getSize());
+            productDetail.setColor(listProductDetailUpdate.get(i).getColor());
+            listProductDetailUpdate.set(i, productDetail);
+            index++;
+        }
         int count = 1;
-//        if (listProductDetailBefore.size() == listProductDetailUpdate.size()) {
-//            for (ProductDetail productDetail: listProductDetailBefore) {
-//                productDetail.setProduct(productUpdate);
-//                productDetail.setUpdateDate(new Date());
-//                productDetail.setStatus(1);
-//                productDetail.setCreateDate();
-//            }
-//        }
-//        for (ProductDetail productDetail: listProductDetailUpdate) {
-//            productDetail.setProduct(productUpdate);
-//            productDetail.setCode(generateProductCode());
-//            productDetail.setCreateDate(new Date());
-//            productDetail.setUpdateDate(new Date());
-//            productDetail.setStatus(1);
-//            productDetail.setCode(generateProductDetailCode(count));
-//            listProductDetail.add(productDetail);
-//            count++;
-//        }
-//        productAdd.setListProductDetail(listProductDetail);
-//        productAdd.setCode(generateProductCode());
-//        List<Image> listImage = new ArrayList<>();
-//        String uploadDir = "./src/main/resources/static/assets/product/";
-//        for (MultipartFile file: filesAdd) {
-//            String fileName = file.getOriginalFilename();
-//            String uid = "product_" + new Date().getTime();
-//            String avtPath = FileUtil.copyFile(file, fileName, uploadDir);
-//            String imageUrl = FileUtil.rename(avtPath, uid);
-//            listImage.add(new Image(null, imageUrl, new Date(), new Date(), 1, productAdd));
-//        }
-//        productAdd.setListImage(listImage);
-//        for (ProductDetail productDetail: productAdd.getListProductDetail()) {
-//            QRCodeUtil.generateQRCode(productDetail.getCode(), productDetail.getCode());
-//        }
-//        productAdd.setCreateDate(new Date());
-//        productAdd.setUpdateDate(new Date());
-//        productAdd.setStatus(1);
+        for (int i = index; i < listProductDetailUpdate.size(); i++) {
+            ProductDetail productDetail = new ProductDetail();
+            productDetail.setProduct(productUpdate);
+            productDetail.setCreateDate(new Date());
+            productDetail.setUpdateDate(new Date());
+            productDetail.setStatus(1);
+            productDetail.setCode(generateProductDetailCode(count));
+            productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
+            productDetail.setPrice(listProductDetailUpdate.get(i).getPrice());
+            productDetail.setSize(listProductDetailUpdate.get(i).getSize());
+            productDetail.setColor(listProductDetailUpdate.get(i).getColor());
+            listProductDetailUpdate.set(i, productDetail);
+            QRCodeUtil.generateQRCode(listProductDetailUpdate.get(i).getCode(), listProductDetailUpdate.get(i).getCode());
+            count++;
+        }
+        productUpdate.setListImage(listImage);
+        productUpdate.setCreateDate(productBefore.getCreateDate());
+        productUpdate.setStatus(1);
+        productUpdate.setUpdateDate(new Date());
+        productUpdate.setListProductDetail(listProductDetailUpdate);
         productRepository.save(productUpdate);
     }
 

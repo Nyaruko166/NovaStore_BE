@@ -31,5 +31,5 @@ public interface MaterialService {
 
     Material getOne(Integer id);
 
-    Integer importExcel(MultipartFile file) throws IOException;
+    String importExcel(MultipartFile file) throws IOException;
 }

@@ -31,5 +31,5 @@ public interface SizeService {
 
     Page<Size> searchDeleted(String name, int page);
 
-    Integer importExcel(MultipartFile file) throws IOException;
+    String importExcel(MultipartFile file) throws IOException;
 }

@@ -51,7 +51,6 @@
                             </button>
                             <script>
                                 validateUpdateFile = () => {
-                                    debugger
                                     let image = document.getElementById('importFileProduct')
                                     let file = image.files
                                     if (file.length === 0) {
@@ -68,7 +67,6 @@
                                 }
 
                                 updateImageFile = () => {
-                                    debugger
                                     if (validateUpdateFile()) {
                                         swal({
                                             title: "Sửa dữ liệu",

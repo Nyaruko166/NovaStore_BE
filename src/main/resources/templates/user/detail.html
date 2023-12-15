@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div  th:if="${priceMax == priceMin}">
-                        <div id="price-bottom" class="d-flex font-weight-semi-bold">
+                        <div id="price-bottom" class="d-flex font-weight-semi-bold price-product-detail">
                             <h3 th:text="'₫' + ${#numbers.formatDecimal(priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h3>
                         </div>
                     </div>
@@ -170,16 +170,22 @@
                             const code = color.code
                             const quantity = color.quantity
                             let price = color.price
-                            let formattedPrice = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                            formattedPrice = formattedPrice.toString().replaceAll("₫", "")
-                            formattedPrice = formattedPrice.toString().replaceAll(".", ",")
+                            let formattedPriceTop = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            formattedPriceTop = formattedPriceTop.toString().replaceAll("₫", "")
+                            formattedPriceTop = formattedPriceTop.toString().replaceAll(".", ",")
                             document.getElementById('product-code').innerText = code
                             document.getElementById('productDetail-quantity').innerText = quantity
                             if (document.getElementById('price-top') != null) {
-                                document.getElementById('price-top').innerText = '₫' + formattedPrice
+                                document.getElementById('price-top').innerText = '₫' + formattedPriceTop
                             }
+
+                            let formattedPriceButtom = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                            formattedPriceButtom = formattedPriceButtom.toString().replaceAll("₫", "")
+                            formattedPriceButtom = formattedPriceButtom.toString().replaceAll(".", ",")
+                            document.getElementById('product-code').innerText = code
+                            document.getElementById('productDetail-quantity').innerText = quantity
                             if (document.getElementById('price-bottom') != null) {
-                                document.getElementById('price-bottom').innerText = '₫' + price
+                                document.getElementById('price-bottom').innerText = '₫' + formattedPriceButtom
                             }
                             colorSelected = id;
                             return id;

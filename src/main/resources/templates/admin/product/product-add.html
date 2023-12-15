@@ -182,10 +182,10 @@
                             }
                         }
 
-                        checkName = (materialName, errorMaterial, title) => {
-                            let isName = document.getElementById(materialName).value
+                        checkName = (attributeName, errorAttributeName, title) => {
+                            let isName = document.getElementById(attributeName).value
                             if (isName.trim() === '') {
-                                document.getElementById(errorMaterial).innerHTML = `Chưa nhập ${title}`
+                                document.getElementById(errorAttributeName).innerHTML = `Chưa nhập ${title}`
                                 return false;
                             }
                             return true;

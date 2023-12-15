@@ -117,35 +117,38 @@ public class ProductDetailController {
             return "redirect:/nova/product/view-update/" + productId;
         }
         Product product = productService.getOne(productId);
-        List<ProductDetail> listProductDetail = product.getListProductDetail();
+        httpSession.setAttribute("productBefore", product);
+        List<ProductDetail> listProductDetailNoDeleteResponse = productDetailService.getProductDetailNoDeleteResponse(product.getListProductDetail());
         CreateProductDetails createProductDetails = new CreateProductDetails();
-        createProductDetails.setListProductDetail(listProductDetail);
+//        createProductDetails.setListProductDetail(product.getListProductDetail());
+        createProductDetails.setListProductDetail(listProductDetailNoDeleteResponse);
         model.addAttribute("createProductDetailForm", createProductDetails);
-        model.addAttribute("listImage", product.getListImage());
+        model.addAttribute("listImage", imageService.getImageResponse(product.getListImage()));
         model.addAttribute("listSize", listSize);
         model.addAttribute("listColor", listColor);
         return "admin/product-detail/product-detail-update";
     }
 
-//    @PostMapping("/product-detail/update")
-//    public String updateProductFinal(@ModelAttribute CreateProductDetails createProductDetails,
-//                                     HttpSession httpSession,
-//                                     @RequestParam(value = "imageRemoveIds", required = false) List<Integer> imageRemoveIds,
-//                                     @RequestParam("files") List<MultipartFile> files,
-//                                     RedirectAttributes redirectAttributes) throws IOException {
-//        String randomKey = (String) httpSession.getAttribute("randomKey");
-//        Product productUpdate = (Product) httpSession.getAttribute("productUpdate" + randomKey);
-//        if (productUpdate == null) {
-//            return "redirect:/nova/product/" + productUpdate.getId() + "/view-update";
-//        } else {
-//            List<ProductDetail> productDetailList = createProductDetails.getListProductDetail();
-//            productService.updateFinal(productUpdate, productDetailList, files, imageRemoveIds);
-//        }
-//        httpSession.removeAttribute("randomKey");
-//        httpSession.removeAttribute("productAdd" + randomKey);
-//        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
-//        return "redirect:/nova/product/page";
-//    }
+    @PostMapping("/product-detail/update")
+    public String updateProductFinal(@ModelAttribute CreateProductDetails createProductDetails,
+                                     HttpSession httpSession,
+                                     @RequestParam(value = "imageRemoveIds", required = false) List<Integer> imageRemoveIds,
+                                     @RequestParam(value = "files", required = false) List<MultipartFile> files,
+                                     RedirectAttributes redirectAttributes) throws IOException {
+        String randomKey = (String) httpSession.getAttribute("randomKey");
+        Product productUpdate = (Product) httpSession.getAttribute("productUpdate" + randomKey);
+        Product productBefore = (Product) httpSession.getAttribute("productBefore");
+        if (productUpdate == null) {
+            return "redirect:/nova/product/" + productUpdate.getId() + "/view-update";
+        } else {
+            List<ProductDetail> productDetailList = createProductDetails.getListProductDetail();
+            productService.updateFinal(productBefore, productUpdate, productDetailList, files, imageRemoveIds);
+        }
+        httpSession.removeAttribute("randomKey");
+        httpSession.removeAttribute("productAdd" + randomKey);
+        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+        return "redirect:/nova/product/page";
+    }
 
 
 

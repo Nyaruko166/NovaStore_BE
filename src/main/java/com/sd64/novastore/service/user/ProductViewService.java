@@ -16,6 +16,8 @@ public interface ProductViewService {
 
     Page<ProductHomeResponse> getAllProductHomeResponse(int page);
 
+    List<ProductHomeResponse> getAllProductHomeResponse2();
+
     List<SizeDetailResponse> getAllSizeDetailResponse(Integer productId);
     List<ColorDetailResponse> getAllColorDetailResponse(Integer productId);
 

@@ -88,8 +88,9 @@ public class HomeController {
                 session.setAttribute("totalItems", cart.getTotalItems());
             }
         }
-        Page<ProductHomeResponse> pageProductHomeResponse = productViewService.getAllProductHomeResponse(page);
-        model.addAttribute("pageProductHomeResponse", pageProductHomeResponse);
+//        Page<ProductHomeResponse> pageProductHomeResponse = productViewService.getAllProductHomeResponse(page);
+        List<ProductHomeResponse> listProductHomeResponse = productViewService.getAllProductHomeResponse2();
+        model.addAttribute("pageProductHomeResponse", listProductHomeResponse);
         return "/user/home";
     }
 

@@ -10,7 +10,9 @@ import java.util.List;
 public interface ImageService {
     List<Image> getAll();
 
-    Page<Image> getImageByProductDetail(int page, Integer productId);
+    List<Image> getAllImageByProductIdNoStatus(Integer productId);
+
+    Page<Image> getImageByProduct(int page, Integer productId);
 
     void add(Integer productId, List<MultipartFile> images);
 
@@ -37,5 +39,7 @@ public interface ImageService {
     List<Image> getAllImageByProductId(Integer productId);
 
     Image getImageActiveByProductId(Integer productId);
+
+    List<Image> getImageResponse(List<Image> listImage);
 
 }

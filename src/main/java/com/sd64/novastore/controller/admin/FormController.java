@@ -121,14 +121,18 @@ public class FormController {
 
     @PostMapping("/excel")
     public String importExcel(RedirectAttributes redirectAttributes, @RequestParam MultipartFile excelFile) throws IOException {
-        if (formService.importExcel(excelFile) == 1) {
+        String result = formService.importExcel(excelFile);
+        if (result.contains("Oke")) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
             return "redirect:/nova/form/page";
-        } else if (formService.importExcel(excelFile) == -1) {
-            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại dữ liệu trong file");
+        } else if (result.contains("Sai dữ liệu")) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại kiểu dữ liệu trong file");
             return "redirect:/nova/form/page";
-        } else if (formService.importExcel(excelFile) == 2) {
-            redirectAttributes.addFlashAttribute("error", "Dữ liệu đang bị trùng");
+        } else if (result.contains("Tồn tại")) {
+            redirectAttributes.addFlashAttribute("error", "Dữ liệu trong file đã tồn tại");
+            return "redirect:/nova/form/page";
+        } else if (result.contains("Trùng")) {
+            redirectAttributes.addFlashAttribute("error", "1 số dữ liệu trong file bị trùng lặp");
             return "redirect:/nova/form/page";
         } else {
             redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");

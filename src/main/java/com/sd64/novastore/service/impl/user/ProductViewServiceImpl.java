@@ -1,7 +1,5 @@
 package com.sd64.novastore.service.impl.user;
 
-import com.sd64.novastore.dto.admin.ProductDto;
-import com.sd64.novastore.dto.common.ProductHomeDto;
 import com.sd64.novastore.dto.common.impl.ProductHomeDtoImpl;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
@@ -83,6 +81,35 @@ public class ProductViewServiceImpl implements ProductViewService {
         Pageable pageable = PageRequest.of(page, 8);
         long totalElements = productHomeResponses.stream().count();
         return new PageImpl(productHomeResponses, pageable, totalElements);
+    }
+
+    @Override
+    public List<ProductHomeResponse> getAllProductHomeResponse2() {
+        List<ProductHomeDtoImpl> productHomeResponseDtoList = productViewRepository.getAllProductResponseHome()
+                .stream().map(e -> ProductHomeDtoImpl.toData(e)).collect(Collectors.toList());
+        List<ProductHomeResponse> productHomeResponses = new ArrayList<>();
+        for (int index = 0; index < productHomeResponseDtoList.size(); index++) {
+            int finalIndex = index;
+            var prdResponse = productHomeResponses.stream()
+                    .filter(e -> e.getId().intValue() == productHomeResponseDtoList.get(finalIndex).getProductId().intValue())
+                    .findFirst().orElse(null);
+            if (prdResponse == null) {
+                prdResponse = productHomeResponseDtoList.get(finalIndex).toResponse();
+                productHomeResponses.add(prdResponse);
+            } else {
+                int i = productHomeResponses.indexOf(prdResponse);
+                productHomeResponses.get(i).comparePrice(productHomeResponseDtoList.get(finalIndex).getPrice());
+            }
+        }
+        List<ProductHomeResponse> listProductResponse = new ArrayList<>();
+        int index = 1;
+        for (ProductHomeResponse productHomeResponse: productHomeResponses) {
+            if (index <= 8) {
+                listProductResponse.add(productHomeResponse);
+                index++;
+            }
+        }
+        return listProductResponse;
     }
 
 //    public void getProductHome() {

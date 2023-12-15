@@ -17,7 +17,6 @@ public class QRCodeUtil {
                 .to(ImageType.PNG)
                 .stream();
 
-//        String uploadDir = "upload-barcode/";
         String uploadDir = "./src/main/resources/static/assets/qrcode/";
         Path uploadPath = Paths.get(uploadDir);
 
