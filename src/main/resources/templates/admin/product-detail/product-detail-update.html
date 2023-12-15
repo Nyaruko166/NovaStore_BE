@@ -263,10 +263,6 @@
                         var removeProductDetail = []
 
 
-                        // Thêm số thứ tự
-                        // var numberical = 1
-                        // $('.code-select').val(numberical);
-
                         function addItem() {
                             // var detailId = detail.id + 1;
                             var template = document.querySelector('.form-table').cloneNode(true);
@@ -300,15 +296,15 @@
                                     $(this).val(0)
                                 }
                             })
-                            // const deleteButtonContainer = document.createElement('div')
-                            // const deleteButton = document.createElement('button');
-                            // deleteButton.type = 'button';
-                            // deleteButton.classList.add('btn', 'btn-danger');
-                            // deleteButton.style.marginTop = '32px'
-                            // deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
-                            // deleteButtonContainer.appendChild(deleteButton)
+                            const deleteButtonContainer = document.createElement('div')
+                            const deleteButton = document.createElement('button');
+                            deleteButton.type = 'button';
+                            deleteButton.classList.add('btn', 'btn-danger');
+                            deleteButton.style.marginTop = '32px'
+                            deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+                            deleteButtonContainer.appendChild(deleteButton)
 
-                            // template.querySelector('.form-row').appendChild(deleteButtonContainer)
+                            template.querySelector('.form-row').appendChild(deleteButtonContainer)
 
                             document.querySelector('.form-detail').appendChild(template);
                             var color = ''
@@ -334,17 +330,12 @@
 
                             })
 
-                            $('.remove-row').on('click', function () {
+
+                            deleteButton.onclick = function () {
                                 document.querySelector('.form-detail').removeChild(template)
                                 removeDetailObj(color, size)
-                            })
+                            }
 
-                            // deleteButton.onclick = function () {
-                            //     document.querySelector('.form-detail').removeChild(template)
-                            //     removeDetailObj(color, size)
-                            // }
-
-                            // template.querySelector('.code-select').value = numberical
                         }
 
 

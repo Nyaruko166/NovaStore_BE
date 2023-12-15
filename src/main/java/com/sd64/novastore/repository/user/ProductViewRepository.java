@@ -32,6 +32,16 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             "ORDER BY p.updateDate DESC ")
     List<ProductHomeDto> getAllProductResponseHome();
 
+    @Query(value = "SELECT p.id as productId, " +
+            "p.name as productName, " +
+            "pd.price as price " +
+            "FROM Product p\n" +
+            "INNER JOIN ProductDetail pd ON pd.product.id = p.id\n" +
+            "INNER JOIN Image i ON i.product.id = p.id\n" +
+            "WHERE p.status = 2 AND i.status = 1 AND pd.status = 1\n  " +
+            "ORDER BY p.updateDate DESC ")
+    List<ProductHomeDto> getAllProductDiscountResponseHome();
+
 
     @Query(value = "SELECT p.id as productId, " +
             "p.name as productName, " +
