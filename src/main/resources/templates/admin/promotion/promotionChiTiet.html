@@ -42,11 +42,34 @@
                     <span style="font-weight: bold; margin-bottom: 5px; display: block;">Ngày kết thúc:</span>
                     <span style="font-style: italic; display: block;" th:text="${promotion.endDate}"></span>
                 </div>
+                <a style="margin-left: 80px;padding: 15px" href="/nova/promotion/page">
+                    <button type="button" class="btn btn-warning"><i
+                            class="fa-solid fa-circle-left mr-1 px-4"></i>
+                    </button>
+                </a>
             </div>
             <span style="margin-right: 10px;padding-left: 20px; font-weight: bold; display: block;">Sản phẩm áp dụng:</span>
             <br>
             <div class="product-list">
-                <table class="table">
+                <div class="form-row">
+                    <div style="padding-left: 30px" class="col-md-8 mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Nhập tên sản phẩm">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <select class="form-control" id="pageSizeSelect">
+                            <option value="5" selected>5 sản phẩm</option>
+                            <option value="10">10 sản phẩm</option>
+                            <option value="20">20 sản phẩm</option>
+                            <option value="all">Hiển thị tất cả</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="table" id="productTable">
                     <thead>
                     <tr>
                         <th>Sản phẩm</th>
@@ -77,6 +100,39 @@
                 </table>
 
             </div>
+            <script>
+                $(document).ready(function () {
+                    $("#pageSizeSelect").val("5");
+                    updateDisplayRows();
+                });
+
+                document.getElementById("pageSizeSelect").addEventListener("change", function () {
+                    updateDisplayRows();
+                });
+
+                document.getElementById("searchInput").addEventListener("input", function () {
+                    updateDisplayRows();
+                });
+
+                function updateDisplayRows() {
+                    var pageSize = $("#pageSizeSelect").val();
+                    var filter = document.getElementById("searchInput").value.toUpperCase();
+                    var allRows = document.querySelectorAll('#productTable tbody tr');
+                    var visibleRows = 0;
+
+                    allRows.forEach(function (row) {
+                        var td = row.getElementsByTagName("td")[2]; // Điều chỉnh chỉ số cột tương ứng
+                        var txtValue = td.textContent || td.innerText;
+
+                        if (txtValue.toUpperCase().indexOf(filter) > -1 && (pageSize === "all" || visibleRows < parseInt(pageSize))) {
+                            row.style.display = "";
+                            visibleRows++;
+                        } else {
+                            row.style.display = "none";
+                        }
+                    });
+                }
+            </script>
 
         </div>
     </div>

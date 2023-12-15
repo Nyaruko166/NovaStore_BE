@@ -25,19 +25,38 @@
                       class="form-horizontal">
                     <div class="card-footer d-flex">
                         <div class="mr-auto">
-                            <button onclick="clickSearch('voucher', 'voucherForm')" type="button"
+                            <button style="width: 53px;
+                                     height: 40px;" onclick="clickSearch('voucher', 'voucherForm')" type="button"
                                     class="btn btn-secondary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
                         </div>
                         <div class="flex-grow-1 ml-2">
-                            <input type="text" placeholder="Tìm voucher theo tên"
+                            <input type="text" placeholder="Nhập tên voucher"
                                    th:value="${voucherNameSearch}" th:name="voucherNameSearch"
-                                   class="form-control">
+                                   style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; font-size: 14px; width: 100%; box-sizing: border-box;">
                         </div>
+
+                        <form style="margin-bottom: 20px; display: flex; align-items: center;">
+                            <label style="border-radius: 3px; display: inline-block; margin-bottom: 5px; margin-right: 10px; font-size: 14px;"></label>
+                            <input type="date"
+                                   style="border: 1px solid #ccc; border-radius: 3px; padding: 8px; margin-bottom: 10px; font-size: 14px;">
+
+                            <label style="border-radius: 3px; display: inline-block; margin-bottom: 5px; margin-right: 10px; font-size: 14px;"></label>
+                            <input type="date"
+                                   style="border: 1px solid #ccc; border-radius: 3px; padding: 8px; margin-bottom: 10px; font-size: 14px;">
+
+                            <button type="submit" style="border-radius: 5px;width: 53px;
+                                     height: 40px; display: inline-block; padding: 10px; background-color: #000; color: white; border: none; cursor: pointer; transition: background-color 0.3s ease;"
+                                    onmouseover="this.style.backgroundColor='#333'"
+                                    onmouseout="this.style.backgroundColor='#000'">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
                         <div class="ml-2">
-                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addModal">
-                                <i class="fa-solid fa-square-plus px-4"></i>
+                            <button type="button" style="width: 53px;
+                                     height: 40px;" class="btn btn-dark" data-toggle="modal" data-target="#addModal">
+                                <i class="fa-solid fa-square-plus "></i>
                             </button>
                         </div>
 
@@ -365,7 +384,7 @@
             </div>
         </div>
     </div>
-    <div class="col">
+    <div class="col" >
         <div class="card">
             <div class="card-header" th:if="${pageVoucher.isEmpty()}">
                 <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>

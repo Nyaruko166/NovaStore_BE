@@ -73,8 +73,6 @@
                                                 </select>
                                             </div>
                                         </div>
-
-
                                         <table id="productTable" class="table">
                                             <thead class="thead-dark">
                                             <tr>
@@ -86,37 +84,30 @@
                                                 <th class="form-control-label">Ảnh</th>
                                                 <th class="form-control-label">Mã</th>
                                                 <th class="form-control-label">Tên</th>
-                                                <th class="form-control-label">Giá Min</th>
-                                                <th class="form-control-label">Giá Max</th>
+                                                <th class="form-control-label">Khoảng giá</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr th:each="product : ${productList}" class="visible-row">
                                                 <td>
                                                     <label class="checkbox-inline">
-                                                        <input type="checkbox" th:value="${product.id}"
-                                                               th:data-name="${product.name}" name="selectedProducts">
+                                                        <input type="checkbox" th:value="${product.id}" th:data-name="${product.name}" name="selectedProducts">
                                                     </label>
                                                 </td>
                                                 <td style="padding: 10px;">
-                                                    <img th:src="@{'/image/product/' + ${product.id}}"
-                                                         style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
+                                                    <img th:src="@{'/image/product/' + ${product.id}}" style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
                                                 </td>
                                                 <td th:text="${product.code}"></td>
                                                 <td th:text="${product.name}"></td>
                                                 <td>
-    <span th:each="detail : ${product.listProductDetail}" th:if="${detail.product.id == product.id}">
-        <span th:if="${detail == product.listProductDetail[0]}">
-            <span th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></span>
-        </span>
-    </span>
-                                                </td>
-                                                <td>
-    <span th:each="detail : ${product.listProductDetail}" th:if="${detail.product.id == product.id}">
-        <span th:if="${detail == product.listProductDetail[#lists.size(product.listProductDetail) - 1]}">
-            <span th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></span>
-        </span>
-    </span>
+                <span th:each="detail : ${product.listProductDetail}" th:if="${detail.product.id == product.id}">
+                    <span th:if="${detail == product.listProductDetail[0]}">
+                        <span th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></span>
+                    </span>
+                    <span th:if="${detail == product.listProductDetail[#lists.size(product.listProductDetail) - 1]}">
+                        <span th:text="${' - ' + #numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></span>
+                    </span>
+                </span>
                                                 </td>
                                             </tr>
                                             </tbody>
