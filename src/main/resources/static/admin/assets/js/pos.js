@@ -21,12 +21,21 @@ function onScanSuccess(decodedText) {
         ++countResults;
         lastResult = decodedText;
         // Handle on success condition with the decoded message.
-        var url = "/nova/pos/add?detail=" + decodedText;
-        // console.log(decodedText)
+        let queryString = window.location.search;
+        let urlParam = new URLSearchParams(queryString);
+        let billId;
+        if (!urlParam.has('billId')) {
+            billId = 0;
+        } else {
+            billId = urlParam.get('billId');
+        }
+
+        console.log(billId);
 
         fetch("/nova/pos/add", {
             method: "POST",
             body: JSON.stringify({
+                billId: billId,
                 data: decodedText,
             }),
             headers: {
@@ -48,13 +57,3 @@ function playSound(soundName) {
     let audio = new Audio(src + soundName)
     audio.play();
 }
-
-// function test() {
-//     $('.collapse').collapse({
-//         toggle: true
-//     })
-// }
-
-// $('.collapse').collapse({
-//     toggle: true
-// })

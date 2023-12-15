@@ -143,5 +143,42 @@ main {
     background-color: red;
 }
 
+/** Add a black background color to the top navigation **/
+.topnav {
+    /*background-color: #333;*/
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    background-color: #0f0f0f;
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    margin-top: 12px;
+    padding: .375rem .75rem;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #04AA6D;
+    color: white;
+}
+
+/*.close-icon {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    right: 0;*/
+/*    padding: 8px;*/
+/*}*/
 
 
