@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping("/nova/thong-ke")
+@RequestMapping("/nova/statistic")
 public class ThongKeController {
     @Autowired
     private ThongKeService thongKeService;
 
 
-    @GetMapping("/thongke")
+    @GetMapping("/page")
     public String thongKeNgay(Model model, @RequestParam(name = "tungay", required = false) String tungay,
                               @RequestParam(name = "denngay", required = false) String denngay) {
         TKNgay tkNgay = thongKeService.getTKNgay();
@@ -50,7 +50,7 @@ public class ThongKeController {
 
         List<TKKhoangNgay> thongKeKhoangNgayList = thongKeService.getTKSoLuongHD(tungay, denngay);
         model.addAttribute("thongKeKhoangNgayList", thongKeKhoangNgayList);
-        return "admin/thongke/thongke";
+        return "admin/statistic/statistic";
     }
 
 //    @GetMapping("/khoangNgay")

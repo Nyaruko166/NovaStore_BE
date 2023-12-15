@@ -114,23 +114,12 @@
                         </div>
                     </div>
                     <script th:inline="javascript">
-                        let enteredCodes = new Set();
-
-                        function onInputText(errorElementId) {
-                            document.getElementById(errorElementId).innerHTML = '';
-                        }
-
-                        function checkCode() {
-                            let isCode = document.getElementById('code').value;
-                            if (enteredCodes.has(isCode)) {
-                                document.getElementById('errorCode').innerHTML = `Mã đã được nhập trước đó`;
-                                return false;
-                            }
+                        checkCode = () => {
+                            let isCode = document.getElementById('code').value
                             if (isCode.trim() === '') {
-                                document.getElementById('errorCode').innerHTML = `Chưa nhập mã`;
+                                document.getElementById('errorCode').innerHTML = `Chưa nhập mã`
                                 return false;
                             }
-                            enteredCodes.add(isCode);
                             return true;
                         }
 
@@ -235,7 +224,18 @@
                             errorEndDate.innerHTML = '';
                             return true;
                         }
-
+                        validate = () => {
+                            let isCode = checkCode();
+                            let isName = checkName();
+                            let isQuantity = checkQuantity();
+                            let isValue = checkValue();
+                            let isMinimumPrice = checkMinimumPrice()
+                            let isStartDate = checkStartDate()
+                            let isEndDate = checkEndDate()
+                            if (isCode === true && isName === true && isQuantity === true && isValue === true && isMinimumPrice === true && isStartDate === true && isEndDate === true) {
+                                return true;
+                            }
+                        }
                         clickUpdate = (idForm) => {
                             if (validate()) {
                                 swal({
