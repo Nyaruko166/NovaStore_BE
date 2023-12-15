@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
@@ -158,6 +159,11 @@ public class PromotionServiceImpl implements PromotionService {
     public Page<Promotion> search(String name, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         return promotionRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    }
+
+    @Override
+    public Page<PromotionSearchDTO> getPromoTion(String tungay, String denngay, Pageable pageable) {
+        return promotionRepository.getPromoTion(tungay, denngay, pageable);
     }
 
 }

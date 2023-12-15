@@ -42,7 +42,7 @@ public class Promotion {
 
 
     @Column(name = "Value")
-    private BigDecimal value;
+    private Float value;
 
 
     @Column(name = "StartDate")
