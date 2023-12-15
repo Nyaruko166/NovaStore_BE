@@ -16,6 +16,8 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
 
     Image findByIdAndStatus(Integer id, Integer status);
 
+    List<Image> findAllByProduct_Id(Integer productId);
+
     Page<Image> findAllByProductIdAndStatusOrderByUpdateDateDesc(Integer productId, Integer status, Pageable pageable);
 
     Page<Image> getAllImageByProduct_IdAndStatusOrderByUpdateDateDesc(Pageable pageable, Integer id, Integer status);

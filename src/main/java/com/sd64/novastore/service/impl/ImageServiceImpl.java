@@ -18,9 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -37,7 +35,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Page<Image> getImageByProductDetail(int page, Integer productId){
+    public List<Image> getAllImageByProductIdNoStatus(Integer productId) {
+        return imageRepository.findAllByProduct_Id(productId);
+    }
+
+    @Override
+    public Page<Image> getImageByProduct(int page, Integer productId){
         Pageable pageable = PageRequest.of(page, 5);
         return imageRepository.getAllImageByProduct_IdAndStatusOrderByUpdateDateDesc(pageable, productId, 1);
     }
@@ -89,6 +92,23 @@ public class ImageServiceImpl implements ImageService {
     public Integer getProductDetailByIdImage(Integer imageId) {
         Integer productId = imageRepository.findById(imageId).get().getProduct().getId();
         return productId;
+    }
+
+    @Override
+    public List<Image> getImageResponse(List<Image> listImage) {
+        List<Image> listImageResponse = new ArrayList<>();
+        for (Image image: listImage) {
+            if (image.getStatus() == 1) {
+                listImageResponse.add(image);
+            }
+        }
+        Collections.sort(listImageResponse, new Comparator<Image>() {
+            @Override
+            public int compare(Image image1, Image image2) {
+                return image2.getId().compareTo(image1.getId());
+            }
+        });
+        return listImageResponse;
     }
 
     @Override

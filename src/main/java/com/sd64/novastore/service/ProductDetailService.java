@@ -37,4 +37,6 @@ public interface ProductDetailService {
     int getTotalPageDeleted(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId);
 
     byte[] getProductDetail(Integer id);
+
+    List<ProductDetail> getProductDetailNoDeleteResponse(List<ProductDetail> listProductDetail);
 }

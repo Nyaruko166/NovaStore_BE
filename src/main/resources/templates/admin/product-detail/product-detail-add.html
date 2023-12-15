@@ -18,12 +18,10 @@
                     <div class="form-detail">
                         <div class="form-table " th:each="productDetail, iterStat : *{listProductDetail}">
                             <div class="row form-row">
-                                <div class="form-group col-2">
-                                    <label class="font-weight-bold">Số thứ tự</label>
-<!--                                    <input type="text" class="form-control code-select"-->
-<!--                                           th:field="*{listProductDetail[__${iterStat.index}__].code}" disabled>-->
-                                    <input type="text" class="form-control code-select" disabled>
-                                </div>
+<!--                                <div class="form-group col-2">-->
+<!--                                    <label class="font-weight-bold">Số thứ tự</label>-->
+<!--                                    <input type="text" class="form-control code-select" disabled>-->
+<!--                                </div>-->
                                 <div class="form-group col-2">
                                     <label class="font-weight-bold">Số lượng</label>
                                     <input type="number" class="form-control productDetail-quantity" min="0" value="1"
@@ -156,7 +154,6 @@
                         var sizeFirst = document.getElementById('listProductDetail0.size').value
                         detail.color = colorFirst
                         detail.size = sizeFirst
-                        debugger
                         listDetail.push(detail)
                         document.querySelector(".color-select").addEventListener('change', function (e) {
                             colorFirst = e.target.value
@@ -177,14 +174,14 @@
 
 
                         // Thêm số thứ tự
-                        var numberical = 1
-                        $('.code-select').val(numberical);
+                        // var numberical = 1
+                        // $('.code-select').val(numberical);
 
                         function addItem() {
                             var detailId = detail.id + 1;
                             var template = document.querySelector('.form-table').cloneNode(true);
                             var formRows = template.querySelectorAll('.form-row');
-                            numberical++
+                            // numberical++
                             // Update the index to ensure uniqueness for the new product detail
                             var newIndex = document.querySelectorAll('.form-table').length;
 
@@ -264,7 +261,6 @@
 
                         function checkDuplicateSizeAndColor(color, size, template) {
                             listDetail.forEach(item => {
-                                debugger
                                 if (item.color == color && item.size == size) {
                                     document.querySelector('.form-detail').removeChild(template)
                                     const Toast = Swal.mixin({
@@ -286,7 +282,7 @@
                                     });
                                     Toast.fire({
                                         icon: "error",
-                                        title: "Màu sắc và kích cỡ đã tồn tại !"
+                                        title: "Không được chọn trùng màu sắc và kích cỡ !"
                                     });
                                     return true
                                 }
@@ -330,7 +326,7 @@
                                                 const image = document.createElement('img');
                                                 image.src = e.target.result;
                                                 image.alt = 'Selected Image';
-                                                image.width = 100;
+                                                image.width = 110;
                                                 image.height = 120;
 
                                                 // Create a div for file details

@@ -13,17 +13,17 @@
                 <h5 style="font-weight: bold">CẬP NHẬT CHI TIẾT SẢN PHẨM</h5>
             </div>
             <div class="card-body card-block">
-                <form th:object="${createProductDetailForm}" th:method="post" th:action="@{/nova/product-detail/update}" id="productDetailUpdate" class="form-horizontal"
+                <form th:object="${createProductDetailForm}" th:method="post" th:action="@{/nova/product-detail/update}"
+                      id="productDetailUpdate" class="form-horizontal"
                       enctype="multipart/form-data">
                     <div class="form-detail">
                         <div class="form-table " th:each="productDetail, iterStat : *{listProductDetail}">
-                            <input hidden th:value="*{listProductDetail[__${iterStat.index}__].code}">
+<!--                            <input hidden th:field="*{listProductDetail[__${iterStat.index}__].code}">-->
                             <div class="row form-row">
                                 <div class="form-group col-2">
-                                    <label class="font-weight-bold">Số thứ tự</label>
-                                    <!--                                    <input type="text" class="form-control code-select"-->
-                                    <!--                                           th:field="*{listProductDetail[__${iterStat.index}__].code}" disabled>-->
-                                    <input type="text" class="form-control code-select" disabled>
+                                    <label class="font-weight-bold">Mã chi tiết</label>
+                                    <input type="text" class="form-control code-select"
+                                           th:field="*{listProductDetail[__${iterStat.index}__].code}" readonly required>
                                 </div>
                                 <div class="form-group col-2">
                                     <label class="font-weight-bold">Số lượng</label>
@@ -53,12 +53,17 @@
                                         </option>
                                     </select>
                                 </div>
+                                <div>
+                                    <button type="button" class="btn btn-danger remove-row" style="margin-top: 32px">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <br>
-                    <div class="card-footer d-flex align-items-center form-row">
+                    <div class="card-footer d-flex align-items-center">
                         <button type="button" onclick="addItem()" class="btn btn-dark">
                             <i class="fa-solid fa-file-circle-plus px-4"></i>
                         </button>
@@ -82,17 +87,23 @@
                             <div class="image-group d-flex">
                                 <div class="selected-files row" id="selected-images">
                                     <div th:each="items : ${listImage}" class="selected-file me-2">
-                                        <img class="exists-image" th:src="@{'/image/' + ${items.id}}" alt="Selected Image" width="100" height="120" th:data-image="${items.id}">
                                         <div class="file-details">
-                                            <button class="btn btn-sm btn-outline-danger rounded-circle delete-img-btn" type="button">X</button>
+                                            <button class="btn btn-sm btn-outline-danger rounded-circle delete-img-btn"
+                                                    type="button"
+                                            >X
+                                            </button>
                                         </div>
+                                        <img class="exists-image" th:src="@{'/image/' + ${items.id}}"
+                                             alt="Selected Image" width="100" height="120" th:data-image="${items.id}">
+
                                     </div>
                                 </div>
                                 <div class="image-upload" style="margin-left: 20px">
                                     <label for="file-input" class="label-select-img">
                                         <i class="fa fa-plus"></i>
                                     </label>
-                                    <input id="file-input" type="file" multiple accept="image/png, image/jpg, image/jpeg"
+                                    <input id="file-input" type="file" multiple
+                                           accept="image/png, image/jpg, image/jpeg"
                                            oninput="onInputText('errorImage')"/>
                                 </div>
                             </div>
@@ -102,11 +113,11 @@
                     <div class="card-footer d-flex">
                         <div>
                             <button type="submit" onclick="" class="btn btn-dark">
-                                <i class="fa-solid fa-square-plus px-4"></i>
+                                <i class="fa-solid fa-pen px-4"></i>
                             </button>
                         </div>
                         <div class="ml-2">
-                            <a href="/nova/product/view-add">
+                            <a th:href="@{|/nova/product/${productId}/view-update|}">
                                 <button type="button" class="btn btn-warning">
                                     <i class="fa-solid fa-circle-left px-4"></i>
                                 </button>
@@ -114,6 +125,8 @@
                         </div>
                     </div>
                     <script th:inline="javascript">
+
+
                         // Không cho nhập dấu trừ
                         function onlyAllowNumberInput(e) {
                             const key = e.key;
@@ -144,15 +157,15 @@
                             }
                         })
 
-                        $('.productDetail-price').on('keydown', function (e) {
-                            onlyAllowNumberInput2(e)
-                        })
+                        // $('.productDetail-price').on('keydown', function (e) {
+                        //     onlyAllowNumberInput2(e)
+                        // })
 
-                        $('.productDetail-price').on('focusout', function (e) {
-                            if ($(this).val() == "") {
-                                $(this).val(0)
-                            }
-                        })
+                        // $('.productDetail-price').on('focusout', function (e) {
+                        //     if ($(this).val() == "") {
+                        //         $(this).val(0)
+                        //     }
+                        // })
 
 
                         // Khoi tao list detail color and size hiện tại để chuẩn bị cho việc check trùng size và color
@@ -174,7 +187,7 @@
                         }).on('change', function () {
                             var currentValue = $(this).val();
                             var currentSize = $(this).closest('.form-row').find('.size-select').val();
-                            if(checkDuplidateExists(currentValue, currentSize)) {
+                            if (checkDuplidateExists(currentValue, currentSize)) {
                                 $(this).val(previousColorValue)
 
                             } else {
@@ -193,7 +206,7 @@
                         }).on('change', function () {
                             var currentValue = $(this).val();
                             var currentColor = $(this).closest('.form-row').find('.color-select').val();
-                            if(checkDuplidateExists(currentColor, currentValue)) {
+                            if (checkDuplidateExists(currentColor, currentValue)) {
                                 $(this).val(previousSizeValue)
 
                             } else {
@@ -207,15 +220,29 @@
 
                         function checkDuplidateExists(color, size) {
                             var isdup = false
-                            listDetail.forEach(item  => {
-                                if(item.color == color && item.size == size) {
-                                    Toastify({
-                                        text: "Màu sắc và cỡ đã tồn tại",
-                                        style: {
-                                            color: "white",
-                                            background: "red",
+                            listDetail.forEach(item => {
+                                if (item.color == color && item.size == size) {
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        },
+                                        customClass: {
+                                            popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                            title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                            icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                            timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
                                         }
-                                    }).showToast();
+                                    });
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: "Không được chọn trùng màu sắc và kích cỡ !"
+                                    });
                                     isdup = true
                                     return
                                 }
@@ -233,16 +260,18 @@
                             selectedImageEle.remove()
                         })
 
+                        var removeProductDetail = []
+
 
                         // Thêm số thứ tự
-                        var numberical = 1
-                        $('.code-select').val(numberical);
+                        // var numberical = 1
+                        // $('.code-select').val(numberical);
 
                         function addItem() {
-                            var detailId = detail.id + 1;
+                            // var detailId = detail.id + 1;
                             var template = document.querySelector('.form-table').cloneNode(true);
                             var formRows = template.querySelectorAll('.form-row');
-                            numberical++
+                            // numberical++
                             // Update the index to ensure uniqueness for the new product detail
                             var newIndex = document.querySelectorAll('.form-table').length;
 
@@ -271,15 +300,15 @@
                                     $(this).val(0)
                                 }
                             })
-                            const deleteButtonContainer = document.createElement('div')
-                            const deleteButton = document.createElement('button');
-                            deleteButton.type = 'button';
-                            deleteButton.classList.add('btn', 'btn-danger');
-                            deleteButton.style.marginTop = '32px'
-                            deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
-                            deleteButtonContainer.appendChild(deleteButton)
+                            // const deleteButtonContainer = document.createElement('div')
+                            // const deleteButton = document.createElement('button');
+                            // deleteButton.type = 'button';
+                            // deleteButton.classList.add('btn', 'btn-danger');
+                            // deleteButton.style.marginTop = '32px'
+                            // deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+                            // deleteButtonContainer.appendChild(deleteButton)
 
-                            template.querySelector('.form-row').appendChild(deleteButtonContainer)
+                            // template.querySelector('.form-row').appendChild(deleteButtonContainer)
 
                             document.querySelector('.form-detail').appendChild(template);
                             var color = ''
@@ -305,13 +334,20 @@
 
                             })
 
-                            deleteButton.onclick = function () {
+                            $('.remove-row').on('click', function () {
                                 document.querySelector('.form-detail').removeChild(template)
                                 removeDetailObj(color, size)
-                            }
+                            })
 
-                            template.querySelector('.code-select').value = numberical
+                            // deleteButton.onclick = function () {
+                            //     document.querySelector('.form-detail').removeChild(template)
+                            //     removeDetailObj(color, size)
+                            // }
+
+                            // template.querySelector('.code-select').value = numberical
                         }
+
+
 
                         function removeDetailObj(color, size) {
 
@@ -322,7 +358,6 @@
 
                         function checkDuplicateSizeAndColor(color, size, template) {
                             listDetail.forEach(item => {
-                                debugger
                                 if (item.color == color && item.size == size) {
                                     document.querySelector('.form-detail').removeChild(template)
                                     const Toast = Swal.mixin({
@@ -344,14 +379,13 @@
                                     });
                                     Toast.fire({
                                         icon: "error",
-                                        title: "Màu sắc và kích cỡ đã tồn tại !"
+                                        title: "Không được chọn trùng màu sắc và kích cỡ !"
                                     });
                                     return true
                                 }
                             })
                             return false
                         }
-
 
                         //Handle file input
                         const fileInput = document.getElementById("file-input")
@@ -388,7 +422,7 @@
                                                 const image = document.createElement('img');
                                                 image.src = e.target.result;
                                                 image.alt = 'Selected Image';
-                                                image.width = 100;
+                                                image.width = 110;
                                                 image.height = 120;
 
                                                 // Create a div for file details
@@ -421,14 +455,14 @@
                                 }
                             }
                         }
-debugger
+
                         document.getElementById("productDetailUpdate").addEventListener('submit', async function (e) {
                             e.preventDefault()
-                            if (fileSend.length < 1) {
-                                // Swal.fire('Lỗi', "Vui lòng chọn ít nhất một hình ảnh", "error")
-                                document.getElementById('errorImage').innerHTML = 'Vui lòng chọn nhất 1 ảnh'
-                                return
-                            }
+                            // if (fileSend.length < 1) {
+                            //     // Swal.fire('Lỗi', "Vui lòng chọn ít nhất một hình ảnh", "error")
+                            //     document.getElementById('errorImage').innerHTML = 'Vui lòng chọn nhất 1 ảnh'
+                            //     return
+                            // }
                             var canAdd = true
                             $('.color-select').each(function (index, item) {
                                 console.log($(item).val())
@@ -497,4 +531,328 @@ debugger
 </div>
 </body>
 </html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{admin/admin-layout.html}">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Cart Detail </title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div layout:fragment="content">-->
+<!--    <div class="col">-->
+<!--        <div class="card">-->
+<!--            <div class="card-header">-->
+<!--                <h5 style="font-weight: bold">CẬP NHẬT CHI TIẾT SẢN PHẨM</h5>-->
+<!--            </div>-->
+<!--            <div th:if="${mess}">-->
+<!--                <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>-->
+<!--                <script th:inline="javascript">-->
+<!--                    window.onload = function () {-->
+<!--                        var btnSuccess = document.getElementById("btnSuccess");-->
+<!--                        btnSuccess.click();-->
+<!--                    }-->
+<!--                    alertSuccess = (content) => {-->
+<!--                        Swal.fire({-->
+<!--                            title: content,-->
+<!--                            icon: "success",-->
+<!--                            confirmButtonColor: "#0DC149"-->
+<!--                        });-->
+<!--                    }-->
+<!--                </script>-->
+<!--            </div>-->
+<!--            <div th:if="${error}">-->
+<!--                <button hidden id="btnError" th:onclick="alertError([[${error}]])">Click Me</button>-->
+<!--                <script th:inline="javascript">-->
+<!--                    window.onload = function () {-->
+<!--                        var btnError = document.getElementById("btnError");-->
+<!--                        btnError.click();-->
+<!--                    }-->
+<!--                    alertError = (content) => {-->
+<!--                        Swal.fire({-->
+<!--                            title: "Thêm dữ liệu thất bại",-->
+<!--                            text: content,-->
+<!--                            icon: "error",-->
+<!--                            confirmButtonColor: "#d33"-->
+<!--                        });-->
+<!--                    }-->
+<!--                </script>-->
+<!--            </div>-->
+<!--            <div class="card-body card-block">-->
+<!--                <form id="productDetailUpdate" th:object="${productDetail}"-->
+<!--                      th:action="@{/nova/product-detail/update/{id}(id=${productDetail.id})}"-->
+<!--                      method="post" class="form-horizontal" enctype="multipart/form-data">-->
+
+<!--                    <input type="hidden" class="form-control" th:value="*{product.id}" name="productId">-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <label class="font-weight-bold form-control-label">Mã sản phẩm-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <input type="text" class="form-control" th:value="*{product.code}" disabled>-->
+<!--                    </div>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <label class="font-weight-bold form-control-label">Tên sản phẩm-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <input type="text" class="form-control" th:value="*{product.name}" disabled>-->
+<!--                    </div>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <label class="font-weight-bold form-control-label">Mã chi tiết-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <input type="text" class="form-control" name="code" th:value="*{code}" disabled>-->
+<!--                    </div>-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <label class="font-weight-bold form-control-label">Số lượng-->
+<!--                            </label>-->
+<!--                            <div class="" style="color: red" id="errorQuantity"></div>-->
+<!--                        </div>-->
+<!--                        <input type="number" class="form-control" id="quantity" name="quantity" th:value="*{quantity}"-->
+<!--                               oninput="onInputText('errorQuantity')">-->
+<!--                    </div>-->
+
+
+<!--                    <div class="mb-3">-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <label class="font-weight-bold form-control-label">Giá-->
+<!--                            </label>-->
+<!--                            <div class="" style="color: red" id="errorPrice"></div>-->
+<!--                        </div>-->
+<!--                        <input type="number" class="form-control" id="price" name="price"-->
+<!--                               th:value="*{price}" oninput="onInputText('errorPrice')">-->
+<!--                    </div>-->
+
+
+<!--                    <div class="mb-3">-->
+<!--                        <label class="font-weight-bold">Kích cỡ</label>-->
+<!--                        <div class="w-100 d-flex justify-content-between">-->
+<!--                            <div class="w-95">-->
+<!--                                <select class="form-control" name="sizeId">-->
+<!--                                    <option th:value="${size.id}" th:each="size: ${listSize}"-->
+<!--                                            th:text="${size.name}" th:selected="(*{size.id} == ${size.id})"></option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                            <div class="w-5 d-flex justify-content-end">-->
+<!--                                <button type="button" class="btn btn-dark" data-toggle="modal"-->
+<!--                                        data-target="#exampleModalSize">-->
+<!--                                    <i class="fa-solid fa-square-plus"></i>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+<!--                    <div class="mb-3">-->
+<!--                        <label class="font-weight-bold">Màu sắc</label>-->
+<!--                        <div class="w-100 d-flex justify-content-between">-->
+<!--                            <div class="w-95">-->
+<!--                                <select class="form-control" name="colorId">-->
+<!--                                    <option th:value="${color.id}" th:each="color: ${listColor}"-->
+<!--                                            th:text="${color.name}" th:selected="(*{color.id} == ${color.id})"></option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                            <div class="w-5 d-flex justify-content-end">-->
+<!--                                <button type="button" class="btn btn-dark" data-toggle="modal"-->
+<!--                                        data-target="#exampleModalColor">-->
+<!--                                    <i class="fa-solid fa-square-plus"></i>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+<!--                    <div class="card-footer">-->
+<!--                        <button onclick="updateProductDetail()" type="button" class="btn btn-dark"><i-->
+<!--                                class="fa-solid fa-pen px-4"></i>-->
+<!--                        </button>-->
+<!--                        <script th:inline="javascript">-->
+
+<!--                            checkQuantity = () => {-->
+<!--                                let quantity = document.getElementById('quantity').value-->
+<!--                                if (quantity === "") {-->
+<!--                                    document.getElementById('errorQuantity').innerHTML = `Chưa nhập số lượng`-->
+<!--                                    return false;-->
+<!--                                }-->
+<!--                                if (quantity < 0) {-->
+<!--                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải lớn hơn hoặc bằng 0`-->
+<!--                                    return false;-->
+<!--                                }-->
+<!--                                if (Number.isInteger(quantity)) {-->
+<!--                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải là số nguyên`-->
+<!--                                    return false;-->
+<!--                                }-->
+<!--                                return true;-->
+<!--                            }-->
+
+
+<!--                            checkPrice = () => {-->
+<!--                                let isPrice = document.getElementById('price').value-->
+<!--                                if (isPrice.trim() === '') {-->
+<!--                                    document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`-->
+<!--                                    return false;-->
+<!--                                }-->
+<!--                                if (isPrice < 0) {-->
+<!--                                    document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn hoặc bằng 0`-->
+<!--                                    return false;-->
+<!--                                }-->
+<!--                                if (isPrice > 2147483647) {-->
+<!--                                    document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`-->
+<!--                                    return false;-->
+<!--                                }-->
+<!--                                return true;-->
+<!--                            }-->
+
+<!--                            validate = () => {-->
+<!--                                let isQuantity = checkQuantity();-->
+<!--                                let isPrice = checkPrice();-->
+<!--                                if (isQuantity === true && isPrice === true) {-->
+<!--                                    return true;-->
+<!--                                }-->
+<!--                            }-->
+
+<!--                            checkName = (attributeName, errorAttributeName, title) => {-->
+<!--                                debugger-->
+<!--                                let isName = document.getElementById(attributeName).value-->
+<!--                                if (isName.trim() === '') {-->
+<!--                                    document.getElementById(errorAttributeName).innerHTML = `Chưa nhập ${title}`-->
+<!--                                    return false;-->
+<!--                                }-->
+<!--                                return true;-->
+<!--                            }-->
+
+<!--                            clickAttribute = (entity, idForm, attributeName, errorAttributeName, title) => {-->
+<!--                                if (checkName(attributeName, errorAttributeName, title)) {-->
+<!--                                    Swal.fire({-->
+<!--                                        title: "Thêm dữ liệu",-->
+<!--                                        text: "Bạn có muốn thêm dữ liệu không ?",-->
+<!--                                        icon: "question",-->
+<!--                                        showCancelButton: true,-->
+<!--                                        confirmButtonColor: "#0DC149",-->
+<!--                                        cancelButtonColor: "#d33",-->
+<!--                                        confirmButtonText: "Có",-->
+<!--                                        cancelButtonText: "Không",-->
+<!--                                        allowOutsideClick: false-->
+<!--                                    }).then((add) => {-->
+<!--                                        if (add.isConfirmed) {-->
+<!--                                            document.getElementById(idForm).action = '/nova/' + entity + '/attribute'-->
+<!--                                            document.getElementById(idForm).method = 'post'-->
+<!--                                            document.getElementById(idForm).submit()-->
+<!--                                        }-->
+<!--                                    });-->
+<!--                                }-->
+<!--                            }-->
+
+<!--                            updateProductDetail = () => {-->
+<!--                                if (validate()) {-->
+<!--                                    Swal.fire({-->
+<!--                                        title: "Sửa dữ liệu",-->
+<!--                                        text: "Bạn có muốn sửa dữ liệu không ?",-->
+<!--                                        icon: "question",-->
+<!--                                        showCancelButton: true,-->
+<!--                                        confirmButtonColor: "#0DC149",-->
+<!--                                        cancelButtonColor: "#d33",-->
+<!--                                        confirmButtonText: "Có",-->
+<!--                                        cancelButtonText: "Không",-->
+<!--                                        allowOutsideClick: false-->
+<!--                                    }).then((update) => {-->
+<!--                                        if (update.isConfirmed) {-->
+<!--                                            document.getElementById('productDetailUpdate').submit()-->
+<!--                                        }-->
+<!--                                    });-->
+<!--                                }-->
+<!--                            }-->
+<!--                        </script>-->
+<!--                        <a th:href="@{|/nova/product/*{product.id}/product-detail|}">-->
+<!--                            <button type="button" class="btn btn-warning"><i-->
+<!--                                    class="fa-solid fa-circle-left px-4"></i>-->
+<!--                            </button>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </form>-->
+
+<!--                &lt;!&ndash;Color Add Start&ndash;&gt;-->
+<!--                <form id="colorForm">-->
+<!--                    <div class="modal fade" id="exampleModalColor" tabindex="-1" role="dialog"-->
+<!--                         aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--                        <div class="modal-dialog" role="document">-->
+<!--                            <div class="modal-content">-->
+<!--                                <div class="modal-header">-->
+<!--                                    <h5 class="modal-title" id="exampleModalLabelColor">Thêm dữ liệu</h5>-->
+<!--                                    <button type="button" class="close" data-dismiss="modal"-->
+<!--                                            aria-label="Close">-->
+<!--                                        <span aria-hidden="true">&times;</span>-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                                <div class="modal-body">-->
+<!--                                    <input type="hidden" th:value="*{id}" name="productDetailId">-->
+<!--                                    <div class="mb-3">-->
+<!--                                        <div class="d-flex justify-content-between">-->
+<!--                                            <label class="font-weight-bold form-control-label">Tên màu sắc</label>-->
+<!--                                            <div class="" style="color: red" id="errorColorName"></div>-->
+<!--                                        </div>-->
+<!--                                        <input type="text" id="colorName" name="colorName"-->
+<!--                                               class="form-control" oninput="onInputText('errorColorName')">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="modal-footer">-->
+<!--                                    <button onclick="clickAttribute('color', 'colorForm', 'colorName', 'errorColorName', 'tên màu sắc')"-->
+<!--                                            type="button" class="btn btn-dark"><i-->
+<!--                                            class="fa-solid fa-square-plus px-4"></i></button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--                &lt;!&ndash;Size Add Start&ndash;&gt;-->
+
+<!--                &lt;!&ndash;Size Add Start&ndash;&gt;-->
+<!--                <form id="sizeForm" th:object="${productDetail}">-->
+<!--                    <div class="modal fade" id="exampleModalSize" tabindex="-1" role="dialog"-->
+<!--                         aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--                        <div class="modal-dialog" role="document">-->
+<!--                            <div class="modal-content">-->
+<!--                                <div class="modal-header">-->
+<!--                                    <h5 class="modal-title" id="exampleModalLabelSize">Thêm dữ liệu</h5>-->
+<!--                                    <button type="button" class="close" data-dismiss="modal"-->
+<!--                                            aria-label="Close">-->
+<!--                                        <span aria-hidden="true">&times;</span>-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                                <div class="modal-body">-->
+<!--                                    <input type="hidden" th:value="*{id}" name="productDetailId">-->
+<!--                                    <div class="mb-3">-->
+<!--                                        <div class="d-flex justify-content-between">-->
+<!--                                            <label class="font-weight-bold form-control-label">Tên kích cỡ</label>-->
+<!--                                            <div class="" style="color: red" id="errorSizeName"></div>-->
+<!--                                        </div>-->
+<!--                                        <input type="text" id="sizeName" name="sizeName"-->
+<!--                                               class="form-control" oninput="onInputText('errorSizeName')">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="modal-footer">-->
+<!--                                    <button onclick="clickAttribute('size', 'sizeForm', 'sizeName', 'errorSizeName', 'tên kích cỡ')"-->
+<!--                                            type="button" class="btn btn-dark"><i-->
+<!--                                            class="fa-solid fa-square-plus px-4"></i></button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--                &lt;!&ndash;Size Add Start&ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
 

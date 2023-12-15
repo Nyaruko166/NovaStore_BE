@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,21 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     public Page<ProductDetail> getAllPT(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
         return productDetailRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
+    }
+
+//    public Boolean checkColorAndSize(String colorName, String sizeName) {
+//
+//    }
+
+    @Override
+    public List<ProductDetail> getProductDetailNoDeleteResponse(List<ProductDetail> listProductDetail) {
+        List<ProductDetail> listProductDetailResponse = new ArrayList<>();
+        for (ProductDetail productDetail: listProductDetail) {
+            if (productDetail.getStatus() == 1) {
+                listProductDetailResponse.add(productDetail);
+            }
+        }
+        return listProductDetailResponse;
     }
 
     @Override

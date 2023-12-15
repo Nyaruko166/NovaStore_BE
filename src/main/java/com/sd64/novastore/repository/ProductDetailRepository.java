@@ -21,6 +21,8 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
 
     List<ProductDetail> findAllByProductIdAndStatusOrderByUpdateDateDesc(Integer productId, Integer status);
 
+    List<ProductDetail> findAllByProduct_IdOrderByIdAsc(Integer productId);
+
     ProductDetail findTopByOrderByIdDesc();
 
     ProductDetail findByIdAndStatus(Integer id, Integer status);

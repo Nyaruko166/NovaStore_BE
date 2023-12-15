@@ -38,7 +38,9 @@ public class SizeExcelUtil {
         return "S"+code;
     }
 
-    public Integer checkDataFromExcel(String path) throws IOException {
+    public String checkDataFromExcel(String path) throws IOException {
+        Set<String> setName = new HashSet<>();
+        List<String> listName = new ArrayList<>();
         FileInputStream fileInputStream = new FileInputStream(path);
         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
         XSSFSheet xssfSheet = workbook.getSheetAt(0);
@@ -65,7 +67,7 @@ public class SizeExcelUtil {
                                     fileInputStream.close();
                                     File file = new File(path);
                                     file.delete();
-                                    return -1;
+                                    return "Tồn tại";
                                 }
                                 size.setName(sizeStr);
                             } else {
@@ -75,7 +77,7 @@ public class SizeExcelUtil {
                                     fileInputStream.close();
                                     File file = new File(path);
                                     file.delete();
-                                    return -1;
+                                    return "Tồn tại";
                                 }
                                 size.setName(cell.getStringCellValue());
                             }
@@ -85,23 +87,32 @@ public class SizeExcelUtil {
                     }
                     cellIndex++;
                 }
+                setName.add(size.getName());
+                listName.add(size.getName());
             }
         } catch (Exception e) {
             workbook.close();
             fileInputStream.close();
             File file = new File(path);
             file.delete();
-            return 0;
+            return "Sai dữ liệu";
+        }
+        if (listName.size() != setName.size()) {
+            workbook.close();
+            fileInputStream.close();
+            File file = new File(path);
+            file.delete();
+            return "Trùng";
         }
         workbook.close();
         fileInputStream.close();
-        return 1;
+        return "Oke";
     }
 
     public String getFromExcel(String path) throws IOException {
-        Integer result = checkDataFromExcel(path);
+        String result = checkDataFromExcel(path);
         System.out.println();
-        if (result == 1) {
+        if (result.contains("Oke")) {
             List<Size> listSize = new ArrayList<>();
             FileInputStream fileInputStream = new FileInputStream(path);
             XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
@@ -161,10 +172,12 @@ public class SizeExcelUtil {
             file.delete();
             sizeRepository.saveAll(listSize);
             return "okela";
-        } else if (result == -1) {
-            return "Trùng tên";
-        } else if (result== 0) {
+        } else if (result.contains("Tồn tại")) {
+            return "Tồn tại";
+        } else if (result.contains("Sai dữ liệu")) {
             return "Sai dữ liệu";
+        } else if (result.contains("Trùng")) {
+            return "Trùng";
         }
         return null;
     }

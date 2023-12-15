@@ -46,6 +46,19 @@ public class ColorController {
         }
     }
 
+    @PostMapping("/attribute")
+    public String attribute(@RequestParam String colorName,
+                            @RequestParam String productDetailId,
+                            RedirectAttributes redirectAttributes) {
+        if (colorService.add(colorName)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/product-detail/detail/" + productDetailId;
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên màu sắc đã tồn tại");
+            return "redirect:/nova/product-detail/detail/" + productDetailId;
+        }
+    }
+
     @PostMapping("/update/{id}")
     public String update(@PathVariable Integer id,
                          @RequestParam String name,
@@ -109,14 +122,18 @@ public class ColorController {
 
     @PostMapping("/excel")
     public String importExcel(RedirectAttributes redirectAttributes, @RequestParam MultipartFile excelFile) throws IOException {
-        if (colorService.importExcel(excelFile) == 1) {
+        String result = colorService.importExcel(excelFile);
+        if (result.contains("Oke")) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
             return "redirect:/nova/color/page";
-        } else if (colorService.importExcel(excelFile) == -1) {
-            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại dữ liệu trong file");
+        } else if (result.contains("Sai dữ liệu")) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại kiểu dữ liệu trong file");
             return "redirect:/nova/color/page";
-        } else if (colorService.importExcel(excelFile) == 2) {
-            redirectAttributes.addFlashAttribute("error", "Dữ liệu đang bị trùng");
+        } else if (result.contains("Tồn tại")) {
+            redirectAttributes.addFlashAttribute("error", "Dữ liệu trong file đã tồn tại");
+            return "redirect:/nova/color/page";
+        } else if (result.contains("Trùng")) {
+            redirectAttributes.addFlashAttribute("error", "1 số dữ liệu trong file bị trùng lặp");
             return "redirect:/nova/color/page";
         } else {
             redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");

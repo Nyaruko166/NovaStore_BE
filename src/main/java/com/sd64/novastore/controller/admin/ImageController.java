@@ -28,7 +28,7 @@ public class ImageController {
     public String getImage(@PathVariable Integer productId,
                            Model model,
                            @RequestParam(defaultValue = "0") int page) {
-        Page<Image> pageImage = imageService.getImageByProductDetail(page, productId);
+        Page<Image> pageImage = imageService.getImageByProduct(page, productId);
         Product product = productService.getOne(productId);
         model.addAttribute("product", product);
         model.addAttribute("pageImage", pageImage);

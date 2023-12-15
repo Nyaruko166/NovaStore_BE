@@ -122,14 +122,18 @@ public class MaterialController {
 
     @PostMapping("/excel")
     public String importExcel(RedirectAttributes redirectAttributes, @RequestParam MultipartFile excelFile) throws IOException {
-        if (materialService.importExcel(excelFile) == 1) {
+        String result = materialService.importExcel(excelFile);
+        if (result.contains("Oke")) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
             return "redirect:/nova/material/page";
-        } else if (materialService.importExcel(excelFile) == -1) {
-            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại dữ liệu trong file");
+        } else if (result.contains("Sai dữ liệu")) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại kiểu dữ liệu trong file");
             return "redirect:/nova/material/page";
-        } else if (materialService.importExcel(excelFile) == 2) {
-            redirectAttributes.addFlashAttribute("error", "Dữ liệu đang bị trùng");
+        } else if (result.contains("Tồn tại")) {
+            redirectAttributes.addFlashAttribute("error", "Dữ liệu trong file đã tồn tại");
+            return "redirect:/nova/material/page";
+        } else if (result.contains("Trùng")) {
+            redirectAttributes.addFlashAttribute("error", "1 số dữ liệu trong file bị trùng lặp");
             return "redirect:/nova/material/page";
         } else {
             redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");

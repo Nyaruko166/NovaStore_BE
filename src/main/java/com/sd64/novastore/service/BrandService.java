@@ -28,5 +28,5 @@ public interface BrandService {
 
     Page<Brand> searchDelete(String name, int page);
 
-    Integer importExcel(MultipartFile file) throws IOException;
+    String importExcel(MultipartFile file) throws IOException;
 }

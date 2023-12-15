@@ -318,17 +318,17 @@
 
                     <div class="card-footer d-flex justify-content-between">
                         <div>
-                            <a th:href="@{|/nova/product/${productUpdate.id}/product-detail|}">
+                            <a href="/nova/product/page">
                                 <button type="button" class="btn btn-warning">
                                     <i class="fa-solid fa-circle-left px-4"></i>
                                 </button>
                             </a>
                         </div>
-                        <div>
-                            <button type="submit" class="btn btn-dark" >
-                                UDPATE
-                            </button>
-                        </div>
+<!--                        <div>-->
+<!--                            <button type="submit" class="btn btn-dark" >-->
+<!--                                UDPATE-->
+<!--                            </button>-->
+<!--                        </div>-->
                         <div>
                             <button th:onclick="clickNextUpdateProduct('product', 'productUpdate', [[${productUpdate.id}]])" type="button"
                                     class="btn btn-dark">

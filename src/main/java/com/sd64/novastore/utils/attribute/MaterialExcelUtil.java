@@ -36,11 +36,12 @@ public class MaterialExcelUtil {
         return "CL"+code;
     }
 
-    public Integer checkDataFromExcel(String path) throws IOException {
+    public String checkDataFromExcel(String path) throws IOException {
         FileInputStream fileInputStream = new FileInputStream(path);
         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
         XSSFSheet xssfSheet = workbook.getSheetAt(0);
-
+        Set<String> setName = new HashSet<>();
+        List<String> listName = new ArrayList<>();
         int rowIndex = 0;
         try {
             for (Row row : xssfSheet) {
@@ -61,7 +62,7 @@ public class MaterialExcelUtil {
                                 fileInputStream.close();
                                 File file = new File(path);
                                 file.delete();
-                                return -1;
+                                return "Tồn tại";
                             }
                             material.setName(cell.getStringCellValue());
                             break;
@@ -70,22 +71,31 @@ public class MaterialExcelUtil {
                     }
                     cellIndex++;
                 }
+                setName.add(material.getName());
+                listName.add(material.getName());
             }
         } catch (Exception e) {
             workbook.close();
             fileInputStream.close();
             File file = new File(path);
             file.delete();
-            return 0;
+            return "Sai dữ liệu";
+        }
+        if (listName.size() != setName.size()) {
+            workbook.close();
+            fileInputStream.close();
+            File file = new File(path);
+            file.delete();
+            return "Trùng";
         }
         workbook.close();
         fileInputStream.close();
-        return 1;
+        return "Oke";
     }
 
     public String getFromExcel(String path) throws IOException {
-        Integer result = checkDataFromExcel(path);
-        if (result == 1) {
+        String result = checkDataFromExcel(path);
+        if (result.contains("Oke")) {
             List<Material> listMaterial = new ArrayList<>();
             FileInputStream fileInputStream = new FileInputStream(path);
             XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
@@ -140,10 +150,12 @@ public class MaterialExcelUtil {
             file.delete();
             materialRepository.saveAll(listMaterial);
             return "okela";
-        } else if (result == -1) {
-            return "Trùng tên";
-        } else if (result== 0) {
+        } else if (result.contains("Tồn tại")) {
+            return "Tồn tại";
+        } else if (result.contains("Sai dữ liệu")) {
             return "Sai dữ liệu";
+        } else if (result.contains("Trùng")) {
+            return "Trùng";
         }
         return null;
     }

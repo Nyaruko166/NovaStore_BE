@@ -48,6 +48,19 @@ public class SizeController {
         }
     }
 
+    @PostMapping("/attribute")
+    public String attribute(@RequestParam String sizeName,
+                            @RequestParam String productDetailId,
+                            RedirectAttributes redirectAttributes) {
+        if (sizeService.add(sizeName)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/product-detail/detail/" + productDetailId;
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên kích cỡ đã tồn tại");
+            return "redirect:/nova/product-detail/detail/" + productDetailId;
+        }
+    }
+
     @PostMapping("//update/{id}")
     public String update(@PathVariable Integer id,
                          @RequestParam String name,
@@ -112,14 +125,18 @@ public class SizeController {
 
     @PostMapping("/excel")
     public String importExcel(RedirectAttributes redirectAttributes, @RequestParam MultipartFile excelFile) throws IOException {
-        if (sizeService.importExcel(excelFile) == 1) {
+        String result = sizeService.importExcel(excelFile);
+        if (result.contains("Oke")) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu excel thành công");
             return "redirect:/nova/size/page";
-        } else if (sizeService.importExcel(excelFile) == -1) {
-            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại dữ liệu trong file");
+        } else if (result.contains("Sai dữ liệu")) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng kiểm tra lại kiểu dữ liệu trong file");
             return "redirect:/nova/size/page";
-        } else if (sizeService.importExcel(excelFile) == 2) {
-            redirectAttributes.addFlashAttribute("error", "Dữ liệu đang bị trùng");
+        } else if (result.contains("Tồn tại")) {
+            redirectAttributes.addFlashAttribute("error", "Dữ liệu trong file đã tồn tại");
+            return "redirect:/nova/size/page";
+        } else if (result.contains("Trùng")) {
+            redirectAttributes.addFlashAttribute("error", "1 số dữ liệu trong file bị trùng lặp");
             return "redirect:/nova/size/page";
         } else {
             redirectAttributes.addFlashAttribute("error", "Đây không phải là file excel");
