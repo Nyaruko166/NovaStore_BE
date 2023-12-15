@@ -48,11 +48,11 @@ public class Bill {
     @Column(name = "ShippingDate")
     private Date shippingDate;
 
-    @Column(name = "ReceivedDate")
-    private Date receivedDate;
-
     @Column(name = "CompletionDate")
     private Date completionDate;
+
+    @Column(name = "CancellationDate")
+    private Date cancellationDate;
 
     @Column(name = "PaymentDate")
     private Date paymentDate;

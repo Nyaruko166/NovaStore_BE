@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.dto.admin.BillDto;
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Address;
 import com.sd64.novastore.model.BillDetail;
@@ -409,5 +410,15 @@ public class BillServiceImpl implements BillService {
             lastId = lastBill.getId();
         }
         return String.format("HD%06d", lastId + 1);
+    }
+
+    @Override
+    public Page<BillDto> findAll(Pageable pageable){
+        return billRepository.listBill(pageable);
+    }
+
+    @Override
+    public Page<BillDto> searchListBill(String code, Date ngayTaoStart, Date ngayTaoEnd, Integer status, Integer type, String phoneNumber, String customerName, Pageable pageable) {
+        return billRepository.listSearchBill(code, ngayTaoStart, ngayTaoEnd, status, type, phoneNumber, customerName, pageable);
     }
 }

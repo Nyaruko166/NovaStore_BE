@@ -64,4 +64,9 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     public PaymentMethod getOne(Integer id) {
         return paymentMethodRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<PaymentMethod> getAllBillPaymentMethod(Integer billId) {
+        return paymentMethodRepository.findAllByBillIdOrderById(billId);
+    }
 }

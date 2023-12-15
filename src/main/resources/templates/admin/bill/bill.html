@@ -7,114 +7,310 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="col">
-        <div class="card">
-            <div class="card-header">
-                <h5 style="font-weight: bold">HÓA ĐƠN</h5>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-header" th:if="${pageBill.isEmpty()}">
-                <strong class="card-title">Không có bản ghi nào</strong>
-            </div>
-            <div th:if="${not pageBill.isEmpty()}">
-                <div class="card-header">
-                    <strong>Có</strong>
-                    <strong class="card-title" th:text="${totalElements}"></strong>
-                    <strong class="card-title"> Hoá đơn</strong>
+    <input type="hidden" id="pageValue" th:value="${param.page}"/>
+    <input type="hidden" id="sortValue" th:value="${param.sort}"/>
+    <input type="hidden" id="ngayTaoStartValue" th:value="${param.ngayTaoStart}"/>
+    <input type="hidden" id="ngayTaoEndValue" th:value="${param.ngayTaoEnd}"/>
+    <h4>Quản lý hóa đơn</h4>
+    <form th:action="@{/nova/bill}" method="GET" id="form-search">
+        <div class="my-3">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="code">Mã hóa đơn</label>
+                    <input type="text" class="form-control" id="code" name="code" placeholder="Mã hóa đơn" th:value="${code}">
                 </div>
-                <div class="card-body">
-                        <table class="table text-center">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Khách Hàng</th>
-                                <th scope="col">Ngày đặt</th>
-                                <th scope="col">Tổng</th>
-                                <th scope="col">Trạng thái</th>
-                                <th scope="col">Thao tác</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="bill : ${pageBill}">
-                                <td th:text="${bill.id}"></td>
-                                <td th:text="${bill.customer.email}"></td>
-                                <td th:text="${#dates.format(bill.orderDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                                <td th:text="'₫' + ${#numbers.formatDecimal(bill.totalPrice, 0, 'COMMA', 0, 'POINT')}"></td>
-                                <td th:text="${bill.getStatusName()}">
-                                </td>
-                                <td class="d-flex justify-content-center">
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/bill/detail/' + ${bill.id}}">
-                                            <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-eye mr-1"></i>Chi tiết
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/bill/confirm-bill/' + ${bill.id}}" th:if="${bill.status == 10}">
-                                            <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-address-book mr-1"></i>Xác nhận
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div style="margin-right: 10px" th:if="${bill.status == 3}">
-                                        <button type="button" class="btn btn-info" data-toggle="modal"
-                                                data-target="#shippingBill">
-                                            <i class="fa-solid fa-pen mr-1"></i>Giao hàng
-                                        </button>
-                                        <!--Confirm Modal -->
-                                        <div class="modal fade" id="shippingBill" tabindex="-1" role="dialog" aria-labelledby="shippingBill" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="shippingBillLabel">Xác nhận</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form id="shippingForm" th:action="@{/nova/bill/shipping-bill}" method="post">
-                                                            <div class="form-group">
-                                                                <input type="text" hidden="true" name="id" th:value="${bill.id}">
-                                                                <label for="shippingFee">Nhập phí Ship cho đơn hàng</label>
-                                                                <input type="number" class="form-control" id="shippingFee" name="shippingFee" placeholder="Nhập phí ship">
-                                                            </div>
-                                                            <button type="submit" class="btn btn-primary">Xác nhận</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--End Modal-->
-                                    </div>
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/bill/complete-bill/' + ${bill.id}}" th:if="${bill.status == 2}">
-                                            <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-circle mr-1"></i>Hoàn thành
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div style="margin-right: 10px">
-                                        <a th:href="@{'/nova/bill/cancel-bill/' + ${bill.id}}" th:if="${bill.status == 10 || bill.status == 3}">
-                                            <button type="button" class="btn btn-info">
-                                                <i class="fa-solid fa-times mr-1"></i>Huỷ
-                                            </button>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                    <!--                    Pagination-->
-
+                <div class="form-group col-md-2">
+                    <label for="phoneNumber">Số điện thoại</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                           placeholder="Số điện thoại" th:value="${phoneNumber}">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="status">Trạng thái</label>
+                    <select class="form-control" id="status" name="status">
+                        <option value="">Tất cả</option>
+                        <option value="10" th:selected="${status == 10}">Chờ xác nhận</option>
+                        <option value="3" th:selected="${status == 3}">Chờ giao hàng</option>
+                        <option value="2" th:selected="${status == 2}">Đang giao hàng</option>
+                        <option value="1" th:selected="${status == 1}">Đã giao hàng</option>
+                        <option value="0" th:selected="${status == 0}">Đã hủy</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="type">Loại đơn</label>
+                    <select class="form-control" id="type" name="type">
+                        <option value="">Tất cả</option>
+                        <option value="0" th:selected="${type == 0}">Mua Online</option>
+                        <option value="1" th:selected="${type == 1}">Tại quầy</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="customerName">Họ tên</label>
+                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Họ tên" th:value="${customerName}">
+                </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="ngayTaoStart">Từ</label>
+                    <input type="date" class="form-control" id="ngayTaoStart" name="ngayTaoStart" placeholder="Bắt đầu" th:value="${ngayTaoStart}">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="ngayTaoEnd">Đến</label>
+                    <input type="date" class="form-control" id="ngayTaoEnd" name="ngayTaoEnd" placeholder="Kết thúc" th:value="${ngayTaoEnd}">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary m-1"><i class="fa fa-search"></i> Tìm kiếm</button>
+            <a th:href="@{/nova/bill}" class="btn btn-secondary m-1">Hủy</a>
+            <a href="#" onclick="exportToExcel()">
+                <button type="button" class="btn btn-success m-1"><i class="far fa-file-excel"></i> Export Excel</button>
+            </a>
         </div>
+    </form>
+
+    <div class="alert alert-success" role="alert" th:if="${message}">
+        <span th:text="${message}"></span>
     </div>
-</div>
+    <table class="table table-hover border my-3" style="cursor: pointer" id="billTable">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Mã hóa đơn
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'code' && sortDirection == 'asc' ? 'code,desc' : 'code,asc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↑</a>
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'code' && sortDirection == 'desc' ? 'code,asc' : 'code,desc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↓</a>
+            </th>
+            <th scope="col">Họ và tên
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'customerName' && sortDirection == 'asc' ? 'customerName,desc' : 'customerName,asc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↑</a>
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'customerName' && sortDirection == 'desc' ? 'customerName,asc' : 'customerName,desc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↓</a>
+            </th>
+            <th scope="col">Số điện thoại
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'phoneNumber' && sortDirection == 'asc' ? 'phoneNumber,desc' : 'phoneNumber,asc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↑</a>
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'phoneNumber' && sortDirection == 'desc' ? 'phoneNumber,asc' : 'phoneNumber,desc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↓</a>
+            </th>
+            <th scope="col">Ngày đặt
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'createDate' && sortDirection == 'asc' ? 'createDate,desc' : 'createDate,asc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↑</a>
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'createDate' && sortDirection == 'desc' ? 'createDate,asc' : 'createDate,desc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↓</a>
+            </th>
+            <th scope="col">Tổng tiền
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'totalPrice' && sortDirection == 'asc' ? 'totalPrice,desc' : 'totalPrice,asc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↑</a>
+                <a th:href="@{/nova/bill(page=0, sort=${sortField == 'totalPrice' && sortDirection == 'desc' ? 'totalPrice,asc' : 'totalPrice,desc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↓</a>
+            </th>
+            <th scope="col">Loại đơn</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}" class="clickable-row" th:data-maHoaDon="${item.id}">
+            <th scope="row" th:text="${item.code}"></th>
+            <td th:text="${item.customerName}"></td>
+            <td th:text="${item.phoneNumber}"></td>
+            <td th:text="${#dates.format(item.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+            <td th:text="'₫' + ${#numbers.formatDecimal(item.totalPrice, 0, 'POINT', 0, 'COMMA')}"></td>
+            <td>
+                <span th:if="${item.type == 0}">Mua Online</span>
+                <span th:if="${item.type == 1}">Tại quầy</span>
+            </td>
+            <td>
+
+                    <span class="text-warning p-1 font-weight-bold"
+                          th:if="${item.status == 10}">&nbsp;Chờ xác nhận
+                    </span>
+                <span class="text-secondary p-1 font-weight-bold"
+                      th:if="${item.status == 3}">&nbsp;Chờ giao hàng
+                    </span>
+                <span class="text-primary p-1 font-weight-bold"
+                      th:if="${item.status == 2}">&nbsp;Đang giao hàng
+                    </span>
+
+                <span  class="text-success p-1 font-weight-bold"
+                       th:if="${item.status == 1}">&nbsp;Đã giao hàng
+                    </span>
+
+                <span th:if="${item.status == 0}" class="text-danger p-1 font-weight-bold">
+                        &nbsp; Đã hủy
+                    </span>
+
+            </td>
+<!--                <div class="d-flex align-items-center">-->
+<!--                                        <form th:action="@{'/admin/update-bill-status/' + ${item.id}}" method="get">-->
+<!--                                            <input type="hidden" name="trangThaiDonHang" value="0">-->
+<!--                                            <span type="button" th:if="${item.status == 10 || item.status == 3}" class="cancel-btn bg-transparent mr-2" data-toggle="tooltip" data-placement="top" title="Hủy đơn">-->
+<!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="red" d="M2.93 17.07A10 10 0 1 1 17.07 2.93A10 10 0 0 1 2.93 17.07zm1.41-1.41A8 8 0 1 0 15.66 4.34A8 8 0 0 0 4.34 15.66zm9.9-8.49L11.41 10l2.83 2.83l-1.41 1.41L10 11.41l-2.83 2.83l-1.41-1.41L8.59 10L5.76 7.17l1.41-1.41L10 8.59l2.83-2.83l1.41 1.41z"/></svg>-->
+<!--                                            </span>-->
+<!--                                        </form>-->
+
+<!--                                        <form th:action="@{'/admin/update-bill-status/' + ${item.id}}" method="get">-->
+<!--                                            <span type="button" th:if="${item.status != 1 && item.status != 0}"-->
+<!--                                                    class=" hover-green btn-update-status" data&#45;&#45;toggle="tooltip" data-placement="top" th:data-status="${item.status}"-->
+<!--                                                    title="Chuyển sang trạng thái tiếp">-->
+<!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 12v-2a6 6 0 1 1 12 0v2"/><path d="m15 9l3 3l3-3"/></g></svg>-->
+<!--                                            </span>-->
+<!--                                        </form>-->
+<!--                </div>-->
+            <td class="d-flex justify-content-center">
+                <div class="dropdown">
+                    <button class="btn btn-dark" type="button"
+                            id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item">
+                            <i class="fa-solid fa-pencil mr-2"></i>Xác nhận</a>
+                        <a class="dropdown-item"><i class="fa-solid fa-pen mr-3"></i>Huỷ</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="clearfix float-right" th:if="${items.totalPages > 0}">
+        <ul class="pagination">
+            <li th:classappend="${items.hasPrevious() ? '' : 'disabled'}" class="page-item">
+                <a th:href="@{/nova/bill(page=0, sort=${sortField}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="page-link">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li th:classappend="${items.hasPrevious() ? '' : 'disabled'}" class="page-item">
+                <a th:href="@{/nova/bill(page=${items.number - 1}, sort=${sortField}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="page-link">
+                    <i class="fas fa-angle-left"></i>
+                </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, items.totalPages - 1)}" th:classappend="${i == items.number ? 'active' : ''}" class="page-item">
+                <a th:href="@{/nova/bill(page=${i}, sort=${sortField}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}" class="page-link" th:text="${i + 1}">
+                </a>
+            </li>
+            <li th:classappend="${items.hasNext() ? '' : 'disabled'}" class="page-item">
+                <a th:href="@{/nova/bill(page=${items.number + 1}, sort=${sortField}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="page-link">
+                    <i class="fas fa-angle-right"></i>
+                </a>
+            </li>
+            <li th:classappend="${items.hasNext() ? '' : 'disabled'}" class="page-item">
+                <a th:href="@{/nova/bill(page=${items.totalPages - 1},sort=${sortField}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="page-link">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#form-search').on('submit', function (e) {
+                if($('#ngayTaoStart').val() && $('#ngayTaoEnd').val()) {
+                    if( $('#ngayTaoEnd').val() < $('#ngayTaoStart').val()) {
+                        Swal.fire({
+                            title: "Lỗi",
+                            text: `Ngày kết thúc phải lớn hơn ngày bắt đầu`,
+                            icon: "error",
+                        })
+                        return false
+                    }
+                }
+                return true;
+            })
+
+            $('.cancel-btn').on('click', function (e) {
+                e.stopPropagation()
+                Swal.fire({
+                    title: "Xác nhận?",
+                    text: `Bạn chắc chắn muốn hủy đơn này!`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy',
+                    confirmButtonText: 'Xác nhận',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(this).closest('form').submit();
+                    }
+                });
+            })
+
+            $('.btn-update-status').on('click', function (e) {
+                e.stopPropagation()
+                var currentStatus = $(this).attr('data-status')
+                var nextStatus;
+                var statusMessage;
+                switch (currentStatus) {
+                    case "CHO_XAC_NHAN":
+                        nextStatus = "CHO_LAY_HANG";
+                        statusMessage = "Chờ lấy hàng";
+                        break;
+                    case "CHO_LAY_HANG":
+                        nextStatus = "CHO_GIAO_HANG";
+                        statusMessage = "Chờ giao hàng";
+                        break;
+                    case "CHO_GIAO_HANG":
+                        nextStatus = "HOAN_THANH";
+                        statusMessage = "Hoàn thành";
+                        break;
+                }
+                Swal.fire({
+                    title: "Xác nhận?",
+                    text: `Xác nhận chuyển sang ${statusMessage}`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy',
+                    confirmButtonText: 'Xác nhận',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const form = $(this).closest("form");
+                        var url = form.attr('action') + `?trangThaiDonHang=${nextStatus}`
+                        window.location.href = url
+                    }
+                });
+            })
+        })
+        var lastClickTime = 0;
+        var doubleClickDelay = 300;
+
+        var clickableRows = document.querySelectorAll(".clickable-row");
+
+        clickableRows.forEach(function(row) {
+            row.addEventListener("click", function(e) {
+                var currentTime = new Date().getTime();
+                if (currentTime - lastClickTime < doubleClickDelay) {
+                    // Đây là double click
+                    var maHoaDon = row.getAttribute("data-maHoaDon");
+                    window.location.href = "/nova/bill/detail/" + maHoaDon;
+                }
+                lastClickTime = currentTime;
+            });
+        });
+
+        function exportToExcel() {
+            var page = document.getElementById("pageValue").value;
+            var sort = document.getElementById("sortValue").value;
+            var ngayTaoStart = document.getElementById("ngayTaoStart").value;
+            var ngayTaoEnd = document.getElementById("ngayTaoEnd").value;
+
+            Swal.fire({
+                title: "Xác nhận ?",
+                text: "Xác nhận export file excel ?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        var exportUrl = `/admin/export-bill?page=${page}&sort=${sort}&ngayTaoStart=${ngayTaoStart}&ngayTaoEnd=${ngayTaoEnd}`;
+                        window.location.href = exportUrl;
+                    }
+                });
+        }
+    </script>
 </div>
 </body>
 </html>

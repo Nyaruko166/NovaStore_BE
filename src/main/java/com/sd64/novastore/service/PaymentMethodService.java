@@ -17,4 +17,6 @@ public interface PaymentMethodService {
     PaymentMethod delete(Integer id);
 
     PaymentMethod getOne(Integer id);
+
+    List<PaymentMethod> getAllBillPaymentMethod(Integer billId);
 }

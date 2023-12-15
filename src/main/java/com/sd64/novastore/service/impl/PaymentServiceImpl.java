@@ -32,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
     Gson gson = new Gson();
 
     @Override
-    public JsonObject MomoPayCreate(Long amount, String address) throws IOException, URISyntaxException {
+    public JsonObject MomoPayCreate(Long amount, String specificAddress, String ward, String district, String city, String name, String phoneNumber, String email, String voucher) throws IOException, URISyntaxException {
 
         int random_id = new Random().nextInt(1000000);
 
@@ -72,18 +72,25 @@ public class PaymentServiceImpl implements PaymentService {
         String payUrl = jsonResult.get("payUrl").toString().replaceAll("\"", "");
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("payUrl", payUrl);
-        returnJson.addProperty("address", address);
+        returnJson.addProperty("specificAddress",specificAddress);
+        returnJson.addProperty("ward",ward);
+        returnJson.addProperty("district",district);
+        returnJson.addProperty("city",city);
+        returnJson.addProperty("name",name);
+        returnJson.addProperty("phoneNumber",phoneNumber);
+        returnJson.addProperty("email",email);
+        returnJson.addProperty("voucher",voucher);
         System.out.println(returnJson.toString());
         return returnJson;
     }
 
     @Override
-    public JsonObject zalopayCreate(Long amount, String address) throws IOException {
+    public JsonObject zalopayCreate(Long amount, String specificAddress, String ward, String district, String city, String name, String phoneNumber, String email, String voucher) throws IOException {
 
         int random_id = new Random().nextInt(1000000);
 
         JsonObject embed_data = new JsonObject();
-        embed_data.addProperty("redirecturl", "http://localhost:8080/api/payment/zalo/return");
+        embed_data.addProperty("redirecturl", "http://localhost:8080/zalo/return");
 
 //        JsonObject item = new JsonObject();
 //        item.addProperty("itemid", "knb");
@@ -159,7 +166,14 @@ public class PaymentServiceImpl implements PaymentService {
         JsonObject returnJson = new JsonObject();
 
         returnJson.addProperty("payUrl",payUrl);
-        returnJson.addProperty("address",address);
+        returnJson.addProperty("specificAddress",specificAddress);
+        returnJson.addProperty("ward",ward);
+        returnJson.addProperty("district",district);
+        returnJson.addProperty("city",city);
+        returnJson.addProperty("name",name);
+        returnJson.addProperty("phoneNumber",phoneNumber);
+        returnJson.addProperty("email",email);
+        returnJson.addProperty("voucher",voucher);
 
         System.out.println(returnJson.toString());
 
@@ -167,7 +181,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public JsonObject vnpayCreate(HttpServletRequest req, Long price, String address) throws UnsupportedEncodingException {
+    public JsonObject vnpayCreate(HttpServletRequest req, Long price, String specificAddress, String ward, String district, String city, String name, String phoneNumber, String email, String voucher) throws UnsupportedEncodingException {
         String vnp_Version = VNPaymentConfig.vnp_Version;
         String vnp_Command = VNPaymentConfig.vnp_Command;
         String orderType = VNPaymentConfig.orderType;
@@ -242,7 +256,14 @@ public class PaymentServiceImpl implements PaymentService {
 
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("payUrl", payUrl);
-        returnJson.addProperty("address", address);
+        returnJson.addProperty("specificAddress",specificAddress);
+        returnJson.addProperty("ward",ward);
+        returnJson.addProperty("district",district);
+        returnJson.addProperty("city",city);
+        returnJson.addProperty("name",name);
+        returnJson.addProperty("phoneNumber",phoneNumber);
+        returnJson.addProperty("email",email);
+        returnJson.addProperty("voucher",voucher);
         return returnJson;
     }
 }

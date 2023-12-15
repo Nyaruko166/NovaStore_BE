@@ -68,6 +68,14 @@
 
     <div class="row justify-content-center ">
         <div class="col-xl-12">
+            <!--            Notification-->
+            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${mess}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="card shadow-lg ">
                 <form onsubmit="return validateForm()" th:action="@{/add-order}" method="post">
                     <div class="row justify-content-around">
@@ -355,19 +363,39 @@
             nameError.textContent = 'Vui lòng nhập tên';
             hasError = true;
         } else {
-            nameError.textContent = '';
+            // Validate name length
+            if (name.value.length < 2 || name.value.length > 50) {
+                nameError.textContent = 'Tên phải từ 2 đến 50 ký tự';
+                hasError = true;
+            } else {
+                nameError.textContent = '';
+            }
         }
         if (!email.value.trim()) {
             emailError.textContent = 'Vui lòng nhập email';
             hasError = true;
         } else {
-            emailError.textContent = '';
+            // Validate email format
+            var emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+            if (!emailRegex.test(email.value)) {
+                emailError.textContent = 'Email không hợp lệ';
+                hasError = true;
+            } else {
+                emailError.textContent = '';
+            }
         }
         if (!phoneNumber.value.trim()) {
             phoneNumberError.textContent = 'Vui lòng nhập số điện thoại';
             hasError = true;
         } else {
-            phoneNumberError.textContent = '';
+            // Validate phone number format
+            var phoneRegex = /(03|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+            if (!phoneRegex.test(phoneNumber.value)) {
+                phoneNumberError.textContent = 'Số điện thoại không hợp lệ';
+                hasError = true;
+            } else {
+                phoneNumberError.textContent = '';
+            }
         }
         if (!specificAddress.value.trim()) {
             specificAddressError.textContent = 'Vui lòng nhập số nhà, đường';
@@ -404,6 +432,7 @@
         return true;
     }
 </script>
+
 <script>
     document.querySelector('#voucher').addEventListener('change', function() {
         var selectedVoucherId = document.querySelector('#voucher').value;

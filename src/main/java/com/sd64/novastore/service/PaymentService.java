@@ -11,9 +11,9 @@ import java.net.URISyntaxException;
 
 public interface PaymentService {
 
-    JsonObject vnpayCreate(HttpServletRequest req, Long price, String address) throws UnsupportedEncodingException;
+    JsonObject vnpayCreate(HttpServletRequest req, Long price, String specificAddress, String ward, String district, String city, String name, String phoneNumber, String email, String voucher) throws UnsupportedEncodingException;
 
-    JsonObject zalopayCreate(Long amount, String address) throws IOException, URISyntaxException;
+    JsonObject zalopayCreate(Long amount, String specificAddress, String ward, String district, String city, String name, String phoneNumber, String email, String voucher) throws IOException, URISyntaxException;
 
-    JsonObject MomoPayCreate(Long amount, String address) throws IOException, URISyntaxException;
+    JsonObject MomoPayCreate(Long amount, String specificAddress, String ward, String district, String city, String name, String phoneNumber, String email, String voucher) throws IOException, URISyntaxException;
 }
