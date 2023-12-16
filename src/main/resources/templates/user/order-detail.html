@@ -110,6 +110,14 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
+            <!--            Notification-->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert"
+                 style="margin: 5px">
+                <span th:text="${success}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="card" style="position: relative">
                 <div class="card-body">
                     <div class="invoice-title">
@@ -179,16 +187,12 @@
                                     <p th:if="${order.completionDate != null}" th:text="${#dates.format(order.completionDate, 'dd-MM-yyyy HH:mm:ss')}"></p>
                                 </div>
                             </div>
-                            <div
-                                    th:if="${order.status == 0}">
-                                <div class="text-danger font-weight-bold border rounded p-2 border-danger">
-                                    ĐÃ HỦY
-                                </div>
-                            </div>
                         </div>
                         <div class="mb-4">
                             <h2 class="mb-1 text-muted" th:text="'Mã hoá đơn: ' + ${order.code}">
                             </h2>
+                            <div th:if="${order.status == 0}" th:text="'ĐÃ HUỶ - NGÀY HUỶ: ' + ${#dates.format(order.cancellationDate, 'dd-MM-yyyy HH:mm:ss')}" class="text-danger font-weight-bold border rounded p-2 border-danger">
+                            </div>
                         </div>
                     </div>
 
@@ -297,6 +301,7 @@
                                 <thead>
                                 <tr>
                                     <th></th>
+                                    <th>Mã</th>
                                     <th>Sản phẩm</th>
                                     <th>Màu sắc</th>
                                     <th>Kích cỡ</th>
@@ -311,6 +316,7 @@
                                     <td>
                                         <img th:src="@{'/image/product/' + ${billDetail.productDetail.product.id}}" width="62" height="62">
                                     </td>
+                                    <td th:text="${billDetail.productDetail.code}"></td>
                                     <td>
                                         <div>
                                             <h6 class="text-truncate font-size-14 mb-1"
@@ -333,7 +339,7 @@
                                 <!-- end tr -->
 
                                 <tr>
-                                    <th scope="row" colspan="6" style="text-align: right">
+                                    <th scope="row" colspan="7" style="text-align: right">
                                         Tổng thanh toán sản phẩm :
                                     </th>
                                     <td style="text-align: right"
@@ -343,7 +349,7 @@
                                 </tr>
                                 <!-- end tr -->
                                 <tr>
-                                    <th scope="row" colspan="6" class="border-0" style="text-align: right">
+                                    <th scope="row" colspan="7" class="border-0" style="text-align: right">
                                         Voucher :
                                     </th>
                                     <td class="border-0" style="text-align: right"
@@ -353,7 +359,7 @@
                                 </tr>
                                 <!-- end tr -->
                                 <tr>
-                                    <th scope="row" colspan="6" class="border-0" style="text-align: right">
+                                    <th scope="row" colspan="7" class="border-0" style="text-align: right">
                                         Phí ship :
                                     </th>
                                     <td class="border-0" style="text-align: right" th:text="'₫' + ${#numbers.formatDecimal(order.shippingFee, 0, 'POINT', 0, 'COMMA')}">0</td>
@@ -362,7 +368,7 @@
 
                                 <!-- end tr -->
                                 <tr>
-                                    <th scope="row" colspan="6" class="border-0" style="text-align: right">
+                                    <th scope="row" colspan="7" class="border-0" style="text-align: right">
                                         Tổng thanh toán :
                                     </th>
                                     <td class="border-0" style="text-align: right">
@@ -381,7 +387,7 @@
                         <!-- end table responsive -->
                         <div class="d-print-none mt-4">
                             <div style="text-align: right">
-                                <a th:href="@{'/admin/bill-list'}">
+                                <a th:href="@{'/orders'}">
                                     <button type="button" class="btn btn-secondary w-md" data-dismiss="modal">
                                         Đóng
                                     </button>
@@ -389,15 +395,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="py-2 bill-detail-update-status">
-                        <form th:action="@{'/admin/update-bill-status2/' + ${order.id}}"
-                              method="get">
-                            <input type="hidden" name="trangThaiDonHang" value="HUY" />
-                            <button type="button" class="cancel-btn btn btn-danger rounded" style="float: right; margin-bottom: 10px"
+                    <div class="py-2">
+                        <a th:href="@{'/detail-cancel-order/' + ${order.id}}" class="cancel-btn btn btn-danger rounded" style="float: right; margin-bottom: 10px"
                                     th:if="${order.status == 10}">
-                                <i class="far fa-times-circle"></i>&nbsp;Hủy đơn
-                            </button>
-                        </form>
+                            <i class="far fa-times-circle"></i>&nbsp;Hủy đơn
+                        </a>
                     </div>
                 </div>
             </div>
@@ -405,28 +407,29 @@
         <!-- end col -->
     </div>
 </div>
-<script>
-    $(".cancel-btn").on("click", function (e) {
-        e.stopPropagation();
-        Swal.fire({
-            title: "Xác nhận?",
-            text: `Bạn chắc chắn muốn hủy đơn này, thao tác này không thể trở lại!`,
-            icon: "warning",
-            showCancelButton: true,
-            cancelButtonText: "Hủy",
-            confirmButtonText: "Xác nhận",
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $(this).closest("form").submit();
-            }
-        });
-    });
-</script>
 
 <div th:replace="~{/user/fragments::footer}"></div>
 
 <div th:replace="~{/user/fragments::script}"></div>
+
+<script>
+    $('.cancel-btn').on('click', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: "Xác nhận?",
+            text: `Bạn chắc chắn muốn hủy đơn này?`,
+            icon: "warning",
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonText: 'Xác nhận',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = $(this).attr('href');
+            }
+        })
+    });
+</script>
 
 </body>
 

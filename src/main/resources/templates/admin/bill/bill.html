@@ -20,6 +20,10 @@
                     <input type="text" class="form-control" id="code" name="code" placeholder="Mã hóa đơn" th:value="${code}">
                 </div>
                 <div class="form-group col-md-2">
+                    <label for="customerName">Họ tên</label>
+                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Họ tên" th:value="${customerName}">
+                </div>
+                <div class="form-group col-md-2">
                     <label for="phoneNumber">Số điện thoại</label>
                     <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
                            placeholder="Số điện thoại" th:value="${phoneNumber}">
@@ -42,10 +46,6 @@
                         <option value="0" th:selected="${type == 0}">Mua Online</option>
                         <option value="1" th:selected="${type == 1}">Tại quầy</option>
                     </select>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="customerName">Họ tên</label>
-                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Họ tên" th:value="${customerName}">
                 </div>
             </div>
             <div class="form-row">
@@ -108,6 +108,9 @@
         </tr>
         </thead>
         <tbody>
+        <tr th:if="${items.isEmpty()}">
+            <td colspan="8" style="text-align: center">Không tìm thấy dòng nào phù hợp</td>
+        </tr>
         <tr th:each="item : ${items}" class="clickable-row" th:data-maHoaDon="${item.id}">
             <th scope="row" th:text="${item.code}"></th>
             <td th:text="${item.customerName}"></td>
@@ -120,58 +123,72 @@
             </td>
             <td>
 
-                    <span class="text-warning p-1 font-weight-bold"
+                    <span class="text-warning font-weight-bold"
                           th:if="${item.status == 10}">&nbsp;Chờ xác nhận
                     </span>
-                <span class="text-secondary p-1 font-weight-bold"
+                <span class="text-secondary font-weight-bold"
                       th:if="${item.status == 3}">&nbsp;Chờ giao hàng
                     </span>
-                <span class="text-primary p-1 font-weight-bold"
+                <span class="text-primary font-weight-bold"
                       th:if="${item.status == 2}">&nbsp;Đang giao hàng
                     </span>
 
-                <span  class="text-success p-1 font-weight-bold"
+                <span  class="text-success font-weight-bold"
                        th:if="${item.status == 1}">&nbsp;Đã giao hàng
                     </span>
 
-                <span th:if="${item.status == 0}" class="text-danger p-1 font-weight-bold">
+                <span th:if="${item.status == 0}" class="text-danger font-weight-bold">
                         &nbsp; Đã hủy
                     </span>
 
             </td>
-<!--                <div class="d-flex align-items-center">-->
-<!--                                        <form th:action="@{'/admin/update-bill-status/' + ${item.id}}" method="get">-->
-<!--                                            <input type="hidden" name="trangThaiDonHang" value="0">-->
-<!--                                            <span type="button" th:if="${item.status == 10 || item.status == 3}" class="cancel-btn bg-transparent mr-2" data-toggle="tooltip" data-placement="top" title="Hủy đơn">-->
-<!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="red" d="M2.93 17.07A10 10 0 1 1 17.07 2.93A10 10 0 0 1 2.93 17.07zm1.41-1.41A8 8 0 1 0 15.66 4.34A8 8 0 0 0 4.34 15.66zm9.9-8.49L11.41 10l2.83 2.83l-1.41 1.41L10 11.41l-2.83 2.83l-1.41-1.41L8.59 10L5.76 7.17l1.41-1.41L10 8.59l2.83-2.83l1.41 1.41z"/></svg>-->
-<!--                                            </span>-->
-<!--                                        </form>-->
-
-<!--                                        <form th:action="@{'/admin/update-bill-status/' + ${item.id}}" method="get">-->
-<!--                                            <span type="button" th:if="${item.status != 1 && item.status != 0}"-->
-<!--                                                    class=" hover-green btn-update-status" data&#45;&#45;toggle="tooltip" data-placement="top" th:data-status="${item.status}"-->
-<!--                                                    title="Chuyển sang trạng thái tiếp">-->
-<!--                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 12v-2a6 6 0 1 1 12 0v2"/><path d="m15 9l3 3l3-3"/></g></svg>-->
-<!--                                            </span>-->
-<!--                                        </form>-->
-<!--                </div>-->
-            <td class="d-flex justify-content-center">
-                <div class="dropdown">
-                    <button class="btn btn-dark" type="button"
-                            id="dropdownMenuButton" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
+            <td>
+                <div class="d-flex align-items-center">
+                    <button class="btn confirm-btn bg-transparent" data-toggle="modal" data-target="#confirmModal" th:data-id="${item.id}" title="Xác nhận đơn" th:if="${item.status == 10}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 12v-2a6 6 0 1 1 12 0v2"/><path d="m15 9l3 3l3-3"/></g></svg>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item">
-                            <i class="fa-solid fa-pencil mr-2"></i>Xác nhận</a>
-                        <a class="dropdown-item"><i class="fa-solid fa-pen mr-3"></i>Huỷ</a>
-                    </div>
+                    <a th:href="@{'/nova/bill/shipping-bill/' + ${item.id}}" th:if="${item.status == 3}"
+                       class="btn shipping-btn" title="Xác nhận giao hàng">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 12v-2a6 6 0 1 1 12 0v2"/><path d="m15 9l3 3l3-3"/></g></svg>
+                    </a>
+                    <a th:href="@{'/nova/bill/complete-bill/' + ${item.id}}" th:if="${item.status == 2}"
+                       class="btn complete-btn" title="Xác nhận đã giao hàng thành công">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 12v-2a6 6 0 1 1 12 0v2"/><path d="m15 9l3 3l3-3"/></g></svg>
+                    </a>
+                    <a th:href="@{'/nova/bill/cancel-bill/' + ${item.id}}" th:if="${item.status != 0 && item.status != 1}" class="btn cancel-btn bg-transparent" title="Hủy đơn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="red" d="M2.93 17.07A10 10 0 1 1 17.07 2.93A10 10 0 0 1 2.93 17.07zm1.41-1.41A8 8 0 1 0 15.66 4.34A8 8 0 0 0 4.34 15.66zm9.9-8.49L11.41 10l2.83 2.83l-1.41 1.41L10 11.41l-2.83 2.83l-1.41-1.41L8.59 10L5.76 7.17l1.41-1.41L10 8.59l2.83-2.83l1.41 1.41z"/></svg></a>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
+    <!-- Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="confirmForm" th:action="@{/nova/bill/confirm-bill}" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" id="orderId" name="id">
+                        <div class="form-group">
+                            <label for="shippingFee">Phí ship</label>
+                            <input type="number" class="form-control" id="shippingFee" name="shippingFee">
+                            <small id="shippingFeeError" class="form-text text-danger"></small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="clearfix float-right" th:if="${items.totalPages > 0}">
         <ul class="pagination">
             <li th:classappend="${items.hasPrevious() ? '' : 'disabled'}" class="page-item">
@@ -221,10 +238,10 @@
             })
 
             $('.cancel-btn').on('click', function (e) {
-                e.stopPropagation()
+                e.preventDefault();
                 Swal.fire({
                     title: "Xác nhận?",
-                    text: `Bạn chắc chắn muốn hủy đơn này!`,
+                    text: `Bạn chắc chắn muốn hủy đơn này?`,
                     icon: "warning",
                     showCancelButton: true,
                     cancelButtonText: 'Hủy',
@@ -232,10 +249,44 @@
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $(this).closest('form').submit();
+                        window.location.href = $(this).attr('href');
                     }
-                });
-            })
+                })
+            });
+
+            $('.shipping-btn').on('click', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "Xác nhận?",
+                    text: `Xác nhận giao đơn này?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy',
+                    confirmButtonText: 'Xác nhận',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = $(this).attr('href');
+                    }
+                })
+            });
+
+            $('.complete-btn').on('click', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "Xác nhận?",
+                    text: `Xác nhận đã giao thành công đơn này?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy',
+                    confirmButtonText: 'Xác nhận',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = $(this).attr('href');
+                    }
+                })
+            });
 
             $('.btn-update-status').on('click', function (e) {
                 e.stopPropagation()
@@ -310,6 +361,44 @@
                     }
                 });
         }
+
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.confirm-btn').on('click', function(){
+                var orderId = $(this).attr('data-id');
+                $('#orderId').val(orderId);
+                $('#shippingFee').val('');
+                $('#shippingFeeError').text('');
+            });
+        });
+
+        $('#confirmForm').on('submit', function(e){
+            var shippingFee = $('#shippingFee').val();
+            var orderId = $('#orderId').val();
+            if(shippingFee === '' || shippingFee < 0){
+                e.preventDefault();
+                $('#shippingFeeError').text('Phí ship không được để trống và phải lớn hơn hoặc bằng 0');
+            } else if(orderId === ''){
+                e.preventDefault();
+            } else {
+                e.preventDefault(); // Ngăn chặn việc gửi form ngay lập tức
+                $('#shippingFeeError').text('');
+                Swal.fire({
+                    title: "Xác nhận?",
+                    text: `Bạn chắc chắn muốn xác nhận đơn này!`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy',
+                    confirmButtonText: 'Xác nhận',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit(); // Gửi form khi người dùng nhấp vào 'Xác nhận'
+                    }
+                });
+            }
+        });
     </script>
 </div>
 </body>
