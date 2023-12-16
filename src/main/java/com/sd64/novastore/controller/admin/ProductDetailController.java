@@ -134,6 +134,7 @@ public class ProductDetailController {
                                      HttpSession httpSession,
                                      @RequestParam(value = "imageRemoveIds", required = false) List<Integer> imageRemoveIds,
                                      @RequestParam(value = "files", required = false) List<MultipartFile> files,
+                                     @RequestParam(value = "productDetailRemoveIds", required = false) List<Integer> productDetailRemoveIds,
                                      RedirectAttributes redirectAttributes) throws IOException {
         String randomKey = (String) httpSession.getAttribute("randomKey");
         Product productUpdate = (Product) httpSession.getAttribute("productUpdate" + randomKey);
@@ -142,7 +143,7 @@ public class ProductDetailController {
             return "redirect:/nova/product/" + productUpdate.getId() + "/view-update";
         } else {
             List<ProductDetail> productDetailList = createProductDetails.getListProductDetail();
-            productService.updateFinal(productBefore, productUpdate, productDetailList, files, imageRemoveIds);
+            productService.updateFinal(productBefore, productUpdate, productDetailList, files, imageRemoveIds, productDetailRemoveIds);
         }
         httpSession.removeAttribute("randomKey");
         httpSession.removeAttribute("productAdd" + randomKey);

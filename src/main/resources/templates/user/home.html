@@ -116,7 +116,7 @@
 <!-- Product Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${pageProductHomeResponse}">
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${listProductHomeResponse}">
             <div class="product-item mb-4 border-product-home">
                 <div class="product-img position-relative overflow-hidden">
                     <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.id}}">
@@ -199,7 +199,7 @@
 <!-- Product Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${pageProductHomeResponse}">
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${listProductDiscountHomeResponse}">
             <div class="product-item mb-4 border-product-home">
                 <div class="product-img position-relative overflow-hidden">
                     <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.id}}">
@@ -208,7 +208,6 @@
                             <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
                         </a>
                     </div>
-
                 </div>
                 <div class="text-center py-4 border-info-product-home">
                     <a class="h5 text-decoration-none text-truncate" th:href="@{'/product-detail/' + ${product.id}}"

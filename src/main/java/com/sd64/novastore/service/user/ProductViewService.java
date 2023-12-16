@@ -38,4 +38,5 @@ public interface ProductViewService {
     BigDecimal getPriceMaxBySelected(Integer price);
 
     BigDecimal getPriceMinBySelected(Integer price);
+
 }

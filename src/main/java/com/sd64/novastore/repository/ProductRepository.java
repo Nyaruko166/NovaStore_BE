@@ -83,4 +83,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             " AND (p.form.id=:formId OR :formId IS NULL) " +
             " AND p.status = 0 ORDER BY p.updateDate DESC")
     Page<ProductDto> searchProductDeleted(Pageable pageable, Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productName, String description);
+
+    List<Product> findTop8ByStatus(Integer status);
 }

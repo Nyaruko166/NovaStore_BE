@@ -19,7 +19,7 @@
                     <div class="form-detail">
                         <div class="form-table " th:each="productDetail, iterStat : *{listProductDetail}">
 <!--                            <input hidden th:field="*{listProductDetail[__${iterStat.index}__].code}">-->
-                            <div class="row form-row">
+                            <div class="row form-row" th:id="${'form-row-' + productDetail.id}">
                                 <div class="form-group col-2">
                                     <label class="font-weight-bold">Mã chi tiết</label>
                                     <input type="text" class="form-control code-select"
@@ -125,7 +125,6 @@
                         </div>
                     </div>
                     <script th:inline="javascript">
-
 
                         // Không cho nhập dấu trừ
                         function onlyAllowNumberInput(e) {
@@ -261,12 +260,31 @@
                         })
 
                         var removeProductDetail = []
+                        function addEventRemoveRow() {
+                            $('.remove-row').on('click', function (e) {
+                                let id = getRowId(e)
+                                if (id) removeProductDetail.push(id)
+                                const selectedProductDetail = $(this).closest('.form-table')
+                                // removeProductDetail.push(selectedProductDetail.find('.form-row').attr("data-image"))
+                                selectedProductDetail.remove()
+                                debugger
+                            })
+                        }
+                        function getRowId(e) {
+                            let id = e.currentTarget.parentElement.parentElement.id
+                            if (id) {
+                                return id.replaceAll('form-row-', '')
+                            }
+                            return null
+                        }
+                        addEventRemoveRow()
 
 
                         function addItem() {
                             // var detailId = detail.id + 1;
                             var template = document.querySelector('.form-table').cloneNode(true);
                             var formRows = template.querySelectorAll('.form-row');
+                            formRows.forEach(e => {e.id = ''})
                             // numberical++
                             // Update the index to ensure uniqueness for the new product detail
                             var newIndex = document.querySelectorAll('.form-table').length;
@@ -296,15 +314,15 @@
                                     $(this).val(0)
                                 }
                             })
-                            const deleteButtonContainer = document.createElement('div')
-                            const deleteButton = document.createElement('button');
-                            deleteButton.type = 'button';
-                            deleteButton.classList.add('btn', 'btn-danger');
-                            deleteButton.style.marginTop = '32px'
-                            deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
-                            deleteButtonContainer.appendChild(deleteButton)
-
-                            template.querySelector('.form-row').appendChild(deleteButtonContainer)
+                            // const deleteButtonContainer = document.createElement('div')
+                            // const deleteButton = document.createElement('button');
+                            // deleteButton.type = 'button';
+                            // deleteButton.classList.add('btn', 'btn-danger');
+                            // deleteButton.style.marginTop = '32px'
+                            // deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+                            // deleteButtonContainer.appendChild(deleteButton)
+                            //
+                            // template.querySelector('.form-row').appendChild(deleteButtonContainer)
 
                             document.querySelector('.form-detail').appendChild(template);
                             var color = ''
@@ -329,12 +347,13 @@
                                 }
 
                             })
+                            addEventRemoveRow()
 
-
-                            deleteButton.onclick = function () {
-                                document.querySelector('.form-detail').removeChild(template)
-                                removeDetailObj(color, size)
-                            }
+                            // deleteButton.onclick = function (e) {
+                            //     debugger
+                            //     document.querySelector('.form-row').removeChild(template)
+                            //     removeDetailObj(color, size)
+                            // }
 
                         }
 
@@ -492,6 +511,7 @@
                                 if (add.isConfirmed) {
                                     var formData = new FormData(this)
                                     formData.append("imageRemoveIds", removeImageId)
+                                    formData.append("productDetailRemoveIds", removeProductDetail)
                                     if (fileSend.length > 0) {
                                         fileSend.forEach(file => formData.append("files", file))
                                     }

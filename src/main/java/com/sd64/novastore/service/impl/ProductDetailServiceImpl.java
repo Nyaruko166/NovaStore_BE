@@ -99,9 +99,10 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     public ProductDetail delete(Integer id) {
         Optional<ProductDetail> optional = productDetailRepository.findById(id);
         if (optional.isPresent()) {
-            optional.get().setStatus(0);
-            optional.get().setUpdateDate(new Date());
-            return productDetailRepository.save(optional.get());
+            ProductDetail productDetail = optional.get();
+            productDetail.setStatus(0);
+            productDetail.setUpdateDate(new Date());
+            return productDetailRepository.save(productDetail);
         } else {
             return null;
         }

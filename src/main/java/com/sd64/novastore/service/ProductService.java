@@ -35,7 +35,8 @@ public interface ProductService {
 
     void saveFinal(Product product, List<ProductDetail> listProductDetail, List<MultipartFile> files) throws IOException;
 
-    void updateFinal(Product productBefore, Product productUpdate, List<ProductDetail> listProductDetailUpdate, List<MultipartFile> filesUpdate, List<Integer> imageRemoveIds) throws IOException;
+    void updateFinal(Product productBefore, Product productUpdate, List<ProductDetail> listProductDetailUpdate,
+                     List<MultipartFile> filesUpdate, List<Integer> imageRemoveIds, List<Integer> productDetailRemoveIds) throws IOException;
 
     void update(Product product, Integer productId);
 }

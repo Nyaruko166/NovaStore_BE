@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -120,7 +121,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateFinal(Product productBefore, Product productUpdate, List<ProductDetail> listProductDetailUpdate, List<MultipartFile> filesUpdate, List<Integer> imageRemoveIds) throws IOException {
+    public void updateFinal(Product productBefore, Product productUpdate, List<ProductDetail> listProductDetailUpdate,
+                            List<MultipartFile> filesUpdate, List<Integer> imageRemoveIds, List<Integer> productDetailRemoveIds
+    ) throws IOException {
         List<Image> listImage = imageService.getAllImageByProductIdNoStatus(productBefore.getId());
         if (filesUpdate != null) {
             String uploadDir = "./src/main/resources/static/assets/product/";
@@ -137,6 +140,12 @@ public class ProductServiceImpl implements ProductService {
                 imageService.delete(items);
             }
         }
+
+//        if (!productDetailRemoveIds.isEmpty()) {
+//            for (Integer items : productDetailRemoveIds) {
+//                productDetailService.delete(items);
+//            }
+//        }
 
         // List hiển thị tất cả phần tử không quan tâm trang thái
         List<ProductDetail> listProductDetailBefore = productDetailRepository.findAllByProduct_IdOrderByIdAsc(productBefore.getId());
@@ -183,6 +192,12 @@ public class ProductServiceImpl implements ProductService {
             QRCodeUtil.generateQRCode(listProductDetailUpdate.get(i).getCode(), listProductDetailUpdate.get(i).getCode());
             count++;
         }
+        listProductDetailUpdate = listProductDetailUpdate.stream().map(item -> {
+            if (productDetailRemoveIds.contains(item.getId())) {
+                item.setStatus(0);
+            }
+            return item;
+        }).collect(Collectors.toList());
         productUpdate.setListImage(listImage);
         productUpdate.setCreateDate(productBefore.getCreateDate());
         productUpdate.setStatus(1);

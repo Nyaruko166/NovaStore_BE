@@ -80,8 +80,9 @@ public class HomeController {
             }
         }
         List<ProductHomeResponse> listProductHomeResponse = productViewService.getAllProductHomeResponse();
-        model.addAttribute("pageProductHomeResponse", listProductHomeResponse);
-
+        model.addAttribute("listProductHomeResponse", listProductHomeResponse);
+        List<ProductHomeResponse> listProductDiscountHomeResponse = productViewService.getAllProductDiscountHomeResponse();
+        model.addAttribute("listProductDiscountHomeResponse", listProductDiscountHomeResponse);
         return "/user/home";
     }
 
