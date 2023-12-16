@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.codehaus.groovy.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 
 
@@ -79,6 +81,19 @@ public class AccountController {
         accountService.update(account, avt, roleId, id);
         redirectAttributes.addFlashAttribute("mess", "Update thành công!!");
         return "redirect:/nova/account/page";
+    }
+
+    @PostMapping("/api/filter")
+    public String searchCustomers(@RequestParam("keyword") String keyword, Model model) {
+        Pageable pageable = Pageable.ofSize(10);
+//        System.out.println(accountService.searchCustomer(keyword, pageable).toString());
+        if (keyword.isBlank()){
+            model.addAttribute("lstCus", null);
+            return "/admin/cart/offline-cart-fragment :: modal_frag";
+        }
+        model.addAttribute("lstCus", accountService.searchCustomer(keyword, pageable).getContent());
+        model.addAttribute("keyword", keyword);
+        return "/admin/cart/offline-cart-fragment :: modal_frag";
     }
 
 //    @GetMapping("/search")

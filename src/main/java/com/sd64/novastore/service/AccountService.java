@@ -2,7 +2,9 @@ package com.sd64.novastore.service;
 
 import com.sd64.novastore.request.AccountRequest;
 import com.sd64.novastore.model.Account;
+import com.sd64.novastore.response.CustomerResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -25,6 +27,8 @@ public interface AccountService {
     Account findFirstByEmail(String email);
 
     byte[] get(Integer accountId);
-    
+
     Integer registerUser(Account user);
+
+    Page<CustomerResponse> searchCustomer(String keyword, Pageable pageable);
 }

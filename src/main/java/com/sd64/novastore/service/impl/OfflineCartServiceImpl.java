@@ -4,16 +4,15 @@
 
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.model.OfflineCart;
-import com.sd64.novastore.model.OfflineCartView;
-import com.sd64.novastore.model.ProductDetail;
-import com.sd64.novastore.model.TempBill;
+import com.sd64.novastore.model.*;
+import com.sd64.novastore.repository.ImageRepository;
 import com.sd64.novastore.repository.OfflineCartRepository;
 import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.service.OfflineCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -49,16 +48,12 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     public List<OfflineCartView> getCart(List<OfflineCart> cart) {
         List<OfflineCartView> lstCart = new ArrayList<>();
         List<ProductDetail> lstCtsp = productDetailRepository.findAll();
-//        List<OfflineCart> cart = repository.getCartSP();
         for (OfflineCart x : cart) {
             for (ProductDetail y : lstCtsp) {
                 if (y.getCode().equals(x.getDetailProductId())) {
-//                    OfflineCartView cartView = new OfflineCartView(y.getId(), y.getProduct().getName(), y.getCode(),
-//                            x.getQty(), y.getPrice(), y.getColor().getName(), y.getSize().getName());
-//                    System.out.println(cartView.toString());
-//                    lstCart.add(cartView);
                     lstCart.add(OfflineCartView.builder()
                             .name(y.getProduct().getName())
+                            .idSP(y.getProduct().getId())
                             .idCtsp(y.getId())
                             .codeCtsp(y.getCode())
                             .qty(x.getQty())
@@ -69,9 +64,6 @@ public class OfflineCartServiceImpl implements OfflineCartService {
                 }
             }
         }
-//        for (OfflineCartView x : lstCart) {
-//            System.out.println(x.toString());
-//        }
         return lstCart;
     }
 
@@ -129,10 +121,19 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     public TempBill getBillById(Integer id) {
         List<TempBill> lstBill = repository.getLstTempBill();
         for (TempBill x : lstBill) {
-            if (x.getBillId() == id) {
+            if (Objects.equals(x.getBillId(), id)) {
                 return x;
             }
         }
         return null;
+    }
+
+    @Override
+    public BigDecimal calCartPrice(List<OfflineCartView> lstCart) {
+        BigDecimal total = BigDecimal.valueOf(0);
+        for (OfflineCartView x : lstCart) {
+            total = total.add(x.calTotalPrice());
+        }
+        return total;
     }
 }

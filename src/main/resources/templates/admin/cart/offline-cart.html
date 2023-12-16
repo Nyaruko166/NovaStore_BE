@@ -22,11 +22,13 @@
                                    th:href="${'/nova/pos?billId='+y.billId}" th:text="${'Hoá Đơn '+ y.billIdPP()}"></a>
                                 <div style="float: right; margin-top: 12px">
                                     <button onclick="location.href='/nova/pos/removeBill'" class="btn btn-dark"
-                                            type="button">
+                                            type="button" data-toggle="tooltip" data-placement="top"
+                                            title="Huỷ hoá đơn hiện tại">
                                         <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
                                     </button>
                                     <button onclick="location.href='/nova/pos/newBill'" type="button"
-                                            class="btn btn-dark"><i
+                                            class="btn btn-dark" data-toggle="tooltip" data-placement="top"
+                                            title="Tạo hoá đơn mới"><i
                                             class="fa-regular fa-square-plus" style="color: #ffffff;"></i></button>
                                     <button onclick="init()" class="btn btn-dark" type="button" data-toggle="collapse"
                                             data-target="#collapseExample" aria-expanded="false"
@@ -36,26 +38,9 @@
                                     </button>
                                 </div>
                             </div>
-                            <!--                            <div class="row">-->
-                            <!--                                <div class="col-10">-->
-                            <!--                                    <div class="topnav">-->
-                            <!--                                        <a href="#home">Home</a>-->
-                            <!--                                        <a href="#news">News</a>-->
-                            <!--                                        <a href="#contact">Contact</a>-->
-                            <!--                                        <a href="#about">About</a>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                            </div>-->
-                            <!--                            <div class="col-2 text-right">-->
-                            <!--                                    <button onclick="init()" class="btn btn-dark" type="button" data-toggle="collapse"-->
-                            <!--                                            data-target="#collapseExample" aria-expanded="false"-->
-                            <!--                                            aria-controls="collapseExample" id="qr-toggle">-->
-                            <!--                                        <i class="fa-solid fa-qrcode" style="color: #ffffff;"></i>-->
-                            <!--                                    </button>-->
-                            <!--                            </div>-->
                         </div>
                         <hr>
-                        <h6 class="mb-0">Shopping cart</h6>
+                        <h6 class="mb-0" th:text="'Hoá đơn ' + ${session.posBill.billIdPP()}"></h6>
                         <div id="output">
                             <div class="d-flex justify-content-between"><span
                                     th:text="${'You have ' + lstCart.size() + ' items in your cart'}"></span>
@@ -69,7 +54,8 @@
 
                             <div th:each="x:${lstCart}"
                                  class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded">
-                                <div class="d-flex flex-row"><img class="rounded" src="https://i.imgur.com/QRwjbm5.jpg"
+                                <div class="d-flex flex-row"><img class="rounded"
+                                                                  th:src="@{'/image/product/'+${x.idSP}}"
                                                                   width="40">
                                     <div class="ml-2"><span th:text="${x.name}"
                                                             class="font-weight-bold d-block"></span><span
@@ -89,59 +75,82 @@
                 </div>
             </div>
             <div class="col-5">
-                <div class="col-md-12">
-                    <div class="payment-info">
-                        <div class="d-flex justify-content-between align-items-center"><span>Card details</span><img
-                                class="rounded" src="https://i.imgur.com/WU501C8.jpg" width="30"></div>
-                        <span class="type d-block mt-3 mb-1">Card type</span><label class="radio"> <input type="radio"
-                                                                                                          name="card"
-                                                                                                          value="payment"
-                                                                                                          checked>
-                        <span><img width="30" src="https://img.icons8.com/color/48/000000/mastercard.png"/></span>
-                    </label>
-
-                        <label class="radio"> <input type="radio" name="card" value="payment"> <span><img width="30"
-                                                                                                          src="https://img.icons8.com/officel/48/000000/visa.png"/></span>
-                        </label>
-
-                        <label class="radio"> <input type="radio" name="card" value="payment"> <span><img width="30"
-                                                                                                          src="https://img.icons8.com/ultraviolet/48/000000/amex.png"/></span>
-                        </label>
-
-
-                        <label class="radio"> <input type="radio" name="card" value="payment"> <span><img width="30"
-                                                                                                          src="https://img.icons8.com/officel/48/000000/paypal.png"/></span>
-                        </label>
-                        <div><label class="credit-card-label">Name on card</label><input type="text"
-                                                                                         class="form-control credit-inputs"
-                                                                                         placeholder="Name"></div>
-                        <div><label class="credit-card-label">Card number</label><input type="text"
-                                                                                        class="form-control credit-inputs"
-                                                                                        placeholder="0000 0000 0000 0000">
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6"><label class="credit-card-label">Date</label><input type="text"
-                                                                                                      class="form-control credit-inputs"
-                                                                                                      placeholder="12/24">
+                <div id="output_checkout">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="card mb-4">
+                                <div class="card-header py-3">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h5 class="mb-0">Tổng hoá đơn</h5>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button type="button" class="btn btn-dark" data-toggle="modal"
+                                                    data-target="#exampleModalCenter">
+                                                <i class="fa-regular fa-user" style="color: #ffffff;"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li
+                                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            Products
+                                            <span th:text="${tempBill.totalCartPrice != null} ? ${tempBill.totalCartPrice} +' VNĐ' : '0' +' VNĐ'"></span>
+                                        </li>
+                                        <!--                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">-->
+                                        <!--                                            Shipping-->
+                                        <!--                                            <span>Gratis</span>-->
+                                        <!--                                        </li>-->
+                                        <li
+                                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                            <div>
+                                                <strong>Tổng tiền</strong>
+                                                <strong>
+                                                    <p class="mb-0">(including VAT)</p>
+                                                </strong>
+                                            </div>
+                                            <span><strong
+                                                    th:text="${tempBill.totalCartPrice != null} ? ${tempBill.totalCartPrice} +' VNĐ' : '0' +' VNĐ'"></strong></span>
+                                        </li>
+                                    </ul>
+                                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                                        Thanh Toán
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-md-6"><label class="credit-card-label">CVV</label><input type="text"
-                                                                                                     class="form-control credit-inputs"
-                                                                                                     placeholder="342">
-                            </div>
                         </div>
-                        <hr class="line">
-                        <div class="d-flex justify-content-between information">
-                            <span>Subtotal</span><span>$3000.00</span>
-                        </div>
-                        <div class="d-flex justify-content-between information"><span>Shipping</span><span>$20.00</span>
-                        </div>
-                        <div class="d-flex justify-content-between information">
-                            <span>Total(Incl. taxes)</span><span>$3020.00</span>
-                        </div>
-                        <button class="btn btn-primary btn-block d-flex justify-content-between mt-3"
-                                type="button"><span>$3020.00</span><span>Checkout<i
-                                class="fa fa-long-arrow-right ml-1"></i></span></button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tìm kiếm khách hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-inline text-center">
+                        <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search"
+                               aria-label="Search" oninput="searchAndReplace()" th:value="${keyword} == null ? '' : ${keyword}">
+                        <!--                            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchAndReplace()">Search-->
+                        <!--                            </button>-->
+                    </div>
+                    <div id="modal_replace">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -156,27 +165,5 @@
         <script th:inline="javascript" th:src="@{/admin/assets/js/pos.js}"></script>
     </div>
 </div>
-<!--</div>-->
-<!--<script th:inline="javascript">-->
-<!--    $(document).ready(function () {-->
-<!--        $('#trash').click(function () {-->
-<!--            var value_fired = $(this).val();-->
-<!--            console.log(value_fired);-->
-<!--            removeFromCart(value_fired);-->
-<!--        });-->
-<!--    });-->
-
-<!--    function removeFromCart(codeCtsp) {-->
-<!--        fetch("/nova/pos/remove", {-->
-<!--            method: "POST",-->
-<!--            body: JSON.stringify({-->
-<!--                data: codeCtsp,-->
-<!--            }),-->
-<!--            headers: {-->
-<!--                "Content-type": "application/json; charset=UTF-8"-->
-<!--            }-->
-<!--        }).then(updateOutput);-->
-<!--    }-->
-<!--</script>-->
 </body>
 </html>
