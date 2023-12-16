@@ -9,6 +9,7 @@
 package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.model.OfflineCart;
+import com.sd64.novastore.model.OfflineCartView;
 import com.sd64.novastore.model.TempBill;
 import com.sd64.novastore.response.QrRespone;
 import com.sd64.novastore.service.OfflineCartService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +37,11 @@ public class RestOfflineCartController {
     public ResponseEntity<?> addToCart(@RequestBody QrRespone response, HttpSession session) {
 //        System.out.println(response.getBillId());
         List<OfflineCart> cart = offlineCartService.addToCart(response.getBillId(), response.getData(), 1);
-        offlineCartService.addToLstBill(TempBill.builder().billId(response.getBillId()).lstDetailProduct(cart).build());
+        BigDecimal total = offlineCartService.calCartPrice(offlineCartService.getCart(cart));
+        offlineCartService.addToLstBill(TempBill.builder().billId(response.getBillId())
+                .totalCartPrice(total).lstDetailProduct(cart).build());
         TempBill tempBill = offlineCartService.getBillById(response.getBillId());
+        System.out.println(tempBill.getTotalCartPrice());
         session.setAttribute("posBill", tempBill);
 //        System.out.println(offlineCartService.addToCart(response.getData(), 1));
         return new ResponseEntity<>(HttpStatus.OK);

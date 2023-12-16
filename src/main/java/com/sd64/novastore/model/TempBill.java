@@ -10,6 +10,7 @@ package com.sd64.novastore.model;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -30,10 +31,11 @@ public class TempBill {
 
     private String customerEmail;
 
+    private BigDecimal totalCartPrice;
+
     private List<OfflineCart> lstDetailProduct;
 
     public Integer billIdPP() {
         return billId + 1;
     }
-
 }

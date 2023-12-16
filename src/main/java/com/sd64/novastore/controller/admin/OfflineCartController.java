@@ -33,14 +33,10 @@ public class OfflineCartController {
     @GetMapping()
     public String cart(Model model, HttpSession session,
                        @RequestParam(value = "billId", defaultValue = "0") Integer billId) {
-//        offlineCartService.addToCart("1","CT33",1);
         TempBill tempBill = offlineCartService.getBillById(billId);
         List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
         List<TempBill> lstBill = offlineCartService.getLstBill();
-//        System.out.println("lst members: \n");
-//        for (TempBill x : lstBill) {
-//            System.out.println(x.toString());
-//        }
+        tempBill.setTotalCartPrice(offlineCartService.calCartPrice(lstCart));
         session.setAttribute("posBill", tempBill);
         model.addAttribute("lstCart", lstCart);
         model.addAttribute("lstBill", lstBill);
@@ -68,9 +64,6 @@ public class OfflineCartController {
         Integer id = seq.incrementAndGet();
         offlineCartService.addToLstBill(TempBill.builder()
                 .billId(id).lstDetailProduct(new ArrayList<>()).build());
-
-//        System.out.println("Tạo hoá đơn mới?");
-
         return "redirect:/nova/pos?billId=" + id;
     }
 
@@ -79,6 +72,14 @@ public class OfflineCartController {
         TempBill tempBill = getSession(session);
         offlineCartService.removeFromLstBill(tempBill);
         return "redirect:/nova/pos";
+    }
+
+    @PostMapping("/frag-checkout")
+    public String replaceCheck(Model model, HttpSession session){
+        TempBill tempBill = getSession(session);
+        List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
+        model.addAttribute("y", tempBill);
+        return "/admin/cart/summary-frag :: replace";
     }
 
     public TempBill getSession(HttpSession session) {

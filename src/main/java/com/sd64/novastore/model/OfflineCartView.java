@@ -11,6 +11,7 @@ package com.sd64.novastore.model;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 @AllArgsConstructor
@@ -20,6 +21,8 @@ import java.text.DecimalFormat;
 @Builder
 @ToString
 public class OfflineCartView {
+
+    private Integer idSP;
 
     private Integer idCtsp;
 
@@ -37,10 +40,8 @@ public class OfflineCartView {
 
     private String size;
 
-    public String calTotalPrice() {
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-
-        return decimalFormat.format(this.price.multiply(BigDecimal.valueOf(this.qty)));
+    public BigDecimal calTotalPrice() {
+        return this.price.multiply(BigDecimal.valueOf(this.qty)).setScale(2, RoundingMode.HALF_UP);
     }
 
     public String fieldCombine() {

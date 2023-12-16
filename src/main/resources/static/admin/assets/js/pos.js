@@ -50,6 +50,12 @@ function updateOutput() {
         // console.log(fragment);
         $("#output").replaceWith(fragment);
     });
+
+    $.post("/nova/pos/frag-checkout").done(function (fragment_checkout) {
+        // console.log(fragment);
+        console.log('change checkout')
+        $("#output_checkout").replaceWith(fragment_checkout);
+    });
 }
 
 function playSound(soundName) {

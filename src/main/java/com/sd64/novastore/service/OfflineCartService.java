@@ -8,9 +8,12 @@ import com.sd64.novastore.model.OfflineCart;
 import com.sd64.novastore.model.OfflineCartView;
 import com.sd64.novastore.model.TempBill;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OfflineCartService {
+
+    BigDecimal calCartPrice(List<OfflineCartView> lstCart);
 
     List<OfflineCart> addToCart(Integer billId, String detailProductId, Integer qty);
 
