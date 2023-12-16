@@ -438,6 +438,9 @@ public class BillServiceImpl implements BillService {
         } else {
             bill.setStatus(1);
             bill.setCompletionDate(new Date());
+            if (bill.getPaymentDate() == null){
+                bill.setPaymentDate(new Date());
+            }
             List<PaymentMethod> listPaymentMethod = paymentMethodRepository.findAllByBillIdOrderById(id);
             for (PaymentMethod paymentMethod : listPaymentMethod) {
                 if (paymentMethod.getStatus() == 10){
