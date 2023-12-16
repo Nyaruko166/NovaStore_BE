@@ -45,11 +45,15 @@ public interface BillService {
 
     List<Bill> getAllOrders(Integer customerId);
 
-    Bill cancelOrder(Integer billId);
+    boolean userCancelOrder(Integer billId);
 
-    Bill acceptBill(Integer billId);
+    boolean confirmOrder(BigDecimal shippingFee, Integer billId);
 
-    Bill shippingOrder(Integer id, BigDecimal shippingFee);
+    boolean cancelOrder(Integer billId);
+
+    boolean shippingOrder(Integer id);
+
+    boolean completeOrder(Integer id);
 
     Page<BillDto> findAll(Pageable pageable);
 

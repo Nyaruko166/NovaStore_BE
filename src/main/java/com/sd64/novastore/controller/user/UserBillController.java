@@ -66,14 +66,15 @@ public class UserBillController {
     public String checkOut(Principal principal, Model model, HttpSession session) {
         if (principal == null) {
             SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+            if (sessionCart == null){
+                return "redirect:/cart";
+            }
             if (sessionCart.getCartDetails().isEmpty()){
                 return "redirect:/cart";
             }
-            if (!sessionCart.getCartDetails().isEmpty()){
-                cartService.reloadCartDetailSession(sessionCart);
-                session.setAttribute("sessionCart", sessionCart);
-                session.setAttribute("totalItems", sessionCart.getTotalItems());
-            }
+            cartService.reloadCartDetailSession(sessionCart);
+            session.setAttribute("sessionCart", sessionCart);
+            session.setAttribute("totalItems", sessionCart.getTotalItems());
             List<Voucher> listVoucher = voucherService.getVoucherByCartPrice(sessionCart.getTotalPrice());
             model.addAttribute("cart", sessionCart);
             model.addAttribute("listVoucher", listVoucher);
@@ -82,13 +83,14 @@ public class UserBillController {
         } else {
             Customer customer = customerService.findByEmail(principal.getName());
             Cart cart = cartService.getCart(principal.getName());
+            if (cart == null){
+                return "redirect:/cart";
+            }
             if (cart.getCartDetails().isEmpty()){
                 return "redirect:/cart";
             }
-            if (!cart.getCartDetails().isEmpty()){
-                cartService.reloadCartDetail(cart);
-                session.setAttribute("totalItems", cart.getTotalItems());
-            }
+            cartService.reloadCartDetail(cart);
+            session.setAttribute("totalItems", cart.getTotalItems());
             Address defaultAddress = addressService.findAccountDefaultAddress(customer.getId());
             List<Address> listAddress = addressService.findAccountAddress(customer.getId());
             List<Voucher> listVoucher = voucherService.getVoucherByCartPrice(cart.getTotalPrice());
@@ -120,13 +122,66 @@ public class UserBillController {
         }
         Customer customer = customerService.findByEmail(principal.getName());
         Bill bill = billService.getOneBill(id);
-        if (customer.getId() == bill.getCustomer().getId()){
+        if (bill == null){
+            attributes.addFlashAttribute("success", "Không có thông tin đơn hàng tương ứng");
+            return "redirect:/orders";
+        }
+        if (customer.getId().equals(bill.getCustomer().getId())){
             List<PaymentMethod> listPaymentMethod = paymentMethodService.getAllBillPaymentMethod(id);
             model.addAttribute("order", bill);
             model.addAttribute("listPaymentMethod", listPaymentMethod);
             return "/user/order-detail";
         } else {
-            attributes.addFlashAttribute("success", "Bạn không có quyền xem đơn hàng của người khác");
+            attributes.addFlashAttribute("success", "Bạn không có quyền xem đơn hàng này");
+            return "redirect:/orders";
+        }
+    }
+
+    @RequestMapping(value = "/cancel-order/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String cancelOrder(@PathVariable Integer id, Principal principal, RedirectAttributes attributes) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Customer customer = customerService.findByEmail(principal.getName());
+        Bill bill = billService.getOneBill(id);
+        if (bill == null){
+            attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+            return "redirect:/orders";
+        }
+        if (customer.getId().equals(bill.getCustomer().getId())){
+            boolean check = billService.userCancelOrder(id);
+            if (check){
+                attributes.addFlashAttribute("success", "Huỷ đơn hàng thành công");
+            } else {
+                attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+            }
+        } else {
+            attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+        }
+        return "redirect:/orders";
+    }
+
+    @RequestMapping(value = "/detail-cancel-order/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String detailCancelOrder(@PathVariable Integer id, Principal principal, RedirectAttributes attributes) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Customer customer = customerService.findByEmail(principal.getName());
+        Bill bill = billService.getOneBill(id);
+        if (bill == null){
+            attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+            return "redirect:/orders";
+        }
+        if (customer.getId().equals(bill.getCustomer().getId())){
+            boolean check = billService.userCancelOrder(id);
+            if (check){
+                attributes.addFlashAttribute("success", "Huỷ đơn hàng thành công");
+            } else {
+                attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+            }
+            return "redirect:/order-detail/" + id;
+        } else {
+            attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
             return "redirect:/orders";
         }
     }
@@ -150,7 +205,7 @@ public class UserBillController {
             if (payment.equals("VNPAY")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
@@ -161,7 +216,7 @@ public class UserBillController {
             if (payment.equals("Momo")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.MomoPayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.MomoPayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
@@ -172,7 +227,7 @@ public class UserBillController {
             if (payment.equals("ZaloPay")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.zalopayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.zalopayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
@@ -188,7 +243,7 @@ public class UserBillController {
             if (payment.equals("VNPAY")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
@@ -199,7 +254,7 @@ public class UserBillController {
             if (payment.equals("Momo")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.MomoPayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.MomoPayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
@@ -210,7 +265,7 @@ public class UserBillController {
             if (payment.equals("ZaloPay")){
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.zalopayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
+                    jsonData = paymentService.zalopayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
@@ -222,13 +277,6 @@ public class UserBillController {
             session.removeAttribute("totalItems");
             attributes.addFlashAttribute("success", "Đặt hàng thành công!");
         }
-        return "redirect:/orders";
-    }
-
-    @RequestMapping(value = "/cancel-order/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String cancelOrder(@PathVariable Integer id, RedirectAttributes attributes) {
-        billService.cancelOrder(id);
-        attributes.addFlashAttribute("success", "Huỷ đơn hàng thành công!");
         return "redirect:/orders";
     }
 
@@ -246,7 +294,11 @@ public class UserBillController {
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String email = jsonData.get("email").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                if (voucher.equals("null")){
+                    billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, null);
+                } else {
+                    billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                }
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
@@ -264,7 +316,11 @@ public class UserBillController {
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                if (voucher.equals("null")){
+                    billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, null);
+                } else {
+                    billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                }
                 session.removeAttribute("totalItems");
                 attributes.addFlashAttribute("success", "Đặt hàng thành công!");
                 return "redirect:/orders";
@@ -289,7 +345,11 @@ public class UserBillController {
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String email = jsonData.get("email").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                if (voucher.equals("null")){
+                    billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, null);
+                } else {
+                    billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                }
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
@@ -307,7 +367,11 @@ public class UserBillController {
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                if (voucher.equals("null")){
+                    billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, null);
+                } else {
+                    billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                }
                 session.removeAttribute("totalItems");
                 attributes.addFlashAttribute("success", "Đặt hàng thành công!");
                 return "redirect:/orders";
@@ -332,7 +396,11 @@ public class UserBillController {
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String email = jsonData.get("email").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                if (voucher.equals("null")){
+                    billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, null);
+                } else {
+                    billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                }
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
@@ -350,7 +418,11 @@ public class UserBillController {
                 String name = jsonData.get("name").toString().replaceAll("\"", "");
                 String phoneNumber = jsonData.get("phoneNumber").toString().replaceAll("\"", "");
                 String voucher = jsonData.get("voucher").toString().replaceAll("\"", "");
-                billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                if (voucher.equals("null")){
+                    billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, null);
+                } else {
+                    billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
+                }
                 session.removeAttribute("totalItems");
                 attributes.addFlashAttribute("success", "Đặt hàng thành công!");
                 return "redirect:/orders";
