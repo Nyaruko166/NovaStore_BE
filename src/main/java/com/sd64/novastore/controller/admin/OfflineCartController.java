@@ -50,16 +50,17 @@ public class OfflineCartController {
 
     @PostMapping("/frag")
     public String frag(Model model, HttpSession session) {
-        TempBill tempBill = (TempBill) session.getAttribute("tempBill");
+        TempBill tempBill = getSession(session);
         List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
         model.addAttribute("lstCart", lstCart);
         return "/admin/cart/offline-cart-fragment :: frag";
     }
 
     @GetMapping("/remove/{code}")
-    public String removeFromCart(@PathVariable("code") String data) {
-        System.out.println(offlineCartService.deleteCart(data));
-        return "redirect:/nova/pos";
+    public String removeFromCart(@PathVariable("code") String data, HttpSession session) {
+        TempBill tempBill = getSession(session);
+        System.out.println(offlineCartService.deleteCart(data, tempBill.getBillId()));
+        return "redirect:/nova/pos?billId=" + tempBill.getBillId();
     }
 
     @GetMapping("/newBill")
@@ -71,6 +72,17 @@ public class OfflineCartController {
 //        System.out.println("Tạo hoá đơn mới?");
 
         return "redirect:/nova/pos?billId=" + id;
+    }
+
+    @GetMapping("/removeBill")
+    public String removeBill(HttpSession session) {
+        TempBill tempBill = getSession(session);
+        offlineCartService.removeFromLstBill(tempBill);
+        return "redirect:/nova/pos";
+    }
+
+    public TempBill getSession(HttpSession session) {
+        return (TempBill) session.getAttribute("posBill");
     }
 
 }

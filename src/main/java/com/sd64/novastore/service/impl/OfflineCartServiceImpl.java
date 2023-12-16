@@ -76,8 +76,8 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     }
 
     @Override
-    public String deleteCart(String codeCtsp) {
-        List<OfflineCart> cart = repository.getCartSP();
+    public String deleteCart(String codeCtsp, Integer billId) {
+        List<OfflineCart> cart = getBillById(billId).getLstDetailProduct();
         for (OfflineCart x : cart) {
             if (x.getDetailProductId().equals(codeCtsp)) {
                 cart.remove(x);
@@ -104,7 +104,7 @@ public class OfflineCartServiceImpl implements OfflineCartService {
             if (Objects.equals(x.getBillId(), tempBill.getBillId())) {
                 int index = lstBill.indexOf(x);
                 lstBill.set(index, tempBill);
-                System.out.println("đã có, update");
+//                System.out.println("đã có, update");
                 return true;
             }
         }
@@ -120,8 +120,6 @@ public class OfflineCartServiceImpl implements OfflineCartService {
             if (x.getBillId().equals(tempBill.getBillId())) {
                 lstBill.remove(x);
                 return true;
-            } else {
-                return false;
             }
         }
         return false;

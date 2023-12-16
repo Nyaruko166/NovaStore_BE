@@ -21,6 +21,10 @@
                                 <a th:each="y:${lstBill}" class="border border-3 rounded"
                                    th:href="${'/nova/pos?billId='+y.billId}" th:text="${'Hoá Đơn '+ y.billIdPP()}"></a>
                                 <div style="float: right; margin-top: 12px">
+                                    <button onclick="location.href='/nova/pos/removeBill'" class="btn btn-dark"
+                                            type="button">
+                                        <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
+                                    </button>
                                     <button onclick="location.href='/nova/pos/newBill'" type="button"
                                             class="btn btn-dark"><i
                                             class="fa-regular fa-square-plus" style="color: #ffffff;"></i></button>

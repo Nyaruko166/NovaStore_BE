@@ -16,7 +16,7 @@ public interface OfflineCartService {
 
     List<OfflineCartView> getCart(List<OfflineCart> cart);
 
-    String deleteCart(String codeCtsp);
+    String deleteCart(String codeCtsp, Integer billId);
 
     void emptyCart(List<OfflineCart> empty);
 
