@@ -59,9 +59,7 @@ function updateOutput() {
 }
 
 function searchAndReplace() {
-
     let keyword = document.getElementById('keyword').value;
-
     let url = "/nova/account/api/filter?keyword=" + keyword;
 
     $.post(url).done(function (fragment_modal) {

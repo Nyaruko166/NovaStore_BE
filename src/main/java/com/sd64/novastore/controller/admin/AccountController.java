@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 
 
@@ -86,7 +87,12 @@ public class AccountController {
     public String searchCustomers(@RequestParam("keyword") String keyword, Model model) {
         Pageable pageable = Pageable.ofSize(10);
 //        System.out.println(accountService.searchCustomer(keyword, pageable).toString());
+        if (keyword.isBlank()){
+            model.addAttribute("lstCus", null);
+            return "/admin/cart/offline-cart-fragment :: modal_frag";
+        }
         model.addAttribute("lstCus", accountService.searchCustomer(keyword, pageable).getContent());
+        model.addAttribute("keyword", keyword);
         return "/admin/cart/offline-cart-fragment :: modal_frag";
     }
 
