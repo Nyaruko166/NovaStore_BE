@@ -41,7 +41,7 @@ public class RestOfflineCartController {
         offlineCartService.addToLstBill(TempBill.builder().billId(response.getBillId())
                 .totalCartPrice(total).lstDetailProduct(cart).build());
         TempBill tempBill = offlineCartService.getBillById(response.getBillId());
-        System.out.println(tempBill.getTotalCartPrice());
+//        System.out.println(tempBill.getTotalCartPrice());
         session.setAttribute("posBill", tempBill);
 //        System.out.println(offlineCartService.addToCart(response.getData(), 1));
         return new ResponseEntity<>(HttpStatus.OK);
