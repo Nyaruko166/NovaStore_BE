@@ -35,5 +35,32 @@
         </div>
     </div>
 </div>
+
+<div th:fragment="modal_frag">
+    <div id="modal_replace">
+        <div class="form-inline text-center">
+            <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search"
+                   aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="">Search
+            </button>
+        </div>
+        <hr>
+        <div th:each="x:${lstCus}" class="card">
+            <div class="card-body" style="padding: 5px">
+                <div class="row">
+                    <div class="col-10">
+                        <h5 class="card-title" th:text="${x.name}"></h5>
+                        <h6 class="card-subtitle mb-2 text-muted" th:text="${x.phoneNumber}"></h6>
+                    </div>
+                    <div class="col-2">
+                        <a th:href="@{'/nova/pos/addCustomer/' + ${x.id}}" class="btn btn-primary" style="margin-top: 9px"><i
+                                class="fa-solid fa-check"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

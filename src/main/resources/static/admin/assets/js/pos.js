@@ -30,7 +30,7 @@ function onScanSuccess(decodedText) {
             billId = urlParam.get('billId');
         }
 
-        console.log(billId);
+        // console.log(billId);
 
         fetch("/nova/pos/add", {
             method: "POST",
@@ -53,13 +53,19 @@ function updateOutput() {
 
     $.post("/nova/pos/frag-checkout").done(function (fragment_checkout) {
         // console.log(fragment);
-        console.log('change checkout')
+        // console.log('change checkout')
         $("#output_checkout").replaceWith(fragment_checkout);
     });
 }
 
-function playSound(soundName) {
-    let src = "./../audio/"
-    let audio = new Audio(src + soundName)
-    audio.play();
+function searchAndReplace() {
+
+    let keyword = document.getElementById('keyword').value;
+
+    let url = "/nova/account/api/filter?keyword=" + keyword;
+
+    $.post(url).done(function (fragment_modal) {
+        // console.log(fragment);
+        $("#modal_replace").replaceWith(fragment_modal);
+    });
 }

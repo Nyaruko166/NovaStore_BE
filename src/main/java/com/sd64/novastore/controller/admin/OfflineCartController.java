@@ -5,8 +5,10 @@
 package com.sd64.novastore.controller.admin;
 
 import com.google.gson.Gson;
+import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.OfflineCartView;
 import com.sd64.novastore.model.TempBill;
+import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.service.OfflineCartService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class OfflineCartController {
     @Autowired
     private OfflineCartService offlineCartService;
 
+    @Autowired
+    private AccountService accountService;
+
     AtomicInteger seq = new AtomicInteger();
 
     @GetMapping()
@@ -41,6 +46,9 @@ public class OfflineCartController {
         model.addAttribute("lstCart", lstCart);
         model.addAttribute("lstBill", lstBill);
         model.addAttribute("tempBill", tempBill);
+//        for (TempBill x : lstBill) {
+//            System.out.println(x.toString());
+//        }
         return "/admin/cart/offline-cart";
     }
 
@@ -75,11 +83,24 @@ public class OfflineCartController {
     }
 
     @PostMapping("/frag-checkout")
-    public String replaceCheck(Model model, HttpSession session){
+    public String replaceCheck(Model model, HttpSession session) {
         TempBill tempBill = getSession(session);
         List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
         model.addAttribute("y", tempBill);
         return "/admin/cart/summary-frag :: replace";
+    }
+
+    @GetMapping("/addCustomer/{id}")
+    public String addCustomer(@PathVariable("id") Integer id, HttpSession session) {
+        TempBill tempBill = getSession(session);
+        Account account = accountService.findOne(id);
+        tempBill.setIdCustomer(account.getId());
+        tempBill.setCustomerEmail(account.getEmail());
+        tempBill.setCustomerPhone(account.getPhoneNumber());
+        tempBill.setCustomerName(account.getName());
+        offlineCartService.addToLstBill(tempBill);
+        session.setAttribute("posBill", tempBill);
+        return "redirect:/nova/pos?billId=" + tempBill.getBillId();
     }
 
     public TempBill getSession(HttpSession session) {

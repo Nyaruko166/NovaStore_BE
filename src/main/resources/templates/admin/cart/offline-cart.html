@@ -126,18 +126,26 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tìm kiếm khách hàng</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <div id="modal_replace">
+                        <div class="form-inline text-center">
+                            <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search"
+                                   aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchAndReplace()">Search
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -156,27 +164,5 @@
         <script th:inline="javascript" th:src="@{/admin/assets/js/pos.js}"></script>
     </div>
 </div>
-<!--</div>-->
-<!--<script th:inline="javascript">-->
-<!--    $(document).ready(function () {-->
-<!--        $('#trash').click(function () {-->
-<!--            var value_fired = $(this).val();-->
-<!--            console.log(value_fired);-->
-<!--            removeFromCart(value_fired);-->
-<!--        });-->
-<!--    });-->
-
-<!--    function removeFromCart(codeCtsp) {-->
-<!--        fetch("/nova/pos/remove", {-->
-<!--            method: "POST",-->
-<!--            body: JSON.stringify({-->
-<!--                data: codeCtsp,-->
-<!--            }),-->
-<!--            headers: {-->
-<!--                "Content-type": "application/json; charset=UTF-8"-->
-<!--            }-->
-<!--        }).then(updateOutput);-->
-<!--    }-->
-<!--</script>-->
 </body>
 </html>
