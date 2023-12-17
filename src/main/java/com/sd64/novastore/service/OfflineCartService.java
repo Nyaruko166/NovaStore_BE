@@ -30,4 +30,8 @@ public interface OfflineCartService {
     Boolean removeFromLstBill(TempBill tempBill);
 
     TempBill getBillById(Integer id);
+
+    void checkout(TempBill tempBill);
+
+    String genBillCode();
 }

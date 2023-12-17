@@ -67,3 +67,87 @@ function searchAndReplace() {
         $("#modal_replace").replaceWith(fragment_modal);
     });
 }
+
+function searchAndReplaceProduct(){}
+
+function calCashBack() {
+
+    let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
+
+    let khachDua = document.getElementById('khachDua').value;
+
+    document.getElementById('tienThua').innerText = khachDua - khachPhaiTra + ' VNĐ'
+}
+
+function thanhToan() {
+    let selectedValue;
+    let radios = document.getElementsByName('mode');
+    for (i = 0; i < radios.length; i++) {
+        if (radios[i].checked)
+            selectedValue = radios[i].value;
+    }
+
+    if (selectedValue === 'vietqr') {
+
+        let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
+        let billCode = document.getElementById('billCode').innerText;
+
+        fetch("https://api.vietqr.io/v2/generate", {
+            method: "POST",
+            body: JSON.stringify({
+                accountNo: "0936163632",
+                accountName: "PHUNG MINH QUAN",
+                acqId: 970422,
+                amount: khachPhaiTra,
+                addInfo: "Nova Store - Thanh toan hoa don #" + billCode,
+                format: "text",
+                template: "compact2"
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then((response) => response.json())
+            .then((json) => {
+                let dataUri = json.data.qrDataURL;
+                showImagePopup(dataUri)
+            });
+
+    } else {
+
+        let tienthua = document.getElementById('tienThua').innerText;
+
+        if (Math.sign(Number(tienthua)) != -1) {
+            window.location = "/nova/pos/checkout";
+        }else {
+            Swal.fire({
+                icon: "error",
+                title: "Khách đưa thiếu tiền",
+                text: "Vui lòng kiểm tra lại!",
+            });
+        }
+    }
+
+}
+
+function showImagePopup(imageDataURI) {
+    var popup = document.getElementById("imagePopup");
+    var overlay = document.getElementById("overlay");
+    var popupImage = document.getElementById("popupImage");
+
+    // Set the image source
+    popupImage.src = imageDataURI;
+
+    // Show the popup and overlay
+    popup.style.display = "block";
+    overlay.style.display = "block";
+}
+
+// Function to close the popup
+function closeImagePopup() {
+    var popup = document.getElementById("imagePopup");
+    var overlay = document.getElementById("overlay");
+
+    // Hide the popup and overlay
+    popup.style.display = "none";
+    overlay.style.display = "none";
+}
