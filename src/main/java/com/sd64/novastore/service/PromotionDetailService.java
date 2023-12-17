@@ -38,4 +38,5 @@ public interface PromotionDetailService {
     Boolean existsByProductIdAndStatus(Integer productId, Integer status);
 
     Page<PromotionDetailDTO> All(Integer page);
+    List<ProductDetail> findByProductId(Integer productId);
 }

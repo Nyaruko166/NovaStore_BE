@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class PromotionDetailController {
     private PromotionService promotionService;
 
 
-//    @GetMapping("/page")
+    //    @GetMapping("/page")
 //    public String getAllPTPagination(@ModelAttribute("promotionDetail") PromotionDetail promotionDetail, @RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
 //        Page<PromotionDetail> pagePromotionDetail = promotionDetailService.getAllPT(page);
 //        model.addAttribute("pagePromotionDetail", pagePromotionDetail);
@@ -98,7 +99,7 @@ public class PromotionDetailController {
             List<Product> productList = promotionDetailService.getAll();
             model.addAttribute("promotionList", promotionList);
             model.addAttribute("productList", productList);
-            List<ProductDetail> productDetailList= promotionDetailService.getAllPrDT();
+            List<ProductDetail> productDetailList = promotionDetailService.getAllPrDT();
             model.addAttribute("productDetailList", productDetailList);
             return "admin/promotiondetail/promotiondetail";
         }
@@ -109,6 +110,7 @@ public class PromotionDetailController {
             Product product = productService.getOne(productId);
             product.setStatus(2);
             promotionDetailService.save(product);
+
             PromotionDetail newPromotionDetail = new PromotionDetail();
             newPromotionDetail.setProduct(product);
             newPromotionDetail.setPromotion(promotion);
@@ -118,5 +120,5 @@ public class PromotionDetailController {
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
         return "redirect:/nova/promotion-detail/page";
     }
-
 }
+

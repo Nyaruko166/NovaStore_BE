@@ -6,6 +6,7 @@ import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
+import com.sd64.novastore.repository.GiamGiaRepository;
 import com.sd64.novastore.repository.PrDtRepository;
 import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.repository.ProductRepository;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +38,11 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
 
     @Autowired
     private PromotionRepository promotionRepository;
+    @Autowired
+    private GiamGiaRepository giamGiaRepository;
+
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
 
     @Override
     public List<PromotionDetail> getAllPromotionDetail() {
@@ -59,7 +66,25 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
         promotionDetail.setStatus(1);
         promotionDetail.setCreateDate(new java.util.Date());
         promotionDetail.setUpdateDate(new java.util.Date());
-        return promotionDetailRepository.save(promotionDetail);
+
+        PromotionDetail savedPromotionDetail = promotionDetailRepository.save(promotionDetail);
+
+        Product product = savedPromotionDetail.getProduct();
+
+        Promotion promotion = savedPromotionDetail.getPromotion();
+
+        List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
+        BigDecimal promotionValue = BigDecimal.valueOf(promotion.getValue());
+
+        for (ProductDetail productDetail : productDetails) {
+            BigDecimal price = productDetail.getPrice();
+            BigDecimal discount = price.multiply(promotionValue.divide(BigDecimal.valueOf(100)));
+            BigDecimal discountedPrice = price.subtract(discount);
+            productDetail.setPriceDiscount(discountedPrice);
+            productDetailRepository.save(productDetail);
+        }
+
+        return savedPromotionDetail;
     }
 
     @Override
@@ -116,6 +141,11 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
     public Page<PromotionDetailDTO> All(Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
         return promotionDetailRepository.All(pageable);
+    }
+
+    @Override
+    public List<ProductDetail> findByProductId(Integer productId) {
+        return giamGiaRepository.findByProductId(productId);
     }
 
 
