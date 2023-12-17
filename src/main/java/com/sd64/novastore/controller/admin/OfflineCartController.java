@@ -6,9 +6,11 @@ package com.sd64.novastore.controller.admin;
 
 import com.google.gson.Gson;
 import com.sd64.novastore.model.Account;
+import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.OfflineCartView;
 import com.sd64.novastore.model.TempBill;
 import com.sd64.novastore.service.AccountService;
+import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.OfflineCartService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class OfflineCartController {
     private OfflineCartService offlineCartService;
 
     @Autowired
+    private BillService billService;
+
+    @Autowired
     private AccountService accountService;
 
     AtomicInteger seq = new AtomicInteger();
@@ -38,9 +43,16 @@ public class OfflineCartController {
     @GetMapping()
     public String cart(Model model, HttpSession session,
                        @RequestParam(value = "billId", defaultValue = "0") Integer billId) {
-        TempBill tempBill = offlineCartService.getBillById(billId);
-        List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
         List<TempBill> lstBill = offlineCartService.getLstBill();
+        if (lstBill.isEmpty()) {
+            lstBill.add(TempBill.builder().billId(0).billCode(offlineCartService.genBillCode())
+                    .lstDetailProduct(new ArrayList<>()).build());
+        }
+        TempBill tempBill = offlineCartService.getBillById(billId);
+        if (tempBill==null){
+            return "redirect:/nova/pos";
+        }
+        List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
         tempBill.setTotalCartPrice(offlineCartService.calCartPrice(lstCart));
         session.setAttribute("posBill", tempBill);
         model.addAttribute("lstCart", lstCart);
@@ -71,7 +83,7 @@ public class OfflineCartController {
     public String newBill() {
         Integer id = seq.incrementAndGet();
         offlineCartService.addToLstBill(TempBill.builder()
-                .billId(id).lstDetailProduct(new ArrayList<>()).build());
+                .billId(id).billCode(offlineCartService.genBillCode()).lstDetailProduct(new ArrayList<>()).build());
         return "redirect:/nova/pos?billId=" + id;
     }
 
@@ -86,7 +98,7 @@ public class OfflineCartController {
     public String replaceCheck(Model model, HttpSession session) {
         TempBill tempBill = getSession(session);
         List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
-        model.addAttribute("y", tempBill);
+        model.addAttribute("tempBill", tempBill);
         return "/admin/cart/summary-frag :: replace";
     }
 
@@ -94,6 +106,7 @@ public class OfflineCartController {
     public String addCustomer(@PathVariable("id") Integer id, HttpSession session) {
         TempBill tempBill = getSession(session);
         Account account = accountService.findOne(id);
+        System.out.println(tempBill.getBillCode());
         tempBill.setIdCustomer(account.getId());
         tempBill.setCustomerEmail(account.getEmail());
         tempBill.setCustomerPhone(account.getPhoneNumber());
@@ -101,6 +114,13 @@ public class OfflineCartController {
         offlineCartService.addToLstBill(tempBill);
         session.setAttribute("posBill", tempBill);
         return "redirect:/nova/pos?billId=" + tempBill.getBillId();
+    }
+
+    @GetMapping("/checkout")
+    public String checkout(Model model, HttpSession session) {
+        TempBill tempBill = getSession(session);
+        offlineCartService.checkout(tempBill);
+        return "redirect:/nova/pos";
     }
 
     public TempBill getSession(HttpSession session) {

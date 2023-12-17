@@ -174,11 +174,102 @@ main {
     color: white;
 }
 
-/*.close-icon {*/
-/*    position: absolute;*/
-/*    top: 0;*/
-/*    right: 0;*/
-/*    padding: 8px;*/
-/*}*/
+.w3-input {
+    text-align: right;
+    padding: 8px;
+    display: block;
+    border: none;
+    border-bottom: 3px solid #ccc;
+    width: 150px
+}
+
+/* =============================================
+* RADIO BUTTONS
+=============================================== */
+
+#radios label {
+    cursor: pointer;
+    position: relative;
+}
+
+#radios label + label {
+    margin-left: 15px;
+}
+
+input[type="radio"] {
+    opacity: 0; /* hidden but still tabable */
+    position: absolute;
+}
+
+input[type="radio"] + span {
+    font-family: 'Material Icons';
+    color: #B3CEFB;
+    border-radius: 50%;
+    padding: 12px;
+    transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+}
+
+input[type="radio"]:checked + span {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+input[type="radio"]:focus + span {
+    color: #fff;
+}
+
+/* ================ TOOLTIPS ================= */
+
+#radios label:hover::before {
+    content: attr(for);
+    font-family: Roboto, -apple-system, sans-serif;
+    text-transform: capitalize;
+    font-size: 11px;
+    position: absolute;
+    top: 170%;
+    left: 0;
+    right: 0;
+    opacity: 0.75;
+    background-color: #323232;
+    color: #fff;
+    padding: 4px;
+    border-radius: 3px;
+    display: block;
+}
+
+#radios {
+    text-align: center;
+    margin: 0 auto 5px;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+
+/* Styling for the overlay */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
 
 

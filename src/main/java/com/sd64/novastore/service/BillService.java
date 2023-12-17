@@ -17,7 +17,7 @@ public interface BillService {
 
     Page<Bill> getAllBillPT(Integer page);
 
-    Bill addBill(Bill bill);
+    Bill addBillPos(Bill bill);
 
     Bill updateBill(Bill bill, Integer id);
 
@@ -25,7 +25,7 @@ public interface BillService {
 
     Page<BillDetail> getAllBillDetailPT(Integer page);
 
-    BillDetail addBillDetail(BillDetail billDetail);
+    BillDetail addBillDetailPos(BillDetail billDetail);
 
     BillDetail updateBillDetail(BillDetail billDetail, Integer id);
 
@@ -63,4 +63,6 @@ public interface BillService {
                                  Integer status,
                                  Integer type,
                                  String phoneNumber, String customerName, Pageable pageable);
+
+    String generateBillCode();
 }

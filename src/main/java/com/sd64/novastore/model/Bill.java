@@ -86,16 +86,16 @@ public class Bill {
     @JoinColumn(name = "VoucherId", referencedColumnName = "Id")
     private Voucher voucher;
 
-    public String getStatusName(){
-        if (this.status == 10){
+    public String getStatusName() {
+        if (this.status == 10) {
             return "Chờ xác nhận";
-        } else if (this.status == 3){
+        } else if (this.status == 3) {
             return "Chờ giao hàng";
-        } else if (this.status == 2){
+        } else if (this.status == 2) {
             return "Đang giao hàng";
-        } else if (this.status == 1){
+        } else if (this.status == 1) {
             return "Đã hoàn thành";
-        } else if (this.status == 0){
+        } else if (this.status == 0) {
             return "Đã huỷ";
         } else {
             return null;

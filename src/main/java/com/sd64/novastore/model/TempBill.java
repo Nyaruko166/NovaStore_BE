@@ -23,6 +23,8 @@ public class TempBill {
 
     private Integer billId;
 
+    private String billCode;
+
     private Integer idCustomer;
 
     private String customerName;

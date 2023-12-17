@@ -95,10 +95,10 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Bill addBill(Bill bill) {
-        bill.setStatus(1);
-        bill.setCreateDate(new Date());
-        bill.setUpdateDate(new Date());
+    public Bill addBillPos(Bill bill) {
+//        bill.setStatus(1);
+//        bill.setCreateDate(new Date());
+//        bill.setUpdateDate(new Date());
         return billRepository.save(bill);
     }
 
@@ -128,7 +128,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public BillDetail addBillDetail(BillDetail billDetail) {
+    public BillDetail addBillDetailPos(BillDetail billDetail) {
         billDetail.setStatus(1);
         return billDetailRepository.save(billDetail);
     }
@@ -176,7 +176,7 @@ public class BillServiceImpl implements BillService {
         bill.setPhoneNumber(phoneNumber);
         bill.setOrderDate(new Date());
         bill.setPrice(cart.getTotalPrice());
-        if (voucher == null){
+        if (voucher == null) {
             bill.setDiscountAmount(BigDecimal.ZERO);
             bill.setTotalPrice(cart.getTotalPrice());
         } else {
@@ -185,7 +185,7 @@ public class BillServiceImpl implements BillService {
             bill.setTotalPrice(cart.getTotalPrice().subtract(uuDai.getValue()));
             bill.setVoucher(uuDai);
             uuDai.setQuantity(uuDai.getQuantity() - 1);
-            if (uuDai.getQuantity() == 0){
+            if (uuDai.getQuantity() == 0) {
                 uuDai.setStatus(10);
             }
             voucherRepository.save(uuDai);
@@ -193,13 +193,13 @@ public class BillServiceImpl implements BillService {
         bill.setShippingFee(BigDecimal.ZERO);
         bill.setCreateDate(new Date());
         bill.setUpdateDate(new Date());
-        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")){
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")) {
             bill.setPaymentDate(new Date());
         }
         bill.setStatus(10);
         bill.setCustomer(cart.getCustomer());
         List<Address> listAccountAddress = addressRepository.findAllAccountAddress(cart.getCustomer().getId());
-        if (listAccountAddress.isEmpty()){
+        if (listAccountAddress.isEmpty()) {
             Account account = accountRepository.findById(cart.getCustomer().getId()).orElse(null);
             Address newAddress = new Address();
             newAddress.setCustomerName(name);
@@ -216,7 +216,7 @@ public class BillServiceImpl implements BillService {
         }
 
         List<BillDetail> billDetailList = new ArrayList<>();
-        for (CartDetail item : cart.getCartDetails()){
+        for (CartDetail item : cart.getCartDetails()) {
             BillDetail billDetail = new BillDetail();
             billDetail.setBill(bill);
             billDetail.setProductDetail(item.getProductDetail());
@@ -227,7 +227,7 @@ public class BillServiceImpl implements BillService {
             billDetailList.add(billDetail);
             ProductDetail productDetail = productDetailRepository.findById(item.getProductDetail().getId()).orElse(null);
             productDetail.setQuantity(productDetail.getQuantity() - item.getQuantity());
-            if (productDetail.getQuantity() == 0){
+            if (productDetail.getQuantity() == 0) {
                 productDetail.setStatus(0);
             }
             productDetailRepository.save(productDetail);
@@ -236,7 +236,7 @@ public class BillServiceImpl implements BillService {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setBill(bill);
         paymentMethod.setName(payment);
-        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")){
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")) {
             paymentMethod.setMoney(bill.getTotalPrice());
             paymentMethod.setStatus(1);
         } else {
@@ -260,7 +260,7 @@ public class BillServiceImpl implements BillService {
         bill.setPhoneNumber(phoneNumber);
         bill.setOrderDate(new Date());
         bill.setPrice(cart.getTotalPrice());
-        if (voucher == null){
+        if (voucher == null) {
             bill.setDiscountAmount(BigDecimal.ZERO);
             bill.setTotalPrice(cart.getTotalPrice());
         } else {
@@ -269,7 +269,7 @@ public class BillServiceImpl implements BillService {
             bill.setTotalPrice(cart.getTotalPrice().subtract(uuDai.getValue()));
             bill.setVoucher(uuDai);
             uuDai.setQuantity(uuDai.getQuantity() - 1);
-            if (uuDai.getQuantity() == 0){
+            if (uuDai.getQuantity() == 0) {
                 uuDai.setStatus(10);
             }
             voucherRepository.save(uuDai);
@@ -277,13 +277,13 @@ public class BillServiceImpl implements BillService {
         bill.setShippingFee(BigDecimal.ZERO);
         bill.setCreateDate(new Date());
         bill.setUpdateDate(new Date());
-        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")){
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")) {
             bill.setPaymentDate(new Date());
         }
         bill.setStatus(10);
         Customer customer = customerRepository.findByEmail(email);
         String body;
-        if (customer == null){
+        if (customer == null) {
             customer = new Customer();
             customer.setName(name);
             customer.setEmail(email);
@@ -302,7 +302,7 @@ public class BillServiceImpl implements BillService {
         mailUtil.sendEmail(email, mailConfig.placeOrderMail, body);
         bill.setCustomer(customer);
         List<Address> listAccountAddress = addressRepository.findAllAccountAddress(bill.getCustomer().getId());
-        if (listAccountAddress.isEmpty()){
+        if (listAccountAddress.isEmpty()) {
             Account account = accountRepository.findById(bill.getCustomer().getId()).orElse(null);
             Address newAddress = new Address();
             newAddress.setCustomerName(name);
@@ -319,7 +319,7 @@ public class BillServiceImpl implements BillService {
         }
 
         List<BillDetail> billDetailList = new ArrayList<>();
-        for (SessionCartItem item : cart.getCartDetails()){
+        for (SessionCartItem item : cart.getCartDetails()) {
             BillDetail billDetail = new BillDetail();
             billDetail.setBill(bill);
             ProductDetail productDetail = productDetailRepository.findById(item.getProductDetail().getId()).orElse(null);
@@ -330,7 +330,7 @@ public class BillServiceImpl implements BillService {
             billDetailRepository.save(billDetail);
             billDetailList.add(billDetail);
             productDetail.setQuantity(productDetail.getQuantity() - item.getQuantity());
-            if (productDetail.getQuantity() == 0){
+            if (productDetail.getQuantity() == 0) {
                 productDetail.setStatus(0);
             }
             productDetailRepository.save(productDetail);
@@ -339,7 +339,7 @@ public class BillServiceImpl implements BillService {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setBill(bill);
         paymentMethod.setName(payment);
-        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")){
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")) {
             paymentMethod.setMoney(bill.getTotalPrice());
             paymentMethod.setStatus(1);
         } else {
@@ -365,25 +365,25 @@ public class BillServiceImpl implements BillService {
     @Transactional
     public boolean userCancelOrder(Integer billId) {
         Bill bill = billRepository.findById(billId).orElse(null);
-        if (bill.getStatus() != 10){
+        if (bill.getStatus() != 10) {
             return false;
         } else {
             bill.setStatus(0);
             bill.setCancellationDate(new Date());
-            if (bill.getVoucher() != null){
+            if (bill.getVoucher() != null) {
                 Voucher voucher = bill.getVoucher();
-                if (voucher.getStatus() == 10){
+                if (voucher.getStatus() == 10) {
                     voucher.setQuantity(voucher.getQuantity() + 1);
                     voucher.setStatus(1);
                 }
                 voucherRepository.save(voucher);
             }
             List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAllByBillIdOrderById(billId);
-            for (PaymentMethod paymentMethod : paymentMethodList){
+            for (PaymentMethod paymentMethod : paymentMethodList) {
                 paymentMethod.setStatus(0);
             }
             List<BillDetail> billDetailList = billDetailRepository.findAllByBill_Id(billId);
-            for (BillDetail billDetail : billDetailList){
+            for (BillDetail billDetail : billDetailList) {
                 billDetail.setStatus(0);
                 billDetailRepository.save(billDetail);
                 ProductDetail productDetail = productDetailRepository.findById(billDetail.getProductDetail().getId()).orElse(null);
@@ -399,7 +399,7 @@ public class BillServiceImpl implements BillService {
     @Override
     public boolean confirmOrder(BigDecimal shippingFee, Integer id) {
         Bill bill = billRepository.findById(id).orElse(null);
-        if (bill.getStatus() != 10){
+        if (bill.getStatus() != 10) {
             return false;
         } else {
             bill.setStatus(3);
@@ -407,10 +407,10 @@ public class BillServiceImpl implements BillService {
             bill.setShippingFee(shippingFee);
             bill.setTotalPrice(bill.getPrice().subtract(bill.getDiscountAmount()).add(shippingFee));
             PaymentMethod paymentMethod = paymentMethodRepository.findByStatusAndBillId(10, id);
-            if (paymentMethod != null){
+            if (paymentMethod != null) {
                 paymentMethod.setMoney(bill.getTotalPrice());
                 paymentMethodRepository.save(paymentMethod);
-            } else if (shippingFee.compareTo(BigDecimal.ZERO) != 0){
+            } else if (shippingFee.compareTo(BigDecimal.ZERO) != 0) {
                 PaymentMethod newPaymentMethod = new PaymentMethod();
                 newPaymentMethod.setName("Thanh toán khi nhận hàng");
                 newPaymentMethod.setMoney(shippingFee);
@@ -427,7 +427,7 @@ public class BillServiceImpl implements BillService {
     @Override
     public boolean shippingOrder(Integer id) {
         Bill bill = billRepository.findById(id).orElse(null);
-        if (bill.getStatus() != 3){
+        if (bill.getStatus() != 3) {
             return false;
         } else {
             bill.setStatus(2);
@@ -440,17 +440,17 @@ public class BillServiceImpl implements BillService {
     @Override
     public boolean completeOrder(Integer id) {
         Bill bill = billRepository.findById(id).orElse(null);
-        if (bill.getStatus() != 2){
+        if (bill.getStatus() != 2) {
             return false;
         } else {
             bill.setStatus(1);
             bill.setCompletionDate(new Date());
-            if (bill.getPaymentDate() == null){
+            if (bill.getPaymentDate() == null) {
                 bill.setPaymentDate(new Date());
             }
             List<PaymentMethod> listPaymentMethod = paymentMethodRepository.findAllByBillIdOrderById(id);
             for (PaymentMethod paymentMethod : listPaymentMethod) {
-                if (paymentMethod.getStatus() == 10){
+                if (paymentMethod.getStatus() == 10) {
                     paymentMethod.setStatus(1);
                     paymentMethodRepository.save(paymentMethod);
                 }
@@ -462,28 +462,28 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public boolean cancelOrder(Integer billId){
+    public boolean cancelOrder(Integer billId) {
         Bill bill = billRepository.findById(billId).orElse(null);
-        if (bill.getStatus() == 0){
+        if (bill.getStatus() == 0) {
             return false;
         } else {
             bill.setStatus(0);
             bill.setCancellationDate(new Date());
-            if (bill.getVoucher() != null){
+            if (bill.getVoucher() != null) {
                 Voucher voucher = bill.getVoucher();
-                if (voucher.getStatus() == 10){
+                if (voucher.getStatus() == 10) {
                     voucher.setQuantity(voucher.getQuantity() + 1);
                     voucher.setStatus(1);
                 }
                 voucherRepository.save(voucher);
             }
             List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAllByBillIdOrderById(billId);
-            for (PaymentMethod paymentMethod : paymentMethodList){
+            for (PaymentMethod paymentMethod : paymentMethodList) {
                 paymentMethod.setStatus(0);
                 paymentMethodRepository.save(paymentMethod);
             }
             List<BillDetail> billDetailList = billDetailRepository.findAllByBill_Id(billId);
-            for (BillDetail billDetail : billDetailList){
+            for (BillDetail billDetail : billDetailList) {
                 billDetail.setStatus(0);
                 billDetailRepository.save(billDetail);
                 ProductDetail productDetail = productDetailRepository.findById(billDetail.getProductDetail().getId()).orElse(null);
@@ -496,6 +496,7 @@ public class BillServiceImpl implements BillService {
         }
     }
 
+    @Override
     public String generateBillCode() {
         Integer lastId = 0;
         Bill lastBill = billRepository.findTopByOrderByIdDesc();
@@ -506,7 +507,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Page<BillDto> findAll(Pageable pageable){
+    public Page<BillDto> findAll(Pageable pageable) {
         return billRepository.listBill(pageable);
     }
 
