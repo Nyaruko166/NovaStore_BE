@@ -6,6 +6,7 @@ import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.SessionCart;
 import com.sd64.novastore.repository.user.ProductViewRepository;
+import com.sd64.novastore.response.ProductDiscountHomeResponse;
 import com.sd64.novastore.response.ProductHomeResponse;
 import com.sd64.novastore.service.*;
 import com.sd64.novastore.service.user.ProductViewService;
@@ -56,6 +57,7 @@ public class HomeController {
     @Autowired
     private BrandService brandService;
 
+    @Autowired
     private CartService cartService;
 
     @Autowired
@@ -72,8 +74,10 @@ public class HomeController {
             Cart cart = customer.getCart();
             SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
             if (sessionCart != null) {
-                cartService.combineCart(sessionCart, principal.getName());
-                session.removeAttribute("sessionCart");
+                if (sessionCart.getCartDetails() != null) {
+                    cartService.combineCart(sessionCart, principal.getName());
+                    session.removeAttribute("sessionCart");
+                }
             }
             if (cart != null) {
                 session.setAttribute("totalItems", cart.getTotalItems());
@@ -81,7 +85,7 @@ public class HomeController {
         }
         List<ProductHomeResponse> listProductHomeResponse = productViewService.getAllProductHomeResponse();
         model.addAttribute("listProductHomeResponse", listProductHomeResponse);
-        List<ProductHomeResponse> listProductDiscountHomeResponse = productViewService.getAllProductDiscountHomeResponse();
+        List<ProductDiscountHomeResponse> listProductDiscountHomeResponse = productViewService.getAllProductDiscountHomeResponse();
         model.addAttribute("listProductDiscountHomeResponse", listProductDiscountHomeResponse);
         return "/user/home";
     }
@@ -107,6 +111,7 @@ public class HomeController {
 
     @GetMapping("/search")
     public String searchProductResponse(@RequestParam(required = false) String productNameSearch,
+                                        @RequestParam(required = false) Integer sort,
                                         @RequestParam(required = false) Integer brandId,
                                         @RequestParam(required = false) Integer materialId,
                                         @RequestParam(required = false) Integer categoryId,
@@ -114,30 +119,98 @@ public class HomeController {
                                         @RequestParam(required = false) Integer price,
                                         @RequestParam(defaultValue = "0") int page,
                                         Model model) {
-        if (productNameSearch == "" && price == null && brandId == null && materialId == null && categoryId == null && formId == null) {
+        if (productNameSearch == "" && sort == null && price == null && brandId == null && materialId == null && categoryId == null && formId == null) {
             return "redirect:/shop";
         }
-        BigDecimal priceMax = productViewService.getPriceMaxBySelected(price);
-        BigDecimal priceMin = productViewService.getPriceMinBySelected(price);
-        Page<ProductHomeResponse> pageProductShopResponse = productViewService.searchProductShopResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin, page);
-        model.addAttribute("pageProductShopResponse", pageProductShopResponse);
-        model.addAttribute("productName", productNameSearch);
-        List<Material> listMaterial = materialService.getAll();
-        List<Category> listCategory = categoryService.getAll();
-        List<Form> listForm = formService.getAll();
-        List<Brand> listBrand = brandService.getAll();
-        model.addAttribute("listMaterial", listMaterial);
-        model.addAttribute("listCategory", listCategory);
-        model.addAttribute("listForm", listForm);
-        model.addAttribute("listBrand", listBrand);
-        model.addAttribute("brandId", brandId);
-        model.addAttribute("materialId", materialId);
-        model.addAttribute("categoryId", categoryId);
-        model.addAttribute("formId", formId);
-        model.addAttribute("priceMax", priceMax);
-        model.addAttribute("priceMin", priceMin);
-        model.addAttribute("productNameSearch", productNameSearch);
-        return "user/shop";
+        if (sort == null) {
+            BigDecimal priceMax = productViewService.getPriceMaxBySelected(price);
+            BigDecimal priceMin = productViewService.getPriceMinBySelected(price);
+            Page<ProductHomeResponse> pageProductShopResponse = productViewService.searchProductShopResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin, page);
+            model.addAttribute("pageProductShopResponse", pageProductShopResponse);
+            model.addAttribute("productName", productNameSearch);
+            List<Material> listMaterial = materialService.getAll();
+            List<Category> listCategory = categoryService.getAll();
+            List<Form> listForm = formService.getAll();
+            List<Brand> listBrand = brandService.getAll();
+            model.addAttribute("listMaterial", listMaterial);
+            model.addAttribute("listCategory", listCategory);
+            model.addAttribute("listForm", listForm);
+            model.addAttribute("listBrand", listBrand);
+            model.addAttribute("brandId", brandId);
+            model.addAttribute("materialId", materialId);
+            model.addAttribute("categoryId", categoryId);
+            model.addAttribute("formId", formId);
+            model.addAttribute("priceMax", priceMax);
+            model.addAttribute("priceMin", priceMin);
+            model.addAttribute("productNameSearch", productNameSearch);
+            return "user/shop";
+        } else if (sort == 1) {
+            BigDecimal priceMax = productViewService.getPriceMaxBySelected(price);
+            BigDecimal priceMin = productViewService.getPriceMinBySelected(price);
+            Page<ProductHomeResponse> pageProductShopResponse = productViewService.searchProductDescShopResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin, page);
+            model.addAttribute("pageProductShopResponse", pageProductShopResponse);
+            model.addAttribute("productName", productNameSearch);
+            List<Material> listMaterial = materialService.getAll();
+            List<Category> listCategory = categoryService.getAll();
+            List<Form> listForm = formService.getAll();
+            List<Brand> listBrand = brandService.getAll();
+            model.addAttribute("listMaterial", listMaterial);
+            model.addAttribute("listCategory", listCategory);
+            model.addAttribute("listForm", listForm);
+            model.addAttribute("listBrand", listBrand);
+            model.addAttribute("brandId", brandId);
+            model.addAttribute("materialId", materialId);
+            model.addAttribute("categoryId", categoryId);
+            model.addAttribute("formId", formId);
+            model.addAttribute("priceMax", priceMax);
+            model.addAttribute("priceMin", priceMin);
+            model.addAttribute("productNameSearch", productNameSearch);
+            return "user/shop";
+        } else if (sort == 2) {
+            BigDecimal priceMax = productViewService.getPriceMaxBySelected(price);
+            BigDecimal priceMin = productViewService.getPriceMinBySelected(price);
+            Page<ProductHomeResponse> pageProductShopResponse = productViewService.searchProductAscShopResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin, page);
+            model.addAttribute("pageProductShopResponse", pageProductShopResponse);
+            model.addAttribute("productName", productNameSearch);
+            List<Material> listMaterial = materialService.getAll();
+            List<Category> listCategory = categoryService.getAll();
+            List<Form> listForm = formService.getAll();
+            List<Brand> listBrand = brandService.getAll();
+            model.addAttribute("listMaterial", listMaterial);
+            model.addAttribute("listCategory", listCategory);
+            model.addAttribute("listForm", listForm);
+            model.addAttribute("listBrand", listBrand);
+            model.addAttribute("brandId", brandId);
+            model.addAttribute("materialId", materialId);
+            model.addAttribute("categoryId", categoryId);
+            model.addAttribute("formId", formId);
+            model.addAttribute("priceMax", priceMax);
+            model.addAttribute("priceMin", priceMin);
+            model.addAttribute("productNameSearch", productNameSearch);
+            return "user/shop";
+        } else {
+            BigDecimal priceMax = productViewService.getPriceMaxBySelected(price);
+            BigDecimal priceMin = productViewService.getPriceMinBySelected(price);
+            Page<ProductHomeResponse> pageProductShopResponse = productViewService.searchProductDiscountShopResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin, page);
+            model.addAttribute("pageProductShopResponse", pageProductShopResponse);
+            model.addAttribute("productName", productNameSearch);
+            List<Material> listMaterial = materialService.getAll();
+            List<Category> listCategory = categoryService.getAll();
+            List<Form> listForm = formService.getAll();
+            List<Brand> listBrand = brandService.getAll();
+            model.addAttribute("listMaterial", listMaterial);
+            model.addAttribute("listCategory", listCategory);
+            model.addAttribute("listForm", listForm);
+            model.addAttribute("listBrand", listBrand);
+            model.addAttribute("brandId", brandId);
+            model.addAttribute("materialId", materialId);
+            model.addAttribute("categoryId", categoryId);
+            model.addAttribute("formId", formId);
+            model.addAttribute("priceMax", priceMax);
+            model.addAttribute("priceMin", priceMin);
+            model.addAttribute("productNameSearch", productNameSearch);
+            return "user/shop";
+        }
     }
 
     @GetMapping("/product-detail/{productId}")

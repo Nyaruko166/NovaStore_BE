@@ -96,7 +96,7 @@ public class ProductDetailController {
             return "redirect:/nova/product/view-add";
         } else {
             List<ProductDetail> productDetailList = createProductDetails.getListProductDetail();
-            productService.saveFinal(productAdd, productDetailList, files);
+            productService.addFinal(productAdd, productDetailList, files);
         }
         httpSession.removeAttribute("randomKey");
         httpSession.removeAttribute("productAdd" + randomKey);

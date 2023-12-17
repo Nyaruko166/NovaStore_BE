@@ -1,6 +1,7 @@
 package com.sd64.novastore.repository.user;
 
 import com.sd64.novastore.dto.admin.ProductDto;
+import com.sd64.novastore.dto.common.ProductDiscountHomeDto;
 import com.sd64.novastore.dto.common.ProductHomeDto;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
@@ -28,19 +29,23 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             "FROM Product p\n" +
             "INNER JOIN ProductDetail pd ON pd.product.id = p.id\n" +
             "INNER JOIN Image i ON i.product.id = p.id\n" +
-            "WHERE p.status = 1 AND i.status = 1 AND pd.status = 1\n  " +
+            "WHERE p.status = 1 AND i.status = 1 AND pd.status = 1 OR p.status = 2\n  " +
             "ORDER BY p.updateDate DESC ")
     List<ProductHomeDto> getAllProductResponseHome();
 
     @Query(value = "SELECT p.id as productId, " +
             "p.name as productName, " +
-            "pd.price as price " +
+            "pd.price as price, " +
+            "pd.priceDiscount as priceDiscount, " +
+            "pr.value as value " +
             "FROM Product p\n" +
             "INNER JOIN ProductDetail pd ON pd.product.id = p.id\n" +
             "INNER JOIN Image i ON i.product.id = p.id\n" +
+            "INNER JOIN PromotionDetail prd ON prd.product.id = p.id\n" +
+            "INNER JOIN Promotion pr ON pr.id = prd.promotion.id\n" +
             "WHERE p.status = 2 AND i.status = 1 AND pd.status = 1\n  " +
             "ORDER BY p.updateDate DESC ")
-    List<ProductHomeDto> getAllProductDiscountResponseHome();
+    List<ProductDiscountHomeDto> getAllProductDiscountResponseHome();
 
 
     @Query(value = "SELECT p.id as productId, " +
@@ -104,5 +109,51 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             " AND (p.form.id=:formId OR :formId IS NULL) " +
             " AND p.status = 1 AND pd.status = 1 AND i.status = 1 ORDER BY p.updateDate DESC")
     List<ProductHomeDto> searchProductResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productName, BigDecimal priceMax, BigDecimal priceMin);
+
+
+    @Query(value = "SELECT p.id as productId, " +
+            "p.name as productName, " +
+            "pd.price as price " +
+            " FROM Product p " +
+            " INNER JOIN ProductDetail pd ON p.id = pd.product.id " +
+            " INNER JOIN Image i ON i.product.id = p.id " +
+            " WHERE (p.name LIKE %:productName% OR p.name IS NULL) " +
+            " AND (pd.price >= :priceMin AND pd.price <= :priceMax)" +
+            " AND (p.brand.id=:brandId OR :brandId IS NULL) " +
+            " AND (p.material.id=:materialId OR :materialId IS NULL) " +
+            " AND (p.category.id=:categoryId OR :categoryId IS NULL) " +
+            " AND (p.form.id=:formId OR :formId IS NULL) " +
+            " AND p.status = 1 AND pd.status = 1 AND i.status = 1 ORDER BY pd.price DESC")
+    List<ProductHomeDto> searchProductDescResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productName, BigDecimal priceMax, BigDecimal priceMin);
+
+    @Query(value = "SELECT p.id as productId, " +
+            "p.name as productName, " +
+            "pd.price as price " +
+            " FROM Product p " +
+            " INNER JOIN ProductDetail pd ON p.id = pd.product.id " +
+            " INNER JOIN Image i ON i.product.id = p.id " +
+            " WHERE (p.name LIKE %:productName% OR p.name IS NULL) " +
+            " AND (pd.price >= :priceMin AND pd.price <= :priceMax)" +
+            " AND (p.brand.id=:brandId OR :brandId IS NULL) " +
+            " AND (p.material.id=:materialId OR :materialId IS NULL) " +
+            " AND (p.category.id=:categoryId OR :categoryId IS NULL) " +
+            " AND (p.form.id=:formId OR :formId IS NULL) " +
+            " AND p.status = 1 AND pd.status = 1 AND i.status = 1 ORDER BY pd.price ASC")
+    List<ProductHomeDto> searchProductAscResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productName, BigDecimal priceMax, BigDecimal priceMin);
+
+    @Query(value = "SELECT p.id as productId, " +
+            "p.name as productName, " +
+            "pd.price as price " +
+            " FROM Product p " +
+            " INNER JOIN ProductDetail pd ON p.id = pd.product.id " +
+            " INNER JOIN Image i ON i.product.id = p.id " +
+            " WHERE (p.name LIKE %:productName% OR p.name IS NULL) " +
+            " AND (pd.price >= :priceMin AND pd.price <= :priceMax)" +
+            " AND (p.brand.id=:brandId OR :brandId IS NULL) " +
+            " AND (p.material.id=:materialId OR :materialId IS NULL) " +
+            " AND (p.category.id=:categoryId OR :categoryId IS NULL) " +
+            " AND (p.form.id=:formId OR :formId IS NULL) " +
+            " AND p.status = 1 OR p.status = 2 AND pd.status = 1 AND i.status = 1 ORDER BY p.updateDate DESC")
+    List<ProductHomeDto> searchProductDiscountResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productName, BigDecimal priceMax, BigDecimal priceMin);
 
 }

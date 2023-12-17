@@ -30,7 +30,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "p.form.name as formName, " +
             "p.material.name as materialName " +
             " FROM Product p " +
-            " WHERE p.status = 1 ORDER BY p.updateDate DESC")
+            " WHERE p.status = 1 OR p.status = 2 ORDER BY p.updateDate DESC")
     Page<ProductDto> getAllProduct(Pageable pageable);
 
     @Query(value = "SELECT p.id as id, " +
@@ -49,7 +49,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             " AND (p.material.id=:materialId OR :materialId IS NULL) " +
             " AND (p.category.id=:categoryId OR :categoryId IS NULL) " +
             " AND (p.form.id=:formId OR :formId IS NULL) " +
-            " AND p.status = 1 ORDER BY p.updateDate DESC")
+            " AND p.status = 1 OR p.status = 2 ORDER BY p.updateDate DESC")
     Page<ProductDto> search(Pageable pageable, Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productName, String description);
 
 

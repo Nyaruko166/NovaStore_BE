@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl.user;
 
+import com.sd64.novastore.dto.common.impl.ProductDiscountHomeDtoImpl;
 import com.sd64.novastore.dto.common.impl.ProductHomeDtoImpl;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
@@ -9,10 +10,7 @@ import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.repository.ProductRepository;
 import com.sd64.novastore.repository.user.ProductViewRepository;
 import com.sd64.novastore.repository.user.UserSizeRepository;
-import com.sd64.novastore.response.ColorDetailResponse;
-import com.sd64.novastore.response.ProductHomeResponse;
-import com.sd64.novastore.response.PropertiesResponse;
-import com.sd64.novastore.response.SizeDetailResponse;
+import com.sd64.novastore.response.*;
 import com.sd64.novastore.service.user.ProductViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -139,33 +137,43 @@ public class ProductViewServiceImpl implements ProductViewService {
         return listProductResponse;
     }
 
+    public BigDecimal calculatePriceToPriceDiscount(BigDecimal price, Float value) {
+        price = new BigDecimal(String.valueOf(price));
+        BigDecimal valueConvert = BigDecimal.valueOf(value);
+        BigDecimal priceDiscount = price.multiply(valueConvert.divide(new BigDecimal(String.valueOf(price))));
+        BigDecimal finalPriceDiscount = price.subtract(priceDiscount);
+        System.out.println();
+        return finalPriceDiscount;
+    }
+
     @Override
-    public List<ProductHomeResponse> getAllProductDiscountHomeResponse() {
-        List<ProductHomeDtoImpl> productHomeResponseDtoList = productViewRepository.getAllProductDiscountResponseHome()
-                .stream().map(ProductHomeDtoImpl::toData).toList();
-        List<ProductHomeResponse> productHomeResponses = new ArrayList<>();
-        for (int index = 0; index < productHomeResponseDtoList.size(); index++) {
+    public List<ProductDiscountHomeResponse> getAllProductDiscountHomeResponse() {
+        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.getAllProductDiscountResponseHome()
+                .stream().map(ProductDiscountHomeDtoImpl::toData).toList();
+        List<ProductDiscountHomeResponse> productDiscountHomeResponses = new ArrayList<>();
+        for (int index = 0; index < productDiscountHomeResponseDtoList.size(); index++) {
             int finalIndex = index;
-            var prdResponse = productHomeResponses.stream()
-                    .filter(e -> e.getId().intValue() == productHomeResponseDtoList.get(finalIndex).getProductId().intValue())
+            ProductDiscountHomeResponse prdDiscountResponse = productDiscountHomeResponses.stream()
+                    .filter(e -> e.getId().intValue() == productDiscountHomeResponseDtoList.get(finalIndex).getProductId().intValue())
                     .findFirst().orElse(null);
-            if (prdResponse == null) {
-                prdResponse = productHomeResponseDtoList.get(finalIndex).toResponse();
-                productHomeResponses.add(prdResponse);
+            if (prdDiscountResponse == null) {
+                prdDiscountResponse = productDiscountHomeResponseDtoList.get(finalIndex).toResponse();
+                productDiscountHomeResponses.add(prdDiscountResponse);
             } else {
-                int i = productHomeResponses.indexOf(prdResponse);
-                productHomeResponses.get(i).comparePrice(productHomeResponseDtoList.get(finalIndex).getPrice());
+                int i = productDiscountHomeResponses.indexOf(prdDiscountResponse);
+                productDiscountHomeResponses.get(i).comparePrice(productDiscountHomeResponseDtoList.get(finalIndex).getPrice());
+//                productDiscountHomeResponses.get(i).comparePriceDiscount(calculatePriceToPriceDiscount(productDiscountHomeResponseDtoList.get(finalIndex).getPrice(), productDiscountHomeResponseDtoList.get(finalIndex).getValue()));
             }
         }
-        List<ProductHomeResponse> listProductResponse = new ArrayList<>();
+        List<ProductDiscountHomeResponse> listProductDiscountResponse = new ArrayList<>();
         int index = 1;
-        for (ProductHomeResponse productHomeResponse: productHomeResponses) {
+        for (ProductDiscountHomeResponse producDiscounttHomeResponse: productDiscountHomeResponses) {
             if (index <= 8) {
-                listProductResponse.add(productHomeResponse);
+                listProductDiscountResponse.add(producDiscounttHomeResponse);
                 index++;
             }
         }
-        return listProductResponse;
+        return listProductDiscountResponse;
     }
 
 //    public void getProductHome() {
@@ -298,6 +306,81 @@ public class ProductViewServiceImpl implements ProductViewService {
     public Page<ProductHomeResponse> searchProductShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page) {
         List<ProductHomeDtoImpl> productHomeResponseDtoList = productViewRepository.searchProductResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin)
         .stream().map(e -> ProductHomeDtoImpl.toData(e)).collect(Collectors.toList());
+        List<ProductHomeResponse> productHomeResponses = new ArrayList<>();
+        for (int index = 0; index < productHomeResponseDtoList.size(); index++) {
+            int finalIndex = index;
+            var prdResponse = productHomeResponses.stream()
+                    .filter(e -> e.getId().intValue() == productHomeResponseDtoList.get(finalIndex).getProductId().intValue())
+                    .findFirst().orElse(null);
+            if (prdResponse == null) {
+                prdResponse = productHomeResponseDtoList.get(finalIndex).toResponse();
+                productHomeResponses.add(prdResponse);
+            } else {
+                int i = productHomeResponses.indexOf(prdResponse);
+                productHomeResponses.get(i).comparePrice(productHomeResponseDtoList.get(finalIndex).getPrice());
+            }
+        }
+        Pageable pageable = PageRequest.of(page, 9);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), productHomeResponses.size());
+        List<ProductHomeResponse> pageContent = productHomeResponses.subList(start, end);
+        return new PageImpl<>(pageContent, pageable, productHomeResponses.size());
+    }
+
+    @Override
+    public Page<ProductHomeResponse> searchProductDescShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page) {
+        List<ProductHomeDtoImpl> productHomeResponseDtoList = productViewRepository.searchProductDescResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin)
+                .stream().map(e -> ProductHomeDtoImpl.toData(e)).collect(Collectors.toList());
+        List<ProductHomeResponse> productHomeResponses = new ArrayList<>();
+        for (int index = 0; index < productHomeResponseDtoList.size(); index++) {
+            int finalIndex = index;
+            var prdResponse = productHomeResponses.stream()
+                    .filter(e -> e.getId().intValue() == productHomeResponseDtoList.get(finalIndex).getProductId().intValue())
+                    .findFirst().orElse(null);
+            if (prdResponse == null) {
+                prdResponse = productHomeResponseDtoList.get(finalIndex).toResponse();
+                productHomeResponses.add(prdResponse);
+            } else {
+                int i = productHomeResponses.indexOf(prdResponse);
+                productHomeResponses.get(i).comparePrice(productHomeResponseDtoList.get(finalIndex).getPrice());
+            }
+        }
+        Pageable pageable = PageRequest.of(page, 9);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), productHomeResponses.size());
+        List<ProductHomeResponse> pageContent = productHomeResponses.subList(start, end);
+        return new PageImpl<>(pageContent, pageable, productHomeResponses.size());
+    }
+
+    @Override
+    public Page<ProductHomeResponse> searchProductAscShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page) {
+        List<ProductHomeDtoImpl> productHomeResponseDtoList = productViewRepository.searchProductAscResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin)
+                .stream().map(e -> ProductHomeDtoImpl.toData(e)).collect(Collectors.toList());
+        List<ProductHomeResponse> productHomeResponses = new ArrayList<>();
+        for (int index = 0; index < productHomeResponseDtoList.size(); index++) {
+            int finalIndex = index;
+            var prdResponse = productHomeResponses.stream()
+                    .filter(e -> e.getId().intValue() == productHomeResponseDtoList.get(finalIndex).getProductId().intValue())
+                    .findFirst().orElse(null);
+            if (prdResponse == null) {
+                prdResponse = productHomeResponseDtoList.get(finalIndex).toResponse();
+                productHomeResponses.add(prdResponse);
+            } else {
+                int i = productHomeResponses.indexOf(prdResponse);
+                productHomeResponses.get(i).comparePrice(productHomeResponseDtoList.get(finalIndex).getPrice());
+            }
+        }
+        Pageable pageable = PageRequest.of(page, 9);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), productHomeResponses.size());
+        List<ProductHomeResponse> pageContent = productHomeResponses.subList(start, end);
+        return new PageImpl<>(pageContent, pageable, productHomeResponses.size());
+    }
+
+    @Override
+    public Page<ProductHomeResponse> searchProductDiscountShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page) {
+        List<ProductHomeDtoImpl> productHomeResponseDtoList = productViewRepository.searchProductDiscountResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin)
+                .stream().map(e -> ProductHomeDtoImpl.toData(e)).collect(Collectors.toList());
         List<ProductHomeResponse> productHomeResponses = new ArrayList<>();
         for (int index = 0; index < productHomeResponseDtoList.size(); index++) {
             int finalIndex = index;
