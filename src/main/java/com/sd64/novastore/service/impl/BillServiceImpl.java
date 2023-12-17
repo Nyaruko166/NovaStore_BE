@@ -186,13 +186,10 @@ public class BillServiceImpl implements BillService {
         bill.setShippingFee(BigDecimal.ZERO);
         bill.setCreateDate(new Date());
         bill.setUpdateDate(new Date());
-        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo")){
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")){
             bill.setPaymentDate(new Date());
-            bill.setConfirmationDate(new Date());
-            bill.setStatus(3);
-        } else {
-            bill.setStatus(10);
         }
+        bill.setStatus(10);
         bill.setCustomer(cart.getCustomer());
         List<Address> listAccountAddress = addressRepository.findAllAccountAddress(cart.getCustomer().getId());
         if (listAccountAddress.isEmpty()){
@@ -234,7 +231,7 @@ public class BillServiceImpl implements BillService {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setBill(bill);
         paymentMethod.setName(payment);
-        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo")){
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")){
             paymentMethod.setMoney(bill.getTotalPrice());
             paymentMethod.setStatus(1);
         } else {
@@ -275,13 +272,10 @@ public class BillServiceImpl implements BillService {
         bill.setShippingFee(BigDecimal.ZERO);
         bill.setCreateDate(new Date());
         bill.setUpdateDate(new Date());
-        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo")){
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")){
             bill.setPaymentDate(new Date());
-            bill.setConfirmationDate(new Date());
-            bill.setStatus(3);
-        } else {
-            bill.setStatus(10);
         }
+        bill.setStatus(10);
         Customer customer = customerRepository.findByEmail(email);
         if (customer == null){
             customer = new Customer();
@@ -337,7 +331,7 @@ public class BillServiceImpl implements BillService {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setBill(bill);
         paymentMethod.setName(payment);
-        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo")){
+        if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")){
             paymentMethod.setMoney(bill.getTotalPrice());
             paymentMethod.setStatus(1);
         } else {
@@ -361,46 +355,139 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public Bill cancelOrder(Integer billId) {
+    public boolean userCancelOrder(Integer billId) {
         Bill bill = billRepository.findById(billId).orElse(null);
-        bill.setStatus(0);
-        if (bill.getVoucher() != null){
-            Voucher voucher = bill.getVoucher();
-            if (voucher.getStatus() == 10){
-                voucher.setQuantity(voucher.getQuantity() + 1);
-                voucher.setStatus(1);
+        if (bill.getStatus() != 10){
+            return false;
+        } else {
+            bill.setStatus(0);
+            bill.setCancellationDate(new Date());
+            if (bill.getVoucher() != null){
+                Voucher voucher = bill.getVoucher();
+                if (voucher.getStatus() == 10){
+                    voucher.setQuantity(voucher.getQuantity() + 1);
+                    voucher.setStatus(1);
+                }
+                voucherRepository.save(voucher);
             }
-            voucherRepository.save(voucher);
+            List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAllByBillIdOrderById(billId);
+            for (PaymentMethod paymentMethod : paymentMethodList){
+                paymentMethod.setStatus(0);
+            }
+            List<BillDetail> billDetailList = billDetailRepository.findAllByBill_Id(billId);
+            for (BillDetail billDetail : billDetailList){
+                billDetail.setStatus(0);
+                billDetailRepository.save(billDetail);
+                ProductDetail productDetail = productDetailRepository.findById(billDetail.getProductDetail().getId()).orElse(null);
+                productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity());
+                productDetail.setStatus(1);
+                productDetailRepository.save(productDetail);
+            }
+            bill.setBillDetails(billDetailList);
+            billRepository.save(bill);
+            return true;
         }
-        List<BillDetail> billDetailList = bill.getBillDetails();
-        for (BillDetail billDetail : billDetailList){
-            billDetail.setStatus(0);
-            billDetailRepository.save(billDetail);
-            ProductDetail productDetail = productDetailRepository.findById(billDetail.getProductDetail().getId()).orElse(null);
-            productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity());
-            productDetail.setStatus(1);
-            productDetailRepository.save(productDetail);
-        }
-        bill.setBillDetails(billDetailList);
-        return billRepository.save(bill);
     }
 
     @Override
-    public Bill shippingOrder(Integer id, BigDecimal shippingFee) {
+    public boolean confirmOrder(BigDecimal shippingFee, Integer id) {
         Bill bill = billRepository.findById(id).orElse(null);
-        bill.setStatus(2);
-        bill.setShippingDate(new Date());
-        bill.setShippingFee(shippingFee);
-        bill.setTotalPrice(bill.getPrice().subtract(bill.getDiscountAmount()).add(shippingFee));
-        return billRepository.save(bill);
+        if (bill.getStatus() != 10){
+            return false;
+        } else {
+            bill.setStatus(3);
+            bill.setConfirmationDate(new Date());
+            bill.setShippingFee(shippingFee);
+            bill.setTotalPrice(bill.getPrice().subtract(bill.getDiscountAmount()).add(shippingFee));
+            PaymentMethod paymentMethod = paymentMethodRepository.findByStatusAndBillId(10, id);
+            if (paymentMethod != null){
+                paymentMethod.setMoney(bill.getTotalPrice());
+                paymentMethodRepository.save(paymentMethod);
+            } else if (shippingFee.compareTo(BigDecimal.ZERO) != 0){
+                PaymentMethod newPaymentMethod = new PaymentMethod();
+                newPaymentMethod.setName("Thanh toán khi nhận hàng");
+                newPaymentMethod.setMoney(shippingFee);
+                newPaymentMethod.setDescription("Thanh toán khi nhận hàng");
+                newPaymentMethod.setStatus(10);
+                newPaymentMethod.setBill(bill);
+                paymentMethodRepository.save(newPaymentMethod);
+            }
+            billRepository.save(bill);
+            return true;
+        }
     }
 
     @Override
-    public Bill acceptBill(Integer id) {
+    public boolean shippingOrder(Integer id) {
         Bill bill = billRepository.findById(id).orElse(null);
-        bill.setStatus(3);
-        bill.setConfirmationDate(new Date());
-        return billRepository.save(bill);
+        if (bill.getStatus() != 3){
+            return false;
+        } else {
+            bill.setStatus(2);
+            bill.setShippingDate(new Date());
+            billRepository.save(bill);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean completeOrder(Integer id) {
+        Bill bill = billRepository.findById(id).orElse(null);
+        if (bill.getStatus() != 2){
+            return false;
+        } else {
+            bill.setStatus(1);
+            bill.setCompletionDate(new Date());
+            if (bill.getPaymentDate() == null){
+                bill.setPaymentDate(new Date());
+            }
+            List<PaymentMethod> listPaymentMethod = paymentMethodRepository.findAllByBillIdOrderById(id);
+            for (PaymentMethod paymentMethod : listPaymentMethod) {
+                if (paymentMethod.getStatus() == 10){
+                    paymentMethod.setStatus(1);
+                    paymentMethodRepository.save(paymentMethod);
+                }
+            }
+            billRepository.save(bill);
+            return true;
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean cancelOrder(Integer billId){
+        Bill bill = billRepository.findById(billId).orElse(null);
+        if (bill.getStatus() == 0){
+            return false;
+        } else {
+            bill.setStatus(0);
+            bill.setCancellationDate(new Date());
+            if (bill.getVoucher() != null){
+                Voucher voucher = bill.getVoucher();
+                if (voucher.getStatus() == 10){
+                    voucher.setQuantity(voucher.getQuantity() + 1);
+                    voucher.setStatus(1);
+                }
+                voucherRepository.save(voucher);
+            }
+            List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAllByBillIdOrderById(billId);
+            for (PaymentMethod paymentMethod : paymentMethodList){
+                paymentMethod.setStatus(0);
+                paymentMethodRepository.save(paymentMethod);
+            }
+            List<BillDetail> billDetailList = billDetailRepository.findAllByBill_Id(billId);
+            for (BillDetail billDetail : billDetailList){
+                billDetail.setStatus(0);
+                billDetailRepository.save(billDetail);
+                ProductDetail productDetail = productDetailRepository.findById(billDetail.getProductDetail().getId()).orElse(null);
+                productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity());
+                productDetail.setStatus(1);
+                productDetailRepository.save(productDetail);
+            }
+            bill.setBillDetails(billDetailList);
+            billRepository.save(bill);
+            return true;
+        }
     }
 
     public String generateBillCode() {

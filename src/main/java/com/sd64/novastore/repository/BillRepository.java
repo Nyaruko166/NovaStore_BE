@@ -38,7 +38,8 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
             "            AS type, b.status AS status" +
             "            FROM Bill b " +
             "WHERE (:code IS NULL OR b.code LIKE CONCAT('%', :code, '%')) " +
-            "AND (:ngayTaoStart IS NULL OR :ngayTaoEnd IS NULL OR (b.orderDate BETWEEN :ngayTaoStart AND :ngayTaoEnd)) " +
+            "AND (:ngayTaoStart IS NULL OR b.orderDate >= :ngayTaoStart) " +
+            "AND (:ngayTaoEnd IS NULL OR b.orderDate <= :ngayTaoEnd)" +
             "AND (:status IS NULL OR b.status = :status) " +
             "AND (:type IS NULL OR b.type= :type) "+
             "AND (:phoneNumber IS NULL OR b.phoneNumber IS NULL OR b.phoneNumber LIKE CONCAT('%', :phoneNumber, '%')) "+

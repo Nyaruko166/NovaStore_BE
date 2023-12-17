@@ -10,14 +10,16 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+                <div class="alert alert-success" role="alert" th:if="${message}">
+                    <span th:text="${message}"></span>
+                </div>
                 <div class="card" style="position: relative">
                     <div class="card-body">
                         <div class="invoice-title">
                             <!--                            <h4 class="float-end font-size-15"><span class="badge bg-success font-size-12 ms-2" th:text="${billdetail.trangThaiDonHang}"></span></h4>-->
                             <div class="float-end mr-4">
                                 <!-- Add class 'active' to progress -->
-                                <div class="track"
-                                     th:if="${bill.status != 0}">
+                                <div class="track">
                                     <div class="step" th:classappend="${
                                     bill.status == 10 ||
                                     bill.status == 3 ||
@@ -85,16 +87,12 @@
                                            th:text="${#dates.format(bill.completionDate, 'dd-MM-yyyy HH:mm:ss')}"></p>
                                     </div>
                                 </div>
-                                <div
-                                        th:if="${bill.status == 0}">
-                                    <div class="text-danger font-weight-bold border rounded p-2 border-danger">
-                                        ĐÃ HỦY
-                                    </div>
-                                </div>
                             </div>
                             <div class="mb-4">
                                 <h2 class="mb-1 text-muted" th:text="'Mã hoá đơn: ' + ${bill.code}">
                                 </h2>
+                                <div th:if="${bill.status == 0}" th:text="'ĐÃ HUỶ - NGÀY HUỶ: ' + ${#dates.format(bill.cancellationDate, 'dd-MM-yyyy HH:mm:ss')}" class="text-danger font-weight-bold border rounded p-2 border-danger">
+                                </div>
                             </div>
                         </div>
 
@@ -208,6 +206,7 @@
                                     <thead>
                                     <tr>
                                         <th></th>
+                                        <th>Mã</th>
                                         <th>Sản phẩm</th>
                                         <th>Màu sắc</th>
                                         <th>Kích cỡ</th>
@@ -223,6 +222,7 @@
                                             <img th:src="@{'/image/product/' + ${billDetail.productDetail.product.id}}"
                                                  width="62" height="62">
                                         </td>
+                                        <td th:text="${billDetail.productDetail.code}"></td>
                                         <td>
                                             <div>
                                                 <h6 class="text-truncate font-size-14 mb-1"
@@ -245,7 +245,7 @@
                                     <!-- end tr -->
 
                                     <tr>
-                                        <th scope="row" colspan="6" style="text-align: right">
+                                        <th scope="row" colspan="7" style="text-align: right">
                                             Tổng thanh toán sản phẩm :
                                         </th>
                                         <td style="text-align: right"
@@ -255,7 +255,7 @@
                                     </tr>
                                     <!-- end tr -->
                                     <tr>
-                                        <th scope="row" colspan="6" class="border-0" style="text-align: right">
+                                        <th scope="row" colspan="7" class="border-0" style="text-align: right">
                                             Voucher :
                                         </th>
                                         <td class="border-0" style="text-align: right"
@@ -265,7 +265,7 @@
                                     </tr>
                                     <!-- end tr -->
                                     <tr>
-                                        <th scope="row" colspan="6" class="border-0" style="text-align: right">
+                                        <th scope="row" colspan="7" class="border-0" style="text-align: right">
                                             Phí ship :
                                         </th>
                                         <td class="border-0" style="text-align: right"
@@ -277,7 +277,7 @@
 
                                     <!-- end tr -->
                                     <tr>
-                                        <th scope="row" colspan="6" class="border-0" style="text-align: right">
+                                        <th scope="row" colspan="7" class="border-0" style="text-align: right">
                                             Tổng thanh toán :
                                         </th>
                                         <td class="border-0" style="text-align: right">
@@ -296,9 +296,9 @@
                             <!-- end table responsive -->
                             <div class="d-print-none mt-4">
                                 <div style="text-align: right">
-                                    <a th:href="@{'/admin/export-pdf/'+${bill.id}}"
+                                    <a th:href="@{'/nova/bill/export-pdf/'+${bill.id}}"
                                        class="btn btn-success me-1"><i class="fa fa-print"></i></a>
-                                    <a th:href="@{'/admin/bill-list'}">
+                                    <a th:href="@{'/nova/bill'}">
                                         <button type="button" class="btn btn-secondary w-md" data-dismiss="modal">
                                             Đóng
                                         </button>
@@ -306,34 +306,47 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="py-2 bill-detail-update-status">
-                            <form th:action="@{'/admin/update-bill-status2/' + ${bill.id}}"
-                                  method="get">
-                                <input type="hidden" name="trangThaiDonHang" value="HUY"/>
-                                <button type="button" class="cancel-btn btn btn-danger rounded"
-                                        style="float: right; margin-bottom: 10px"
-                                        th:if="${bill.status == 10 || bill.status == 3}">
+                        <div class="py-2" th:if="${bill.status != 0 && bill.status != 1}">
+                                <a th:href="@{'/nova/bill/detail-cancel-bill/' + ${bill.id}}" class="btn cancel-btn btn btn-danger rounded"
+                                        style="float: right; margin-bottom: 10px">
                                     <i class="far fa-times-circle"></i>&nbsp;Hủy đơn
-                                </button>
-                            </form>
-
-                            <form th:action="@{'/admin/update-bill-status2/' + ${bill.id}}"
-                                  method="get">
-                                <div th:data-status="${bill.status}" class="btn-update-status mt-2"
-                                     style="max-width: 180px"
-                                     th:if="${bill.status != 0 &&
-                                bill.status != 1}">
-                                        <span class="btn btn-secondary text-wrap rounded"
-                                              th:if="${bill.status == 10}">
-                                            <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</span>
-                                    <span class="btn btn-primary text-wrap rounded"
-                                          th:if="${bill.status == 3}">
-                                            <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao hàng</span>
-                                    <span class="btn btn-primary text-wrap rounded"
-                                          th:if="${bill.status == 2}">
-                                            <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đã giao hàng thành công</span>
+                                </a>
+                            <button class="btn btn-secondary confirm-btn text-wrap rounded" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"
+                               th:if="${bill.status == 10}">
+                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</button>
+                            <a th:href="@{'/nova/bill/detail-shipping-bill/' + ${bill.id}}" class="btn btn-primary shipping-btn text-wrap rounded"
+                               th:if="${bill.status == 3}">
+                                            <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao hàng</a>
+                            <a th:href="@{'/nova/bill/detail-complete-bill/' + ${bill.id}}" class="btn btn-primary complete-btn text-wrap rounded"
+                               th:if="${bill.status == 2}">
+                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao thành công</a>
+                        </div>
+                        <!-- Modal -->
+                        <div th:if="${bill.status == 10}" class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form id="confirmForm" th:action="@{/nova/bill/detail-confirm-bill}" method="POST">
+                                        <div class="modal-body">
+                                            <input type="hidden" id="orderId" name="id">
+                                            <div class="form-group">
+                                                <label for="shippingFee">Phí ship</label>
+                                                <input type="number" class="form-control" id="shippingFee" name="shippingFee">
+                                                <small id="shippingFeeError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -342,21 +355,55 @@
         </div>
     </div>
     <script>
-        $(".cancel-btn").on("click", function (e) {
-            e.stopPropagation();
+        $('.cancel-btn').on('click', function (e) {
+            e.preventDefault();
             Swal.fire({
                 title: "Xác nhận?",
-                text: `Bạn chắc chắn muốn hủy đơn này, thao tác này không thể trở lại!`,
+                text: `Bạn chắc chắn muốn hủy đơn này?`,
                 icon: "warning",
                 showCancelButton: true,
-                cancelButtonText: "Hủy",
-                confirmButtonText: "Xác nhận",
-                reverseButtons: true,
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Xác nhận',
+                reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $(this).closest("form").submit();
+                    window.location.href = $(this).attr('href');
                 }
-            });
+            })
+        });
+
+        $('.shipping-btn').on('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: "Xác nhận?",
+                text: `Xác nhận giao đơn này?`,
+                icon: "warning",
+                showCancelButton: true,
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Xác nhận',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = $(this).attr('href');
+                }
+            })
+        });
+
+        $('.complete-btn').on('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: "Xác nhận?",
+                text: `Xác nhận đã giao thành công đơn này?`,
+                icon: "warning",
+                showCancelButton: true,
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Xác nhận',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = $(this).attr('href');
+                }
+            })
         });
 
         $(".btn-update-status").on("click", function (e) {
@@ -393,6 +440,43 @@
                     window.location.href = url;
                 }
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.confirm-btn').on('click', function(){
+                var orderId = $(this).attr('data-id');
+                $('#orderId').val(orderId);
+                $('#shippingFee').val('');
+                $('#shippingFeeError').text('');
+            });
+        });
+
+        $('#confirmForm').on('submit', function(e){
+            var shippingFee = $('#shippingFee').val();
+            var orderId = $('#orderId').val();
+            if(shippingFee === '' || shippingFee < 0){
+                e.preventDefault();
+                $('#shippingFeeError').text('Phí ship không được để trống và phải lớn hơn hoặc bằng 0');
+            } else if(orderId === ''){
+                e.preventDefault();
+            } else {
+                e.preventDefault(); // Ngăn chặn việc gửi form ngay lập tức
+                $('#shippingFeeError').text('');
+                Swal.fire({
+                    title: "Xác nhận?",
+                    text: `Bạn chắc chắn muốn xác nhận đơn này!`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy',
+                    confirmButtonText: 'Xác nhận',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit(); // Gửi form khi người dùng nhấp vào 'Xác nhận'
+                    }
+                });
+            }
         });
     </script>
 </div>
