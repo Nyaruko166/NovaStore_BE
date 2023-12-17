@@ -1,5 +1,7 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.dto.admin.Impl.PromotionDetailDTOImpl;
+import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Promotion;
@@ -108,6 +110,12 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
     @Override
     public Boolean existsByProductIdAndStatus(Integer productId, Integer status) {
         return promotionDetailRepository.existsByProductIdAndStatus(productId, 1);
+    }
+
+    @Override
+    public Page<PromotionDetailDTO> All(Integer page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return promotionDetailRepository.All(pageable);
     }
 
 

@@ -1,5 +1,7 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.dto.admin.thongke.VoucherSearchDTO;
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.repository.VoucherRepository;
 import com.sd64.novastore.service.VoucherService;
@@ -48,6 +50,12 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
+    public Page<VoucherSearchDTO> searchVoucher(String code, Date ngayTaoStart, Date ngayTaoEnd, Integer status, String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return voucherRepository.searchVoucher(code,ngayTaoStart,ngayTaoEnd,status,name,pageable);
+    }
+
+    @Override
     public List<Voucher> getAll() {
         return voucherRepository.findAllByStatusOrderByIdDesc(1);
     }
@@ -71,12 +79,21 @@ public class VoucherServiceImpl implements VoucherService {
             }
         }
     }
-
+    public String generateCode() {
+        Voucher voucher = voucherRepository.findTopByOrderByIdDesc();
+        if (voucher == null) {
+            return "M00001";
+        }
+        Integer idFinalPresent = voucher.getId() + 1;
+        String code = String.format("%05d", idFinalPresent);
+        return "M"+code;
+    }
     @Override
     public Voucher add(Voucher voucher) {
         voucher.setCreateDate(new Date());
         voucher.setUpdateDate(new Date());
         voucher.updateStatus();
+        voucher.setCode(generateCode());
         return voucherRepository.save(voucher);
     }
 

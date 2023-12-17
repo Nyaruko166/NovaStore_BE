@@ -6,6 +6,7 @@ import com.sd64.novastore.dto.admin.thongke.TKNgay;
 import com.sd64.novastore.dto.admin.thongke.TKSLThang;
 import com.sd64.novastore.dto.admin.thongke.TKSoLuongSanPham;
 import com.sd64.novastore.dto.admin.thongke.TKThang;
+import com.sd64.novastore.dto.admin.thongke.TKTong;
 import com.sd64.novastore.dto.admin.thongke.TKTrangThaiHoaDon;
 import com.sd64.novastore.dto.admin.thongke.TKTuan;
 import com.sd64.novastore.model.Bill;
@@ -18,19 +19,19 @@ import java.util.List;
 
 @Repository
 public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
-    @Query(value = "SELECT\r\n"
-            + "    COUNT(CASE WHEN b.Status = 1 THEN b.Id END) AS SoLuongThanhCong,\r\n"
-            + "    SUM(CASE WHEN b.Status = 1 AND CONVERT(DATE, b.OrderDate) = CONVERT(DATE, GETDATE()) THEN b.TotalPrice ELSE 0 END) AS DoanhThu,\r\n"
-            + "    COUNT(CASE WHEN b.Status = 0 THEN b.Id END) AS SoLuongHuy,\r\n"
-            + "	SUM(CASE WHEN b.Status = 1 THEN (bd.Quantity) END) AS SoSanPham\r\n"
-            + "FROM\r\n"
-            + "    Bill b\r\n"
-            + "LEFT JOIN\r\n"
-            + "    BillDetail bd ON b.Id = bd.BillId\r\n"
-            + "WHERE\r\n"
-            + "    (b.Status = 1 AND CONVERT(DATE, b.OrderDate) = CONVERT(DATE, GETDATE()))\r\n"
-            + "    OR\r\n"
-            + "    (b.Status = 0 AND CONVERT(DATE, b.OrderDate) = CONVERT(DATE, GETDATE()));", nativeQuery = true)
+    @Query(value = "SELECT\n" +
+            "    COUNT(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL THEN b.Id END) AS SoLuongThanhCong,\n" +
+            "    SUM(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL AND CONVERT(DATE, b.CompletionDate) = CONVERT(DATE, GETDATE()) THEN (b.Price -b.DiscountAmount) ELSE 0 END) AS DoanhThu,\n" +
+            "    COUNT(CASE WHEN b.Status = 0 AND b.CancellationDate IS NOT NULL AND CONVERT(DATE, b.CancellationDate) = CONVERT(DATE, GETDATE()) THEN b.Id END) AS SoLuongHuy,\n" +
+            "    SUM(CASE WHEN b.Status = 1 AND CONVERT(DATE, b.CompletionDate) = CONVERT(DATE, GETDATE()) THEN bd.Quantity ELSE 0 END) AS SoSanPham\n" +
+            "FROM\n" +
+            "    Bill b\n" +
+            "LEFT JOIN\n" +
+            "    BillDetail bd ON b.Id = bd.BillId\n" +
+            "WHERE\n" +
+            "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND CONVERT(DATE, b.CompletionDate) = CONVERT(DATE, GETDATE()))\n" +
+            "    OR\n" +
+            "    (b.Status = 0 AND b.CancellationDate IS NOT NULL AND CONVERT(DATE, b.CancellationDate) = CONVERT(DATE, GETDATE()))", nativeQuery = true)
     public TKNgay getThongKeNgay();
 
     @Query(value = "SET DATEFIRST 1;\r\n"
@@ -40,71 +41,75 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
             + "SET @CurrentWeek = DATEPART(WEEK, GETDATE());\r\n"
             + "\r\n"
             + "SELECT\r\n"
-            + "    COUNT(CASE WHEN b.Status = 1 THEN b.Id END) AS SoLuongThanhCong,\r\n"
-            + "    SUM(CASE WHEN  b.Status = 1 AND YEAR( b.OrderDate) = @CurrentYear AND DATEPART(WEEK,  b.OrderDate) = @CurrentWeek THEN  b.TotalPrice ELSE 0 END) AS DoanhThu,\r\n"
-            + "    COUNT(CASE WHEN  b.Status = 0 THEN b.Id END) AS SoLuongHuy,\r\n"
+            + "    COUNT(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL THEN b.Id END) AS SoLuongThanhCong,\r\n"
+            + "    SUM(CASE WHEN  b.Status = 1 AND b.CompletionDate IS NOT NULL AND YEAR(b.CompletionDate) = @CurrentYear AND DATEPART(WEEK,  b.CompletionDate) = @CurrentWeek THEN  (b.Price -b.DiscountAmount) ELSE 0 END) AS DoanhThu,\r\n"
+            + "    COUNT(CASE WHEN  b.Status = 0 AND b.CancellationDate IS NOT NULL AND YEAR(b.CancellationDate) = @CurrentYear AND DATEPART(WEEK,  b.CancellationDate) = @CurrentWeek THEN b.Id END) AS SoLuongHuy,\r\n"
             + "	SUM(CASE WHEN b.Status = 1 THEN (bd.Quantity) END) AS SoSanPham\r\n"
             + "FROM\r\n"
             + "    Bill b\r\n"
             + "LEFT JOIN\r\n"
             + "    BillDetail bd ON b.Id = bd.BillId\r\n"
             + "WHERE\r\n"
-            + "    ( b.Status = 1 AND YEAR( b.OrderDate) = @CurrentYear AND DATEPART(WEEK,  b.OrderDate) = @CurrentWeek)\r\n"
+            + "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND YEAR(b.CompletionDate) = @CurrentYear AND DATEPART(WEEK, b.CompletionDate) = @CurrentWeek)\r\n"
             + "    OR\r\n"
-            + "    ( b.Status = 0 AND YEAR( b.OrderDate) = @CurrentYear AND DATEPART(WEEK,  b.OrderDate) = @CurrentWeek);", nativeQuery = true)
+            + "    (b.Status = 0 AND b.CancellationDate IS NOT NULL AND YEAR(b.CancellationDate) = @CurrentYear AND DATEPART(WEEK, b.CancellationDate) = @CurrentWeek);", nativeQuery = true)
     public TKTuan getThongKeTuan();
 
-    @Query(value = "SELECT\r\n"
-            + "    COUNT(CASE WHEN  b.Status = 1 THEN b.Id END) AS SoLuongThanhCong,\r\n"
-            + "    SUM(CASE WHEN  b.Status = 1 AND MONTH( b.OrderDate) = MONTH(GETDATE()) THEN  b.TotalPrice ELSE 0 END) AS DoanhThu,\r\n"
-            + "    COUNT(CASE WHEN  b.Status = 0 THEN b.Id END) AS SoLuongHuy,\r\n"
-            + "	SUM(CASE WHEN b.Status = 1 THEN (bd.Quantity) END) AS SoSanPham\r\n"
-            + "FROM\r\n"
-            + "    Bill b\r\n"
-            + "LEFT JOIN\r\n"
-            + "    BillDetail bd ON b.Id = bd.BillId\r\n"
-            + "WHERE\r\n"
-            + "    ( b.Status = 1 AND MONTH( b.OrderDate) = MONTH(GETDATE()))\r\n"
-            + "    OR\r\n"
-            + "    ( b.Status = 0 AND MONTH( b.OrderDate) = MONTH(GETDATE()));", nativeQuery = true)
-    public TKThang getThongKeThang();
 
     @Query(value = "SELECT\r\n"
-            + "    COUNT(CASE WHEN  b.Status = 1 THEN b.Id END) AS SoLuongThanhCong,\r\n"
-            + "    SUM(CASE WHEN  b.Status = 1 AND YEAR(OrderDate) = YEAR(GETDATE()) THEN  b.TotalPrice ELSE 0 END) AS DoanhThu,\r\n"
-            + "    COUNT(CASE WHEN  b.Status = 0 THEN b.Id END) AS SoLuongHuy,\r\n"
-            + "	SUM(CASE WHEN b.Status = 1 THEN (bd.Quantity) END) AS SoSanPham\r\n"
+            + "    COUNT(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL THEN b.Id END) AS SoLuongThanhCong,\r\n"
+            + "    SUM(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL AND MONTH(b.CompletionDate) = MONTH(GETDATE()) THEN (b.Price -b.DiscountAmount) ELSE 0 END) AS DoanhThu,\r\n"
+            + "    COUNT(CASE WHEN b.Status = 0 AND b.CancellationDate IS NOT NULL THEN b.Id END) AS SoLuongHuy,\r\n"
+            + "    SUM(CASE WHEN b.Status = 1 AND MONTH(b.CompletionDate) = MONTH(GETDATE()) THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
             + "FROM\r\n"
             + "    Bill b\r\n"
             + "LEFT JOIN\r\n"
             + "    BillDetail bd ON b.Id = bd.BillId\r\n"
             + "WHERE\r\n"
-            + "    ( b.Status = 1 AND YEAR( b.OrderDate) = YEAR(GETDATE()))\r\n"
+            + "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND MONTH(b.CompletionDate) = MONTH(GETDATE()))\r\n"
             + "    OR\r\n"
-            + "    ( b.Status = 0 AND YEAR( b.OrderDate) = YEAR(GETDATE()));", nativeQuery = true)
+            + "    (b.Status = 0 AND b.CancellationDate IS NOT NULL AND MONTH(b.CancellationDate) = MONTH(GETDATE()));", nativeQuery = true)
+    public TKThang getThongKeThang();
+
+
+    @Query(value = "SELECT\r\n"
+            + "    COUNT(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL THEN b.Id END) AS SoLuongThanhCong,\r\n"
+            + "    SUM(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL AND YEAR(b.CompletionDate) = YEAR(GETDATE()) THEN (b.Price -b.DiscountAmount) ELSE 0 END) AS DoanhThu,\r\n"
+            + "    COUNT(CASE WHEN b.Status = 0 AND b.CancellationDate IS NOT NULL THEN b.Id END) AS SoLuongHuy,\r\n"
+            + "    SUM(CASE WHEN b.Status = 1 AND YEAR(b.CompletionDate) = YEAR(GETDATE()) THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
+            + "FROM\r\n"
+            + "    Bill b\r\n"
+            + "LEFT JOIN\r\n"
+            + "    BillDetail bd ON b.Id = bd.BillId\r\n"
+            + "WHERE\r\n"
+            + "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND YEAR(b.CompletionDate) = YEAR(GETDATE()))\r\n"
+            + "    OR\r\n"
+            + "    (b.Status = 0 AND b.CancellationDate IS NOT NULL AND YEAR(b.CancellationDate) = YEAR(GETDATE()));", nativeQuery = true)
     public TKNam getThongKeNam();
+
 
     @Query(value = "Select SUM(bd.Quantity) as 'SoLuong' from BillDetail bd\n" +
             "join Bill b on b.Id = bd.BillId\n" +
-            "WHERE b.Status = 1 AND MONTH(b.OrderDate) = MONTH(GETDATE()) AND YEAR(b.OrderDate) = YEAR(GETDATE())", nativeQuery = true)
+            "WHERE b.Status = 1 AND MONTH(b.OrderDate) = MONTH(GETDATE()) AND YEAR(b.CompletionDate) = YEAR(GETDATE())", nativeQuery = true)
     public TKSLThang getThongKeSoLuongThang();
 
     @Query(value = "DECLARE @StartDate DATE = :tungay\r\n"
             + "DECLARE @EndDate DATE = :denngay\r\n"
             + "\r\n"
             + "SELECT\r\n"
-            + "    COUNT(CASE WHEN b.Status = 1 THEN b.Id END) AS SoLuongThanhCong,\r\n"
-            + "    SUM(CASE WHEN b.Status = 1 AND CONVERT(DATE, b.OrderDate) BETWEEN @StartDate AND @EndDate THEN b.TotalPrice ELSE 0 END) AS DoanhThu,\r\n"
-            + "    COUNT(CASE WHEN b.Status = 0 AND CONVERT(DATE, b.OrderDate) BETWEEN @StartDate AND @EndDate THEN b.Id END) AS SoLuongHuy,\r\n"
-            + "    SUM(CASE WHEN b.Status = 1 AND CONVERT(DATE, b.OrderDate) BETWEEN @StartDate AND @EndDate THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
+            + "    COUNT(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL AND CONVERT(DATE, b.CompletionDate) BETWEEN @StartDate AND @EndDate THEN b.Id END) AS SoLuongThanhCong,\r\n"
+            + "    SUM(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL AND CONVERT(DATE, b.CompletionDate) BETWEEN @StartDate AND @EndDate THEN (b.Price -b.DiscountAmount) ELSE 0 END) AS DoanhThu,\r\n"
+            + "    COUNT(CASE WHEN b.Status = 0 AND b.CancellationDate IS NOT NULL AND CONVERT(DATE, b.CancellationDate) BETWEEN @StartDate AND @EndDate THEN b.Id END) AS SoLuongHuy,\r\n"
+            + "    SUM(CASE WHEN b.Status = 1 AND CONVERT(DATE, b.CompletionDate) BETWEEN @StartDate AND @EndDate THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
             + "FROM\r\n"
             + "    Bill b\r\n"
             + "LEFT JOIN\r\n"
             + "    BillDetail bd ON b.Id = bd.BillId\r\n"
             + "WHERE\r\n"
-            + "    (b.Status = 1 AND CONVERT(DATE, b.OrderDate) BETWEEN @StartDate AND @EndDate) OR\r\n"
-            + "    (b.Status = 0 AND CONVERT(DATE, b.OrderDate) BETWEEN @StartDate AND @EndDate);", nativeQuery = true)
+            + "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND CONVERT(DATE, b.CompletionDate) BETWEEN @StartDate AND @EndDate) OR\r\n"
+            + "    (b.Status = 0 AND b.CancellationDate IS NOT NULL AND CONVERT(DATE, b.CancellationDate) BETWEEN @StartDate AND @EndDate);", nativeQuery = true)
     public List<TKKhoangNgay> getTKKhoangNgay(@Param("tungay") String tungay, @Param("denngay") String denngay);
+
 
     @Query(value = "WITH DateTable AS (\n" +
             "    SELECT \n" +
@@ -131,5 +136,18 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
             "GROUP BY b.Status " +
             "ORDER BY b.Status", nativeQuery = true)
     public List<TKTrangThaiHoaDon> getTKTrangThaiHoaDon();
+
+
+    @Query(value = "SELECT\n" +
+            "        SUM(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL THEN  (b.Price -b.DiscountAmount) ELSE 0 END) AS SoLuong\n" +
+            "        FROM\n" +
+            "           Bill b\n" +
+            "        WHERE\n" +
+            "           b.Status = 1 AND b.CompletionDate IS NOT NULL", nativeQuery = true)
+    public TKTong getTKTongDoanhThu();
+    @Query(value = "SELECT COUNT(*) AS SoLuong\n" +
+            "FROM [dbo].[Bill]\n" +
+            "WHERE [Status] = 1 AND [CompletionDate] IS NOT NULL", nativeQuery = true)
+    public TKTong getTKTongDonHang();
 
 }

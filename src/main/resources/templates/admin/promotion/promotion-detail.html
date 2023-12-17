@@ -16,16 +16,10 @@
                 <form id="promotionUpdate" th:object="${promotion}"
                       th:action="@{/nova/promotion/update/{id}(id=${promotion.id})}"
                       method="post" class="form-horizontal">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label font-weight-bold">Mã khuyến
-                            mãi</label>
+                    <div class=" form-group row">
+                        <label class="col-sm-2 col-form-label font-weight-bold">Mã khuyến mãi</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="code"
-                                   id="code"
-                                   th:value="*{code}"
-                                   oninput="onInputText('errorCode')">
-                            <small class="" style="color: red"
-                                   id="errorCode"></small>
+                            <input type="text" id="code" name="code" th:field="*{code}" class="form-control" disabled>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -110,26 +104,6 @@
                         </div>
                     </div>
                     <script th:inline="javascript">
-                        let enteredCodes = new Set();
-
-                        function onInputText(errorElementId) {
-                            document.getElementById(errorElementId).innerHTML = '';
-                        }
-
-                        function checkCode() {
-                            let isCode = document.getElementById('code').value;
-                            if (enteredCodes.has(isCode)) {
-                                document.getElementById('errorCode').innerHTML = `Mã đã được nhập trước đó`;
-                                return false;
-                            }
-                            if (isCode.trim() === '') {
-                                document.getElementById('errorCode').innerHTML = `Chưa nhập mã`;
-                                return false;
-                            }
-                            enteredCodes.add(isCode);
-                            return true;
-                        }
-
                         checkName = () => {
                             let isName = document.getElementById('name').value
                             if (isName.trim() === '') {
@@ -202,12 +176,11 @@
                         }
 
                         validate = () => {
-                            let isCode = checkCode();
                             let isName = checkName();
                             let isValue = checkValue();
                             let isStartDate = checkStartDate()
                             let isEndDate = checkEndDate()
-                            if (isCode === true && isName === true && isValue === true && isStartDate === true && isEndDate === true) {
+                            if (isName === true && isValue === true && isStartDate === true && isEndDate === true) {
                                 return true;
                             }
                         }

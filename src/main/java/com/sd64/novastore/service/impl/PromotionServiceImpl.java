@@ -1,6 +1,8 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.dto.admin.BillDto;
 import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -81,10 +84,32 @@ public class PromotionServiceImpl implements PromotionService {
         return promotionRepository.findAllByStatusOrderByIdDesc(pageable);
     }
 
+    private Boolean checkName(String name) {
+        Promotion promotion = promotionRepository.findByName(name);
+        if (promotion != null) {
+            return false;
+        }
+        return true;
+    }
+
+    public String generateCode() {
+        Promotion latestPromotion = promotionRepository.findTopByOrderByIdDesc();
+
+        if (latestPromotion == null || latestPromotion.getId() == null) {
+            return "M00001";
+        }
+
+        Integer nextId = latestPromotion.getId() + 1;
+        String code = String.format("M%05d", nextId);
+        return code;
+    }
+
+
     @Override
     public Promotion add(Promotion promotion) {
         promotion.setCreateDate(new Date());
         promotion.setUpdateDate(new Date());
+        promotion.setCode(generateCode());
         promotion.updateStatus();
         return promotionRepository.save(promotion);
     }
@@ -162,8 +187,16 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public Page<PromotionSearchDTO> getPromoTion(String tungay, String denngay, Pageable pageable) {
-        return promotionRepository.getPromoTion(tungay, denngay, pageable);
+    public Page<PromotionSearchDTO> findAll(Pageable pageable) {
+        return promotionRepository.listPromotions(pageable);
     }
+
+    @Override
+    public Page<PromotionSearchDTO> searchPromotion(String code,Date ngayTaoStart,
+                                                     Date ngayTaoEnd, Integer status, String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return promotionRepository.searchPromotion(code,ngayTaoStart,ngayTaoEnd,status,name,pageable);
+    }
+
 
 }

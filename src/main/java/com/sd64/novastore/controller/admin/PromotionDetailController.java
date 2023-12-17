@@ -1,5 +1,6 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Promotion;
@@ -40,14 +41,27 @@ public class PromotionDetailController {
     private PromotionService promotionService;
 
 
+//    @GetMapping("/page")
+//    public String getAllPTPagination(@ModelAttribute("promotionDetail") PromotionDetail promotionDetail, @RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
+//        Page<PromotionDetail> pagePromotionDetail = promotionDetailService.getAllPT(page);
+//        model.addAttribute("pagePromotionDetail", pagePromotionDetail);
+//        model.addAttribute("page", page);
+//        List<Promotion> promotionList = promotionService.getAll();
+//        List<Product> productList = promotionDetailService.getAll();
+//        List<ProductDetail> productDetailList= promotionDetailService.getAllPrDT();
+//        model.addAttribute("productDetailList", productDetailList);
+//        model.addAttribute("promotionList", promotionList);
+//        model.addAttribute("productList", productList);
+//        return "admin/promotiondetail/promotiondetail";
+//    }
     @GetMapping("/page")
     public String getAllPTPagination(@ModelAttribute("promotionDetail") PromotionDetail promotionDetail, @RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
-        Page<PromotionDetail> pagePromotionDetail = promotionDetailService.getAllPT(page);
+        Page<PromotionDetailDTO> pagePromotionDetail = promotionDetailService.All(page);
         model.addAttribute("pagePromotionDetail", pagePromotionDetail);
         model.addAttribute("page", page);
         List<Promotion> promotionList = promotionService.getAll();
         List<Product> productList = promotionDetailService.getAll();
-        List<ProductDetail> productDetailList= promotionDetailService.getAllPrDT();
+        List<ProductDetail> productDetailList = promotionDetailService.getAllPrDT();
         model.addAttribute("productDetailList", productDetailList);
         model.addAttribute("promotionList", promotionList);
         model.addAttribute("productList", productList);
