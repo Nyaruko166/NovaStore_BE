@@ -21,38 +21,44 @@
                 </button>
             </div>
             <div class="card-body card-block">
+                <form th:action="@{/nova/voucher/search}" method="get">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="code">Mã voucher</label>
+                            <input type="text" class="form-control" name="code" th:value="${code}">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Trạng thái</label>
+                            <select class="form-control" name="status" th:value="${status}">
+                                <option selected value="1">Hoạt động</option>
+                                <option value="2">Đang chờ</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="name">Tên voucher</label>
+                            <input type="text" class="form-control" name="name" th:value="${name}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Khoảng ngày kết thúc</label>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <input type="date" class="form-control" name="ngayTaoStart"
+                                           th:value="${ngayTaoStart}">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="date" class="form-control" name="ngayTaoEnd" th:value="${ngayTaoEnd}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1" style="margin-top: 30px">
+                            <button type="submit" class="btn btn-dark "><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
                 <form id="voucherForm" th:action="@{/nova/voucher/add}" th:object="${voucher}" method="post"
                       class="form-horizontal">
-                    <div class="card-footer d-flex">
-                        <div class="mr-auto">
-                            <button style="width: 53px;
-                                     height: 40px;" onclick="clickSearch('voucher', 'voucherForm')" type="button"
-                                    class="btn btn-secondary">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </div>
-                        <div class="flex-grow-1 ml-2">
-                            <input type="text" placeholder="Nhập tên voucher"
-                                   th:value="${voucherNameSearch}" th:name="voucherNameSearch"
-                                   style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; font-size: 14px; width: 100%; box-sizing: border-box;">
-                        </div>
-
-                        <form style="margin-bottom: 20px; display: flex; align-items: center;">
-                            <label style="border-radius: 3px; display: inline-block; margin-bottom: 5px; margin-right: 10px; font-size: 14px;"></label>
-                            <input type="date"
-                                   style="border: 1px solid #ccc; border-radius: 3px; padding: 8px; margin-bottom: 10px; font-size: 14px;">
-
-                            <label style="border-radius: 3px; display: inline-block; margin-bottom: 5px; margin-right: 10px; font-size: 14px;"></label>
-                            <input type="date"
-                                   style="border: 1px solid #ccc; border-radius: 3px; padding: 8px; margin-bottom: 10px; font-size: 14px;">
-
-                            <button type="submit" style="border-radius: 5px;width: 53px;
-                                     height: 40px; display: inline-block; padding: 10px; background-color: #000; color: white; border: none; cursor: pointer; transition: background-color 0.3s ease;"
-                                    onmouseover="this.style.backgroundColor='#333'"
-                                    onmouseout="this.style.backgroundColor='#000'">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </form>
+                    <div class="d-flex">
                         <div class="ml-2">
                             <button type="button" style="width: 53px;
                                      height: 40px;" class="btn btn-dark" data-toggle="modal" data-target="#addModal">
@@ -79,17 +85,6 @@
                                                 <strong>Thêm voucher</strong>
                                             </div>
                                             <div class="card-body card-block">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label font-weight-bold">Mã
-                                                        voucher</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="code"
-                                                               id="code"
-                                                               oninput="onInputText('errorCode')">
-                                                        <small class="" style="color: red"
-                                                               id="errorCode"></small>
-                                                    </div>
-                                                </div>
                                                 <div class="form-group row">
                                                     <label class="col-sm-2 col-form-label font-weight-bold">Tên
                                                         voucher</label>
@@ -188,33 +183,6 @@
                                                     </button>
                                                 </div>
                                                 <script th:inline="javascript">
-                                                    let enteredCodes = new Set();
-
-                                                    function onInputText(errorElementId) {
-                                                        document.getElementById(errorElementId).innerHTML = '';
-                                                    }
-
-                                                    function checkCode() {
-                                                        let isCode = document.getElementById('code').value.trim();
-
-                                                        // Kiểm tra trống
-                                                        if (isCode === '') {
-                                                            document.getElementById('errorCode').innerHTML = 'Chưa nhập mã';
-                                                            return false;
-                                                        }
-
-                                                        // Kiểm tra trùng mã
-                                                        if (enteredCodes.has(isCode)) {
-                                                            document.getElementById('errorCode').innerHTML = 'Mã đã được nhập trước đó';
-                                                            return false;
-                                                        }
-
-                                                        // Thêm mã vào Set để kiểm tra trùng lặp
-                                                        enteredCodes.add(isCode);
-
-                                                        return true;
-                                                    }
-
                                                     checkName = () => {
                                                         let isName = document.getElementById('name').value
                                                         if (isName.trim() === '') {
@@ -245,6 +213,7 @@
 
                                                         return true;
                                                     }
+
                                                     function isNonNegativeInteger(value) {
                                                         return /^\d+$/.test(value);
                                                     }
@@ -341,14 +310,13 @@
                                                     }
 
                                                     validate = () => {
-                                                        let isCode = checkCode();
                                                         let isName = checkName();
                                                         let isQuantity = checkQuantity();
                                                         let isValue = checkValue();
                                                         let isMinimumPrice = checkMinimumPrice()
                                                         let isStartDate = checkStartDate()
                                                         let isEndDate = checkEndDate()
-                                                        if (isCode === true && isName === true && isQuantity === true && isValue === true && isMinimumPrice === true && isStartDate === true && isEndDate === true) {
+                                                        if (isName === true && isQuantity === true && isValue === true && isMinimumPrice === true && isStartDate === true && isEndDate === true) {
                                                             return true;
                                                         }
                                                     }
@@ -384,7 +352,7 @@
             </div>
         </div>
     </div>
-    <div class="col" >
+    <div class="col">
         <div class="card">
             <div class="card-header" th:if="${pageVoucher.isEmpty()}">
                 <strong class="card-title">KHÔNG CÓ DỮ LIỆU</strong>
@@ -422,7 +390,10 @@
                                 <td th:text="${#numbers.formatDecimal(items.minimumPrice, 0, 0)}"></td>
                                 <td th:text="${#dates.format(items.startDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td th:text="${#dates.format(items.endDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                                <td th:text="${items.getStatusName()}"></td>
+                                <td>
+                                    <span th:if="${items.status == 1}">Hoạt động</span>
+                                    <span th:if="${items.status == 2}">Đang chờ</span>
+                                </td>
                                 <td class="d-flex justify-content-center">
                                     <div class="dropdown">
                                         <button class="btn btn-dark" type="button"

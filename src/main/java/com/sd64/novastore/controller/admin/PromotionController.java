@@ -1,9 +1,22 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.dto.admin.ProductDto;
+import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
+import com.sd64.novastore.dto.admin.thongke.TKKhoangNgay;
+import com.sd64.novastore.dto.admin.thongke.TKNam;
+import com.sd64.novastore.dto.admin.thongke.TKNgay;
+import com.sd64.novastore.dto.admin.thongke.TKSanPham;
+import com.sd64.novastore.dto.admin.thongke.TKThang;
+import com.sd64.novastore.dto.admin.thongke.TKTrangThaiHoaDon;
+import com.sd64.novastore.dto.admin.thongke.TKTuan;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +26,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/nova/promotion")
@@ -67,15 +85,40 @@ public class PromotionController {
         return "admin/promotion/promotionChiTiet";
     }
 
+//    @GetMapping("/search")
+//    public String search(@ModelAttribute("promotion") Promotion promotion, Model model, @RequestParam(required = false) String promotionNameSearch,
+//                         @RequestParam(defaultValue = "0") int page) {
+//        Page<Promotion> pagePromotion = promotionService.search(promotionNameSearch, page);
+//        if ("".equals(promotionNameSearch) || promotionNameSearch.isEmpty()) {
+//            return "redirect:/nova/promotion/page";
+//        }
+//        model.addAttribute("promotionNameSearch", promotionNameSearch);
+//        model.addAttribute("pagePromotion", pagePromotion);
+//        return "admin/promotion/promotion";
+//    }
+
     @GetMapping("/search")
-    public String search(@ModelAttribute("promotion") Promotion promotion, Model model, @RequestParam(required = false) String promotionNameSearch,
-                         @RequestParam(defaultValue = "0") int page) {
-        Page<Promotion> pagePromotion = promotionService.search(promotionNameSearch, page);
-        if ("".equals(promotionNameSearch) || promotionNameSearch.isEmpty()) {
+    public String search(
+            @RequestParam(required = false) String code,
+            @RequestParam(name = "ngayTaoStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTaoStart,
+            @RequestParam(name = "ngayTaoEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTaoEnd,
+            @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) String name,
+            Model model, @RequestParam(defaultValue = "0") int page) {
+
+        if ((code == null || code.isEmpty()) && status == null && (name == null || name.isEmpty()) && ngayTaoStart == null && ngayTaoEnd == null) {
             return "redirect:/nova/promotion/page";
         }
-        model.addAttribute("promotionNameSearch", promotionNameSearch);
-        model.addAttribute("pagePromotion", pagePromotion);
+            Page<PromotionSearchDTO> promotionSearchDTOPage = promotionService.searchPromotion(code, ngayTaoStart, ngayTaoEnd, status, name, page);
+            model.addAttribute("pagePromotion", promotionSearchDTOPage);
+        model.addAttribute("code", code);
+        model.addAttribute("status", status);
+        model.addAttribute("name", name);
+        model.addAttribute("ngayTaoStart", ngayTaoStart);
+        model.addAttribute("ngayTaoEnd", ngayTaoEnd);
+
         return "admin/promotion/promotion";
     }
+
+
 }

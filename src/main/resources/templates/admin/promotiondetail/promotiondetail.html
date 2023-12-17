@@ -279,20 +279,32 @@
                         <table class="table text-center">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Tên khuyến mãi</th>
-                                <th scope="col">Function</th>
+                                <th>ID</th>
+                                <th>Promotion Name</th>
+                                <th>Product Name</th>
+                                <th>Product Code</th>
+                                <th>Min Product Price</th>
+                                <th>Max Product Price</th>
+                                <th>Promotion Start Date</th>
+                                <th>Promotion End Date</th>
+                                <th>Promotion Value</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="items:${pagePromotionDetail}">
-                                <td th:text="${items.id}"></td>
-                                <td th:text="${items.product.name}"></td>
-                                <td th:text="${items.promotion.name}"></td>
+                            <tr th:each="item:${pagePromotionDetail}">
+                                <td th:text="${item.promotionDetailId}"></td>
+                                <td th:text="${item.promotionName}"></td>
+                                <td th:text="${item.productName}"></td>
+                                <td th:text="${item.productCode}"></td>
+                                <td th:text="${item.minProductPrice}"></td>
+                                <td th:text="${item.maxProductPrice}"></td>
+                                <td th:text="${#dates.format(item.promotionStartDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td th:text="${#dates.format(item.promotionEndDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td th:text="${item.promotionValue}"></td>
                                 <td class="d-flex justify-content-center">
                                     <div>
-                                        <button th:onclick="clickDelete('promotion-detail', 'promotionDetailDelete', [[${items.id}]])"
+                                        <button th:onclick="clickDelete('promotion-detail', 'promotionDetailDelete', [[${item.promotionDetailId}]])"
                                                 type="button" class="btn btn-danger">
                                             <i class="fa-solid fa-trash mr-1"></i>
                                         </button>
