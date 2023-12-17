@@ -37,6 +37,7 @@ function onScanSuccess(decodedText) {
             body: JSON.stringify({
                 billId: billId,
                 data: decodedText,
+                qty: 1
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -69,6 +70,61 @@ function searchAndReplace() {
 }
 
 function searchAndReplaceProduct() {
+    let keyword = document.getElementById('keywordProduct').value;
+    // console.log(keyword)
+    let url = "/nova/pos/api/productFilter?keyword=" + keyword;
+
+    $.post(url).done(function (fragment_product) {
+        // console.log(fragment_product);
+        $("#modal_product_replace").replaceWith(fragment_product);
+    });
+}
+
+async function addItems(obj) {
+
+    let productCode = obj.value;
+
+    const {value: qty} = await Swal.fire({
+        title: "Nhập số lượng",
+        input: "number",
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value) {
+                return "Vui lòng nhập số lượng!";
+            } else if (Math.sign(Number(value)) !== 1) {
+                return "Vui lòng nhập số nguyên dương!";
+            }
+        }
+    });
+
+    if (qty) {
+        let queryString = window.location.search;
+        let urlParam = new URLSearchParams(queryString);
+        let billId;
+        if (!urlParam.has('billId')) {
+            billId = 0;
+        } else {
+            billId = urlParam.get('billId');
+        }
+
+        fetch("/nova/pos/add", {
+            method: "POST",
+            body: JSON.stringify({
+                billId: billId,
+                data: productCode,
+                qty: qty
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(updateOutput);
+    }
+}
+
+function isNumeric(str) {
+    if (typeof str != "string") return false // we only process strings!
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
 function calCashBack() {

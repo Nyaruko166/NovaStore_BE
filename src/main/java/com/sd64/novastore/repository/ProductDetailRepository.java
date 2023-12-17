@@ -27,6 +27,9 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
 
     ProductDetail findByIdAndStatus(Integer id, Integer status);
 
+    @Query("SELECT c FROM ProductDetail c WHERE c.product.name LIKE %:name% AND c.status = :status")
+    Page<ProductDetail> searchAllByProductNameAndStatus(String name, Integer status, Pageable pageable);
+
     @Query(value = "SELECT pd FROM ProductDetail pd\n" +
             "INNER JOIN Product p ON pd.product.id = p.id\n" +
             "INNER JOIN Image i ON i.product.id = p.id\n" +

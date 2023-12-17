@@ -4,6 +4,7 @@ import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -39,4 +40,6 @@ public interface ProductDetailService {
     byte[] getProductDetail(Integer id);
 
     List<ProductDetail> getProductDetailNoDeleteResponse(List<ProductDetail> listProductDetail);
+
+    Page<ProductDetail> findAllByProductNameAndStatus(String name, Integer status, Pageable pageable);
 }
