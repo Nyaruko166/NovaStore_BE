@@ -14,6 +14,7 @@ import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.OfflineCartService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -121,6 +122,19 @@ public class OfflineCartController {
         TempBill tempBill = getSession(session);
         offlineCartService.checkout(tempBill);
         return "redirect:/nova/pos";
+    }
+
+    @PostMapping("/api/filter")
+    public String searchCustomers(@RequestParam("keyword") String keyword, Model model) {
+        Pageable pageable = Pageable.ofSize(10);
+//        System.out.println(accountService.searchCustomer(keyword, pageable).toString());
+        if (keyword.isBlank()){
+            model.addAttribute("lstCus", null);
+            return "/admin/cart/offline-cart-fragment :: modal_frag";
+        }
+        model.addAttribute("lstCus", accountService.searchCustomer(keyword, pageable).getContent());
+        model.addAttribute("keyword", keyword);
+        return "/admin/cart/offline-cart-fragment :: modal_frag";
     }
 
     public TempBill getSession(HttpSession session) {

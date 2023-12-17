@@ -912,5 +912,6 @@ VALUES ('CT00050', 324, 20000, 20000, GETDATE(), GETDATE(), 1, 8, 2, 3);
 
 
 SELECT * FROM Role
-    INSERT INTO Role (name, CreateDate, UpdateDate, Status) VALUES ('Admin', GETDATE(), GETDATE(), 1);
+INSERT INTO Role (name, CreateDate, UpdateDate, Status) VALUES ('Admin', GETDATE(), GETDATE(), 1);
+INSERT INTO Role (name, CreateDate, UpdateDate, Status) VALUES ('Employee', GETDATE(), GETDATE(), 1);
 INSERT INTO Role (name, CreateDate, UpdateDate, Status) VALUES ('User', GETDATE(), GETDATE(), 1);

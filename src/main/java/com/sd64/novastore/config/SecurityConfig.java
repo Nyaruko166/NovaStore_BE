@@ -70,10 +70,11 @@ public class SecurityConfig {
                                     .permitAll();
 
                             //Testing purpose
-                            req.requestMatchers("/nova/account/**", "/nova/pos/**", "/login", "/register", "/mail").permitAll();
+                            req.requestMatchers("/login", "/register", "/mail").permitAll();
 
                             //Role base authority
-                            req.requestMatchers("/nova/**").hasAuthority("Admin")
+                            req.requestMatchers("/nova/pos/**","/nova/bill/**").hasAnyAuthority("Admin", "Employee")
+                                    .requestMatchers("/nova/**").hasAuthority("Admin")
                                     .requestMatchers("/profile").authenticated()
                                     .anyRequest().permitAll();
                         }

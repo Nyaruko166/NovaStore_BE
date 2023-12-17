@@ -60,7 +60,7 @@ function updateOutput() {
 
 function searchAndReplace() {
     let keyword = document.getElementById('keyword').value;
-    let url = "/nova/account/api/filter?keyword=" + keyword;
+    let url = "/nova/pos/api/filter?keyword=" + keyword;
 
     $.post(url).done(function (fragment_modal) {
         // console.log(fragment);
@@ -68,7 +68,8 @@ function searchAndReplace() {
     });
 }
 
-function searchAndReplaceProduct(){}
+function searchAndReplaceProduct() {
+}
 
 function calCashBack() {
 
@@ -114,11 +115,13 @@ function thanhToan() {
 
     } else {
 
-        let tienthua = document.getElementById('tienThua').innerText;
+        let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
+        let khachDua = document.getElementById('khachDua').value;
 
-        if (Math.sign(Number(tienthua)) != -1) {
+
+        if (khachDua > khachPhaiTra) {
             window.location = "/nova/pos/checkout";
-        }else {
+        } else {
             Swal.fire({
                 icon: "error",
                 title: "Khách đưa thiếu tiền",
