@@ -1,9 +1,10 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.model.Brand;
+import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
 import com.sd64.novastore.model.Promotion;
 import org.springframework.data.domain.Page;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -27,4 +28,9 @@ public interface PromotionService {
     Promotion getOne(Integer id);
 
     Page<Promotion> search(String name, int page);
+
+    Page<PromotionSearchDTO> getPromoTion(
+             String tungay,
+             String denngay,
+            Pageable pageable);
 }

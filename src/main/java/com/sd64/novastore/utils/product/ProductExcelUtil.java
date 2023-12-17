@@ -73,16 +73,16 @@ public class ProductExcelUtil {
                             product.setDescription(cell.getStringCellValue());
                             break;
                         case 2:
-                            product.setBrand(brandRepository.findByName(cell.getStringCellValue()));
+                            product.setBrand(brandRepository.findByNameAndStatus(cell.getStringCellValue(), 1));
                             break;
                         case 3:
-                            product.setMaterial(materialRepository.findByName(cell.getStringCellValue()));
+                            product.setMaterial(materialRepository.findByNameAndStatus(cell.getStringCellValue(), 1));
                             break;
                         case 4:
-                            product.setCategory(categoryRepository.findByName(cell.getStringCellValue()));
+                            product.setCategory(categoryRepository.findByNameAndStatus(cell.getStringCellValue(), 1));
                             break;
                         case 5:
-                            product.setForm(formRepository.findByName(cell.getStringCellValue()));
+                            product.setForm(formRepository.findByNameAndStatus(cell.getStringCellValue(), 1));
                             break;
                         default:
                             break;

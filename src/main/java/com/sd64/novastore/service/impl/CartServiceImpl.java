@@ -4,10 +4,15 @@ import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.CartDetail;
 import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.model.Promotion;
+import com.sd64.novastore.model.PromotionDetail;
 import com.sd64.novastore.model.SessionCart;
 import com.sd64.novastore.model.SessionCartItem;
 import com.sd64.novastore.repository.CartDetailRepository;
 import com.sd64.novastore.repository.CartRepository;
+import com.sd64.novastore.repository.ProductDetailRepository;
+import com.sd64.novastore.repository.PromotionDetailRepository;
+import com.sd64.novastore.repository.PromotionRepository;
 import com.sd64.novastore.service.CartService;
 import com.sd64.novastore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Service
@@ -30,6 +36,15 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
+
+    @Autowired
+    private PromotionDetailRepository promotionDetailRepository;
+
+    @Autowired
+    private PromotionRepository promotionRepository;
 
     @Override
     @Transactional
@@ -88,22 +103,29 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public Cart updateCart(ProductDetail productDetail, Integer quantity, String email) {
+    public boolean updateCart(ProductDetail productDetail, Integer quantity, String email) {
         Customer customer = customerService.findByEmail(email);
         Cart cart = customer.getCart();
         Set<CartDetail> cardItemList = cart.getCartDetails();
         CartDetail item = find(cardItemList, productDetail.getId());
         int itemQuantity = quantity;
 
-        item.setQuantity(itemQuantity);
-        itemRepository.save(item);
-        cart.setCartDetails(cardItemList);
-        int totalItems = totalItem(cardItemList);
-        BigDecimal totalPrice = totalPrice(cardItemList);
-        cart.setTotalItems(totalItems);
-        cart.setTotalPrice(totalPrice);
-        return cartRepository.save(cart);
+        // Kiểm tra số lượng tồn
+        if (itemQuantity <= productDetail.getQuantity()) {
+            item.setQuantity(itemQuantity);
+            itemRepository.save(item);
+            cart.setCartDetails(cardItemList);
+            int totalItems = totalItem(cardItemList);
+            BigDecimal totalPrice = totalPrice(cardItemList);
+            cart.setTotalItems(totalItems);
+            cart.setTotalPrice(totalPrice);
+            cartRepository.save(cart);
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -169,17 +191,102 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public SessionCart updateCartSession(SessionCart sessionCart, ProductDetail productDetail, Integer quantity) {
+    public boolean updateCartSession(SessionCart sessionCart, ProductDetail productDetail, Integer quantity) {
         Set<SessionCartItem> cardItemList = sessionCart.getCartDetails();
         SessionCartItem item = findInSession(sessionCart, productDetail.getId());
         int itemQuantity = quantity;
-        int totalItems = totalItemSession(cardItemList);
-        BigDecimal totalPrice = totalPriceSession(cardItemList);
-        item.setQuantity(itemQuantity);
-        sessionCart.setCartDetails(cardItemList);
-        sessionCart.setTotalPrice(totalPrice);
+
+        // Kiểm tra số lượng tồn
+        if (itemQuantity <= productDetail.getQuantity()) {
+            item.setQuantity(itemQuantity);
+            sessionCart.setCartDetails(cardItemList);
+            int totalItems = totalItemSession(cardItemList);
+            BigDecimal totalPrice = totalPriceSession(cardItemList);
+            sessionCart.setTotalPrice(totalPrice);
+            sessionCart.setTotalItems(totalItems);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public void reloadCartDetail(Cart cart) {
+        Set<CartDetail> cartDetails = cart.getCartDetails();
+        Iterator<CartDetail> iterator = cartDetails.iterator();
+
+        while (iterator.hasNext()) {
+            CartDetail cartDetail = iterator.next();
+            ProductDetail productDetail = cartDetail.getProductDetail();
+            int currentQuantity = cartDetail.getQuantity();
+            int stockQuantity = productDetail.getQuantity();
+            BigDecimal productPrice = productDetail.getPrice();
+
+//            if (productDetail.getProduct().getStatus() == 2){
+//                PromotionDetail promotionDetail = promotionDetailRepository.findByProductIdAndStatus(productDetail.getProduct().getId(), 1);
+//                Promotion promotion = promotionRepository.findById(promotionDetail.getId()).orElse(null);
+//                double discount = productDetail.getPrice().doubleValue() * promotion.getValue().doubleValue() / 100;
+//                productPrice = BigDecimal.valueOf(productDetail.getPrice().doubleValue() - discount);
+//            }
+            cartDetail.setPrice(productPrice);
+            itemRepository.save(cartDetail);
+
+            // Nếu số lượng tồn là 0, xóa CartDetail
+            if (stockQuantity == 0 || productDetail.getStatus() == 0) {
+                iterator.remove();
+                itemRepository.delete(cartDetail);
+            }
+            // Nếu số lượng hiện tại vượt quá số lượng tồn, cập nhật lại số lượng
+            else if (currentQuantity > stockQuantity) {
+                cartDetail.setQuantity(stockQuantity);
+                itemRepository.save(cartDetail);
+            }
+
+        }
+        cart.setCartDetails(cartDetails);
+        // Cập nhật lại tổng số lượng và tổng giá của giỏ hàng
+        int totalItems = totalItem(cartDetails);
+        BigDecimal totalPrice = totalPrice(cartDetails);
+        cart.setTotalItems(totalItems);
+        cart.setTotalPrice(totalPrice);
+        cartRepository.save(cart);
+    }
+
+    @Override
+    public void reloadCartDetailSession(SessionCart sessionCart) {
+        Set<SessionCartItem> cartItems = sessionCart.getCartDetails();
+        Iterator<SessionCartItem> iterator = cartItems.iterator();
+
+        while (iterator.hasNext()) {
+            SessionCartItem cartItem = iterator.next();
+            ProductDetail productDetail = productDetailRepository.findById(cartItem.getProductDetail().getId()).orElse(null);
+            int currentQuantity = cartItem.getQuantity();
+            int stockQuantity = productDetail.getQuantity();
+            BigDecimal productPrice = productDetail.getPrice();
+            cartItem.setProductDetail(productDetail);
+//            if (productDetail.getProduct().getStatus() == 2){
+//                PromotionDetail promotionDetail = promotionDetailRepository.findByProductIdAndStatus(productDetail.getProduct().getId(), 1);
+//                Promotion promotion = promotionRepository.findById(promotionDetail.getId()).orElse(null);
+//                double discount = productDetail.getPrice().doubleValue() * promotion.getValue().doubleValue() / 100;
+//                productPrice = BigDecimal.valueOf(productDetail.getPrice().doubleValue() - discount);
+//            }
+            cartItem.setPrice(productPrice);
+
+            // Nếu số lượng tồn là 0, xóa CartDetail
+            if (stockQuantity == 0 || productDetail.getStatus() == 0) {
+                iterator.remove();
+            }
+            // Nếu số lượng hiện tại vượt quá số lượng tồn, cập nhật lại số lượng
+            else if (currentQuantity > stockQuantity) {
+                cartItem.setQuantity(stockQuantity);
+            }
+        }
+        sessionCart.setCartDetails(cartItems);
+        int totalItems = totalItemSession(cartItems);
+        BigDecimal totalPrice = totalPriceSession(cartItems);
         sessionCart.setTotalItems(totalItems);
-        return sessionCart;
+        sessionCart.setTotalPrice(totalPrice);
     }
 
     @Override

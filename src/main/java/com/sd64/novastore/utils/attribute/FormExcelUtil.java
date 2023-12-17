@@ -57,7 +57,7 @@ public class FormExcelUtil {
                     Cell cell = cellIterator.next();
                     switch (cellIndex) {
                         case 0:
-                            Form form1 = formRepository.findByName(cell.getStringCellValue());
+                            Form form1 = formRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                             if (form1 != null) {
                                 workbook.close();
                                 fileInputStream.close();
@@ -116,7 +116,7 @@ public class FormExcelUtil {
                         Cell cell = cellIterator.next();
                         switch (cellIndex) {
                             case 0:
-                                Form form1 = formRepository.findByName(cell.getStringCellValue());
+                                Form form1 = formRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                                 if (form1 != null) {
                                     workbook.close();
                                     fileInputStream.close();

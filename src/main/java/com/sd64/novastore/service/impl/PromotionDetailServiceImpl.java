@@ -1,8 +1,11 @@
 package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
+import com.sd64.novastore.repository.PrDtRepository;
+import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.repository.ProductRepository;
 import com.sd64.novastore.repository.PromotionDetailRepository;
 import com.sd64.novastore.repository.PromotionRepository;
@@ -25,6 +28,9 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private PrDtRepository prDtRepository;
 
     @Autowired
     private PromotionRepository promotionRepository;
@@ -87,6 +93,11 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
     @Override
     public List<Product> getAll() {
         return productRepository.findAllByAndStatusOrderByIdDesc(1);
+    }
+
+    @Override
+    public List<ProductDetail> getAllPrDT() {
+        return prDtRepository.findAllByAndStatusOrderByIdDesc(1);
     }
 
     @Override

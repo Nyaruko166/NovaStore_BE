@@ -1,12 +1,15 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.dto.admin.BillDto;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.SessionCart;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface BillService {
@@ -34,9 +37,9 @@ public interface BillService {
 
     Bill delete(Integer id);
 
-    Bill placeOrder(Cart cart, String name, String address, String phoneNumber, String payment);
+    Bill placeOrder(Cart cart, String name, String specificAddress, String ward, String district, String city, String phoneNumber, String payment, Integer voucher);
 
-    Bill placeOrderSession(SessionCart cart, String email, String name, String address, String phoneNumber, String payment);
+    Bill placeOrderSession(SessionCart cart, String email, String name, String specificAddress, String ward, String district, String city, String phoneNumber, String payment, Integer voucher);
 
     List<Bill> getNoConfirmOrders(Integer customerId);
 
@@ -47,4 +50,13 @@ public interface BillService {
     Bill acceptBill(Integer billId);
 
     Bill shippingOrder(Integer id, BigDecimal shippingFee);
+
+    Page<BillDto> findAll(Pageable pageable);
+
+    Page<BillDto> searchListBill(String code,
+                                 Date ngayTaoStart,
+                                 Date ngayTaoEnd,
+                                 Integer status,
+                                 Integer type,
+                                 String phoneNumber, String customerName, Pageable pageable);
 }

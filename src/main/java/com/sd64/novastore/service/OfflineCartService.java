@@ -5,18 +5,29 @@
 package com.sd64.novastore.service;
 
 import com.sd64.novastore.model.OfflineCart;
-import com.sd64.novastore.model.ProductDetail;
+import com.sd64.novastore.model.OfflineCartView;
+import com.sd64.novastore.model.TempBill;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 public interface OfflineCartService {
 
-    void addToCart(String codeCtsp, Integer qty);
+    BigDecimal calCartPrice(List<OfflineCartView> lstCart);
 
-    List<OfflineCart> getCart();
+    List<OfflineCart> addToCart(Integer billId, String detailProductId, Integer qty);
 
-    void deleteCart(String codeCtsp);
+    List<OfflineCartView> getCart(List<OfflineCart> cart);
 
-    void emptyCart(Map<String, Integer> empty);
+    String deleteCart(String codeCtsp, Integer billId);
+
+    void emptyCart(List<OfflineCart> empty);
+
+    List<TempBill> getLstBill();
+
+    Boolean addToLstBill(TempBill tempBill);
+
+    Boolean removeFromLstBill(TempBill tempBill);
+
+    TempBill getBillById(Integer id);
 }

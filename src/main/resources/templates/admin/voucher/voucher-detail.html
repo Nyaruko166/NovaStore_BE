@@ -102,13 +102,13 @@
 
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickUpdate('voucherUpdate')" type="button" class="btn btn-info"><i
-                                    class="fa-solid fa-pen mr-1"></i>
-                                SỬA
+                            <button onclick="clickUpdate('voucherUpdate')" type="button"  class="btn btn-dark"><i
+                                    class="fa-solid fa-pen mr-1 px-4"></i>
+
                             </button>
                             <a href="/nova/voucher/page">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> Voucher
+                                        class="fa-solid fa-circle-left mr-1 px-4"></i>
                                 </button>
                             </a>
                         </div>
@@ -149,30 +149,40 @@
                             return true;
                         }
                         checkValue = () => {
-                            let isValue = document.getElementById('value').value
+                            let isValue = document.getElementById('value').value;
+                            let minimumPrice = document.getElementById('minimumPrice').value;
+
                             if (isValue.trim() === '') {
-                                document.getElementById('errorValue').innerHTML = `Chưa nhập giá trị`
+                                document.getElementById('errorValue').innerHTML = `Chưa nhập số tiền giảm`;
                                 return false;
                             }
+
                             if (isValue < 10000) {
-                                document.getElementById('errorValue').innerHTML = `Giá trị lớn hơn 10000đ`
+                                document.getElementById('errorValue').innerHTML = `Số tiền giảm phải lớn hơn 10000đ`;
                                 return false;
                             }
-                            if (isValue > 200000) {
-                                document.getElementById('errorValue').innerHTML = `SGiá trị lớn nhất là 200000đ`
+
+                            if (isValue !== '' && minimumPrice !== '' && parseFloat(isValue) >= parseFloat(minimumPrice)) {
+                                document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải nhỏ hơn giá tối thiểu.';
                                 return false;
                             }
+
                             return true;
                         }
 
                         checkMinimumPrice = () => {
+                            let isValue = document.getElementById('value').value;
                             let isMinimumPrice = document.getElementById('minimumPrice').value
                             if (isMinimumPrice.trim() === '') {
-                                document.getElementById('errorMinimumPrice').innerHTML = `Chưa nhập giá thấp nhất`
+                                document.getElementById('errorMinimumPrice').innerHTML = `Chưa nhập giá tối thiểu`
                                 return false;
                             }
                             if (isMinimumPrice < 100000) {
                                 document.getElementById('errorMinimumPrice').innerHTML = `Giá trị lớn hơn 100000đ`
+                                return false;
+                            }
+                            if (isValue !== '' && isMinimumPrice !== '' && parseFloat(isValue) >= parseFloat(isMinimumPrice)) {
+                                document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải nhỏ hơn giá tối thiểu.';
                                 return false;
                             }
                             return true;
@@ -188,15 +198,7 @@
                                 return false;
                             }
 
-                            let currentDate = new Date();
-                            let startDate = new Date(startDateValue);
-
-                            if (startDate <= currentDate) {
-                                errorStartDate.innerHTML = `Ngày bắt đầu phải lớn hơn ngày hiện tại`;
-                                return false;
-                            }
-
-                            errorStartDate.innerHTML = ''; // Reset lỗi nếu có
+                            errorStartDate.innerHTML = '';
                             return true;
                         }
 
@@ -219,10 +221,21 @@
                                 return false;
                             }
 
-                            errorEndDate.innerHTML = ''; // Reset lỗi nếu có
+                            errorEndDate.innerHTML = '';
                             return true;
                         }
-
+                        validate = () => {
+                            let isCode = checkCode();
+                            let isName = checkName();
+                            let isQuantity = checkQuantity();
+                            let isValue = checkValue();
+                            let isMinimumPrice = checkMinimumPrice()
+                            let isStartDate = checkStartDate()
+                            let isEndDate = checkEndDate()
+                            if (isCode === true && isName === true && isQuantity === true && isValue === true && isMinimumPrice === true && isStartDate === true && isEndDate === true) {
+                                return true;
+                            }
+                        }
                         clickUpdate = (idForm) => {
                             if (validate()) {
                                 swal({

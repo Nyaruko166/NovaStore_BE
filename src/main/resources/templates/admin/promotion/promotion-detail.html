@@ -13,7 +13,8 @@
                 <strong>Promotion</strong>
             </div>
             <div class="card-body card-block">
-                <form  id="promotionUpdate" th:object="${promotion}" th:action="@{/nova/promotion/update/{id}(id=${promotion.id})}"
+                <form id="promotionUpdate" th:object="${promotion}"
+                      th:action="@{/nova/promotion/update/{id}(id=${promotion.id})}"
                       method="post" class="form-horizontal">
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label font-weight-bold">Mã khuyến
@@ -98,24 +99,34 @@
                     </div>
                     <div class="card-footer d-flex">
                         <div>
-                            <button onclick="clickUpdate('promotionUpdate')" type="button" class="btn btn-info"><i
-                                    class="fa-solid fa-pen mr-1"></i>
-                                SỬA
+                            <button onclick="clickUpdate('promotionUpdate')" type="button" class="btn btn-dark"><i
+                                    class="fa-solid fa-pen mr-1 px-4"></i>
                             </button>
                             <a href="/nova/promotion/page">
                                 <button type="button" class="btn btn-warning"><i
-                                        class="fa-solid fa-circle-left mr-1"></i> Khuyến mãi
+                                        class="fa-solid fa-circle-left mr-1 px-4"></i>
                                 </button>
                             </a>
                         </div>
                     </div>
                     <script th:inline="javascript">
-                        checkCode = () => {
-                            let isCode = document.getElementById('code').value
-                            if (isCode.trim() === '') {
-                                document.getElementById('errorCode').innerHTML = `Chưa nhập mã`
+                        let enteredCodes = new Set();
+
+                        function onInputText(errorElementId) {
+                            document.getElementById(errorElementId).innerHTML = '';
+                        }
+
+                        function checkCode() {
+                            let isCode = document.getElementById('code').value;
+                            if (enteredCodes.has(isCode)) {
+                                document.getElementById('errorCode').innerHTML = `Mã đã được nhập trước đó`;
                                 return false;
                             }
+                            if (isCode.trim() === '') {
+                                document.getElementById('errorCode').innerHTML = `Chưa nhập mã`;
+                                return false;
+                            }
+                            enteredCodes.add(isCode);
                             return true;
                         }
 
@@ -129,21 +140,28 @@
                         }
 
                         checkValue = () => {
-                            let isValue = document.getElementById('value').value
+                            let isValue = document.getElementById('value').value;
+                            let errorElement = document.getElementById('errorValue');
+                            errorElement.innerHTML = '';
                             if (isValue.trim() === '') {
-                                document.getElementById('errorValue').innerHTML = `Chưa nhập giá trị`
+                                errorElement.innerHTML = 'Chưa nhập giá trị';
                                 return false;
                             }
-                            if (isValue < 5) {
-                                document.getElementById('errorValue').innerHTML = `Phần trăm giảm lớn hơn 5 %`
+                            if (isNaN(isValue)) {
+                                errorElement.innerHTML = 'Vui lòng nhập một giá trị số';
                                 return false;
                             }
-                            if (isValue > 70) {
-                                document.getElementById('errorValue').innerHTML = `Phần trăm giảm lớn hơn 70 %`
+                            isValue = parseFloat(isValue);
+                            if (isValue <= 0) {
+                                errorElement.innerHTML = 'Phần trăm giảm phải lớn hơn  bằng 0 %';
+                                return false;
+                            }
+                            if (isValue > 100) {
+                                errorElement.innerHTML = 'Phần trăm giảm phải nhỏ hơn hoặc bằng 100 %';
                                 return false;
                             }
                             return true;
-                        }
+                        };
 
 
                         checkStartDate = () => {
@@ -156,15 +174,7 @@
                                 return false;
                             }
 
-                            let currentDate = new Date();
-                            let startDate = new Date(startDateValue);
-
-                            if (startDate <= currentDate) {
-                                errorStartDate.innerHTML = `Ngày bắt đầu phải lớn hơn ngày hiện tại`;
-                                return false;
-                            }
-
-                            errorStartDate.innerHTML = ''; // Reset lỗi nếu có
+                            errorStartDate.innerHTML = '';
                             return true;
                         }
 
@@ -187,7 +197,7 @@
                                 return false;
                             }
 
-                            errorEndDate.innerHTML = ''; // Reset lỗi nếu có
+                            errorEndDate.innerHTML = '';
                             return true;
                         }
 

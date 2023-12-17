@@ -56,7 +56,7 @@ public class BrandExcelUtil {
                     Cell cell = cellIterator.next();
                     switch (cellIndex) {
                         case 0:
-                            Brand brand1 = brandRepository.findByName(cell.getStringCellValue());
+                            Brand brand1 = brandRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                             if (brand1 != null) {
                                 workbook.close();
                                 fileInputStream.close();
@@ -115,7 +115,7 @@ public class BrandExcelUtil {
                         Cell cell = cellIterator.next();
                         switch (cellIndex) {
                             case 0:
-                                Brand brand1 = brandRepository.findByName(cell.getStringCellValue());
+                                Brand brand1 = brandRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                                 if (brand1 != null) {
                                     workbook.close();
                                     fileInputStream.close();

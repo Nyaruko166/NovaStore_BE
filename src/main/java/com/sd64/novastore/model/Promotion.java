@@ -1,17 +1,22 @@
 package com.sd64.novastore.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "Promotion")
 @Entity
@@ -37,7 +42,7 @@ public class Promotion {
 
 
     @Column(name = "Value")
-    private BigDecimal value;
+    private Float value;
 
 
     @Column(name = "StartDate")
@@ -57,5 +62,27 @@ public class Promotion {
 
     @Column(name = "Status")
     private Integer status;
+
+    @OneToMany(mappedBy = "promotion")
+    private List<PromotionDetail> promotionDetails;
+
+    public String getStatusName(){
+        if (this.status == 1){
+            return "Hoạt động";
+        } else if (this.status == 2) {
+            return "Đang chờ";
+        }else {
+            return "Đã hủy";
+        }
+    }
+    public void updateStatus() {
+        Date currentDate = new Date();
+
+        if (currentDate.before(startDate)) {
+            status = 2;
+        } else if (currentDate.equals(startDate) || currentDate.after(startDate)) {
+            status = 1;
+        }
+    }
 
 }

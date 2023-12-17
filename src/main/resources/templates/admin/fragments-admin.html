@@ -23,11 +23,14 @@
     <!--    fontawesome-->
     <script th:src="@{https://kit.fontawesome.com/1943ac9f5b.js}" crossorigin="anonymous"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://unpkg.com/@popperjs/core@2" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script th:inline="javascript" th:src="@{/admin/assets/js/html5-qrcode.min.js}"></script>
     <script th:inline="javascript" th:src="@{/admin/vendors/jquery/dist/jquery.min.js}"></script>
     <script th:inline="javascript" th:src="@{/admin/vendors/popper.js/dist/umd/popper.min.js}"></script>
@@ -97,8 +100,17 @@
 
         checkName = (idInput, errorName, text) => {
             let isName = document.getElementById(idInput).value
+            isName = isName.replace(/\s{2,}/g, '').trimStart()
             if (isName.trim() === '') {
                 document.getElementById(errorName).innerHTML = `Chưa nhập ${text}`
+                return false;
+            }
+            if (isName.length < 2) {
+                document.getElementById(errorName).innerHTML = `${text} tối thiểu 2 kí tự`
+                return false;
+            }
+            if (isName.length > 50) {
+                document.getElementById(errorName).innerHTML = `${text} tối đa 50 kí tự`
                 return false;
             }
             return true;

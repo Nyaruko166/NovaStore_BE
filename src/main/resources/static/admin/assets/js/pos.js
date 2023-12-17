@@ -21,30 +21,51 @@ function onScanSuccess(decodedText) {
         ++countResults;
         lastResult = decodedText;
         // Handle on success condition with the decoded message.
+        let queryString = window.location.search;
+        let urlParam = new URLSearchParams(queryString);
+        let billId;
+        if (!urlParam.has('billId')) {
+            billId = 0;
+        } else {
+            billId = urlParam.get('billId');
+        }
+
+        // console.log(billId);
+
         fetch("/nova/pos/add", {
             method: "POST",
             body: JSON.stringify({
-                codeCtsp: decodedText
+                billId: billId,
+                data: decodedText,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        });
+        }).then(updateOutput);
     }
 }
 
-function playSound(soundName) {
-    let src = "./../audio/"
-    let audio = new Audio(src + soundName)
-    audio.play();
+function updateOutput() {
+    $.post("/nova/pos/frag").done(function (fragment) {
+        // console.log(fragment);
+        $("#output").replaceWith(fragment);
+    });
+
+    $.post("/nova/pos/frag-checkout").done(function (fragment_checkout) {
+        // console.log(fragment);
+        // console.log('change checkout')
+        $("#output_checkout").replaceWith(fragment_checkout);
+    });
 }
 
-// function test() {
-//     $('.collapse').collapse({
-//         toggle: true
-//     })
-// }
+function searchAndReplace() {
 
-// $('.collapse').collapse({
-//     toggle: true
-// })
+    let keyword = document.getElementById('keyword').value;
+
+    let url = "/nova/account/api/filter?keyword=" + keyword;
+
+    $.post(url).done(function (fragment_modal) {
+        // console.log(fragment);
+        $("#modal_replace").replaceWith(fragment_modal);
+    });
+}

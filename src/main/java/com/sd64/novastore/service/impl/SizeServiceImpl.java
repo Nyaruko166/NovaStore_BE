@@ -38,11 +38,25 @@ public class SizeServiceImpl implements SizeService {
     }
 
     private Boolean checkName(String name) {
-        Size size = sizeRepository.findByName(name);
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        Size size = sizeRepository.findByNameAndStatus(name, 1);
         if (size != null) {
             return false;
         }
         return true;
+    }
+
+    public String formatName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        return name;
     }
 
     public String generateCode() {
@@ -58,7 +72,7 @@ public class SizeServiceImpl implements SizeService {
     public Boolean add(String name) {
         if (checkName(name)) {
             Size size = new Size();
-            size.setName(name);
+            size.setName(formatName(name));
             size.setStatus(1);
             size.setCreateDate(new Date());
             size.setUpdateDate(new Date());
@@ -76,7 +90,7 @@ public class SizeServiceImpl implements SizeService {
         if (optional.isPresent() && checkName(name)) {
             Size updateSize = optional.get();
             updateSize.setId(id);
-            updateSize.setName(name);
+            updateSize.setName(formatName(name));
             updateSize.setUpdateDate(new Date());
             sizeRepository.save(updateSize);
             return true;

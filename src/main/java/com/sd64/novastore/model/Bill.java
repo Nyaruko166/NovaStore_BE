@@ -48,11 +48,11 @@ public class Bill {
     @Column(name = "ShippingDate")
     private Date shippingDate;
 
-    @Column(name = "ReceivedDate")
-    private Date receivedDate;
-
     @Column(name = "CompletionDate")
     private Date completionDate;
+
+    @Column(name = "CancellationDate")
+    private Date cancellationDate;
 
     @Column(name = "PaymentDate")
     private Date paymentDate;
@@ -82,6 +82,10 @@ public class Bill {
     @JoinColumn(name = "CustomerId", referencedColumnName = "Id")
     private Customer customer;
 
+    @ManyToOne()
+    @JoinColumn(name = "VoucherId", referencedColumnName = "Id")
+    private Voucher voucher;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bill")
     private List<BillDetail> billDetails;
 
@@ -89,11 +93,11 @@ public class Bill {
         if (this.status == 10){
             return "Chờ xác nhận";
         } else if (this.status == 3){
-            return "Đã xác nhận";
+            return "Chờ giao hàng";
         } else if (this.status == 2){
             return "Đang giao hàng";
         } else if (this.status == 1){
-            return "Đã hoàn thành";
+            return "Đã giao hàng";
         } else if (this.status == 0){
             return "Đã huỷ";
         } else {

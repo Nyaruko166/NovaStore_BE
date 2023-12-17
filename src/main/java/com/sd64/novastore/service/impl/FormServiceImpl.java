@@ -38,11 +38,25 @@ public class FormServiceImpl implements FormService {
     }
 
     private Boolean checkName(String name) {
-        Form form = formRepository.findByName(name);
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        Form form = formRepository.findByNameAndStatus(name, 1);
         if (form != null) {
             return false;
         }
         return true;
+    }
+
+    public String formatName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        return name;
     }
 
     public String generateCode() {
@@ -59,7 +73,7 @@ public class FormServiceImpl implements FormService {
     public Boolean add(String name) {
         if (checkName(name)) {
             Form form = new Form();
-            form.setName(name);
+            form.setName(formatName(name));
             form.setStatus(1);
             form.setCreateDate(new java.util.Date());
             form.setUpdateDate(new java.util.Date());
@@ -77,7 +91,7 @@ public class FormServiceImpl implements FormService {
         if (optional.isPresent() && checkName(form.getName())) {
             Form updateForm = optional.get();
             updateForm.setId(id);
-            updateForm.setName(form.getName());
+            updateForm.setName(formatName(form.getName()));
             updateForm.setUpdateDate(new Date());
             formRepository.save(updateForm);
             return true;

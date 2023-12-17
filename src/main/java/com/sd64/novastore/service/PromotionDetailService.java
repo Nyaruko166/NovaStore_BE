@@ -1,6 +1,7 @@
 package com.sd64.novastore.service;
 
 import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.PromotionDetail;
 import org.springframework.data.domain.Page;
 
@@ -25,6 +26,8 @@ public interface PromotionDetailService {
 
 
     List<Product> getAll();
+
+    List<ProductDetail> getAllPrDT();
 
     List<Product> getProductsByIds(List<Integer> productIds);
 

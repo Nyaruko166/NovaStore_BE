@@ -12,12 +12,22 @@
             <div class="card-header">
                 <h5 style="font-weight: bold">CẬP NHẬT THƯƠNG HIỆU</h5>
             </div>
-            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${error}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div th:if="${error}">
+                <button hidden id="btnError" th:onclick="alertError([[${error}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnError = document.getElementById("btnError");
+                        btnError.click();
+                    }
+                    alertError = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thất bại",
+                            text: content,
+                            icon: "error",
+                            confirmButtonColor: "#d33"
+                        });
+                    }
+                </script>
             </div>
             <div class="card-body card-block">
                 <form id="brandUpdate" th:object="${brand}" th:action="@{/nova/brand/update/{id}(id=${brand.id})}" method="post"
@@ -36,7 +46,18 @@
                                    id="errorName" ></div>
                         </div>
                     </div>
+                    <script th:inline="javascript">
+                        const inputElement = document.getElementById('name');
 
+                        inputElement.addEventListener('input', function(event) {
+                            const specialCharacters = /[!@#$%^&*()_,.?":{}|<>+\-=~`\\/\[\]]/g;
+                            const inputValue = event.target.value;
+                            if (specialCharacters.test(inputValue)) {
+                                event.target.value = inputValue.replace(specialCharacters, '');
+                            }
+                        });
+
+                    </script>
                     <div class="card-footer">
                         <button onclick="clickUpdate('brandUpdate', 'name', 'errorName', 'tên thương hiệu')" type="button" class="btn btn-dark">
                             <i class="fa-solid fa-pen px-4"></i>

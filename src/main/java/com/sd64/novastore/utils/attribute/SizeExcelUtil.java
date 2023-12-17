@@ -61,7 +61,7 @@ public class SizeExcelUtil {
                         case 0:
                             if (cell.getCellType() == CellType.NUMERIC) {
                                 String sizeStr = String.valueOf(new Double(cell.getNumericCellValue()).intValue());
-                                Size size1 = sizeRepository.findByName(sizeStr);
+                                Size size1 = sizeRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                                 if (size1 != null) {
                                     workbook.close();
                                     fileInputStream.close();
@@ -71,7 +71,7 @@ public class SizeExcelUtil {
                                 }
                                 size.setName(sizeStr);
                             } else {
-                                Size size1 = sizeRepository.findByName(cell.getStringCellValue());
+                                Size size1 = sizeRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                                 if (size1 != null) {
                                     workbook.close();
                                     fileInputStream.close();
@@ -134,7 +134,7 @@ public class SizeExcelUtil {
                             case 0:
                                 if (cell.getCellType() == CellType.NUMERIC) {
                                     String sizeStr = String.valueOf(new Double(cell.getNumericCellValue()).intValue());
-                                    Size size1 = sizeRepository.findByName(sizeStr);
+                                    Size size1 = sizeRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                                     if (size1 != null) {
                                         workbook.close();
                                         fileInputStream.close();

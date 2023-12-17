@@ -17,4 +17,6 @@ public interface PromotionDetailRepository extends JpaRepository<PromotionDetail
     Page<PromotionDetail> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
     Boolean existsByProductIdAndStatus(Integer productId, Integer status);
 //    Page<PromotionDetail> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
+
+    PromotionDetail findByProductIdAndStatus(Integer productId, Integer status);
 }

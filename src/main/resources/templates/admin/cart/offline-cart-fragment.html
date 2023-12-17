@@ -1,0 +1,66 @@
+<!--
+  ~  © 2023 Nyaruko166
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="frag">
+    <div id="output">
+        <div class="d-flex justify-content-between"><span
+                th:text="${'You have ' + lstCart.size() + ' items in your cart'}"></span>
+            <div class="d-flex flex-row align-items-center"><span class="text-black-50">Sort by:</span>
+                <div class="price ml-2"><span class="mr-1">price</span><i class="fa fa-angle-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <div th:each="x:${lstCart}"
+             class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded">
+            <div class="d-flex flex-row"><img class="rounded" th:src="@{'/image/product/'+${x.idSP}}"
+                                              width="40">
+                <div class="ml-2"><span th:text="${x.name}" class="font-weight-bold d-block"></span><span
+                        class="spec" th:text="${x.fieldCombine()}"></span></div>
+            </div>
+            <div class="d-flex flex-row align-items-center"><span th:text="${x.qty}"
+                                                                  class="d-block"></span><span
+                    th:text="${x.calTotalPrice() + ' VNĐ'}" class="d-block ml-5 font-weight-bold"></span>
+                <a th:href="@{'/nova/pos/remove/' + ${x.codeCtsp}}" class="trash"><i
+                        class="fa fa-trash-o ml-3 text-black-50"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="modal_frag">
+    <div id="modal_replace">
+        <div class="form-inline text-center">
+            <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search"
+                   aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="">Search
+            </button>
+        </div>
+        <hr>
+        <div th:each="x:${lstCus}" class="card">
+            <div class="card-body" style="padding: 5px">
+                <div class="row">
+                    <div class="col-10">
+                        <h5 class="card-title" th:text="${x.name}"></h5>
+                        <h6 class="card-subtitle mb-2 text-muted" th:text="${x.phoneNumber}"></h6>
+                    </div>
+                    <div class="col-2">
+                        <a th:href="@{'/nova/pos/addCustomer/' + ${x.id}}" class="btn btn-primary" style="margin-top: 9px"><i
+                                class="fa-solid fa-check"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

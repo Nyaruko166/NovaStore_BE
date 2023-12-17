@@ -6,40 +6,16 @@ package com.sd64.novastore.model;
 
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@ToString
 public class OfflineCart {
 
-    private Integer idCtsp;
-
-    private String name;
-
-    private String codeCtsp;
+    private String detailProductId;
 
     private Integer qty;
-
-    private BigDecimal price;
-
-//    private BigDecimal totalPrice;
-
-    private String color;
-
-    private String size;
-
-    public String calTotalPrice() {
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-
-        return decimalFormat.format(this.price.multiply(BigDecimal.valueOf(this.qty)));
-    }
-
-    public String fieldCombine() {
-        return String.join(", ", size, color);
-    }
 
 }

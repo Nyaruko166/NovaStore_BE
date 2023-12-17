@@ -1,8 +1,10 @@
 package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
+import com.sd64.novastore.service.ProductDetailService;
 import com.sd64.novastore.service.ProductService;
 import com.sd64.novastore.service.PromotionDetailService;
 import com.sd64.novastore.service.PromotionService;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,12 +47,12 @@ public class PromotionDetailController {
         model.addAttribute("page", page);
         List<Promotion> promotionList = promotionService.getAll();
         List<Product> productList = promotionDetailService.getAll();
+        List<ProductDetail> productDetailList= promotionDetailService.getAllPrDT();
+        model.addAttribute("productDetailList", productDetailList);
         model.addAttribute("promotionList", promotionList);
         model.addAttribute("productList", productList);
         return "admin/promotiondetail/promotiondetail";
     }
-
-
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
@@ -62,7 +65,6 @@ public class PromotionDetailController {
             promotionDetailService.save(product);
             redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
         }
-
         return "redirect:/nova/promotion-detail/page";
     }
 
@@ -73,10 +75,6 @@ public class PromotionDetailController {
                       @RequestParam(name = "page", defaultValue = "0") Integer page,
                       @RequestParam("selectedProducts") List<Integer> selectedProducts,
                       @RequestParam("promotion") Integer promotionId) {
-        if (selectedProducts == null || selectedProducts.isEmpty()) {
-            model.addAttribute("error", "Vui lòng chọn ít nhất một sản phẩm.");
-            return "admin/promotiondetail/promotiondetail";
-        }
 
         if (bindingResult.hasErrors()) {
             Page<PromotionDetail> pagePromotionDetail = promotionDetailService.getAllPT(page);
@@ -86,6 +84,8 @@ public class PromotionDetailController {
             List<Product> productList = promotionDetailService.getAll();
             model.addAttribute("promotionList", promotionList);
             model.addAttribute("productList", productList);
+            List<ProductDetail> productDetailList= promotionDetailService.getAllPrDT();
+            model.addAttribute("productDetailList", productDetailList);
             return "admin/promotiondetail/promotiondetail";
         }
 

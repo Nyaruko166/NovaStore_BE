@@ -4,6 +4,7 @@ import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Role;
 import com.sd64.novastore.repository.AccountRepository;
 import com.sd64.novastore.repository.RoleRepository;
+import com.sd64.novastore.response.CustomerResponse;
 import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -174,7 +175,7 @@ public class AccountServiceImpl implements AccountService {
             return null;
         }
     }
-    
+
     @Override
     public Integer registerUser(Account user) {
 
@@ -192,5 +193,20 @@ public class AccountServiceImpl implements AccountService {
         }
 
         return 1;
+    }
+
+    @Override
+    public Page<CustomerResponse> searchCustomer(String keyword, Pageable pageable) {
+        Page<Account> customerPage = accountRepository.searchAccountKeyword(keyword, pageable);
+        return customerPage.map(this::convertToDto);
+    }
+
+    private CustomerResponse convertToDto(Account account) {
+        CustomerResponse customerDto = new CustomerResponse();
+        customerDto.setId(account.getId());
+        customerDto.setName(account.getName());
+        customerDto.setEmail(account.getEmail());
+        customerDto.setPhoneNumber(account.getPhoneNumber());
+        return customerDto;
     }
 }

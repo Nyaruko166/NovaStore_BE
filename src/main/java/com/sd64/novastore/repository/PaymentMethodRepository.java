@@ -13,4 +13,6 @@ public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, In
         List<PaymentMethod> findAllByStatusOrderByIdDesc(Integer status);
 
         Page<PaymentMethod> findAllByStatusOrderByIdDesc(Pageable pageable, Integer status);
+
+        List<PaymentMethod> findAllByBillIdOrderById(Integer billId);
 }

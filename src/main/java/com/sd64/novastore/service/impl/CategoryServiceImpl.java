@@ -37,11 +37,25 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private Boolean checkName(String name) {
-        Category category = categoryRepository.findByName(name);
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        Category category = categoryRepository.findByNameAndStatus(name, 1);
         if (category != null) {
             return false;
         }
         return true;
+    }
+
+    public String formatName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        return name;
     }
 
     public String generateCode() {
@@ -58,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Boolean add(String name) {
         if (checkName(name)) {
             Category category = new Category();
-            category.setName(name);
+            category.setName(formatName(name));
             category.setStatus(1);
             category.setCreateDate(new java.util.Date());
             category.setUpdateDate(new java.util.Date());
@@ -76,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (optional.isPresent() && checkName(category.getName())) {
             Category updateCategory = optional.get();
             updateCategory.setId(id);
-            updateCategory.setName(category.getName());
+            updateCategory.setName(formatName(category.getName()));
             updateCategory.setUpdateDate(new Date());
             categoryRepository.save(updateCategory);
             return true;

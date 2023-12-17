@@ -60,6 +60,13 @@ public class PromotionController {
         return "admin/promotion/promotion-detail";
     }
 
+    @GetMapping("/promotionChiTiet/{id}")
+    public String detailCT(@PathVariable Integer id, Model model) {
+        Promotion promotion = promotionService.getOne(id);
+        model.addAttribute("promotion", promotion);
+        return "admin/promotion/promotionChiTiet";
+    }
+
     @GetMapping("/search")
     public String search(@ModelAttribute("promotion") Promotion promotion, Model model, @RequestParam(required = false) String promotionNameSearch,
                          @RequestParam(defaultValue = "0") int page) {
