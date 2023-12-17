@@ -352,3 +352,43 @@
     font-family: "Poppins", sans-serif;
 }
 
+.text-discount {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1;
+    color: white;
+    border: 1px solid;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-left: 5px;
+    background-color: #d19c97;
+    width: 25%;
+    height: 10%;
+    animation: discount 1s infinite;
+}
+
+@keyframes discount {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.price-discout {
+    text-decoration: line-through red;
+    font-size: 13px;
+    margin-bottom: 8px;
+    margin-right: 5px;
+}
+
+.price {
+    font-size: 16px;
+    font-family: "Poppins", sans-serif;
+    color: #1C1C1C;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+

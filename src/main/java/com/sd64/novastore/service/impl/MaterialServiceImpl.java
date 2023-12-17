@@ -37,7 +37,12 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     private Boolean checkName(String name) {
-        Material material = materialRepository.findByName(name);
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        Material material = materialRepository.findByNameAndStatus(name, 1);
         if (material != null) {
             return false;
         }
@@ -54,11 +59,20 @@ public class MaterialServiceImpl implements MaterialService {
         return "CL"+code;
     }
 
+    public String formatName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        return name;
+    }
+
     @Override
     public Boolean add(String name) {
         if (checkName(name)) {
             Material material = new Material();
-            material.setName(name);
+            material.setName(formatName(name));
             material.setStatus(1);
             material.setCreateDate(new java.util.Date());
             material.setUpdateDate(new java.util.Date());
@@ -77,7 +91,7 @@ public class MaterialServiceImpl implements MaterialService {
         if (optional.isPresent() && checkName(material.getName())) {
             Material updateMaterial = optional.get();
             updateMaterial.setId(id);
-            updateMaterial.setName(material.getName());
+            updateMaterial.setName(formatName(material.getName()));
             updateMaterial.setUpdateDate(new Date());
             materialRepository.save(updateMaterial);
             return true;

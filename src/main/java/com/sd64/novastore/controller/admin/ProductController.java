@@ -108,7 +108,7 @@ public class ProductController {
 
     @PostMapping("/{id}/next-update")
     public String nextUpdateProduct(@ModelAttribute Product product,
-                                 HttpSession httpSession,
+                                    HttpSession httpSession,
                                     @PathVariable Integer id) {
         String randomKey = UUID.randomUUID().toString();
         httpSession.setAttribute("randomKey", randomKey);
@@ -219,14 +219,14 @@ public class ProductController {
 
     @GetMapping("/search-restore")
     public String searchProductDelete(@RequestParam(required = false) String productName,
-                         @RequestParam(required = false) Integer brandId,
-                         @RequestParam(required = false) Integer materialId,
-                         @RequestParam(required = false) Integer categoryId,
-                         @RequestParam(required = false) Integer formId,
-                         @RequestParam(required = false) String description,
+                                      @RequestParam(required = false) Integer brandId,
+                                      @RequestParam(required = false) Integer materialId,
+                                      @RequestParam(required = false) Integer categoryId,
+                                      @RequestParam(required = false) Integer formId,
+                                      @RequestParam(required = false) String description,
 
-                         @RequestParam(defaultValue = "0") int page,
-                         Model model) {
+                                      @RequestParam(defaultValue = "0") int page,
+                                      Model model) {
 
         if (productName.isEmpty() && description.isEmpty() && brandId == null && materialId == null && categoryId == null && formId == null) {
             return "redirect:/nova/product/view-restore";

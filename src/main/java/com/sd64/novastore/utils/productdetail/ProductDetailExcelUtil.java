@@ -76,16 +76,16 @@ public class ProductDetailExcelUtil {
                         case 2:
                             if (cell.getCellType() == CellType.NUMERIC) {
                                 String sizeStr = String.valueOf(new Double(cell.getNumericCellValue()).intValue());
-                                Size size = sizeRepository.findByName(sizeStr);
+                                Size size = sizeRepository.findByNameAndStatus(sizeStr, 1);
                                 productDetail.setSize(size);
                             } else {
                                 String sizeStr = cell.getStringCellValue();
-                                Size size = sizeRepository.findByName(sizeStr);
+                                Size size = sizeRepository.findByNameAndStatus(sizeStr, 1);
                                 productDetail.setSize(size);
                             }
                             break;
                         case 3:
-                            productDetail.setColor(colorRepository.findByName(cell.getStringCellValue()));
+                            productDetail.setColor(colorRepository.findByNameAndStatus(cell.getStringCellValue(), 1));
                             break;
                         default:
                             break;

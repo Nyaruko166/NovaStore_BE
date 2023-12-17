@@ -124,7 +124,7 @@
 <!-- Product Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${pageProductHomeResponse}">
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${listProductHomeResponse}">
             <div class="product-item mb-4 border-product-home">
                 <div class="product-img position-relative overflow-hidden">
                     <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.id}}">
@@ -171,7 +171,7 @@
             <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
                 <img th:src="@{/user/img/offer1.png}" alt="">
                 <div class="position-relative" style="z-index: 1;">
-                    <h5 class="text-uppercase text-primary mb-3">Giảm giá 20% tất cả các sản phẩm</h5>
+                    <h5 class="text-uppercase text-primary mb-3">Giảm giá sản phẩm</h5>
                     <h1 class="mb-4 font-weight-semi-bold">Sản phẩm mùa xuân</h1>
                     <a th:href="@{/home}" class="btn btn-outline-primary py-md-2 px-md-3">Mua ngay</a>
                 </div>
@@ -181,7 +181,7 @@
             <div class="position-relative bg-secondary text-center text-md-left text-white mb-2 py-5 px-5">
                 <img th:src="@{/user/img/offer2.png}" alt="">
                 <div class="position-relative" style="z-index: 1;">
-                    <h5 class="text-uppercase text-primary mb-3">Giảm giá 20% tất cả các sản phẩm</h5>
+                    <h5 class="text-uppercase text-primary mb-3">Giảm giá sản phẩm</h5>
                     <h1 class="mb-4 font-weight-semi-bold">Sản phẩm mùa đông</h1>
                     <a th:href="@{/home}" class="btn btn-outline-primary py-md-2 px-md-3">Mua ngay</a>
                 </div>
@@ -207,28 +207,39 @@
 <!-- Product Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${pageProductHomeResponse}">
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="product : ${listProductDiscountHomeResponse}">
             <div class="product-item mb-4 border-product-home">
                 <div class="product-img position-relative overflow-hidden">
+                    <div class="text-discount" >Giảm 10%</div>
                     <img class="img-fluid w-100" th:src="@{'/image/product/' + ${product.id}}">
                     <div class="product-action">
                         <a class="btn btn-detail-home" th:href="@{'/product-detail/' + ${product.id}}">
                             <i class="fa-solid fa-eye" style="color: #D19C97;"></i>
                         </a>
                     </div>
-
                 </div>
                 <div class="text-center py-4 border-info-product-home">
                     <a class="h5 text-decoration-none text-truncate" th:href="@{'/product-detail/' + ${product.id}}"
                        th:text="${product.name}"></a>
                     <div class="d-flex align-items-center justify-content-center mt-2">
-                        <div class="d-flex justify-content-center" th:if="${product.priceMax != product.priceMin}">
-                            <h6 th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
-                            <h6 class="ml-1 mr-1"> ~ </h6>
-                            <h6 th:text="'₫' + ${#numbers.formatDecimal(product.priceMax.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+<!--                        Chi tiết sản phẩm có 2 giá-->
+                        <div class="d-flex justify-content-center price-discout" th:if="${product.priceMax != product.priceMin}">
+                            <span th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></span>
+                            <span class="ml-1 mr-1"> ~ </span>
+                            <span th:text="'₫' + ${#numbers.formatDecimal(product.priceMax.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></span>
                         </div>
-                        <div class="d-flex justify-content-center" th:if="${product.priceMax == product.priceMin}">
-                            <h6 th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h6>
+                        <div class="d-flex justify-content-center price" th:if="${product.priceMax != product.priceMin}">
+                            <span th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></span>
+                            <span class="ml-1 mr-1"> ~ </span>
+                            <span th:text="'₫' + ${#numbers.formatDecimal(product.priceMax.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></span>
+                        </div>
+
+<!--                        Chi tiết sản phẩm có 1 giá-->
+                        <div class="d-flex justify-content-center price-discout" th:if="${product.priceMax == product.priceMin}">
+                            <span th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></span>
+                        </div>
+                        <div class="d-flex justify-content-center price" th:if="${product.priceMax == product.priceMin}">
+                            <span th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></span>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center mb-1">

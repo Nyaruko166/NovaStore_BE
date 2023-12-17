@@ -15,7 +15,7 @@ public interface FormRepository extends JpaRepository<Form, Integer> {
     List<Form> findAllByStatusOrderByUpdateDateDesc(Integer status);
     Page<Form> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
 
-    Form findByName(String name);
+    Form findByNameAndStatus(String name, Integer status);
 
     Optional<Form> findByCode(String code);
 

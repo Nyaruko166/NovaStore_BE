@@ -37,11 +37,25 @@ public class ColorServiceImpl implements ColorService {
     }
 
     private Boolean checkName(String name) {
-        Color color = colorRepository.findByName(name);
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        Color color = colorRepository.findByNameAndStatus(name, 1);
         if (color != null) {
             return false;
         }
         return true;
+    }
+
+    public String formatName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        return name;
     }
 
     public String generateCode() {
@@ -58,7 +72,7 @@ public class ColorServiceImpl implements ColorService {
     public Boolean add(String name) {
         if (checkName(name)) {
             Color color = new Color();
-            color.setName(name);
+            color.setName(formatName(name));
             color.setStatus(1);
             color.setCreateDate(new java.util.Date());
             color.setUpdateDate(new java.util.Date());
@@ -76,7 +90,7 @@ public class ColorServiceImpl implements ColorService {
         if (optional.isPresent() && checkName(name)) {
             Color updateColor = optional.get();
             updateColor.setId(id);
-            updateColor.setName(name);
+            updateColor.setName(formatName(name));
             updateColor.setUpdateDate(new Date());
             colorRepository.save(updateColor);
             return true;

@@ -29,6 +29,9 @@ public class ProductDetail {
     @Column(name = "Price")
     private BigDecimal price;
 
+    @Column(name = "PriceDiscount")
+    private BigDecimal priceDiscount;
+
     @Column(name = "CreateDate")
     private Date createDate;
 

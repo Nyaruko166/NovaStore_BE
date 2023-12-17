@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -85,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void saveFinal(Product productAdd, List<ProductDetail> listProductDetailAdd, List<MultipartFile> filesAdd) throws IOException {
+    public void addFinal(Product productAdd, List<ProductDetail> listProductDetailAdd, List<MultipartFile> filesAdd) throws IOException {
         List<ProductDetail> listProductDetail = new ArrayList<>();
         int count = 1;
         for (ProductDetail productDetail : listProductDetailAdd) {
@@ -95,6 +96,7 @@ public class ProductServiceImpl implements ProductService {
             productDetail.setUpdateDate(new Date());
             productDetail.setStatus(1);
             productDetail.setCode(generateProductDetailCode(count));
+            productDetail.setPriceDiscount(productDetail.getPrice());
             listProductDetail.add(productDetail);
             count++;
         }
@@ -120,7 +122,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateFinal(Product productBefore, Product productUpdate, List<ProductDetail> listProductDetailUpdate, List<MultipartFile> filesUpdate, List<Integer> imageRemoveIds) throws IOException {
+    public void updateFinal(Product productBefore, Product productUpdate, List<ProductDetail> listProductDetailUpdate,
+                            List<MultipartFile> filesUpdate, List<Integer> imageRemoveIds, List<Integer> productDetailRemoveIds
+    ) throws IOException {
         List<Image> listImage = imageService.getAllImageByProductIdNoStatus(productBefore.getId());
         if (filesUpdate != null) {
             String uploadDir = "./src/main/resources/static/assets/product/";
@@ -137,6 +141,12 @@ public class ProductServiceImpl implements ProductService {
                 imageService.delete(items);
             }
         }
+
+//        if (!productDetailRemoveIds.isEmpty()) {
+//            for (Integer items : productDetailRemoveIds) {
+//                productDetailService.delete(items);
+//            }
+//        }
 
         // List hiển thị tất cả phần tử không quan tâm trang thái
         List<ProductDetail> listProductDetailBefore = productDetailRepository.findAllByProduct_IdOrderByIdAsc(productBefore.getId());
@@ -158,13 +168,15 @@ public class ProductServiceImpl implements ProductService {
             productDetail.setCode(listProductDetailBefore.get(i).getCode());
             productDetail.setCreateDate(listProductDetailBefore.get(i).getCreateDate());
             productDetail.setUpdateDate(new Date());
-            productDetail.setStatus(1);
+            productDetail.setStatus(listProductDetailBefore.get(i).getStatus());
             productDetail.setProduct(productUpdate);
+            productDetail.setPriceDiscount(listProductDetailNoDelete.get(i).getPriceDiscount());
             productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
             productDetail.setPrice(listProductDetailUpdate.get(i).getPrice());
             productDetail.setSize(listProductDetailUpdate.get(i).getSize());
             productDetail.setColor(listProductDetailUpdate.get(i).getColor());
             listProductDetailUpdate.set(i, productDetail);
+            QRCodeUtil.generateQRCode(listProductDetailUpdate.get(i).getCode(), listProductDetailUpdate.get(i).getCode());
             index++;
         }
         int count = 1;
@@ -173,7 +185,7 @@ public class ProductServiceImpl implements ProductService {
             productDetail.setProduct(productUpdate);
             productDetail.setCreateDate(new Date());
             productDetail.setUpdateDate(new Date());
-            productDetail.setStatus(1);
+            productDetail.setStatus(productUpdate.getStatus());
             productDetail.setCode(generateProductDetailCode(count));
             productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
             productDetail.setPrice(listProductDetailUpdate.get(i).getPrice());
@@ -183,9 +195,15 @@ public class ProductServiceImpl implements ProductService {
             QRCodeUtil.generateQRCode(listProductDetailUpdate.get(i).getCode(), listProductDetailUpdate.get(i).getCode());
             count++;
         }
+        listProductDetailUpdate = listProductDetailUpdate.stream().map(item -> {
+            if (productDetailRemoveIds.contains(item.getId())) {
+                item.setStatus(0);
+            }
+            return item;
+        }).collect(Collectors.toList());
         productUpdate.setListImage(listImage);
         productUpdate.setCreateDate(productBefore.getCreateDate());
-        productUpdate.setStatus(1);
+        productUpdate.setStatus(productBefore.getStatus());
         productUpdate.setUpdateDate(new Date());
         productUpdate.setListProductDetail(listProductDetailUpdate);
         productRepository.save(productUpdate);
@@ -197,7 +215,7 @@ public class ProductServiceImpl implements ProductService {
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             product.setName(productUpdate.getName());
-            product.setStatus(1);
+            product.setStatus(productUpdate.getStatus());
             product.setDescription(productUpdate.getDescription());
             product.setCreateDate(productUpdate.getCreateDate());
             product.setUpdateDate(new Date());

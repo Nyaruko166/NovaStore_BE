@@ -56,7 +56,7 @@ public class MaterialExcelUtil {
                     Cell cell = cellIterator.next();
                     switch (cellIndex) {
                         case 0:
-                            Material material1 = materialRepository.findByName(cell.getStringCellValue());
+                            Material material1 = materialRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                             if (material1 != null) {
                                 workbook.close();
                                 fileInputStream.close();
@@ -115,7 +115,7 @@ public class MaterialExcelUtil {
                         Cell cell = cellIterator.next();
                         switch (cellIndex) {
                             case 0:
-                                Material material1 = materialRepository.findByName(cell.getStringCellValue());
+                                Material material1 = materialRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                                 if (material1 != null) {
                                     workbook.close();
                                     fileInputStream.close();

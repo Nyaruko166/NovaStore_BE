@@ -33,4 +33,5 @@ build/
 .vscode/
 
 ### images ###
-**/static/assets/product/
+**/static/assets/*
+application.properties

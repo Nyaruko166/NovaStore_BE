@@ -57,7 +57,7 @@ public class CategoryExcelUtil {
                     Cell cell = cellIterator.next();
                     switch (cellIndex) {
                         case 0:
-                            Category category1 = categoryRepository.findByName(cell.getStringCellValue());
+                            Category category1 = categoryRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                             if (category1 != null) {
                                 workbook.close();
                                 fileInputStream.close();
@@ -116,7 +116,7 @@ public class CategoryExcelUtil {
                         Cell cell = cellIterator.next();
                         switch (cellIndex) {
                             case 0:
-                                Category category1 = categoryRepository.findByName(cell.getStringCellValue());
+                                Category category1 = categoryRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                                 if (category1 != null) {
                                     workbook.close();
                                     fileInputStream.close();

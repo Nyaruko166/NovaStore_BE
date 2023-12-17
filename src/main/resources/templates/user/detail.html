@@ -63,16 +63,16 @@
                 </div>
 <!--                <h3 class="font-weight-semi-bold mb-4" th:text="'₫' + ${#numbers.formatDecimal(priceMin, 0, 'COMMA', 0, 'POINT')}"></h3>-->
 <!--                <p class="mb-4" th:text="${product.description}"></p>-->
-                <div class="font-weight-semi-bold mb-3">
+                <div class=" mb-3">
                     <div  th:if="${priceMax != priceMin}">
-                        <div id="price-top" class="d-flex font-weight-semi-bold price-product-detail">
-                            <h3 class="font-weight-semi-bold" th:text="'₫' + ${#numbers.formatDecimal(priceMin, 0, 'COMMA', 0, 'POINT')}">₫123</h3>
-                            <h3 class="ml-1 mr-1 font-weight-semi-bold"> ~ </h3>
-                            <h3 class="font-weight-semi-bold" th:text="'₫' + ${#numbers.formatDecimal(priceMax, 0, 'COMMA', 0, 'POINT')}">₫333</h3>
+                        <div id="price-top" class="d-flex  price-product-detail">
+                            <h3 class="" th:text="'₫' + ${#numbers.formatDecimal(priceMin, 0, 'COMMA', 0, 'POINT')}">₫123</h3>
+                            <h3 class="ml-1 mr-1 "> ~ </h3>
+                            <h3 class="" th:text="'₫' + ${#numbers.formatDecimal(priceMax, 0, 'COMMA', 0, 'POINT')}">₫333</h3>
                         </div>
                     </div>
                     <div  th:if="${priceMax == priceMin}">
-                        <div id="price-bottom" class="d-flex font-weight-semi-bold price-product-detail">
+                        <div id="price-bottom" class="d-flex  price-product-detail">
                             <h3 th:text="'₫' + ${#numbers.formatDecimal(priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h3>
                         </div>
                     </div>

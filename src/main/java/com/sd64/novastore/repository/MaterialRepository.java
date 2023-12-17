@@ -16,7 +16,7 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
 
     List<Material> findAllByStatusOrderByUpdateDateDesc(Integer status);
 
-    Material findByName(String name);
+    Material findByNameAndStatus(String name, Integer status);
 
     Optional<Material> findByCode(String code);
 

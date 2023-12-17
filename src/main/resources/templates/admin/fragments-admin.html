@@ -100,8 +100,17 @@
 
         checkName = (idInput, errorName, text) => {
             let isName = document.getElementById(idInput).value
+            isName = isName.replace(/\s{2,}/g, '').trimStart()
             if (isName.trim() === '') {
                 document.getElementById(errorName).innerHTML = `Chưa nhập ${text}`
+                return false;
+            }
+            if (isName.length < 2) {
+                document.getElementById(errorName).innerHTML = `${text} tối thiểu 2 kí tự`
+                return false;
+            }
+            if (isName.length > 50) {
+                document.getElementById(errorName).innerHTML = `${text} tối đa 50 kí tự`
                 return false;
             }
             return true;

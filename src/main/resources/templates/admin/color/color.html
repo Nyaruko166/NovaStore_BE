@@ -94,6 +94,18 @@
                                                class="form-control" oninput="onInputText('errorName')">
                                     </div>
                                 </div>
+                                <script th:inline="javascript">
+                                    const inputElement = document.getElementById('name');
+
+                                    inputElement.addEventListener('input', function(event) {
+                                        const specialCharacters = /[!@#$%^&*()_,.?":{}|<>+\-=~`\\/\[\]]/g;
+                                        const inputValue = event.target.value;
+                                        if (specialCharacters.test(inputValue)) {
+                                            event.target.value = inputValue.replace(specialCharacters, '');
+                                        }
+                                    });
+
+                                </script>
                                 <div class="modal-footer">
                                     <button onclick="clickAdd('color', 'colorForm', 'name', 'errorName', 'tên màu sắc')"
                                             type="button" class="btn btn-dark"><i

@@ -34,15 +34,30 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Page<Brand> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
-        return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable,1);
+        return brandRepository.findAllByStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
     private Boolean checkName(String name) {
-        Brand brand = brandRepository.findByName(name);
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+
+        Brand brand = brandRepository.findByNameAndStatus(name, 1);
         if (brand != null) {
             return false;
         }
         return true;
+    }
+
+    public String formatName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        return name;
     }
 
     public String generateCode() {
@@ -52,14 +67,14 @@ public class BrandServiceImpl implements BrandService {
         }
         Integer idFinalPresent = brandFinalPresent.getId() + 1;
         String code = String.format("%04d", idFinalPresent);
-        return "TH"+code;
+        return "TH" + code;
     }
 
     @Override
     public Boolean add(String name) {
         if (checkName(name)) {
             Brand brand = new Brand();
-            brand.setName(name);
+            brand.setName(formatName(name));
             brand.setStatus(1);
             brand.setCreateDate(new Date());
             brand.setUpdateDate(new Date());
@@ -75,7 +90,7 @@ public class BrandServiceImpl implements BrandService {
         Optional<Brand> optional = brandRepository.findById(id);
         if (optional.isPresent() && checkName(name)) {
             Brand updateBrand = optional.get();
-            updateBrand.setName(name);
+            updateBrand.setName(formatName(name));
             updateBrand.setUpdateDate(new Date());
             brandRepository.save(updateBrand);
             return true;
@@ -149,7 +164,7 @@ public class BrandServiceImpl implements BrandService {
                 return "Sai dữ liệu";
             } else if (status.contains("Trùng")) {
                 return "Trùng";
-            } else if (status.contains("Tồn tại")){
+            } else if (status.contains("Tồn tại")) {
                 return "Tồn tại";
             } else {
                 return "Oke";

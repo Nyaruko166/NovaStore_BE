@@ -23,7 +23,7 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
 
 //    Optional<Size> findByName(String name);
 
-    Size findByName(String name);
+    Size findByNameAndStatus(String name, Integer status);
 
     Size findTopByOrderByIdDesc();
 

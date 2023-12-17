@@ -56,7 +56,7 @@ public class ColorExcelUtil {
                     Cell cell = cellIterator.next();
                     switch (cellIndex) {
                         case 0:
-                            Color color1 = colorRepository.findByName(cell.getStringCellValue());
+                            Color color1 = colorRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                             if (color1 != null) {
                                 workbook.close();
                                 fileInputStream.close();
@@ -115,7 +115,7 @@ public class ColorExcelUtil {
                         Cell cell = cellIterator.next();
                         switch (cellIndex) {
                             case 0:
-                                Color color1 = colorRepository.findByName(cell.getStringCellValue());
+                                Color color1 = colorRepository.findByNameAndStatus(cell.getStringCellValue(), 1);
                                 if (color1 != null) {
                                     workbook.close();
                                     fileInputStream.close();
