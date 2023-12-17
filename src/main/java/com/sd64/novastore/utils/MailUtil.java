@@ -72,4 +72,31 @@ public class MailUtil {
         }).start();
     }
 
+    public String noAccountMailTemplate(String recipientName, String companyName, String contactInfo) {
+        String emailTemplate =
+                "Kính gửi " + recipientName + ",\n\n" +
+                        "Chúng tôi xin chân thành cảm ơn quý khách đã mua hàng tại cửa hàng của chúng tôi. Đơn hàng của bạn đã được tiếp nhận và đang trong quá trình xử lý.\n\n" +
+                        "Để theo dõi tình trạng đơn hàng, quý khách vui lòng đăng nhập vào trang web của chúng tôi bằng tài khoản là email của quý khách và mật khẩu mặc định là '123456'.\n\n" +
+                        "Chúng tôi khuyến nghị quý khách thay đổi mật khẩu sau khi đăng nhập lần đầu tiên để đảm bảo an toàn cho tài khoản.\n\n" +
+                        "Nếu có bất kỳ thắc mắc hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua thông tin dưới đây.\n\n" +
+                        "Xin cảm ơn.\n\n" +
+                        "Trân trọng,\n" +
+                        companyName + "\n" +
+                        contactInfo;
+        return emailTemplate;
+    }
+
+    public String accountMailTemplate(String recipientName, String companyName, String contactInfo) {
+        String emailTemplate =
+                "Kính gửi " + recipientName + ",\n\n" +
+                        "Chúng tôi xin chân thành cảm ơn quý khách đã mua hàng tại cửa hàng của chúng tôi. Đơn hàng của bạn đã được tiếp nhận và đang trong quá trình xử lý.\n\n" +
+                        "Để theo dõi tình trạng đơn hàng, quý khách vui lòng đăng nhập vào trang web của chúng tôi bằng tài khoản đã được đăng ký trước đó.\n\n" +
+                        "Nếu có bất kỳ thắc mắc hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua thông tin dưới đây.\n\n" +
+                        "Xin cảm ơn.\n\n" +
+                        "Trân trọng,\n" +
+                        companyName + "\n" +
+                        contactInfo;
+        return emailTemplate;
+    }
+
 }

@@ -35,7 +35,7 @@
                         <option value="10" th:selected="${status == 10}">Chờ xác nhận</option>
                         <option value="3" th:selected="${status == 3}">Chờ giao hàng</option>
                         <option value="2" th:selected="${status == 2}">Đang giao hàng</option>
-                        <option value="1" th:selected="${status == 1}">Đã giao hàng</option>
+                        <option value="1" th:selected="${status == 1}">Đã hoàn thành</option>
                         <option value="0" th:selected="${status == 0}">Đã hủy</option>
                     </select>
                 </div>
@@ -134,7 +134,7 @@
                     </span>
 
                 <span  class="text-success font-weight-bold"
-                       th:if="${item.status == 1}">&nbsp;Đã giao hàng
+                       th:if="${item.status == 1}">&nbsp;Đã hoàn thành
                     </span>
 
                 <span th:if="${item.status == 0}" class="text-danger font-weight-bold">

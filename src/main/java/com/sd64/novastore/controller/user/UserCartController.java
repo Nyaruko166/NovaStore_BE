@@ -83,17 +83,25 @@ public class UserCartController {
         if (principal == null){
             SessionCart oldSessionCart = (SessionCart) session.getAttribute("sessionCart");
             SessionCart sessionCart = cartService.addToCartSession(oldSessionCart, productDetail, quantity);
-            session.setAttribute("sessionCart", sessionCart);
-            session.setAttribute("totalItems", sessionCart.getTotalItems());
-            redirectAttributes.addFlashAttribute("mess", "Thêm giỏ hàng thành công!");
+            if (sessionCart != null){
+                session.setAttribute("sessionCart", sessionCart);
+                session.setAttribute("totalItems", sessionCart.getTotalItems());
+                redirectAttributes.addFlashAttribute("mess", "Thêm giỏ hàng thành công!");
+            } else {
+                redirectAttributes.addFlashAttribute("mess", "Không thể thêm vì sẽ vượt quá giới hạn số lượng của sản phẩm này trong giỏ hàng của bạn!");
+            }
         } else {
             String email = principal.getName();
-            Cart cart = cartService.addToCart(productDetail, quantity, email);
-            session.setAttribute("totalItems", cart.getTotalItems());
-            redirectAttributes.addFlashAttribute("mess", "Thêm giỏ hàng thành công!");
+            boolean check = cartService.addToCart(productDetail, quantity, email);
+            if (check){
+                Cart cart = cartService.getCart(email);
+                session.setAttribute("totalItems", cart.getTotalItems());
+                redirectAttributes.addFlashAttribute("mess", "Thêm giỏ hàng thành công!");
+            } else {
+                redirectAttributes.addFlashAttribute("mess", "Không thể thêm vì sẽ vượt quá giới hạn số lượng của sản phẩm này trong giỏ hàng của bạn!");
+            }
         }
-        String redirectUrl = String.format("redirect:/product-detail/%d", productId);
-        return redirectUrl;
+        return "redirect:/product-detail/" + productId;
     }
 
     @RequestMapping(value = "/update-cart", method = RequestMethod.POST, params = "action=update")

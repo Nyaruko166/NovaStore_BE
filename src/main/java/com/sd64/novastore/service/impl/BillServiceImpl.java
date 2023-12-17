@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.config.MailConfig;
 import com.sd64.novastore.dto.admin.BillDto;
 import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Address;
@@ -25,6 +26,7 @@ import com.sd64.novastore.repository.RoleRepository;
 import com.sd64.novastore.repository.VoucherRepository;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.CartService;
+import com.sd64.novastore.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,6 +44,9 @@ import java.util.Optional;
 
 @Service
 public class BillServiceImpl implements BillService {
+
+    @Autowired
+    private MailUtil mailUtil;
 
     @Autowired
     private BillRepository billRepository;
@@ -75,6 +80,8 @@ public class BillServiceImpl implements BillService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    MailConfig mailConfig = new MailConfig();
 
     @Override
     public List<Bill> getAllBill() {
@@ -225,8 +232,6 @@ public class BillServiceImpl implements BillService {
             }
             productDetailRepository.save(productDetail);
         }
-
-        bill.setBillDetails(billDetailList);
         cartService.deleteCartById(cart.getId());
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setBill(bill);
@@ -277,6 +282,7 @@ public class BillServiceImpl implements BillService {
         }
         bill.setStatus(10);
         Customer customer = customerRepository.findByEmail(email);
+        String body;
         if (customer == null){
             customer = new Customer();
             customer.setName(name);
@@ -289,7 +295,11 @@ public class BillServiceImpl implements BillService {
             customer.setRole(role);
             customer.setPassword(passwordEncoder.encode("123456"));
             customerRepository.save(customer);
+            body = mailUtil.noAccountMailTemplate(email, mailConfig.company, mailConfig.contact);
+        } else {
+            body = mailUtil.accountMailTemplate(email, mailConfig.company, mailConfig.contact);
         }
+        mailUtil.sendEmail(email, mailConfig.placeOrderMail, body);
         bill.setCustomer(customer);
         List<Address> listAccountAddress = addressRepository.findAllAccountAddress(bill.getCustomer().getId());
         if (listAccountAddress.isEmpty()){
@@ -325,8 +335,6 @@ public class BillServiceImpl implements BillService {
             }
             productDetailRepository.save(productDetail);
         }
-
-        bill.setBillDetails(billDetailList);
         cart.clear();
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setBill(bill);
@@ -383,7 +391,6 @@ public class BillServiceImpl implements BillService {
                 productDetail.setStatus(1);
                 productDetailRepository.save(productDetail);
             }
-            bill.setBillDetails(billDetailList);
             billRepository.save(bill);
             return true;
         }
@@ -484,7 +491,6 @@ public class BillServiceImpl implements BillService {
                 productDetail.setStatus(1);
                 productDetailRepository.save(productDetail);
             }
-            bill.setBillDetails(billDetailList);
             billRepository.save(bill);
             return true;
         }

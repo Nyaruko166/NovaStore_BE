@@ -6,7 +6,7 @@ import com.sd64.novastore.model.SessionCart;
 import jakarta.mail.Session;
 
 public interface CartService {
-    Cart addToCart(ProductDetail productDetail, Integer quantity, String email);
+    boolean addToCart(ProductDetail productDetail, Integer quantity, String email);
 
     boolean updateCart(ProductDetail productDetail, Integer quantity, String email);
 
