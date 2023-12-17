@@ -16,6 +16,8 @@ public class MailConfig {
 
     public String changePassMail = "Mã Xác Nhận Cho Yêu Cầu Thay Đổi Mật Khẩu Của Bạn";
 
+    public String placeOrderMail = "Thông báo đặt hàng thành công tại Nova Store";
+
     public String randomCode() {
         Random random = new Random();
         int min = 100000;

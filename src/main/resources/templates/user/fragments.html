@@ -76,7 +76,7 @@
                     <a th:href="@{/home}" th:text="'Xin chào, ' + ${session.username}" class="nav-link dropdown-toggle"
                        data-toggle="dropdown"><i class="fa-solid fa-user"></i></a>
                     <div class="dropdown-menu rounded-0 m-0 mr-5">
-                        <a th:href="@{/nova/product/page}" class="dropdown-item">Quản lý</a>
+                        <a th:if="${session.role} == 'Admin'" th:href="@{/nova/product/page}" class="dropdown-item">Quản lý</a>
                          <a href="/home" class="dropdown-item">Thông tin tài khoản</a>
                          <a href="/orders" class="dropdown-item">Đơn hàng của bạn</a>
 <!--                        <a th:href="@{/home}" class="dropdown-item">Đăng ký</a>-->
