@@ -61,7 +61,7 @@ public class Customer {
     @Column(name = "Status")
     private Integer status;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "customer")
     private Cart cart;
 
     @ManyToOne
