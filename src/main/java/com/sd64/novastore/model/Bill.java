@@ -86,9 +86,6 @@ public class Bill {
     @JoinColumn(name = "VoucherId", referencedColumnName = "Id")
     private Voucher voucher;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bill")
-    private List<BillDetail> billDetails;
-
     public String getStatusName(){
         if (this.status == 10){
             return "Chờ xác nhận";
@@ -97,7 +94,7 @@ public class Bill {
         } else if (this.status == 2){
             return "Đang giao hàng";
         } else if (this.status == 1){
-            return "Đã giao hàng";
+            return "Đã hoàn thành";
         } else if (this.status == 0){
             return "Đã huỷ";
         } else {

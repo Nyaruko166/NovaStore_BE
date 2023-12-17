@@ -3,6 +3,7 @@ package com.sd64.novastore.controller.user;
 import com.google.gson.JsonObject;
 import com.sd64.novastore.model.Address;
 import com.sd64.novastore.model.Bill;
+import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.PaymentMethod;
@@ -127,8 +128,10 @@ public class UserBillController {
             return "redirect:/orders";
         }
         if (customer.getId().equals(bill.getCustomer().getId())){
+            List<BillDetail> lstBillDetails = billService.getLstDetailByBillId(id);
             List<PaymentMethod> listPaymentMethod = paymentMethodService.getAllBillPaymentMethod(id);
             model.addAttribute("order", bill);
+            model.addAttribute("lstBillDetails", lstBillDetails);
             model.addAttribute("listPaymentMethod", listPaymentMethod);
             return "/user/order-detail";
         } else {
@@ -236,6 +239,7 @@ public class UserBillController {
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
             billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, voucher);
+            attributes.addFlashAttribute("mess", "Đặt hàng thành công! Vui lòng kiểm tra mail của bạn để biết thêm chi tiết.");
             session.removeAttribute("totalItems");
             return "redirect:/home";
         } else {
@@ -299,6 +303,7 @@ public class UserBillController {
                 } else {
                     billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 }
+                attributes.addFlashAttribute("mess", "Đặt hàng thành công! Vui lòng kiểm tra mail của bạn để biết thêm chi tiết.");
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
@@ -350,6 +355,7 @@ public class UserBillController {
                 } else {
                     billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 }
+                attributes.addFlashAttribute("mess", "Đặt hàng thành công! Vui lòng kiểm tra mail của bạn để biết thêm chi tiết.");
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
@@ -401,6 +407,7 @@ public class UserBillController {
                 } else {
                     billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 }
+                attributes.addFlashAttribute("mess", "Đặt hàng thành công! Vui lòng kiểm tra mail của bạn để biết thêm chi tiết.");
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
