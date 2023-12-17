@@ -153,6 +153,12 @@ public class OfflineCartServiceImpl implements OfflineCartService {
         List<OfflineCartView> lstItems = getCart(tempBill.getLstDetailProduct());
         for (OfflineCartView x : lstItems) {
             billService.addBillDetailPos(convertToBillDetail(x, bill));
+            ProductDetail productDetail = productDetailRepository.findById(x.getIdCtsp()).orElse(null);
+            productDetail.setQuantity(productDetail.getQuantity() - x.getQty());
+            if (productDetail.getQuantity() == 0) {
+                productDetail.setStatus(0);
+            }
+            productDetailRepository.save(productDetail);
         }
         removeFromLstBill(tempBill);
     }
