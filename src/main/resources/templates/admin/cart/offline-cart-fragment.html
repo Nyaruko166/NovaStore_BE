@@ -73,7 +73,7 @@
                             <h6 class="card-subtitle mb-2 text-muted" th:text="${x.fieldJoin()}"></h6>
                         </div>
                         <div class="col-2">
-                            <button th:value="${x.code}" class="btn btn-primary" onclick="addItems(this)"
+                            <button th:value="${x.code} +' | '+ ${x.quantity}" class="btn btn-primary" onclick="addItems(this)"
                                     style="margin-top: 9px"><i class="fa-solid fa-plus"></i></button>
                         </div>
                     </div>

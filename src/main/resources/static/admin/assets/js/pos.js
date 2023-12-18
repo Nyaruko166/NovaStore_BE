@@ -82,7 +82,13 @@ function searchAndReplaceProduct() {
 
 async function addItems(obj) {
 
-    let productCode = obj.value;
+    let parts = obj.value.split('|');
+
+    let productCode = parts[0].trim();
+    let qtyInStock = Number(parts[1].trim());
+
+    console.log(productCode)
+    console.log(qtyInStock)
 
     const {value: qty} = await Swal.fire({
         title: "Nhập số lượng",
@@ -93,6 +99,8 @@ async function addItems(obj) {
                 return "Vui lòng nhập số lượng!";
             } else if (Math.sign(Number(value)) !== 1) {
                 return "Vui lòng nhập số nguyên dương!";
+            } else if (Number(value) > qtyInStock) {
+                return "Số lượng trong kho không đủ!";
             }
         }
     });
@@ -174,8 +182,15 @@ function thanhToan() {
         let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
         let khachDua = document.getElementById('khachDua').value;
 
+        // console.log(khachPhaiTra[0])
+        // console.log(khachDua)
 
-        if (khachDua > khachPhaiTra) {
+        if (Number(khachDua) > Number(khachPhaiTra[0])) {
+            Swal.fire({
+                title: "Thanh toán thành công!",
+                text: "Bạn đã thanh toán thành công!",
+                icon: "success"
+            });
             window.location = "/nova/pos/checkout";
         } else {
             Swal.fire({
