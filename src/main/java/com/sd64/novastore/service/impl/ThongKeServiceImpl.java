@@ -91,5 +91,10 @@ public class ThongKeServiceImpl implements ThongKeService {
         return thongKeRepository.getTKTongDoanhThu();
     }
 
+    @Override
+    public TKTong getTKNhanVien() {
+        return thongkeACountRepository.getTKNhanVien();
+    }
+
 
 }

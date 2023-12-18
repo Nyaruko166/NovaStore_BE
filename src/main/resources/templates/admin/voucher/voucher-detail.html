@@ -206,8 +206,15 @@
                             let startDate = new Date(startDateValue);
                             let endDate = new Date(endDateValue);
 
+                            let currentDate = new Date();
+
                             if (endDate <= startDate) {
                                 errorEndDate.innerHTML = `Ngày kết thúc phải lớn hơn ngày bắt đầu`;
+                                return false;
+                            }
+
+                            if (endDate <= currentDate) {
+                                errorEndDate.innerHTML = `Ngày kết thúc phải lớn hơn ngày hiện tại`;
                                 return false;
                             }
 

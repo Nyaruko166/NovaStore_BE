@@ -18,55 +18,66 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card" style=" border-radius: 20px;background-color: #99FFFF;">
-            <div class="card-body">
-                <p class="card-text" style="color: black"><i class="fas fa-user"
-                                                             style="padding-right: 8px;"></i><span
-                        th:text="${tkTong.getSoLuong() == null ? 0 : tkTong.getSoLuong()}"></span> Khách Hàng
-                </p>
+
+        <div class="col-md-2">
+            <div class="card" style=" border-radius: 20px;background-color:#00CCCC;">
+                <div class="card-body">
+                    <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh thu:
+                        <span th:text="${tkTongDoanhThu != null ? #numbers.formatDecimal(tkTongDoanhThu.getSoLuong(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="card" style=" border-radius: 20px;background-color: #99FFFF;">
-            <div class="card-body">
-
-                <p class="card-text" style="color: black"><i class="fas fa-box"
-                                                             style="padding-right: 8px;"></i>Tổng số sản phẩm:
-                    <span
-                            th:text="${tkTongSanPham.getSoLuong() == null ? 0 : tkTongSanPham.getSoLuong()}"></span>
-                </p>
-
+        <div class="col-md-2">
+            <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
+                <div class="card-body">
+                    <p class="card-text" style="color: black"><i class="fas fa-user"
+                                                                 style="padding-right: 8px;"></i><span
+                            th:text="${tkTong.getSoLuong() == null ? 0 : tkTong.getSoLuong()}"></span> Khách Hàng đang hoạt động
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-3">
-        <div class="card" style=" border-radius: 20px;background-color: #99FFFF;">
-            <div class="card-body">
-
-                <p class="card-text" style="color: black"><i class="fas fa-check"
-                                                             style="padding-right: 8px;"></i><span
-                        th:text="${tkTongDonHang.getSoLuong() == null ? 0 : tkTongDonHang.getSoLuong()}"></span> Đơn
-                    Hàng Thành Công
-                </p>
-
+        <div class="col-md-2">
+            <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
+                <div class="card-body">
+                    <p class="card-text" style="color: black"><i class="fas fa-user"
+                                                                 style="padding-right: 8px;"></i><span
+                            th:text="${tkTongNV.getSoLuong() == null ? 0 : tkTongNV.getSoLuong()}"></span> Nhân viên đang hoạt động
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-3">
-        <div class="card" style=" border-radius: 20px;background-color:#99FFFF;">
-            <div class="card-body">
-                <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
-                    thu: <span
-                            th:text="${tkTongDoanhThu.getSoLuong() != null ?   #numbers.formatDecimal(tkTongDoanhThu.getSoLuong(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
-                </p>
+        <div class="col-md-2">
+            <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
+                <div class="card-body">
+
+                    <p class="card-text" style="color: black"><i class="fas fa-box"
+                                                                 style="padding-right: 8px;"></i>Tổng số sản phẩm:
+                        <span
+                                th:text="${tkTongSanPham.getSoLuong() == null ? 0 : tkTongSanPham.getSoLuong()}"></span>
+                    </p>
+
+                </div>
             </div>
         </div>
-    </div>
+
+        <div class="col-md-2">
+            <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
+                <div class="card-body">
+
+                    <p class="card-text" style="color: black"><i class="fas fa-check"
+                                                                 style="padding-right: 8px;"></i><span
+                            th:text="${tkTongDonHang.getSoLuong() == null ? 0 : tkTongDonHang.getSoLuong()}"></span> Đơn
+                        Hàng Thành Công
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
 
     <div class="col-md-3">
         <div class="card" style=" border-radius: 20px;background-color: #33FFCC;">
