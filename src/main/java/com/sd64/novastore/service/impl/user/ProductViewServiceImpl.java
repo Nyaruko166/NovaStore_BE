@@ -89,6 +89,8 @@ public class ProductViewServiceImpl implements ProductViewService {
         return productDetailAndValueDiscountDto;
     }
 
+
+    
     @Override
     public List<ProductDiscountHomeResponse> getRandomProductAndProductDiscount() {
         List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.getAllProductAndDiscountResponseHome()
