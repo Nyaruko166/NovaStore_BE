@@ -112,7 +112,6 @@
                         </div>
                     </div>
                     <script th:inline="javascript">
-
                         checkName = () => {
                             let isName = document.getElementById('name').value
                             if (isName.trim() === '') {
@@ -123,36 +122,48 @@
                         }
 
                         checkQuantity = () => {
-                            let isQuantity = document.getElementById('quantity').value
-                            if (isQuantity.trim() === '') {
-                                document.getElementById('errorQuantity').innerHTML = `Chưa nhập số lượng`
+                            let isQuantity = document.getElementById('quantity').value;
+                            if (!isNonNegativeInteger(isQuantity)) {
+                                document.getElementById('errorQuantity').innerHTML = 'Vui lòng nhập một số nguyên không âm';
                                 return false;
                             }
-                            if (isQuantity < 0) {
-                                document.getElementById('errorQuantity').innerHTML = `Số lượng lớn hơn 0`
+
+                            isQuantity = parseInt(isQuantity);
+
+                            if (isQuantity <= 0) {
+                                document.getElementById('errorQuantity').innerHTML = 'Số lượng phải lớn hơn   0';
                                 return false;
                             }
+
                             if (isQuantity > 30) {
-                                document.getElementById('errorQuantity').innerHTML = `Số lượng phiếu mua cao nhất là 30`
+                                document.getElementById('errorQuantity').innerHTML = 'Số lượng voucher cao nhất là 30';
                                 return false;
                             }
+
                             return true;
                         }
+
+                        function isNonNegativeInteger(value) {
+                            return /^\d+$/.test(value);
+                        }
+
                         checkValue = () => {
                             let isValue = document.getElementById('value').value;
                             let minimumPrice = document.getElementById('minimumPrice').value;
 
-                            if (isValue.trim() === '') {
-                                document.getElementById('errorValue').innerHTML = `Chưa nhập số tiền giảm`;
+                            if (!isNumeric(isValue)) {
+                                document.getElementById('errorValue').innerHTML = 'Vui lòng nhập một giá trị số';
                                 return false;
                             }
 
-                            if (isValue < 10000) {
-                                document.getElementById('errorValue').innerHTML = `Số tiền giảm phải lớn hơn 10000đ`;
+                            isValue = parseFloat(isValue);
+
+                            if (isValue <= 10000) {
+                                document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải lớn hơn 10000đ';
                                 return false;
                             }
 
-                            if (isValue !== '' && minimumPrice !== '' && parseFloat(isValue) >= parseFloat(minimumPrice)) {
+                            if (isValue !== '' && minimumPrice !== '' && isValue >= parseFloat(minimumPrice)) {
                                 document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải nhỏ hơn giá tối thiểu.';
                                 return false;
                             }
@@ -160,22 +171,35 @@
                             return true;
                         }
 
+                        function isNumeric(value) {
+                            return !isNaN(parseFloat(value)) && isFinite(value);
+                        }
+
                         checkMinimumPrice = () => {
                             let isValue = document.getElementById('value').value;
-                            let isMinimumPrice = document.getElementById('minimumPrice').value
-                            if (isMinimumPrice.trim() === '') {
-                                document.getElementById('errorMinimumPrice').innerHTML = `Chưa nhập giá tối thiểu`
+                            let isMinimumPrice = document.getElementById('minimumPrice').value;
+                            if (!isNumeric(isMinimumPrice)) {
+                                document.getElementById('errorMinimumPrice').innerHTML = 'Vui lòng nhập một giá trị số';
                                 return false;
                             }
+
+                            isMinimumPrice = parseFloat(isMinimumPrice);
+
                             if (isMinimumPrice < 100000) {
-                                document.getElementById('errorMinimumPrice').innerHTML = `Giá trị lớn hơn 100000đ`
+                                document.getElementById('errorMinimumPrice').innerHTML = 'Giá trị tối thiểu lớn hơn 100000đ';
                                 return false;
                             }
-                            if (isValue !== '' && isMinimumPrice !== '' && parseFloat(isValue) >= parseFloat(isMinimumPrice)) {
-                                document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải nhỏ hơn giá tối thiểu.';
+
+                            if (isValue !== '' && isMinimumPrice !== '' && parseFloat(isValue) > isMinimumPrice) {
+                                document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải nhỏ hơn hoặc bằng giá tối thiểu.';
                                 return false;
                             }
+
                             return true;
+                        }
+
+                        function isNumeric(value) {
+                            return !isNaN(parseFloat(value)) && isFinite(value);
                         }
 
                         checkStartDate = () => {
@@ -217,7 +241,6 @@
                                 errorEndDate.innerHTML = `Ngày kết thúc phải lớn hơn ngày hiện tại`;
                                 return false;
                             }
-
                             errorEndDate.innerHTML = '';
                             return true;
                         }
