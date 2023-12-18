@@ -43,6 +43,9 @@ public class ThongKeController {
         TKTong tkTong = thongKeService.getTKKhachHang();
         model.addAttribute("tkTong", tkTong);
 
+        TKTong tkTongNV = thongKeService.getTKNhanVien();
+        model.addAttribute("tkTongNV", tkTongNV);
+
         TKTong tkTongSanPham = thongKeService.getTKTongSanPham();
         model.addAttribute("tkTongSanPham", tkTongSanPham);
 

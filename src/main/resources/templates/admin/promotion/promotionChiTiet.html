@@ -30,7 +30,7 @@
 
                 <div style="margin-right: 20px; margin-bottom: 10px;">
                     <span style="font-weight: bold; margin-bottom: 5px; display: block;">Phần trăm giảm:</span>
-                    <span style="font-style: italic; display: block;" th:text="${promotion.value}"></span>
+                    <span style="font-style: italic; display: block;" th:text="${promotion.value} + '%'"></span>
                 </div>
 
                 <div style="margin-right: 20px; margin-bottom: 10px;">
@@ -73,14 +73,15 @@
                     <thead>
                     <tr>
                         <th>Sản phẩm</th>
-                        <th>Tên giảm giá</th>
-                        <th>Tên sản phẩm</th>
                         <th>Mã sản phẩm</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Tên giảm giá</th>
+                        <th>Phần trăm giảm</th>
                         <th>Giá ban đầu</th>
                         <th>Giá sau giảm</th>
                         <th>Ngày bắt đầu</th>
                         <th>Ngày kết thúc</th>
-                        <th>Phần trăm giảm</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -89,14 +90,14 @@
                             <img th:src="@{'/image/product/' + ${detail.productId}}"
                                  style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
                         </td>
-                        <td th:text="${detail.promotionName}"></td>
-                        <td th:text="${detail.productName}"></td>
                         <td th:text="${detail.productCode}"></td>
+                        <td th:text="${detail.productName}"></td>
+                        <td th:text="${detail.promotionName}"></td>
+                        <td th:text="${detail.promotionValue} + '%'"></td>
                         <td th:text="${#numbers.formatDecimal(detail.minProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫' + ' - ' + #numbers.formatDecimal(detail.maxProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
                         <td th:text="${#numbers.formatDecimal(detail.minProductPriceDiscount, 0, 'COMMA', 0, 'POINT') + ' ₫' + ' - ' + #numbers.formatDecimal(detail.maxProductPriceDiscount, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
                         <td th:text="${detail.promotionStartDate}"></td>
                         <td th:text="${detail.promotionEndDate}"></td>
-                        <td th:text="${detail.promotionValue}"></td>
                     </tr>
                     </tbody>
                 </table>
