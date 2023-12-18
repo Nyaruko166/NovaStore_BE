@@ -37,7 +37,6 @@
                 <div class="tab-content">
                     <div class="tab-pane fade active show" id="account-general">
                         <form th:object="${user}">
-
                             <div class="card-body media align-items-center">
                                 <img th:src="@{'/image/account/' + ${user.id}}" alt
                                      class="d-block ui-w-80">
@@ -47,7 +46,6 @@
                                         <input type="file" class="account-settings-fileinput">
                                     </label> &nbsp;
                                     <button type="button" class="btn btn-default md-btn-flat">Đặt Lại</button>
-                                    <!--                                <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>-->
                                 </div>
                             </div>
                             <hr class="border-light m-0">
@@ -59,10 +57,6 @@
                                 <div class="form-group">
                                     <label class="form-label">Email</label>
                                     <input name="email" type="text" class="form-control mb-1" th:field="*{email}">
-                                    <!--                                <div class="alert alert-warning mt-3">-->
-                                    <!--                                    Your email is not confirmed. Please check your inbox.<br>-->
-                                    <!--                                    <a href="javascript:void(0)">Resend confirmation</a>-->
-                                    <!--                                </div>-->
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Số Điện Thoại</label>
@@ -77,61 +71,77 @@
                             </div>
                         </form>
                     </div>
-                    <!--                    <div class="tab-pane fade" id="account-change-password">-->
-                    <!--                        <div class="card-body pb-2">-->
-                    <!--                            <div class="form-group">-->
-                    <!--                                <label class="form-label">Current password</label>-->
-                    <!--                                <input type="password" class="form-control">-->
-                    <!--                            </div>-->
-                    <!--                            <div class="form-group">-->
-                    <!--                                <label class="form-label">New password</label>-->
-                    <!--                                <input type="password" class="form-control">-->
-                    <!--                            </div>-->
-                    <!--                            <div class="form-group">-->
-                    <!--                                <label class="form-label">Repeat new password</label>-->
-                    <!--                                <input type="password" class="form-control">-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
                     <div class="tab-pane fade" id="account-info">
-                        <div class="card-body pb-2">
-                            <div class="row no-gutters">
-                                <div class="col-sm-4 pr-sm-2">
-                                    <div class="form-group">
-                                        <label for="city" class="small text-muted mb-1">TỈNH THÀNH</label>
-                                        <select class="form-control form-control-sm" name="city" id="city">
-                                            <option value="" selected>Tỉnh thành</option>
-                                        </select>
-                                        <span id="cityError" class="small text-danger"></span>
+                        <form th:action="@{/user/address}" method="post">
+                            <div class="card-body pb-2">
+                                <div class="row no-gutters">
+                                    <div class="col-sm-4 pr-sm-2">
+                                        <div class="form-group">
+                                            <label for="customerName" class="small text-muted mb-1">Tên</label>
+                                            <input type="text" class="form-control form-control-sm"
+                                                   name="customerName" id="customerName"/>
+                                            <span id="nameError" class="small text-danger"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-4 pr-sm-2">
-                                    <div class="form-group">
-                                        <label for="district" class="small text-muted mb-1">QUẬN HUYỆN</label>
-                                        <select class="form-control form-control-sm" name="district" id="district">
-                                            <option value="" selected>Quận huyện</option>
-                                        </select>
-                                        <span id="districtError" class="small text-danger"></span>
+                                    <div class="col-sm-4 pr-sm-2">
+                                        <div class="form-group">
+                                            <label for="phone-number" class="small text-muted mb-1">Số điện
+                                                thoại</label>
+                                            <input type="text" class="form-control form-control-sm"
+                                                   name="phoneNumber" id="phone-number">
+                                            <span id="phoneNumberError" class="small text-danger"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="ward" class="small text-muted mb-1">PHƯỜNG XÃ</label>
-                                        <select class="form-control form-control-sm" name="ward" id="ward">
-                                            <option value="" selected>Phường xã</option>
-                                        </select>
-                                        <span id="wardError" class="small text-danger"></span>
+                                    <div class="col-sm-4 pr-sm-2">
+                                        <div class="form-group">
+                                            <label for="specific-address" class="small text-muted mb-1">Số nhà,
+                                                Đường</label>
+                                            <input type="text" class="form-control form-control-sm"
+                                                   name="specificAddress" id="specific-address">
+                                            <span id="specificAddressError" class="small text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 pr-sm-2">
+                                        <div class="form-group">
+                                            <label for="city" class="small text-muted mb-1">Tỉnh Thành</label>
+                                            <select class="form-control form-control-sm" name="city" id="city">
+                                                <option value="" selected>Tỉnh thành</option>
+                                            </select>
+                                            <span id="cityError" class="small text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 pr-sm-2">
+                                        <div class="form-group">
+                                            <label for="district" class="small text-muted mb-1">QUẬN HUYỆN</label>
+                                            <select class="form-control form-control-sm" name="district"
+                                                    id="district">
+                                                <option value="" selected>Quận huyện</option>
+                                            </select>
+                                            <span id="districtError" class="small text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 pr-sm-2">
+                                        <div class="form-group">
+                                            <label for="ward" class="small text-muted mb-1">PHƯỜNG XÃ</label>
+                                            <select class="form-control form-control-sm" name="ward" id="ward">
+                                                <option value="" selected>Phường xã</option>
+                                            </select>
+                                            <span id="wardError" class="small text-danger"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="text-right mt-3">
+                                <button type="submit" class="btn btn-primary">Thêm Địa Chỉ</button>&nbsp;
+                            </div>
+                        </form>
                         <hr class="border-light m-0">
                         <div class="card-body pb-2">
                             <h6 class="mb-4">Danh Sách Địa Chỉ</h6>
                             <table class="table table-striped table-hover text-center">
                                 <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">Tên</th>
                                     <th scope="col">Tỉnh Thành</th>
                                     <th scope="col">Quận Huyện</th>
                                     <th scope="col">Phường Xã</th>
@@ -141,11 +151,35 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="">
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                <tr th:if="${defaultAddress}">
+                                    <td th:text="${defaultAddress.customerName}"></td>
+                                    <td th:text="${defaultAddress.city}"></td>
+                                    <td th:text="${defaultAddress.district}"></td>
+                                    <td th:text="${defaultAddress.ward}"></td>
+                                    <td th:text="${defaultAddress.specificAddress}"></td>
+                                    <td th:text="${defaultAddress.phoneNumber}"></td>
+                                    <td>
+                                        <a type="button" th:href="@{'/user/makeDefault/' + ${defaultAddress.id}}"
+                                           class="btn btn-outline-secondary disabled" role="button"
+                                           aria-disabled="true">Mặc Định</a>
+                                        <a type="button" th:href="@{'/user/delete/' + ${defaultAddress.id}}"
+                                           class="btn btn-outline-danger disabled" role="button"
+                                           aria-disabled="true">Xoá</a>
+                                    </td>
+                                </tr>
+                                <tr th:each="x:${lstAddress}">
+                                    <td th:text="${x.customerName}"></td>
+                                    <td th:text="${x.city}"></td>
+                                    <td th:text="${x.district}"></td>
+                                    <td th:text="${x.ward}"></td>
+                                    <td th:text="${x.specificAddress}"></td>
+                                    <td th:text="${x.phoneNumber}"></td>
+                                    <td>
+                                        <a type="button" th:href="@{'/user/makeDefault/' + ${x.id}}"
+                                           class="btn btn-secondary">Mặc Định</a>
+                                        <a type="button" th:href="@{'/user/delete/' + ${x.id}}" class="btn
+                                        btn-danger">Xoá</a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -154,64 +188,58 @@
                 </div>
             </div>
         </div>
-        <div class="text-right mt-3">
-            <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
-            <button type="button" class="btn btn-default">Cancel</button>
-        </div>
     </div>
+</div>
 
-    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js}"></script>
-    <script>
-        const host = "https://provinces.open-api.vn/api/";
+<script th:src="@{https://code.jquery.com/jquery-3.4.1.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js}"></script>
+<script>
+    const host = "https://provinces.open-api.vn/api/";
 
-        // var defaultCity = document.getElementById('defaultCity').value;
-        // var defaultDistrict = document.getElementById('defaultDistrict').value;
-        // var defaultWard = document.getElementById('defaultWard').value;
+    // var defaultCity = document.getElementById('defaultCity').value;
+    // var defaultDistrict = document.getElementById('defaultDistrict').value;
+    // var defaultWard = document.getElementById('defaultWard').value;
 
-        var callAPI = (api) => {
-            return axios.get(api)
-                .then((response) => {
-                    renderData(response.data, "city");
-                    // $("#city").val(defaultCity).change();
-                });
-        }
-        callAPI('https://provinces.open-api.vn/api/?depth=1');
-        var callApiDistrict = (api) => {
-            return axios.get(api)
-                .then((response) => {
-                    renderData(response.data.districts, "district");
-                    // $("#district").val(defaultDistrict).change();
-                });
-        }
-        var callApiWard = (api) => {
-            return axios.get(api)
-                .then((response) => {
-                    renderData(response.data.wards, "ward");
-                    // $("#ward").val(defaultWard);
-                });
-        }
-
-        var renderData = (array, select) => {
-            let row = ' <option disable value="">Chọn</option>';
-            array.forEach(element => {
-                row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`
+    var callAPI = (api) => {
+        return axios.get(api)
+            .then((response) => {
+                renderData(response.data, "city");
+                // $("#city").val(defaultCity).change();
             });
-            document.querySelector("#" + select).innerHTML = row
-        }
+    }
+    callAPI('https://provinces.open-api.vn/api/?depth=1');
+    var callApiDistrict = (api) => {
+        return axios.get(api)
+            .then((response) => {
+                renderData(response.data.districts, "district");
+                // $("#district").val(defaultDistrict).change();
+            });
+    }
+    var callApiWard = (api) => {
+        return axios.get(api)
+            .then((response) => {
+                renderData(response.data.wards, "ward");
+                // $("#ward").val(defaultWard);
+            });
+    }
 
-        $("#city").change(() => {
-            callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
+    var renderData = (array, select) => {
+        let row = ' <option disable value="">Chọn</option>';
+        array.forEach(element => {
+            row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`
         });
-        $("#district").change(() => {
-            callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
-        });
-    </script>
-    <!--    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>-->
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript">
+        document.querySelector("#" + select).innerHTML = row
+    }
 
-    </script>
+    $("#city").change(() => {
+        callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
+    });
+    $("#district").change(() => {
+        callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
+    });
+</script>
+<!--    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>-->
 </body>
 
 </html>

@@ -31,7 +31,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address add(Address address) {
-        address.setStatus(1);
         address.setCreateDate(new Date());
         address.setUpdateDate(new Date());
         return addressRepository.save(address);
@@ -74,5 +73,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<Address> findAccountAddress(Integer AccountId) {
         return addressRepository.findAccountAddress(AccountId);
+    }
+
+    @Override
+    public List<Address> findAllAddressByAccount(Integer id) {
+        return addressRepository.findAllAccountAddress(id);
     }
 }

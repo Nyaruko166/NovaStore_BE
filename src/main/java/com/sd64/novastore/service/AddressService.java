@@ -22,4 +22,5 @@ public interface AddressService {
 
     List<Address> findAccountAddress(Integer AccountId);
 
+    List<Address> findAllAddressByAccount(Integer id);
 }

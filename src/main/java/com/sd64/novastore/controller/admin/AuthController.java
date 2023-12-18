@@ -12,13 +12,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -165,11 +163,60 @@ public class AuthController {
     @GetMapping("/profile")
     public String p5(Model model, Principal principal) {
 
-        Account currentLog = accountService.findFirstByEmail(principal.getName());
+        Account currentLog = getCurrentUser(principal);
         List<Address> lstAddress = addressService.findAccountAddress(currentLog.getId());
-        model.addAttribute("user",currentLog);
+        Address defaultAddress = addressService.findAccountDefaultAddress(currentLog.getId());
+        model.addAttribute("user", currentLog);
+        model.addAttribute("defaultAddress", defaultAddress);
+        model.addAttribute("lstAddress", lstAddress);
 
         return "/common/profile";
+    }
+
+    @PostMapping("/user/address")
+    public String addAddress(Model model, Address address, Principal principal) {
+        Address defaultAddress = addressService.findAccountDefaultAddress(getCurrentUser(principal).getId());
+        if (defaultAddress == null) {
+            address.setStatus(1);
+        } else {
+            address.setStatus(2);
+        }
+        Account account = accountService.findOne(getCurrentUser(principal).getId());
+        address.setAccount(account);
+        addressService.add(address);
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/user/makeDefault/{id}")
+    public String makeDef(Model model, Principal principal,
+                          @PathVariable("id") Integer id) {
+
+        Address defaultAddress = addressService.findAccountDefaultAddress(getCurrentUser(principal).getId());
+        defaultAddress.setStatus(2);
+        addressService.update(defaultAddress, defaultAddress.getId());
+
+        Address newDefault = addressService.getOne(id);
+        newDefault.setStatus(1);
+        addressService.update(newDefault, newDefault.getId());
+
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/user/delete/{id}")
+    public String deleteAddress(Model model, Principal principal,
+                                @PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+
+        Address address = addressService.getOne(id);
+        if (address.getStatus() == 1) {
+            redirectAttributes.addFlashAttribute("err", "Không thể xoá địa chỉ mặc định!!");
+            return "redirect:/profile";
+        }
+        addressService.delete(address.getId());
+        return "redirect:/profile";
+    }
+
+    private Account getCurrentUser(Principal principal) {
+        return accountService.findFirstByEmail(principal.getName());
     }
 
 }
