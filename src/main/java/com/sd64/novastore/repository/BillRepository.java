@@ -21,7 +21,7 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
     Bill findTopByOrderByIdDesc();
 
-    @Query("SELECT b FROM Bill b WHERE b.status = :status AND b.customer.id = :customerId")
+    @Query("SELECT b FROM Bill b WHERE b.status = :status AND b.customer.id = :customerId ORDER BY b.orderDate DESC")
     List<Bill> getOrders(@Param("status") Integer status, @Param("customerId") Integer customerId);
 
     @Query("SELECT b FROM Bill b WHERE b.customer.id = :customerId ORDER BY b.orderDate DESC")
