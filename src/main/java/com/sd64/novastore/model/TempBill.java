@@ -27,6 +27,8 @@ public class TempBill {
 
     private Integer idCustomer;
 
+    private Integer idEmployee;
+
     private String customerName;
 
     private String customerPhone;
