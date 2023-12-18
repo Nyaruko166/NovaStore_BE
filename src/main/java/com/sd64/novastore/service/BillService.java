@@ -1,6 +1,7 @@
 package com.sd64.novastore.service;
 
 import com.sd64.novastore.dto.admin.BillDto;
+import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.Cart;
@@ -49,13 +50,13 @@ public interface BillService {
 
     boolean userCancelOrder(Integer billId);
 
-    boolean confirmOrder(BigDecimal shippingFee, Integer billId);
+    boolean confirmOrder(BigDecimal shippingFee, Integer billId, Account account);
 
-    boolean cancelOrder(Integer billId);
+    boolean cancelOrder(Integer billId, Account account);
 
-    boolean shippingOrder(Integer id);
+    boolean shippingOrder(Integer id, Account account);
 
-    boolean completeOrder(Integer id);
+    boolean completeOrder(Integer id, Account account);
 
     Page<BillDto> findAll(Pageable pageable);
 

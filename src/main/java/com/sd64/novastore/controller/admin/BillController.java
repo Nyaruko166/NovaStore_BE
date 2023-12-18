@@ -1,10 +1,12 @@
 package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.dto.admin.BillDto;
+import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.PaymentMethod;
+import com.sd64.novastore.repository.AccountRepository;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.PaymentMethodService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -39,6 +42,9 @@ public class BillController {
 
     @Autowired
     private PaymentMethodService paymentMethodService;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @GetMapping()
     public String getAllBills(Model model,
@@ -115,10 +121,12 @@ public class BillController {
     }
 
     @RequestMapping(value = "/cancel-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String cancelBill(@PathVariable Integer id, RedirectAttributes attributes) {
+    public String cancelBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal) {
         Bill bill = billService.getOneBill(id);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.cancelOrder(id);
+            boolean check = billService.cancelOrder(id, employee);
             if (check){
                 attributes.addFlashAttribute("message", "Huỷ đơn hàng " + bill.getCode() + " thành công");
             } else {
@@ -131,10 +139,12 @@ public class BillController {
     }
 
     @RequestMapping(value = "/detail-cancel-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String detailCancelBill(@PathVariable Integer id, RedirectAttributes attributes) {
+    public String detailCancelBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal) {
         Bill bill = billService.getOneBill(id);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.cancelOrder(id);
+            boolean check = billService.cancelOrder(id, employee);
             if (check){
                 attributes.addFlashAttribute("message", "Huỷ đơn hàng " + bill.getCode() + " thành công");
             } else {
@@ -150,10 +160,12 @@ public class BillController {
     @PostMapping("/confirm-bill")
     public String confirmBill(@RequestParam("id") Integer id,
                                @RequestParam("shippingFee") BigDecimal shippingFee,
-                              RedirectAttributes attributes){
+                              RedirectAttributes attributes, Principal principal){
         Bill bill = billService.getOneBill(id);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.confirmOrder(shippingFee, id);
+            boolean check = billService.confirmOrder(shippingFee, id, employee);
             if (check){
                 attributes.addFlashAttribute("message", "Xác nhận đơn hàng " + bill.getCode() + " thành công");
             } else {
@@ -168,10 +180,12 @@ public class BillController {
     @PostMapping("/detail-confirm-bill")
     public String detailConfirmBill(@RequestParam("id") Integer id,
                               @RequestParam("shippingFee") BigDecimal shippingFee,
-                              RedirectAttributes attributes){
+                              RedirectAttributes attributes, Principal principal){
         Bill bill = billService.getOneBill(id);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.confirmOrder(shippingFee, id);
+            boolean check = billService.confirmOrder(shippingFee, id, employee);
             if (check){
                 attributes.addFlashAttribute("message", "Xác nhận đơn hàng " + bill.getCode() + " thành công");
             } else {
@@ -185,10 +199,12 @@ public class BillController {
     }
 
     @RequestMapping(value = "/shipping-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String shippingBill(@PathVariable Integer id, RedirectAttributes attributes) {
+    public String shippingBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal) {
         Bill bill = billService.getOneBill(id);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.shippingOrder(id);
+            boolean check = billService.shippingOrder(id, employee);
             if (check){
                 attributes.addFlashAttribute("message", "Đã xác nhận đang giao đơn hàng " + bill.getCode());
             } else {
@@ -201,10 +217,12 @@ public class BillController {
     }
 
     @RequestMapping(value = "/detail-shipping-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String detailShippingBill(@PathVariable Integer id, RedirectAttributes attributes) {
+    public String detailShippingBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal) {
         Bill bill = billService.getOneBill(id);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.shippingOrder(id);
+            boolean check = billService.shippingOrder(id, employee);
             if (check){
                 attributes.addFlashAttribute("message", "Đã xác nhận đang giao đơn hàng " + bill.getCode());
             } else {
@@ -218,10 +236,12 @@ public class BillController {
     }
 
     @RequestMapping(value = "/complete-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String completeBill(@PathVariable Integer id, RedirectAttributes attributes) {
+    public String completeBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal) {
         Bill bill = billService.getOneBill(id);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.completeOrder(id);
+            boolean check = billService.completeOrder(id, employee);
             if (check){
                 attributes.addFlashAttribute("message", "Xác nhận đã giao đơn hàng " + bill.getCode() + " thành công");
             } else {
@@ -233,10 +253,12 @@ public class BillController {
     }
 
     @RequestMapping(value = "/detail-complete-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String detailCompleteBill(@PathVariable Integer id, RedirectAttributes attributes) {
+    public String detailCompleteBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal) {
         Bill bill = billService.getOneBill(id);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.completeOrder(id);
+            boolean check = billService.completeOrder(id, employee);
             if (check){
                 attributes.addFlashAttribute("message", "Xác nhận đã giao đơn hàng " + bill.getCode() + " thành công");
             } else {

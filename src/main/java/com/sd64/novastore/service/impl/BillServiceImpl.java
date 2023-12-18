@@ -410,7 +410,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public boolean confirmOrder(BigDecimal shippingFee, Integer id) {
+    public boolean confirmOrder(BigDecimal shippingFee, Integer id, Account account) {
         Bill bill = billRepository.findById(id).orElse(null);
         if (bill.getStatus() != 10) {
             return false;
@@ -419,6 +419,7 @@ public class BillServiceImpl implements BillService {
             bill.setConfirmationDate(new Date());
             bill.setShippingFee(shippingFee);
             bill.setTotalPrice(bill.getPrice().subtract(bill.getDiscountAmount()).add(shippingFee));
+            bill.setEmployee(account);
             PaymentMethod paymentMethod = paymentMethodRepository.findByStatusAndBillId(10, id);
             if (paymentMethod != null) {
                 paymentMethod.setMoney(bill.getTotalPrice());
@@ -438,20 +439,21 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public boolean shippingOrder(Integer id) {
+    public boolean shippingOrder(Integer id, Account account) {
         Bill bill = billRepository.findById(id).orElse(null);
         if (bill.getStatus() != 3) {
             return false;
         } else {
             bill.setStatus(2);
             bill.setShippingDate(new Date());
+            bill.setEmployee(account);
             billRepository.save(bill);
             return true;
         }
     }
 
     @Override
-    public boolean completeOrder(Integer id) {
+    public boolean completeOrder(Integer id, Account account) {
         Bill bill = billRepository.findById(id).orElse(null);
         if (bill.getStatus() != 2) {
             return false;
@@ -461,6 +463,7 @@ public class BillServiceImpl implements BillService {
             if (bill.getPaymentDate() == null) {
                 bill.setPaymentDate(new Date());
             }
+            bill.setEmployee(account);
             List<PaymentMethod> listPaymentMethod = paymentMethodRepository.findAllByBillIdOrderById(id);
             for (PaymentMethod paymentMethod : listPaymentMethod) {
                 if (paymentMethod.getStatus() == 10) {
@@ -475,7 +478,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public boolean cancelOrder(Integer billId) {
+    public boolean cancelOrder(Integer billId, Account account) {
         Bill bill = billRepository.findById(billId).orElse(null);
         if (bill.getStatus() == 0) {
             return false;
@@ -490,6 +493,7 @@ public class BillServiceImpl implements BillService {
                 }
                 voucherRepository.save(voucher);
             }
+            bill.setEmployee(account);
             List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAllByBillIdOrderById(billId);
             for (PaymentMethod paymentMethod : paymentMethodList) {
                 paymentMethod.setStatus(0);
