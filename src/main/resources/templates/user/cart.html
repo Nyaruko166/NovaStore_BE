@@ -23,12 +23,6 @@
 
     <!-- Cart Start -->
     <div class="container-fluid pt-5">
-        <div th:if="${check}">
-            <h4 class="text-center" style="color: darkslategray" th:text="${check}"><i class="text-info font-weight-bold text-center"></i></h4>
-        </div>
-        <div th:if="${check}" class="text-center">
-            <a th:href="@{/shop}" class="btn btn-success">MUA NGAY</a>
-        </div>
         <!--            Notification-->
         <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert"
              style="margin: 5px">
@@ -36,6 +30,12 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
+        </div>
+        <div th:if="${check}">
+            <h4 class="text-center" style="color: darkslategray" th:text="${check}"><i class="text-info font-weight-bold text-center"></i></h4>
+        </div>
+        <div th:if="${check}" class="text-center">
+            <a th:href="@{/shop}" class="btn btn-success">MUA NGAY</a>
         </div>
         <div class="row px-xl-5">
             <div class="col-lg-9 table-responsive mb-5">
@@ -135,9 +135,14 @@
     <script>
         document.querySelector('input[name="quantity"]').addEventListener('input', function(e) {
             let value = e.target.value;
-            // Chỉ cho phép số dương
-            e.target.value = value.replace(/[^0-9]/g, '');
+            // Chỉ cho phép số dương và không cho phép để trống hoặc dấu cách
+            e.target.value = value.replace(/[^0-9]| /g, '');
+            // Kiểm tra nếu giá trị là chuỗi rỗng
+            if (e.target.value.trim() === '') {
+                e.target.value = '1';
+            }
         });
+
     </script>
 
 </body>
