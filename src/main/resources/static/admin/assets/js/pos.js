@@ -87,8 +87,8 @@ async function addItems(obj) {
     let productCode = parts[0].trim();
     let qtyInStock = Number(parts[1].trim());
 
-    console.log(productCode)
-    console.log(qtyInStock)
+    // console.log(productCode)
+    // console.log(qtyInStock)
 
     const {value: qty} = await Swal.fire({
         title: "Nhập số lượng",
@@ -106,6 +106,7 @@ async function addItems(obj) {
     });
 
     if (qty) {
+
         let queryString = window.location.search;
         let urlParam = new URLSearchParams(queryString);
         let billId;
@@ -182,16 +183,21 @@ function thanhToan() {
         let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
         let khachDua = document.getElementById('khachDua').value;
 
-        // console.log(khachPhaiTra[0])
-        // console.log(khachDua)
+        // let queryString = window.location.search;
+        // let urlParam = new URLSearchParams(queryString);
+        // let check;
+        // if (!urlParam.has('check')) {
+        //     check = 0;
+        // } else {
+        //     check = urlParam.get('check');
+        // }
 
         if (Number(khachDua) > Number(khachPhaiTra[0])) {
             Swal.fire({
                 title: "Thanh toán thành công!",
                 text: "Bạn đã thanh toán thành công!",
                 icon: "success"
-            });
-            window.location = "/nova/pos/checkout";
+            }).then(openPopUp);
         } else {
             Swal.fire({
                 icon: "error",
@@ -201,6 +207,25 @@ function thanhToan() {
         }
     }
 
+}
+
+function reloadPage() {
+    location.href = '/nova/pos';
+}
+
+function openPopUp() {
+    const width = 800;
+    const height = 1000;
+
+    // Tính toán vị trí trung tâm
+    let left = (window.innerWidth - width) / 2;
+    let top = (window.innerHeight - height) / 2;
+
+    // Các tùy chọn của cửa sổ pop-up
+    let options = 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left;
+
+    // Mở cửa sổ pop-up và điều hướng đến liên kết "/nova/pos/checkout"
+    window.open('/nova/pos/checkout', '_blank', options);
 }
 
 function showImagePopup(imageDataURI) {

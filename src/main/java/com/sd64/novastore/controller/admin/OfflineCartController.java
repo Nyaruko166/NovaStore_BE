@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -110,10 +111,17 @@ public class OfflineCartController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(Model model, HttpSession session) {
+    public String checkout(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         TempBill tempBill = getSession(session);
-        offlineCartService.checkout(tempBill);
-        return "redirect:/nova/pos";
+        TempBill returnBill = offlineCartService.checkout(tempBill, redirectAttributes);
+        if (returnBill == null) {
+            return "redirect:/nova/pos?billId=" + tempBill.getBillId() + "&check=0";
+        }
+//        if (check == 1) {
+            model.addAttribute("tempBill", returnBill);
+            model.addAttribute("lstItem", offlineCartService.getCart(returnBill.getLstDetailProduct()));
+            return "/admin/bill/invoice";
+//        }
     }
 
     @PostMapping("/api/productFilter")

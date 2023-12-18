@@ -7,6 +7,8 @@ package com.sd64.novastore.service;
 import com.sd64.novastore.model.OfflineCart;
 import com.sd64.novastore.model.OfflineCartView;
 import com.sd64.novastore.model.TempBill;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,7 +33,7 @@ public interface OfflineCartService {
 
     TempBill getBillById(Integer id);
 
-    void checkout(TempBill tempBill);
+    TempBill checkout(TempBill tempBill,RedirectAttributes redirectAttributes);
 
     String genBillCode();
 }

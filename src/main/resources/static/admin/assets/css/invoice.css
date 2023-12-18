@@ -1,0 +1,53 @@
+/*
+ *  © 2023 Nyaruko166
+ */
+
+/*
+ *  © 2023 Nyaruko166
+ */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto; /* Center the container */
+    width: 80%; /* Container width */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h3 {
+    color: #007bff;
+}
+
+p {
+    margin-bottom: 0.5rem;
+}
+
+.invoice-details {
+    margin-bottom: 20px;
+}
+
+.item {
+    border-bottom: 1px solid #dee2e6;
+    padding: 10px 0;
+}
+
+.item:last-child {
+    border-bottom: none;
+}
+
+.total {
+    font-weight: bold;
+}
+
+@media print {
+    .d-print-none {
+        display: none !important;
+    }
+}

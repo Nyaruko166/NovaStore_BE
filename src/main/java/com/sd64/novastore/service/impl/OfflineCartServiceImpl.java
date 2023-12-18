@@ -8,8 +8,10 @@ import com.sd64.novastore.model.*;
 import com.sd64.novastore.repository.*;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.OfflineCartService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -151,7 +153,23 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     }
 
     @Override
-    public void checkout(TempBill tempBill) {
+    public TempBill checkout(TempBill tempBill, RedirectAttributes redirectAttributes) {
+
+        List<OfflineCart> lstOC = tempBill.getLstDetailProduct();
+        List<ProductDetail> lstProd = productDetailRepository.findAll();
+
+        for (OfflineCart x : lstOC) {
+            for (ProductDetail y : lstProd) {
+                if (x.getDetailProductId().equals(y.getCode())) {
+                    if (x.getQty() > y.getQuantity()) {
+                        redirectAttributes.addFlashAttribute("err", "Số lượng sản phẩm "
+                                + x.getDetailProductId() + " trong giỏ vượt quá trong kho!!");
+                        return null;
+                    }
+                }
+            }
+        }
+
         Bill bill = billService.addBillPos(convertToBill(tempBill));
         List<OfflineCartView> lstItems = getCart(tempBill.getLstDetailProduct());
         for (OfflineCartView x : lstItems) {
@@ -164,6 +182,7 @@ public class OfflineCartServiceImpl implements OfflineCartService {
             productDetailRepository.save(productDetail);
         }
         removeFromLstBill(tempBill);
+        return tempBill;
     }
 
     @Override

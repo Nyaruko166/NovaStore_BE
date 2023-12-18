@@ -11,6 +11,12 @@
 </head>
 <body>
 <div layout:fragment="content">
+    <div th:if="${err}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p th:text="${err}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="container mt-5 p-3 rounded cart">
         <div class="row">
             <div class="col-7">
@@ -61,7 +67,7 @@
                                                             class="font-weight-bold d-block"></span><span
                                             class="spec" th:text="${x.fieldCombine()}"></span></div>
                                 </div>
-                                <div class="d-flex flex-row align-items-center"><span th:text="${x.qty}"
+                                <div class="d-flex flex-row align-items-center"><span id="qtyInCart" th:text="${x.qty}"
                                                                                       class="d-block"></span><span
                                         th:text="${x.calTotalPrice() + ' VNĐ'}"
                                         class="d-block ml-5 font-weight-bold"></span>
