@@ -14,4 +14,6 @@ public interface CartRepository  extends JpaRepository<Cart,Integer> {
 //    List<Cart> findAllBy(Integer status);
 
 //    Page<Cart> findAllByStatusOrderByUpdateDateDesc(Pageable pageable);
+
+    Cart findByCustomerId(Integer accountId);
 }

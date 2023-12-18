@@ -4,15 +4,11 @@ import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.CartDetail;
 import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.ProductDetail;
-import com.sd64.novastore.model.Promotion;
-import com.sd64.novastore.model.PromotionDetail;
 import com.sd64.novastore.model.SessionCart;
 import com.sd64.novastore.model.SessionCartItem;
 import com.sd64.novastore.repository.CartDetailRepository;
 import com.sd64.novastore.repository.CartRepository;
 import com.sd64.novastore.repository.ProductDetailRepository;
-import com.sd64.novastore.repository.PromotionDetailRepository;
-import com.sd64.novastore.repository.PromotionRepository;
 import com.sd64.novastore.service.CartService;
 import com.sd64.novastore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +40,13 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public boolean addToCart(ProductDetail productDetail, Integer quantity, String email) {
         Customer customer = customerService.findByEmail(email);
-        Cart cart = customer.getCart();
+        Cart cart = getCart(email);
         if (cart == null){
             cart = new Cart();
         }
         Set<CartDetail> cartDetailList = cart.getCartDetails();
         CartDetail cartItem = find(cartDetailList, productDetail.getId());
-        BigDecimal unitPrice = productDetail.getPrice();
+        BigDecimal unitPrice = productDetail.getPriceDiscount();
         int itemQuantity = 0;
         int stockQuantity = productDetail.getQuantity();
         if (cartItem != null){
@@ -91,8 +87,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public boolean updateCart(ProductDetail productDetail, Integer quantity, String email) {
-        Customer customer = customerService.findByEmail(email);
-        Cart cart = customer.getCart();
+        Cart cart = getCart(email);
         Set<CartDetail> cardItemList = cart.getCartDetails();
         CartDetail item = find(cardItemList, productDetail.getId());
         int itemQuantity = quantity;
@@ -117,8 +112,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Cart removeFromCart(ProductDetail productDetail, String email) {
-        Customer customer = customerService.findByEmail(email);
-        Cart cart = customer.getCart();
+        Cart cart = getCart(email);
         Set<CartDetail> cardItemList = cart.getCartDetails();
         CartDetail item = find(cardItemList, productDetail.getId());
         cardItemList.remove(item);
@@ -138,7 +132,7 @@ public class CartServiceImpl implements CartService {
             sessionCart = new SessionCart();
         }
         Set<SessionCartItem> cartDetailList = sessionCart.getCartDetails();
-        BigDecimal unitPrice = productDetail.getPrice();
+        BigDecimal unitPrice = productDetail.getPriceDiscount();
         int itemQuantity = 0;
         int stockQuantity = productDetail.getQuantity();
         if (cartItem != null){
@@ -203,7 +197,7 @@ public class CartServiceImpl implements CartService {
             ProductDetail productDetail = cartDetail.getProductDetail();
             int currentQuantity = cartDetail.getQuantity();
             int stockQuantity = productDetail.getQuantity();
-            BigDecimal productPrice = productDetail.getPrice();
+            BigDecimal productPrice = productDetail.getPriceDiscount();
             cartDetail.setPrice(productPrice);
             itemRepository.save(cartDetail);
 
@@ -238,7 +232,7 @@ public class CartServiceImpl implements CartService {
             ProductDetail productDetail = productDetailRepository.findById(cartItem.getProductDetail().getId()).orElse(null);
             int currentQuantity = cartItem.getQuantity();
             int stockQuantity = productDetail.getQuantity();
-            BigDecimal productPrice = productDetail.getPrice();
+            BigDecimal productPrice = productDetail.getPriceDiscount();
             cartItem.setProductDetail(productDetail);
             cartItem.setPrice(productPrice);
 
@@ -275,7 +269,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public Cart combineCart(SessionCart sessionCart, String email) {
         Customer customer = customerService.findByEmail(email);
-        Cart cart = customer.getCart();
+        Cart cart = getCart(email);
         if (cart == null){
             cart = new Cart();
         }
@@ -400,7 +394,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart getCart(String email) {
         Customer customer = customerService.findByEmail(email);
-        Cart cart = customer.getCart();
-        return cart;
+        return cartRepository.findByCustomerId(customer.getId());
     }
 }
