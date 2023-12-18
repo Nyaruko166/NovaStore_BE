@@ -184,6 +184,8 @@ public class OfflineCartServiceImpl implements OfflineCartService {
         Customer customer = null;
         if (tempBill.getIdCustomer() != null) {
             customer = customerRepository.findById(tempBill.getIdCustomer()).orElse(null);
+        } else {
+            tempBill.setCustomerName("Khách Lẻ");
         }
         Account employee = null;
         if (tempBill.getIdEmployee() != null) {
