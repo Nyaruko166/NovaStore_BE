@@ -71,7 +71,7 @@
                                                 <i class="fa fa-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" readonly class="form-control form-control-sm bg-secondary text-center" name="quantity" th:value="${cartItem.quantity}">
+                                        <input type="text" class="form-control form-control-sm bg-secondary text-center" name="quantity" th:value="${cartItem.quantity}">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-primary btn-plus" type="button">
                                                 <i class="fa fa-plus"></i>
@@ -131,6 +131,14 @@
     <div th:replace="~{/user/fragments::footer}"></div>
 
     <div th:replace="~{/user/fragments::script}"></div>
+
+    <script>
+        document.querySelector('input[name="quantity"]').addEventListener('input', function(e) {
+            let value = e.target.value;
+            // Chỉ cho phép số dương
+            e.target.value = value.replace(/[^0-9]/g, '');
+        });
+    </script>
 
 </body>
 

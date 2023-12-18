@@ -1,13 +1,16 @@
 package com.sd64.novastore.service;
 
 import com.sd64.novastore.dto.admin.BillDto;
+import com.sd64.novastore.model.Account;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.SessionCart;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -41,19 +44,19 @@ public interface BillService {
 
     Bill placeOrderSession(SessionCart cart, String email, String name, String specificAddress, String ward, String district, String city, String phoneNumber, String payment, Integer voucher);
 
-    List<Bill> getNoConfirmOrders(Integer customerId);
+    List<Bill> getStatusOrders(Integer status, Integer customerId);
 
     List<Bill> getAllOrders(Integer customerId);
 
     boolean userCancelOrder(Integer billId);
 
-    boolean confirmOrder(BigDecimal shippingFee, Integer billId);
+    boolean confirmOrder(BigDecimal shippingFee, Integer billId, Account account);
 
-    boolean cancelOrder(Integer billId);
+    boolean cancelOrder(Integer billId, Account account);
 
-    boolean shippingOrder(Integer id);
+    boolean shippingOrder(Integer id, Account account);
 
-    boolean completeOrder(Integer id);
+    boolean completeOrder(Integer id, Account account);
 
     Page<BillDto> findAll(Pageable pageable);
 
@@ -65,4 +68,6 @@ public interface BillService {
                                  String phoneNumber, String customerName, Pageable pageable);
 
     String generateBillCode();
+
+    void exportToExcel(HttpServletResponse response, Page<BillDto> bills, String exportUrl) throws IOException;
 }

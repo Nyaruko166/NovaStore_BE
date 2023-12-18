@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -106,12 +107,17 @@ public class UserBillController {
     }
 
     @GetMapping("/orders")
-    public String getOrders(Model model, Principal principal) {
+    public String getOrders(Model model, Principal principal, @RequestParam(required = false) String status) {
         if (principal == null) {
             return "redirect:/login";
         }
         Customer customer = customerService.findByEmail(principal.getName());
-        List<Bill> listBill = billService.getAllOrders(customer.getId());
+        List<Bill> listBill = new ArrayList<>();
+        if (status == null || status.trim().isEmpty()){
+            listBill = billService.getAllOrders(customer.getId());
+        } else {
+            listBill = billService.getStatusOrders(Integer.valueOf(status), customer.getId());
+        }
         model.addAttribute("orders", listBill);
         return "/user/order";
     }
