@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl.user;
 
+import com.sd64.novastore.dto.common.ProductDetailAndValueDiscountDto;
 import com.sd64.novastore.dto.common.impl.ProductDiscountHomeDtoImpl;
 import com.sd64.novastore.dto.common.impl.ProductHomeDtoImpl;
 import com.sd64.novastore.model.Product;
@@ -81,6 +82,12 @@ public class ProductViewServiceImpl implements ProductViewService {
         return new PageImpl<>(pageContent, pageable, productHomeResponses.size());
     }
 
+
+    @Override
+    public ProductDetailAndValueDiscountDto getProductDetailAndValueDiscount(Integer productDetailId) {
+        ProductDetailAndValueDiscountDto productDetailAndValueDiscountDto = productViewRepository.getProductDetailDto(productDetailId);
+        return productDetailAndValueDiscountDto;
+    }
 
     @Override
     public List<ProductDiscountHomeResponse> getRandomProductAndProductDiscount() {

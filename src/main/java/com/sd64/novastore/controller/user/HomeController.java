@@ -1,5 +1,6 @@
 package com.sd64.novastore.controller.user;
 
+import com.sd64.novastore.dto.common.ProductDetailAndValueDiscountDto;
 import com.sd64.novastore.model.*;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.Customer;
@@ -226,8 +227,11 @@ public class HomeController {
         Product product = productViewService.getOne(productId);
         List<ProductDiscountHomeResponse> listProductYouMayLikeResponse = productViewService.getRandomProductAndProductDiscount();
         model.addAttribute("listProductYouMayLikeResponse", listProductYouMayLikeResponse);
+        ProductDetailAndValueDiscountDto productDetailAndValueDiscountDto = productViewService.getProductDetailAndValueDiscount(productId);
         BigDecimal priceMax = productViewService.getPriceMaxResponseByProductId(productId);
         BigDecimal priceMin = productViewService.getPriceMinResponseByProductId(productId);
+        BigDecimal priceDiscountMax = productViewService.calculatePriceToPriceDiscount(priceMax, productDetailAndValueDiscountDto.getValue());
+        BigDecimal priceDiscountMin = productViewService.calculatePriceToPriceDiscount(priceMin, productDetailAndValueDiscountDto.getValue());
         var listProductSize = productViewService.getAllSizeDetailResponse(productId);
         var listProductColor = productViewService.getAllColorDetailResponse(productId);
         model.addAttribute("product", product);
@@ -238,6 +242,9 @@ public class HomeController {
         model.addAttribute("listProductSize", listProductSize);
         model.addAttribute("priceMax", priceMax);
         model.addAttribute("priceMin", priceMin);
+        model.addAttribute("priceDiscountMax", priceDiscountMax);
+        model.addAttribute("priceDiscountMin", priceDiscountMin);
+        model.addAttribute("discount", productDetailAndValueDiscountDto);
         return "/user/detail";
     }
 }

@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.user;
 
+import com.sd64.novastore.dto.common.ProductDetailAndValueDiscountDto;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.response.ColorDetailResponse;
 import com.sd64.novastore.response.ProductDiscountHomeResponse;
@@ -49,5 +50,7 @@ public interface ProductViewService {
     BigDecimal getPriceMinBySelected(Integer price);
 
     List<ProductDiscountHomeResponse> getRandomProductAndProductDiscount();
+
+    ProductDetailAndValueDiscountDto getProductDetailAndValueDiscount(Integer productDetailId);
 
 }
