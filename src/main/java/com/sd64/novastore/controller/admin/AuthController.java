@@ -2,7 +2,9 @@ package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.config.MailConfig;
 import com.sd64.novastore.model.Account;
+import com.sd64.novastore.model.Address;
 import com.sd64.novastore.service.AccountService;
+import com.sd64.novastore.service.AddressService;
 import com.sd64.novastore.service.AuthService;
 import com.sd64.novastore.utils.MailUtil;
 import com.sd64.novastore.utils.TempCodeManager;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
+import java.util.List;
+
 @Controller
 @RequestMapping()
 public class AuthController {
@@ -25,6 +30,9 @@ public class AuthController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private AddressService addressService;
 
     @Autowired
     private AuthService authService;
@@ -155,7 +163,12 @@ public class AuthController {
     }
 
     @GetMapping("/profile")
-    public String p5() {
+    public String p5(Model model, Principal principal) {
+
+        Account currentLog = accountService.findFirstByEmail(principal.getName());
+        List<Address> lstAddress = addressService.findAccountAddress(currentLog.getId());
+        model.addAttribute("user",currentLog);
+
         return "/common/profile";
     }
 
