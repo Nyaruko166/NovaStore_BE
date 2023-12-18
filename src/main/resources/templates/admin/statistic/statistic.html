@@ -11,15 +11,15 @@
 <div layout:fragment="content">
     <h5 style="font-weight: bold"><i class="fas fa-chart-bar" style="padding-right: 8px;"></i>Thống kê</h5>
     <br>
-    <div class="col-md-12">
+    <div class="col">
         <div>
             <div class="card-body">
                 <h5>Từ trước đến nay</h5>
             </div>
         </div>
     </div>
-
-        <div class="col-md-2">
+<div class="row">
+        <div class="col">
             <div class="card" style=" border-radius: 20px;background-color:#00CCCC;">
                 <div class="card-body">
                     <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh thu:
@@ -28,29 +28,31 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col">
             <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
                 <div class="card-body">
                     <p class="card-text" style="color: black"><i class="fas fa-user"
-                                                                 style="padding-right: 8px;"></i><span
-                            th:text="${tkTong.getSoLuong() == null ? 0 : tkTong.getSoLuong()}"></span> Khách Hàng đang hoạt động
+                                                                 style="padding-right: 8px;"></i>Tổng số khách hàng hoạt động:
+                        <span
+                            th:text="${tkTong.getSoLuong() == null ? 0 : tkTong.getSoLuong()}"></span>
                     </p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col">
             <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
                 <div class="card-body">
                     <p class="card-text" style="color: black"><i class="fas fa-user"
-                                                                 style="padding-right: 8px;"></i><span
-                            th:text="${tkTongNV.getSoLuong() == null ? 0 : tkTongNV.getSoLuong()}"></span> Nhân viên đang hoạt động
+                                                                 style="padding-right: 8px;"></i>Tổng số nhân viên hoạt động:
+                        <span
+                            th:text="${tkTongNV.getSoLuong() == null ? 0 : tkTongNV.getSoLuong()}"></span>
                     </p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col">
             <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
                 <div class="card-body">
 
@@ -64,7 +66,7 @@
             </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col">
             <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
                 <div class="card-body">
 
@@ -77,7 +79,7 @@
                 </div>
             </div>
         </div>
-
+</div>
 
     <div class="col-md-3">
         <div class="card" style=" border-radius: 20px;background-color: #33FFCC;">
@@ -289,7 +291,7 @@
             return item.percentage;
         });
 
-        var backgroundColors = ["#FF0000", "#00eaff", "#FFFF00", "#800080", "#00CC99"];
+        var backgroundColors = ["#00FFCC", "#FF9900", "#FF0066", "#FF66FF", "#00CC99"];
 
         var ctx = document.getElementById('myPieChart').getContext('2d');
         var myPieChart = new Chart(ctx, {
