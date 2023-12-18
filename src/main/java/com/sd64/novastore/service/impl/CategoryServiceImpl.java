@@ -166,6 +166,8 @@ public class CategoryServiceImpl implements CategoryService {
                 return "Trùng";
             } else if (status.contains("Tồn tại")){
                 return "Tồn tại";
+            } else if (status.contains("Trống")) {
+                return "Trống";
             } else {
                 return "Oke";
             }

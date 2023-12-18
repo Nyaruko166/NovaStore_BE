@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "p.code as code, " +
             "p.name as name, " +
             "p.description as description, " +
-//            "p.price as price, " +
+            "p.status as status, " +
             "p.brand.name as brandName, " +
             "p.category.name as categoryName, " +
             "p.form.name as formName, " +
@@ -37,7 +37,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "p.code as code, " +
             "p.name as name, " +
             "p.description as description, " +
-//            "p.price as price, " +
+            "p.status as status, " +
             "p.brand.name as brandName, " +
             "p.category.name as categoryName, " +
             "p.form.name as formName, " +
@@ -49,7 +49,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             " AND (p.material.id=:materialId OR :materialId IS NULL) " +
             " AND (p.category.id=:categoryId OR :categoryId IS NULL) " +
             " AND (p.form.id=:formId OR :formId IS NULL) " +
-            " AND p.status = 1 OR p.status = 2 ORDER BY p.updateDate DESC")
+            " AND p.status IN (1, 2) ORDER BY p.updateDate DESC")
     Page<ProductDto> search(Pageable pageable, Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productName, String description);
 
 

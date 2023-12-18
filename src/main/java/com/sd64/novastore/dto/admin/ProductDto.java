@@ -24,4 +24,6 @@ public interface ProductDto {
 
     Integer getImageId();
 
+    Integer getStatus();
+
 }

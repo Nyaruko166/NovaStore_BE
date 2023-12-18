@@ -155,10 +155,39 @@
                         </div>
                     </div>
                     <script th:inline="javascript">
+
+                        const inputName = document.getElementById('name');
+                        const inputDescription = document.getElementById('description');
+
+                        inputName.addEventListener('input', function (event) {
+                            const specialCharacters = /[!@#$%^*?:{}|<>+=~`\\/\[\]]/g;
+                            const inputValue = event.target.value;
+                            if (specialCharacters.test(inputValue)) {
+                                event.target.value = inputValue.replace(specialCharacters, '');
+                            }
+                        });
+
+                        inputDescription.addEventListener('input', function (event) {
+                            const specialCharacters = /[!@#$%^*?:{}|<>+=~`\\/\[\]]/g;
+                            const inputValue = event.target.value;
+                            if (specialCharacters.test(inputValue)) {
+                                event.target.value = inputValue.replace(specialCharacters, '');
+                            }
+                        });
+
                         checkProductName = () => {
                             let isName = document.getElementById('name').value
+                            isName = isName.replace(/\s{2,}/g, '').trimStart()
                             if (isName.trim() === '') {
                                 document.getElementById('errorName').innerHTML = `Chưa nhập tên sản phẩm`
+                                return false;
+                            }
+                            if (isName.length < 2) {
+                                document.getElementById('errorName').innerHTML = `Tên sản phẩm tối thiểu 2 kí tự`
+                                return false;
+                            }
+                            if (isName.length > 200) {
+                                document.getElementById('errorName').innerHTML = `Tên sản phẩm tối đa 200 kí tự`
                                 return false;
                             }
                             return true;
@@ -166,6 +195,7 @@
 
                         checkDescription = () => {
                             let isDescription = document.getElementById('description').value
+                            isDescription = isDescription.replace(/\s{2,}/g, '').trimStart()
                             if (isDescription.trim() === '') {
                                 document.getElementById('errorDescription').innerHTML = `Chưa nhập mô tả`
                                 return false;

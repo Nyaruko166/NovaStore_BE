@@ -64,7 +64,7 @@
 
                     <br>
                     <div class="card-footer d-flex align-items-center">
-                        <button type="button" onclick="addItem()" class="btn btn-dark">
+                        <button type="button" onclick="addItem()" class="btn btn-danger">
                             <i class="fa-solid fa-file-circle-plus px-4"></i>
                         </button>
                         <div id="error" style="color: red; margin-left: 10px">
@@ -113,7 +113,7 @@
                     <div class="card-footer d-flex">
                         <div>
                             <button type="submit" onclick="" class="btn btn-dark">
-                                <i class="fa-solid fa-pen px-4"></i>
+                                <i class="fa-solid fa-pen-to-square px-4"></i>
                             </button>
                         </div>
                         <div class="ml-2">
@@ -253,11 +253,22 @@
                         //XỬ LÝ THÊM THUỘC TÍNH
                         // bắt sự kiện xóa ảnh
                         var removeImageId = []
-                        $('.delete-img-btn').on('click', function () {
+                        addEventRemoveImage()
+
+                        function addEventRemoveImage() {
+                            $('.delete-img-btn').on('click', function () {
+                                debugger
+                                const selectedImageEle = $(this).closest('.selected-file')
+                                removeImageId.push(selectedImageEle.find('.exists-image').attr("data-image"))
+                                selectedImageEle.remove()
+                            })
+                        }
+
+                        function clickRemoveImage () {
                             const selectedImageEle = $(this).closest('.selected-file')
                             removeImageId.push(selectedImageEle.find('.exists-image').attr("data-image"))
                             selectedImageEle.remove()
-                        })
+                        }
 
                         var removeProductDetail = []
                         function addEventRemoveRow() {
@@ -421,12 +432,13 @@
                                         const fileName = file.name
                                         if (!selectedFileNames.has(fileName)) {
                                             fileSend.push(file);
+                                            console.log('fileSend', fileSend)
                                             const reader = new FileReader();
 
                                             reader.onload = function (e) {
                                                 // Create a new div for the image
                                                 const imageDiv = document.createElement('div');
-                                                imageDiv.className = 'selected-file me-2';
+                                                imageDiv.className = 'selected-file me-2 ';
 
                                                 // Create an image element
                                                 const image = document.createElement('img');
@@ -440,12 +452,25 @@
 
                                                 // Create a button to remove the image
                                                 const removeButton = document.createElement('button');
-                                                removeButton.className = 'btn btn-sm btn-outline-danger rounded-circle';
+                                                removeButton.className = 'btn btn-sm btn-outline-danger rounded-circle delete-img-btn delete-img-btn-new';
+                                                removeButton.imageCode = new Date().getTime()
                                                 removeButton.type = 'button';
                                                 removeButton.innerText = 'X';
                                                 removeButton.onclick = function () {
                                                     // Remove the selected image when the button is clicked
+                                                    const lastModified = file.lastModified
+                                                    let theIndex = -1;
                                                     selectedImagesContainer.removeChild(imageDiv);
+                                                    debugger
+                                                    for (let j = 0; j < fileSend.length; j++) {
+                                                        if (fileSend[j].lastModified === lastModified) {
+                                                            theIndex = j;
+                                                        }
+                                                    }
+                                                    if (theIndex !== -1) {
+                                                        fileSend.splice(theIndex, 1)
+                                                    }
+                                                    console.log(fileSend)
                                                 };
                                                 const fileDetailsDiv = document.createElement('div');
                                                 fileDetailsDiv.className = 'file-details';
@@ -464,6 +489,8 @@
 
                                 }
                             }
+
+                            addEventRemoveImage()
                         }
 
                         document.getElementById("productDetailUpdate").addEventListener('submit', async function (e) {
@@ -512,20 +539,23 @@
                                     var formData = new FormData(this)
                                     formData.append("imageRemoveIds", removeImageId)
                                     formData.append("productDetailRemoveIds", removeProductDetail)
+                                    console.log('update: ', fileSend)
                                     if (fileSend.length > 0) {
                                         fileSend.forEach(file => formData.append("files", file))
                                     }
+                                    debugger
                                     await fetch("/nova/product-detail/update", {
                                         method: "POST",
                                         body: formData,
                                     })
+
                                     window.location = "/nova/product/page";
+
                                     // document.getElementById('productDetailUpdate').action = '/nova/product/page'
                                     // document.getElementById('productDetailUpdate').method = 'get'
                                     // document.getElementById('productDetailUpdate').submit()
                                 }
                             });
-
                         })
 
                     </script>

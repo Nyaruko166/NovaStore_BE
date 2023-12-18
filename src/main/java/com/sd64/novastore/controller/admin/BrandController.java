@@ -128,6 +128,9 @@ public class BrandController {
         } else if (result.contains("Tồn tại")) {
             redirectAttributes.addFlashAttribute("error", "Dữ liệu trong file đã tồn tại");
             return "redirect:/nova/brand/page";
+        } else if (result.contains("Trống")) {
+            redirectAttributes.addFlashAttribute("error", "Trong file excel không có dữ liệu");
+            return "redirect:/nova/brand/page";
         } else if (result.contains("Trùng")) {
             redirectAttributes.addFlashAttribute("error", "1 số dữ liệu trong file bị trùng lặp");
             return "redirect:/nova/brand/page";
