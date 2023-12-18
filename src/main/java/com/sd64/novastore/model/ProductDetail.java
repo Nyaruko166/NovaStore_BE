@@ -52,4 +52,9 @@ public class ProductDetail {
     @ManyToOne
     @JoinColumn(name = "ColorId", referencedColumnName = "Id")
     private Color color;
+
+    public String fieldJoin() {
+        return String.join(", ", code, product.getName(), String.valueOf(price), size.getName(), color.getName());
+    }
+
 }

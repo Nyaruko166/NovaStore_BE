@@ -83,19 +83,6 @@ public class AccountController {
         return "redirect:/nova/account/page";
     }
 
-    @PostMapping("/api/filter")
-    public String searchCustomers(@RequestParam("keyword") String keyword, Model model) {
-        Pageable pageable = Pageable.ofSize(10);
-//        System.out.println(accountService.searchCustomer(keyword, pageable).toString());
-        if (keyword.isBlank()){
-            model.addAttribute("lstCus", null);
-            return "/admin/cart/offline-cart-fragment :: modal_frag";
-        }
-        model.addAttribute("lstCus", accountService.searchCustomer(keyword, pageable).getContent());
-        model.addAttribute("keyword", keyword);
-        return "/admin/cart/offline-cart-fragment :: modal_frag";
-    }
-
 //    @GetMapping("/search")
 //    public String search(@RequestParam String name, @RequestParam(defaultValue = "0") int page) {
 //        return ResponseEntity.ok(accountService.search(name, page).getContent());

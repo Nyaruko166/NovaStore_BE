@@ -41,7 +41,7 @@ public class OfflineCartView {
     private String size;
 
     public BigDecimal calTotalPrice() {
-        return this.price.multiply(BigDecimal.valueOf(this.qty)).setScale(2, RoundingMode.HALF_UP);
+        return this.price.multiply(BigDecimal.valueOf(this.qty)).setScale(0, RoundingMode.HALF_UP);
     }
 
     public String fieldCombine() {

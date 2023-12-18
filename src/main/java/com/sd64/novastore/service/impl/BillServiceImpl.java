@@ -27,6 +27,17 @@ import com.sd64.novastore.repository.VoucherRepository;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.CartService;
 import com.sd64.novastore.utils.MailUtil;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.common.usermodel.HyperlinkType;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
+import org.apache.poi.xssf.usermodel.XSSFHyperlink;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +47,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -352,8 +365,8 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public List<Bill> getNoConfirmOrders(Integer customerId) {
-        return billRepository.getOrders(1, customerId);
+    public List<Bill> getStatusOrders(Integer status ,Integer customerId) {
+        return billRepository.getOrders(status, customerId);
     }
 
     @Override
@@ -397,7 +410,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public boolean confirmOrder(BigDecimal shippingFee, Integer id) {
+    public boolean confirmOrder(BigDecimal shippingFee, Integer id, Account account) {
         Bill bill = billRepository.findById(id).orElse(null);
         if (bill.getStatus() != 10) {
             return false;
@@ -406,6 +419,7 @@ public class BillServiceImpl implements BillService {
             bill.setConfirmationDate(new Date());
             bill.setShippingFee(shippingFee);
             bill.setTotalPrice(bill.getPrice().subtract(bill.getDiscountAmount()).add(shippingFee));
+            bill.setEmployee(account);
             PaymentMethod paymentMethod = paymentMethodRepository.findByStatusAndBillId(10, id);
             if (paymentMethod != null) {
                 paymentMethod.setMoney(bill.getTotalPrice());
@@ -425,20 +439,21 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public boolean shippingOrder(Integer id) {
+    public boolean shippingOrder(Integer id, Account account) {
         Bill bill = billRepository.findById(id).orElse(null);
         if (bill.getStatus() != 3) {
             return false;
         } else {
             bill.setStatus(2);
             bill.setShippingDate(new Date());
+            bill.setEmployee(account);
             billRepository.save(bill);
             return true;
         }
     }
 
     @Override
-    public boolean completeOrder(Integer id) {
+    public boolean completeOrder(Integer id, Account account) {
         Bill bill = billRepository.findById(id).orElse(null);
         if (bill.getStatus() != 2) {
             return false;
@@ -448,6 +463,7 @@ public class BillServiceImpl implements BillService {
             if (bill.getPaymentDate() == null) {
                 bill.setPaymentDate(new Date());
             }
+            bill.setEmployee(account);
             List<PaymentMethod> listPaymentMethod = paymentMethodRepository.findAllByBillIdOrderById(id);
             for (PaymentMethod paymentMethod : listPaymentMethod) {
                 if (paymentMethod.getStatus() == 10) {
@@ -462,7 +478,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public boolean cancelOrder(Integer billId) {
+    public boolean cancelOrder(Integer billId, Account account) {
         Bill bill = billRepository.findById(billId).orElse(null);
         if (bill.getStatus() == 0) {
             return false;
@@ -477,6 +493,7 @@ public class BillServiceImpl implements BillService {
                 }
                 voucherRepository.save(voucher);
             }
+            bill.setEmployee(account);
             List<PaymentMethod> paymentMethodList = paymentMethodRepository.findAllByBillIdOrderById(billId);
             for (PaymentMethod paymentMethod : paymentMethodList) {
                 paymentMethod.setStatus(0);
@@ -514,5 +531,96 @@ public class BillServiceImpl implements BillService {
     @Override
     public Page<BillDto> searchListBill(String code, Date ngayTaoStart, Date ngayTaoEnd, Integer status, Integer type, String phoneNumber, String customerName, Pageable pageable) {
         return billRepository.listSearchBill(code, ngayTaoStart, ngayTaoEnd, status, type, phoneNumber, customerName, pageable);
+    }
+
+    public void exportToExcel(HttpServletResponse response, Page<BillDto> bills, String exportUrl) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=bills.xlsx");
+
+        // Tạo workbook Excel và các sheet, row, cell tương ứng
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Bills");
+
+        // Tạo tiêu đề cột
+        XSSFRow headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Mã Hóa Đơn");
+        headerRow.createCell(1).setCellValue("Họ và Tên");
+        headerRow.createCell(2).setCellValue("Số điện thoại");
+        headerRow.createCell(3).setCellValue("Ngày đặt");
+        headerRow.createCell(4).setCellValue("Tổng tiền");
+        headerRow.createCell(5).setCellValue("Trạng thái");
+        headerRow.createCell(6).setCellValue("Loại đơn");
+
+        int rowNum = 1;
+        for (BillDto bill : bills) {
+            XSSFRow row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(bill.getCode());
+            row.createCell(1).setCellValue(bill.getCustomerName());
+            row.createCell(2).setCellValue(bill.getPhoneNumber());
+            XSSFCell dateCell = row.createCell(3);
+            XSSFCellStyle dateCellStyle = workbook.createCellStyle();
+            XSSFDataFormat dataFormat = workbook.createDataFormat();
+            dateCellStyle.setDataFormat(dataFormat.getFormat("dd/MM/yyyy"));
+            dateCell.setCellStyle(dateCellStyle);
+            dateCell.setCellValue(bill.getCreateDate());
+            XSSFCell totalCell = row.createCell(4);
+            totalCell.setCellValue(bill.getTotalPrice().doubleValue());
+
+            XSSFCellStyle totalCellStyle = workbook.createCellStyle();
+            XSSFDataFormat dataFormat1 = workbook.createDataFormat();
+            totalCellStyle.setDataFormat(dataFormat1.getFormat("#,###"));
+            totalCell.setCellStyle(totalCellStyle);
+            String trangThaiText = "";
+            switch (bill.getStatus()) {
+                case 10:
+                    trangThaiText = "Chờ xác nhận";
+                    break;
+                case 3:
+                    trangThaiText = "Chờ giao hàng";
+                    break;
+                case 2:
+                    trangThaiText = "Đang giao hàng";
+                    break;
+                case 1:
+                    trangThaiText = "Đã hoàn thành";
+                    break;
+                case 0:
+                    trangThaiText = "Đã hủy";
+                    break;
+                default:
+                    trangThaiText = "  ";
+            }
+            String loaiDonText = "";
+            switch (bill.getType()) {
+                case 1:
+                    loaiDonText = "Tại quầy";
+                    break;
+                case 0:
+                    loaiDonText = "Mua Online";
+                    break;
+                default:
+                    loaiDonText = "  ";
+            }
+            row.createCell(5).setCellValue(trangThaiText);
+            row.createCell(6).setCellValue(loaiDonText);
+
+            XSSFCell linkCell = row.createCell(7);
+            XSSFRichTextString linkText = new XSSFRichTextString(" ");
+            CreationHelper createHelper = workbook.getCreationHelper();
+            XSSFHyperlink hyperlink = (XSSFHyperlink) createHelper.createHyperlink(HyperlinkType.URL);
+            hyperlink.setAddress(exportUrl);
+            linkCell.setHyperlink(hyperlink);
+            linkCell.setCellValue(linkText);
+
+            for (int i = 0; i < 7; i++) {
+                sheet.autoSizeColumn(i);
+            }
+        }
+
+        try (OutputStream outputStream = response.getOutputStream()) {
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.flush();
+        }
     }
 }

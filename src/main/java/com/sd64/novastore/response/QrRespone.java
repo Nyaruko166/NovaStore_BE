@@ -15,4 +15,6 @@ public class QrRespone {
 
     private String data;
 
+    private Integer qty;
+
 }

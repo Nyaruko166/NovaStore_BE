@@ -102,19 +102,21 @@
                             <div class="col-sm-6">
                                 <div class="text-muted">
                                     <h5 class="font-size-16 mb-3">Thông tin đơn hàng</h5>
-                                    <h6 class="font-size-15 mb-2" th:if="${bill.customerName != null}"
-                                        th:text="${bill.customerName}">
+                                    <h6 class="font-size-15 mb-2" th:if="${bill.customer != null}"
+                                        th:text="'Khách hàng: ' + ${bill.customer.email}">
                                     </h6>
                                     <h6 class="font-size-15 mb-2 font-italic"
-                                        th:if="${bill.customerName == null}">
-                                        Khách lẻ
+                                        th:text="'Tên người nhận: ' + ${bill.customerName}">
                                     </h6>
-                                    <p class="mb-1" th:if="${bill.address != null}"
-                                       th:text="${bill.address}">
+                                    <p class="mb-1"
+                                       th:text="'Địa chỉ nhận: ' + ${bill.address}">
                                     </p>
                                     <p th:if="${bill.phoneNumber != null}"
-                                       th:text="${bill.phoneNumber}">
+                                       th:text="'SĐT: ' + ${bill.phoneNumber}">
                                     </p>
+                                    <h6 class="font-size-15 mb-2" th:if="${bill.employee != null}"
+                                        th:text="'Nhân viên tương tác: ' + ${bill.employee.email}">
+                                    </h6>
                                 </div>
                             </div>
                             <!-- end col -->
@@ -296,8 +298,8 @@
                             <!-- end table responsive -->
                             <div class="d-print-none mt-4">
                                 <div style="text-align: right">
-                                    <a th:href="@{'/nova/bill/export-pdf/'+${bill.id}}"
-                                       class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+<!--                                    <a th:href="@{'/nova/bill/export-pdf/'+${bill.id}}"-->
+<!--                                       class="btn btn-success me-1"><i class="fa fa-print"></i></a>-->
                                     <a th:href="@{'/nova/bill'}">
                                         <button type="button" class="btn btn-secondary w-md" data-dismiss="modal">
                                             Đóng

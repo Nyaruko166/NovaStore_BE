@@ -5,21 +5,22 @@
 package com.sd64.novastore.controller.admin;
 
 import com.google.gson.Gson;
-import com.sd64.novastore.model.Account;
-import com.sd64.novastore.model.Bill;
-import com.sd64.novastore.model.OfflineCartView;
-import com.sd64.novastore.model.TempBill;
+import com.sd64.novastore.model.*;
 import com.sd64.novastore.service.AccountService;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.OfflineCartService;
+import com.sd64.novastore.service.ProductDetailService;
+import com.sd64.novastore.utils.SecurityUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,18 +39,23 @@ public class OfflineCartController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private ProductDetailService productDetailService;
+
     AtomicInteger seq = new AtomicInteger();
 
     @GetMapping()
-    public String cart(Model model, HttpSession session,
+    public String cart(Model model, HttpSession session, Principal principal,
                        @RequestParam(value = "billId", defaultValue = "0") Integer billId) {
         List<TempBill> lstBill = offlineCartService.getLstBill();
+        String currentUserName = principal.getName();
+        Account currentUser = accountService.findFirstByEmail(currentUserName);
         if (lstBill.isEmpty()) {
             lstBill.add(TempBill.builder().billId(0).billCode(offlineCartService.genBillCode())
-                    .lstDetailProduct(new ArrayList<>()).build());
+                    .lstDetailProduct(new ArrayList<>()).idEmployee(currentUser.getId()).build());
         }
         TempBill tempBill = offlineCartService.getBillById(billId);
-        if (tempBill==null){
+        if (tempBill == null) {
             return "redirect:/nova/pos";
         }
         List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
@@ -64,14 +70,6 @@ public class OfflineCartController {
         return "/admin/cart/offline-cart";
     }
 
-    @PostMapping("/frag")
-    public String frag(Model model, HttpSession session) {
-        TempBill tempBill = getSession(session);
-        List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
-        model.addAttribute("lstCart", lstCart);
-        return "/admin/cart/offline-cart-fragment :: frag";
-    }
-
     @GetMapping("/remove/{code}")
     public String removeFromCart(@PathVariable("code") String data, HttpSession session) {
         TempBill tempBill = getSession(session);
@@ -80,9 +78,10 @@ public class OfflineCartController {
     }
 
     @GetMapping("/newBill")
-    public String newBill() {
+    public String newBill(Principal principal) {
+        Integer employeeId = getEmployeeId(principal);
         Integer id = seq.incrementAndGet();
-        offlineCartService.addToLstBill(TempBill.builder()
+        offlineCartService.addToLstBill(TempBill.builder().idEmployee(employeeId)
                 .billId(id).billCode(offlineCartService.genBillCode()).lstDetailProduct(new ArrayList<>()).build());
         return "redirect:/nova/pos?billId=" + id;
     }
@@ -94,19 +93,13 @@ public class OfflineCartController {
         return "redirect:/nova/pos";
     }
 
-    @PostMapping("/frag-checkout")
-    public String replaceCheck(Model model, HttpSession session) {
-        TempBill tempBill = getSession(session);
-        List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
-        model.addAttribute("tempBill", tempBill);
-        return "/admin/cart/summary-frag :: replace";
-    }
-
     @GetMapping("/addCustomer/{id}")
-    public String addCustomer(@PathVariable("id") Integer id, HttpSession session) {
+    public String addCustomer(@PathVariable("id") Integer id,
+                              Principal principal,
+                              HttpSession session) {
         TempBill tempBill = getSession(session);
         Account account = accountService.findOne(id);
-        System.out.println(tempBill.getBillCode());
+//        System.out.println(tempBill.getBillCode());
         tempBill.setIdCustomer(account.getId());
         tempBill.setCustomerEmail(account.getEmail());
         tempBill.setCustomerPhone(account.getPhoneNumber());
@@ -123,8 +116,57 @@ public class OfflineCartController {
         return "redirect:/nova/pos";
     }
 
+    @PostMapping("/api/productFilter")
+    public String searchProducts(@RequestParam("keyword") String keywordProduct,
+                                 Model model) {
+        Pageable pageable = Pageable.ofSize(10);
+        if (keywordProduct.isBlank()) {
+            model.addAttribute("lstPro", null);
+            return "/admin/cart/offline-cart-fragment :: product_frag";
+        }
+        List<ProductDetail> lstPro = productDetailService.findAllByProductNameAndStatus(keywordProduct, 1, pageable).getContent();
+        model.addAttribute("lstPro", lstPro);
+        model.addAttribute("keywordProduct", keywordProduct);
+
+        return "/admin/cart/offline-cart-fragment :: product_frag";
+    }
+
+    @PostMapping("/api/filter")
+    public String searchCustomers(@RequestParam("keyword") String keyword, Model model) {
+        Pageable pageable = Pageable.ofSize(10);
+//        System.out.println(accountService.searchCustomer(keyword, pageable).toString());
+        if (keyword.isBlank()) {
+            model.addAttribute("lstCus", null);
+            return "/admin/cart/offline-cart-fragment :: modal_frag";
+        }
+        model.addAttribute("lstCus", accountService.searchCustomer(keyword, pageable).getContent());
+        model.addAttribute("keyword", keyword);
+        return "/admin/cart/offline-cart-fragment :: modal_frag";
+    }
+
+    @PostMapping("/frag")
+    public String frag(Model model, HttpSession session) {
+        TempBill tempBill = getSession(session);
+        List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
+        model.addAttribute("lstCart", lstCart);
+        return "/admin/cart/offline-cart-fragment :: frag";
+    }
+
+    @PostMapping("/frag-checkout")
+    public String replaceCheck(Model model, HttpSession session) {
+        TempBill tempBill = getSession(session);
+        List<OfflineCartView> lstCart = offlineCartService.getCart(tempBill.getLstDetailProduct());
+        model.addAttribute("tempBill", tempBill);
+        return "/admin/cart/summary-frag :: replace";
+    }
+
     public TempBill getSession(HttpSession session) {
         return (TempBill) session.getAttribute("posBill");
     }
 
+    public Integer getEmployeeId(Principal principal) {
+        String currentUserName = principal.getName();
+        Account currentUser = accountService.findFirstByEmail(currentUserName);
+        return currentUser.getId();
+    }
 }

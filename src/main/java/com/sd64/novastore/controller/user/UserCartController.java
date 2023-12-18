@@ -28,9 +28,6 @@ public class UserCartController {
     @Autowired
     private CartService cartService;
 
-    @Autowired
-    private CustomerService customerService;
-
     @GetMapping("/cart")
     public String cart(Model model, Principal principal, HttpSession session){
         if (principal == null){
@@ -51,8 +48,7 @@ public class UserCartController {
                 }
             }
         } else {
-            Customer customer = customerService.findByEmail(principal.getName());
-            Cart cart = customer.getCart();
+            Cart cart = cartService.getCart(principal.getName());
             if (cart == null){
                 model.addAttribute("check", "Giỏ hàng của bạn đang trống");
             }

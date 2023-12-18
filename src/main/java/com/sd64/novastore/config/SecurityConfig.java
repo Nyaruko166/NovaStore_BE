@@ -53,31 +53,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/home")
-                        .loginProcessingUrl("/login")
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .permitAll());
+        http.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/home").loginProcessingUrl("/login").permitAll()).logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll());
 
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req ->
-                        {
-                            //Allowing Resources
-                            req.requestMatchers("/*.css", "/*.js", "/assets/**", "/admin/**", "/user/**")
-                                    .permitAll();
+        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(req -> {
+            //Allowing Resources
+            req.requestMatchers("/*.css", "/*.js", "/assets/**", "/admin/**", "/user/**").permitAll();
 
-                            //Testing purpose
-                            req.requestMatchers("/nova/account/**", "/nova/pos/**", "/login", "/register", "/mail").permitAll();
+            //Testing purpose
+            req.requestMatchers("/login", "/register", "/mail").permitAll();
 
-                            //Role base authority
-                            req.requestMatchers("/nova/**").hasAuthority("Admin")
-                                    .requestMatchers("/profile").authenticated()
-                                    .anyRequest().permitAll();
-                        }
-                );
+            //Role base authority
+            req.requestMatchers("/nova/pos/**", "/nova/bill/**").hasAnyAuthority("Admin", "Employee")
+                    .requestMatchers("/nova/**").hasAuthority("Admin")
+                    .requestMatchers("/profile").authenticated().anyRequest().permitAll();
+        });
 
         http.exceptionHandling(ex -> ex.accessDeniedHandler(accessDeniedHandler()));
 

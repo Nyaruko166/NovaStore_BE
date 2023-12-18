@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -24,6 +25,7 @@ import java.util.List;
 @Table(name = "Account")
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -61,14 +63,8 @@ public class Customer {
     @Column(name = "Status")
     private Integer status;
 
-    @OneToOne(mappedBy = "customer")
-    private Cart cart;
-
     @ManyToOne
     @JoinColumn(name = "RoleId", referencedColumnName = "Id")
     private Role role;
 
-    public Customer(){
-        this.cart = new Cart();
-    }
 }

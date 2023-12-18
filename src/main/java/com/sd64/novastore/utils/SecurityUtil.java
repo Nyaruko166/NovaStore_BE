@@ -11,7 +11,9 @@ public class SecurityUtil {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
             String currentRole = authentication.getAuthorities().toString();
-            return currentUserName + currentRole;
+//            String credential = authentication.getCredentials().toString();
+            String details = authentication.getDetails().toString();
+            return currentUserName + currentRole + details;
         }
         return null;
     }

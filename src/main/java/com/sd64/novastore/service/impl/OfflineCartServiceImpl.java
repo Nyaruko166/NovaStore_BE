@@ -27,6 +27,9 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     private CustomerRepository customerRepository;
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
     private ProductDetailRepository productDetailRepository;
 
     //    List<OfflineCart> testCart = new ArrayList<>();
@@ -181,8 +184,13 @@ public class OfflineCartServiceImpl implements OfflineCartService {
         Customer customer = null;
         if (tempBill.getIdCustomer() != null) {
             customer = customerRepository.findById(tempBill.getIdCustomer()).orElse(null);
+        } else {
+            tempBill.setCustomerName("Khách Lẻ");
         }
-
+        Account employee = null;
+        if (tempBill.getIdEmployee() != null) {
+            employee = accountRepository.findById(tempBill.getIdEmployee()).orElse(null);
+        }
         return Bill.builder()
                 .id(null)
                 .code(tempBill.getBillCode())
@@ -205,6 +213,7 @@ public class OfflineCartServiceImpl implements OfflineCartService {
                 .createDate(date)
                 .updateDate(date)
                 .customer(customer)
+                .employee(employee)
                 .voucher(null)
                 .build();
     }

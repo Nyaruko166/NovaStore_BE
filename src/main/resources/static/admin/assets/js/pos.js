@@ -37,6 +37,7 @@ function onScanSuccess(decodedText) {
             body: JSON.stringify({
                 billId: billId,
                 data: decodedText,
+                qty: 1
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -60,7 +61,7 @@ function updateOutput() {
 
 function searchAndReplace() {
     let keyword = document.getElementById('keyword').value;
-    let url = "/nova/account/api/filter?keyword=" + keyword;
+    let url = "/nova/pos/api/filter?keyword=" + keyword;
 
     $.post(url).done(function (fragment_modal) {
         // console.log(fragment);
@@ -68,7 +69,71 @@ function searchAndReplace() {
     });
 }
 
-function searchAndReplaceProduct(){}
+function searchAndReplaceProduct() {
+    let keyword = document.getElementById('keywordProduct').value;
+    // console.log(keyword)
+    let url = "/nova/pos/api/productFilter?keyword=" + keyword;
+
+    $.post(url).done(function (fragment_product) {
+        // console.log(fragment_product);
+        $("#modal_product_replace").replaceWith(fragment_product);
+    });
+}
+
+async function addItems(obj) {
+
+    let parts = obj.value.split('|');
+
+    let productCode = parts[0].trim();
+    let qtyInStock = Number(parts[1].trim());
+
+    console.log(productCode)
+    console.log(qtyInStock)
+
+    const {value: qty} = await Swal.fire({
+        title: "Nhập số lượng",
+        input: "number",
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value) {
+                return "Vui lòng nhập số lượng!";
+            } else if (Math.sign(Number(value)) !== 1) {
+                return "Vui lòng nhập số nguyên dương!";
+            } else if (Number(value) > qtyInStock) {
+                return "Số lượng trong kho không đủ!";
+            }
+        }
+    });
+
+    if (qty) {
+        let queryString = window.location.search;
+        let urlParam = new URLSearchParams(queryString);
+        let billId;
+        if (!urlParam.has('billId')) {
+            billId = 0;
+        } else {
+            billId = urlParam.get('billId');
+        }
+
+        fetch("/nova/pos/add", {
+            method: "POST",
+            body: JSON.stringify({
+                billId: billId,
+                data: productCode,
+                qty: qty
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(updateOutput);
+    }
+}
+
+function isNumeric(str) {
+    if (typeof str != "string") return false // we only process strings!
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
 
 function calCashBack() {
 
@@ -114,11 +179,20 @@ function thanhToan() {
 
     } else {
 
-        let tienthua = document.getElementById('tienThua').innerText;
+        let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
+        let khachDua = document.getElementById('khachDua').value;
 
-        if (Math.sign(Number(tienthua)) != -1) {
+        // console.log(khachPhaiTra[0])
+        // console.log(khachDua)
+
+        if (Number(khachDua) > Number(khachPhaiTra[0])) {
+            Swal.fire({
+                title: "Thanh toán thành công!",
+                text: "Bạn đã thanh toán thành công!",
+                icon: "success"
+            });
             window.location = "/nova/pos/checkout";
-        }else {
+        } else {
             Swal.fire({
                 icon: "error",
                 title: "Khách đưa thiếu tiền",

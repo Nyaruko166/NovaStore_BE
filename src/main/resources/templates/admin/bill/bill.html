@@ -60,9 +60,7 @@
             </div>
             <button type="submit" class="btn btn-primary m-1"><i class="fa fa-search"></i> Tìm kiếm</button>
             <a th:href="@{/nova/bill}" class="btn btn-secondary m-1">Hủy</a>
-            <a href="#" onclick="exportToExcel()">
-                <button type="button" class="btn btn-success m-1"><i class="far fa-file-excel"></i> Export Excel</button>
-            </a>
+            <button type="button" class="btn btn-success m-1" onclick="exportToExcel()"><i class="far fa-file-excel"></i> Export Excel</button>
         </div>
     </form>
 
@@ -288,41 +286,6 @@
                 })
             });
 
-            $('.btn-update-status').on('click', function (e) {
-                e.stopPropagation()
-                var currentStatus = $(this).attr('data-status')
-                var nextStatus;
-                var statusMessage;
-                switch (currentStatus) {
-                    case "CHO_XAC_NHAN":
-                        nextStatus = "CHO_LAY_HANG";
-                        statusMessage = "Chờ lấy hàng";
-                        break;
-                    case "CHO_LAY_HANG":
-                        nextStatus = "CHO_GIAO_HANG";
-                        statusMessage = "Chờ giao hàng";
-                        break;
-                    case "CHO_GIAO_HANG":
-                        nextStatus = "HOAN_THANH";
-                        statusMessage = "Hoàn thành";
-                        break;
-                }
-                Swal.fire({
-                    title: "Xác nhận?",
-                    text: `Xác nhận chuyển sang ${statusMessage}`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    cancelButtonText: 'Hủy',
-                    confirmButtonText: 'Xác nhận',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const form = $(this).closest("form");
-                        var url = form.attr('action') + `?trangThaiDonHang=${nextStatus}`
-                        window.location.href = url
-                    }
-                });
-            })
         })
         var lastClickTime = 0;
         var doubleClickDelay = 300;
@@ -348,18 +311,19 @@
             var ngayTaoEnd = document.getElementById("ngayTaoEnd").value;
 
             Swal.fire({
-                title: "Xác nhận ?",
-                text: "Xác nhận export file excel ?",
+                title: "Xác nhận?",
+                text: `Xác nhận export file excel?`,
                 icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        var exportUrl = `/admin/export-bill?page=${page}&sort=${sort}&ngayTaoStart=${ngayTaoStart}&ngayTaoEnd=${ngayTaoEnd}`;
-                        window.location.href = exportUrl;
-                    }
-                });
+                showCancelButton: true,
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Xác nhận',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var exportUrl = `/nova/bill/export-bill?page=${page}&sort=${sort}&ngayTaoStart=${ngayTaoStart}&ngayTaoEnd=${ngayTaoEnd}`;
+                    window.location.href = exportUrl;
+                }
+            });
         }
 
     </script>

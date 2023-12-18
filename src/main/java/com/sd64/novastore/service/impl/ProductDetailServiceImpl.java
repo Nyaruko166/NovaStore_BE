@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ProductDetailServiceImpl implements ProductDetailService {
+
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
@@ -51,7 +52,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Override
     public List<ProductDetail> getProductDetailNoDeleteResponse(List<ProductDetail> listProductDetail) {
         List<ProductDetail> listProductDetailResponse = new ArrayList<>();
-        for (ProductDetail productDetail: listProductDetail) {
+        for (ProductDetail productDetail : listProductDetail) {
             if (productDetail.getStatus() == 1) {
                 listProductDetailResponse.add(productDetail);
             }
@@ -71,7 +72,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         productDetail.setSize(Size.builder().id(sizeId).build());
         productDetail.setColor(Color.builder().id(colorId).build());
         productDetailRepository.save(productDetail);
-        productDetail.setCode("CT"+productDetail.getId());
+        productDetail.setCode("CT" + productDetail.getId());
         productDetailRepository.save(productDetail);
         return true;
     }
@@ -248,5 +249,10 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         String currentProjectPath = System.getProperty("user.dir");
         return currentProjectPath + File.separator + "src/main/resources/static/assets/qrcode"
                 + File.separator + fileName;
+    }
+
+    @Override
+    public Page<ProductDetail> findAllByProductNameAndStatus(String name, Integer status, Pageable pageable) {
+        return productDetailRepository.searchAllByProductNameAndStatus(name, status, pageable);
     }
 }

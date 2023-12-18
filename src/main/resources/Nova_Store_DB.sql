@@ -27,7 +27,7 @@ ALTER DATABASE [Nova_Store_DB] SET AUTO_UPDATE_STATISTICS ON
 GO
 ALTER DATABASE [Nova_Store_DB] SET CURSOR_CLOSE_ON_COMMIT OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET CURSOR_DEFAULT  GLOBAL
+ALTER DATABASE [Nova_Store_DB] SET CURSOR_DEFAULT GLOBAL
 GO
 ALTER DATABASE [Nova_Store_DB] SET CONCAT_NULL_YIELDS_NULL OFF
 GO
@@ -37,7 +37,7 @@ ALTER DATABASE [Nova_Store_DB] SET QUOTED_IDENTIFIER OFF
 GO
 ALTER DATABASE [Nova_Store_DB] SET RECURSIVE_TRIGGERS OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET  ENABLE_BROKER
+ALTER DATABASE [Nova_Store_DB] SET ENABLE_BROKER
 GO
 ALTER DATABASE [Nova_Store_DB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF
 GO
@@ -55,13 +55,13 @@ ALTER DATABASE [Nova_Store_DB] SET HONOR_BROKER_PRIORITY OFF
 GO
 ALTER DATABASE [Nova_Store_DB] SET RECOVERY SIMPLE
 GO
-ALTER DATABASE [Nova_Store_DB] SET  MULTI_USER
+ALTER DATABASE [Nova_Store_DB] SET MULTI_USER
 GO
 ALTER DATABASE [Nova_Store_DB] SET PAGE_VERIFY CHECKSUM
 GO
 ALTER DATABASE [Nova_Store_DB] SET DB_CHAINING OFF
 GO
-ALTER DATABASE [Nova_Store_DB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF )
+ALTER DATABASE [Nova_Store_DB] SET FILESTREAM ( NON_TRANSACTED_ACCESS = OFF )
 GO
 ALTER DATABASE [Nova_Store_DB] SET TARGET_RECOVERY_TIME = 60 SECONDS
 GO
@@ -80,22 +80,23 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Account](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Name] [nvarchar](50) NULL,
-    [Email] [varchar](50) NULL,
-    [PhoneNumber] [varchar](15) NULL,
-    [Password] [varchar](255) NULL,
-    [Birthday] [datetime] NULL,
-    [Avatar] [varchar](255) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
-    [RoleId] [int] NULL,
+CREATE TABLE [dbo].[Account]
+(
+    [Id]          [int] IDENTITY (1,1) NOT NULL,
+    [Name]        [nvarchar](50)       NULL,
+    [Email]       [varchar](50)        NULL,
+    [PhoneNumber] [varchar](15)        NULL,
+    [Password]    [varchar](255)       NULL,
+    [Birthday]    [datetime]           NULL,
+    [Avatar]      [varchar](255)       NULL,
+    [CreateDate]  [datetime]           NULL,
+    [UpdateDate]  [datetime]           NULL,
+    [Status]      [int]                NULL,
+    [RoleId]      [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Address]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -103,22 +104,23 @@ CREATE TABLE [dbo].[Account](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Address](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [CustomerName] nvarchar(50) NULL,
-    [PhoneNumber] varchar(15) NULL,
-    [SpecificAddress] [nvarchar](50) NULL,
-    [Ward] [nvarchar](50) NULL,
-    [District] [nvarchar](50) NULL,
-    [City] [nvarchar](50) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
-    [AccountId] [int] NULL,
+CREATE TABLE [dbo].[Address]
+(
+    [Id]              [int] IDENTITY (1,1) NOT NULL,
+    [CustomerName]    nvarchar(50)         NULL,
+    [PhoneNumber]     varchar(15)          NULL,
+    [SpecificAddress] [nvarchar](50)       NULL,
+    [Ward]            [nvarchar](50)       NULL,
+    [District]        [nvarchar](50)       NULL,
+    [City]            [nvarchar](50)       NULL,
+    [CreateDate]      [datetime]           NULL,
+    [UpdateDate]      [datetime]           NULL,
+    [Status]          [int]                NULL,
+    [AccountId]       [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Bill]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -126,33 +128,35 @@ CREATE TABLE [dbo].[Address](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Bill](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) NULL,
-    [Type] [int] NULL,
-    [CustomerName] [nvarchar](50) NULL,
-    [Address] [nvarchar](100) NULL,
-    [PhoneNumber] [nvarchar](15) NULL,
-    [Note] [nvarchar](255) NULL,
-    [OrderDate] [datetime] NULL,
-    [PaymentDate] [datetime] NULL,
-    [ConfirmationDate] [datetime] NULL,
-    [ShippingDate] [datetime] NULL,
-    [CompletionDate] [datetime] NULL,
-    [CancellationDate] [datetime] NULL,
-    [ShippingFee] [money] NULL,
-    [Price] [money] NULL,
-    [DiscountAmount] [money] NULL,
-    [TotalPrice] [money] NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
-    [CustomerId] [int] NULL,
-    [VoucherId] [int] NULL,
+CREATE TABLE [dbo].[Bill]
+(
+    [Id]               [int] IDENTITY (1,1) NOT NULL,
+    [Code]             [varchar](50)        NULL,
+    [Type]             [int]                NULL,
+    [CustomerName]     [nvarchar](50)       NULL,
+    [Address]          [nvarchar](100)      NULL,
+    [PhoneNumber]      [nvarchar](15)       NULL,
+    [Note]             [nvarchar](255)      NULL,
+    [OrderDate]        [datetime]           NULL,
+    [PaymentDate]      [datetime]           NULL,
+    [ConfirmationDate] [datetime]           NULL,
+    [ShippingDate]     [datetime]           NULL,
+    [CompletionDate]   [datetime]           NULL,
+    [CancellationDate] [datetime]           NULL,
+    [ShippingFee]      [money]              NULL,
+    [Price]            [money]              NULL,
+    [DiscountAmount]   [money]              NULL,
+    [TotalPrice]       [money]              NULL,
+    [CreateDate]       [datetime]           NULL,
+    [UpdateDate]       [datetime]           NULL,
+    [Status]           [int]                NULL,
+    [EmployeeId]       [int]                NULL,
+    [CustomerId]       [int]                NULL,
+    [VoucherId]        [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[BillDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -160,17 +164,18 @@ CREATE TABLE [dbo].[Bill](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[BillDetail](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Price] [money] NULL,
-    [Quantity] [int] NULL,
-    [Status] [int] NULL,
-    [BillId] [int] NULL,
-    [ProductDetailId] [int] NULL,
+CREATE TABLE [dbo].[BillDetail]
+(
+    [Id]              [int] IDENTITY (1,1) NOT NULL,
+    [Price]           [money]              NULL,
+    [Quantity]        [int]                NULL,
+    [Status]          [int]                NULL,
+    [BillId]          [int]                NULL,
+    [ProductDetailId] [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Brand]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -178,17 +183,18 @@ CREATE TABLE [dbo].[BillDetail](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Brand](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) NULL,
-    [Name] [nvarchar](50) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
+CREATE TABLE [dbo].[Brand]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [Code]       [varchar](50)        NULL,
+    [Name]       [nvarchar](50)       NULL,
+    [CreateDate] [datetime]           NULL,
+    [UpdateDate] [datetime]           NULL,
+    [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Cart]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -196,15 +202,16 @@ CREATE TABLE [dbo].[Brand](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Cart](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [TotalPrice] [money] NULL,
-    [TotalItems] [int] NULL,
-    [AccountId] [int] NULL,
+CREATE TABLE [dbo].[Cart]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [TotalPrice] [money]              NULL,
+    [TotalItems] [int]                NULL,
+    [AccountId]  [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[CartDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -212,16 +219,17 @@ CREATE TABLE [dbo].[Cart](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[CartDetail](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Price] [money] NULL,
-    [Quantity] [int] NULL,
-    [CartId] [int] NULL,
-    [ProductDetailId] [int] NULL,
+CREATE TABLE [dbo].[CartDetail]
+(
+    [Id]              [int] IDENTITY (1,1) NOT NULL,
+    [Price]           [money]              NULL,
+    [Quantity]        [int]                NULL,
+    [CartId]          [int]                NULL,
+    [ProductDetailId] [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Category]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -229,17 +237,18 @@ CREATE TABLE [dbo].[CartDetail](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Category](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) NULL,
-    [Name] [nvarchar](50) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
+CREATE TABLE [dbo].[Category]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [Code]       [varchar](50)        NULL,
+    [Name]       [nvarchar](50)       NULL,
+    [CreateDate] [datetime]           NULL,
+    [UpdateDate] [datetime]           NULL,
+    [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Color]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -247,17 +256,18 @@ CREATE TABLE [dbo].[Category](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Color](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) NULL,
-    [Name] [nvarchar](50) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
+CREATE TABLE [dbo].[Color]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [Code]       [varchar](50)        NULL,
+    [Name]       [nvarchar](50)       NULL,
+    [CreateDate] [datetime]           NULL,
+    [UpdateDate] [datetime]           NULL,
+    [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Form]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -265,17 +275,18 @@ CREATE TABLE [dbo].[Color](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Form](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) NULL,
-    [Name] [nvarchar](50) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
+CREATE TABLE [dbo].[Form]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [Code]       [varchar](50)        NULL,
+    [Name]       [nvarchar](50)       NULL,
+    [CreateDate] [datetime]           NULL,
+    [UpdateDate] [datetime]           NULL,
+    [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Image]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -283,17 +294,18 @@ CREATE TABLE [dbo].[Form](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Image](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Name] [varchar](255) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
-    [ProductId] [int] NULL,
+CREATE TABLE [dbo].[Image]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [Name]       [varchar](255)       NULL,
+    [CreateDate] [datetime]           NULL,
+    [UpdateDate] [datetime]           NULL,
+    [Status]     [int]                NULL,
+    [ProductId]  [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Material]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -301,17 +313,18 @@ CREATE TABLE [dbo].[Image](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Material](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) NULL,
-    [Name] [nvarchar](50) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
+CREATE TABLE [dbo].[Material]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [Code]       [varchar](50)        NULL,
+    [Name]       [nvarchar](50)       NULL,
+    [CreateDate] [datetime]           NULL,
+    [UpdateDate] [datetime]           NULL,
+    [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[PaymentMethod]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -319,17 +332,18 @@ CREATE TABLE [dbo].[Material](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[PaymentMethod](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Name] [nvarchar](50) NULL,
-    [Money] [money] NULL,
-    [Description] [nvarchar](50) NULL,
-    [Status] [int] NULL,
-    [BillId] [int] NULL,
+CREATE TABLE [dbo].[PaymentMethod]
+(
+    [Id]          [int] IDENTITY (1,1) NOT NULL,
+    [Name]        [nvarchar](50)       NULL,
+    [Money]       [money]              NULL,
+    [Description] [nvarchar](50)       NULL,
+    [Status]      [int]                NULL,
+    [BillId]      [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Product]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -337,22 +351,23 @@ CREATE TABLE [dbo].[PaymentMethod](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Product](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) UNIQUE,
-    [Name] [nvarchar](50) NULL,
-    [Description] [nvarchar](255) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
-    [BrandId] [int] NULL,
-    [CategoryId] [int] NULL,
-    [FormId] [int] NULL,
-    [MaterialId] [int] NULL,
+CREATE TABLE [dbo].[Product]
+(
+    [Id]          [int] IDENTITY (1,1) NOT NULL,
+    [Code]        [varchar](50) UNIQUE,
+    [Name]        [nvarchar](50)       NULL,
+    [Description] [nvarchar](255)      NULL,
+    [CreateDate]  [datetime]           NULL,
+    [UpdateDate]  [datetime]           NULL,
+    [Status]      [int]                NULL,
+    [BrandId]     [int]                NULL,
+    [CategoryId]  [int]                NULL,
+    [FormId]      [int]                NULL,
+    [MaterialId]  [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[ProductDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -360,22 +375,23 @@ CREATE TABLE [dbo].[Product](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[ProductDetail](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) UNIQUE,
-    [Quantity] [int] NULL,
-    [Price] [money] NULL,
-    [PriceDiscount] [money] NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
-    [ProductId] [int] NULL,
-    [SizeId] [int] NULL,
-    [ColorId] [int] NULL,
+CREATE TABLE [dbo].[ProductDetail]
+(
+    [Id]            [int] IDENTITY (1,1) NOT NULL,
+    [Code]          [varchar](50) UNIQUE,
+    [Quantity]      [int]                NULL,
+    [Price]         [money]              NULL,
+    [PriceDiscount] [money]              NULL,
+    [CreateDate]    [datetime]           NULL,
+    [UpdateDate]    [datetime]           NULL,
+    [Status]        [int]                NULL,
+    [ProductId]     [int]                NULL,
+    [SizeId]        [int]                NULL,
+    [ColorId]       [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Promotion]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -383,20 +399,21 @@ CREATE TABLE [dbo].[ProductDetail](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Promotion](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](255) NULL,
-    [Name] [nvarchar](50) NULL,
-    [Value] [float] NULL,
-    [StartDate] [datetime] NULL,
-    [EndDate] [datetime] NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
+CREATE TABLE [dbo].[Promotion]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [Code]       [varchar](255)       NULL,
+    [Name]       [nvarchar](50)       NULL,
+    [Value]      [float]              NULL,
+    [StartDate]  [datetime]           NULL,
+    [EndDate]    [datetime]           NULL,
+    [CreateDate] [datetime]           NULL,
+    [UpdateDate] [datetime]           NULL,
+    [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[PromotionDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -404,17 +421,18 @@ CREATE TABLE [dbo].[Promotion](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[PromotionDetail](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
-    [ProductId] [int] NULL,
-    [PromotionId] [int] NULL,
+CREATE TABLE [dbo].[PromotionDetail]
+(
+    [Id]          [int] IDENTITY (1,1) NOT NULL,
+    [CreateDate]  [datetime]           NULL,
+    [UpdateDate]  [datetime]           NULL,
+    [Status]      [int]                NULL,
+    [ProductId]   [int]                NULL,
+    [PromotionId] [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Role]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -422,16 +440,17 @@ CREATE TABLE [dbo].[PromotionDetail](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Role](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Name] [nvarchar](50) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
+CREATE TABLE [dbo].[Role]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [Name]       [nvarchar](50)       NULL,
+    [CreateDate] [datetime]           NULL,
+    [UpdateDate] [datetime]           NULL,
+    [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Size]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -439,17 +458,18 @@ CREATE TABLE [dbo].[Role](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Size](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) NULL,
-    [Name] [nvarchar](50) NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
+CREATE TABLE [dbo].[Size]
+(
+    [Id]         [int] IDENTITY (1,1) NOT NULL,
+    [Code]       [varchar](50)        NULL,
+    [Name]       [nvarchar](50)       NULL,
+    [CreateDate] [datetime]           NULL,
+    [UpdateDate] [datetime]           NULL,
+    [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
 /****** Object:  Table [dbo].[Voucher]    Script Date: 10/10/2023 9:34:05 PM ******/
@@ -457,132 +477,181 @@ CREATE TABLE [dbo].[Size](
     GO
     SET QUOTED_IDENTIFIER ON
     GO
-CREATE TABLE [dbo].[Voucher](
-    [Id] [int] IDENTITY(1,1) NOT NULL,
-    [Code] [varchar](50) NULL,
-    [Name] [nvarchar](50) NULL,
-    [Value] [money] NULL,
-    [Quantity] [int] NULL,
-    [MinimumPrice] [money] NULL,
-    [StartDate] [datetime] NULL,
-    [EndDate] [datetime] NULL,
-    [CreateDate] [datetime] NULL,
-    [UpdateDate] [datetime] NULL,
-    [Status] [int] NULL,
+CREATE TABLE [dbo].[Voucher]
+(
+    [Id]           [int] IDENTITY (1,1) NOT NULL,
+    [Code]         [varchar](50)        NULL,
+    [Name]         [nvarchar](50)       NULL,
+    [Value]        [money]              NULL,
+    [Quantity]     [int]                NULL,
+    [MinimumPrice] [money]              NULL,
+    [StartDate]    [datetime]           NULL,
+    [EndDate]      [datetime]           NULL,
+    [CreateDate]   [datetime]           NULL,
+    [UpdateDate]   [datetime]           NULL,
+    [Status]       [int]                NULL,
     PRIMARY KEY CLUSTERED
 (
 [Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
     ) ON [PRIMARY]
     GO
-ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [FKi9xmahyh65di7x2wn5fvt8lv3] FOREIGN KEY([RoleId])
+ALTER TABLE [dbo].[Account]
+    WITH CHECK ADD CONSTRAINT [FKi9xmahyh65di7x2wn5fvt8lv3] FOREIGN KEY ([RoleId])
     REFERENCES [dbo].[Role] ([Id])
     GO
-ALTER TABLE [dbo].[Account] CHECK CONSTRAINT [FKi9xmahyh65di7x2wn5fvt8lv3]
+ALTER TABLE [dbo].[Account]
+    CHECK CONSTRAINT [FKi9xmahyh65di7x2wn5fvt8lv3]
     GO
-ALTER TABLE [dbo].[Address]  WITH CHECK ADD  CONSTRAINT [FK3haj5uqn2j6ar58mcglooa5bp] FOREIGN KEY([AccountId])
+ALTER TABLE [dbo].[Address]
+    WITH CHECK ADD CONSTRAINT [FK3haj5uqn2j6ar58mcglooa5bp] FOREIGN KEY ([AccountId])
     REFERENCES [dbo].[Account] ([Id])
     GO
-ALTER TABLE [dbo].[Address] CHECK CONSTRAINT [FK3haj5uqn2j6ar58mcglooa5bp]
+ALTER TABLE [dbo].[Address]
+    CHECK CONSTRAINT [FK3haj5uqn2j6ar58mcglooa5bp]
     GO
-ALTER TABLE [dbo].[Bill]  WITH CHECK ADD  CONSTRAINT [FK5mrre5s0gacpqu6737kfocwkl] FOREIGN KEY([CustomerId])
+ALTER TABLE [dbo].[Bill]
+    WITH CHECK ADD CONSTRAINT [FK5zxcs2c3vdsauy6541vgj2y5t] FOREIGN KEY ([EmployeeId])
     REFERENCES [dbo].[Account] ([Id])
     GO
-ALTER TABLE [dbo].[Bill] CHECK CONSTRAINT [FK5mrre5s0gacpqu6737kfocwkl]
+ALTER TABLE [dbo].[Bill]
+    CHECK CONSTRAINT [FK5zxcs2c3vdsauy6541vgj2y5t]
     GO
-ALTER TABLE [dbo].[Bill]  WITH CHECK ADD  CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob] FOREIGN KEY([VoucherId])
+ALTER TABLE [dbo].[Bill]
+    WITH CHECK ADD CONSTRAINT [FK5mrre5s0gacpqu6737kfocwkl] FOREIGN KEY ([CustomerId])
+    REFERENCES [dbo].[Account] ([Id])
+    GO
+ALTER TABLE [dbo].[Bill]
+    CHECK CONSTRAINT [FK5mrre5s0gacpqu6737kfocwkl]
+    GO
+ALTER TABLE [dbo].[Bill]
+    WITH CHECK ADD CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob] FOREIGN KEY ([VoucherId])
     REFERENCES [dbo].[Voucher] ([Id])
     GO
-ALTER TABLE [dbo].[Bill] CHECK CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob]
+ALTER TABLE [dbo].[Bill]
+    CHECK CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob]
     GO
-ALTER TABLE [dbo].[BillDetail]  WITH CHECK ADD  CONSTRAINT [FK8sw1tfhht3q5xtdsyoe0r7jfd] FOREIGN KEY([BillId])
+ALTER TABLE [dbo].[BillDetail]
+    WITH CHECK ADD CONSTRAINT [FK8sw1tfhht3q5xtdsyoe0r7jfd] FOREIGN KEY ([BillId])
     REFERENCES [dbo].[Bill] ([Id])
     GO
-ALTER TABLE [dbo].[BillDetail] CHECK CONSTRAINT [FK8sw1tfhht3q5xtdsyoe0r7jfd]
+ALTER TABLE [dbo].[BillDetail]
+    CHECK CONSTRAINT [FK8sw1tfhht3q5xtdsyoe0r7jfd]
     GO
-ALTER TABLE [dbo].[BillDetail]  WITH CHECK ADD  CONSTRAINT [FKnt7lacod5l24jdnfgxfydqiu2] FOREIGN KEY([ProductDetailId])
+ALTER TABLE [dbo].[BillDetail]
+    WITH CHECK ADD CONSTRAINT [FKnt7lacod5l24jdnfgxfydqiu2] FOREIGN KEY ([ProductDetailId])
     REFERENCES [dbo].[ProductDetail] ([Id])
     GO
-ALTER TABLE [dbo].[BillDetail] CHECK CONSTRAINT [FKnt7lacod5l24jdnfgxfydqiu2]
+ALTER TABLE [dbo].[BillDetail]
+    CHECK CONSTRAINT [FKnt7lacod5l24jdnfgxfydqiu2]
     GO
-ALTER TABLE [dbo].[Cart]  WITH CHECK ADD  CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i] FOREIGN KEY([AccountId])
+ALTER TABLE [dbo].[Cart]
+    WITH CHECK ADD CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i] FOREIGN KEY ([AccountId])
     REFERENCES [dbo].[Account] ([Id])
     GO
-ALTER TABLE [dbo].[Cart] CHECK CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i]
+ALTER TABLE [dbo].[Cart]
+    CHECK CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i]
     GO
-ALTER TABLE [dbo].[CartDetail]  WITH CHECK ADD  CONSTRAINT [FK6unelr9lsy26gw9da5tuuxcsh] FOREIGN KEY([CartId])
+ALTER TABLE [dbo].[CartDetail]
+    WITH CHECK ADD CONSTRAINT [FK6unelr9lsy26gw9da5tuuxcsh] FOREIGN KEY ([CartId])
     REFERENCES [dbo].[Cart] ([Id])
     GO
-ALTER TABLE [dbo].[CartDetail] CHECK CONSTRAINT [FK6unelr9lsy26gw9da5tuuxcsh]
+ALTER TABLE [dbo].[CartDetail]
+    CHECK CONSTRAINT [FK6unelr9lsy26gw9da5tuuxcsh]
     GO
-ALTER TABLE [dbo].[CartDetail]  WITH CHECK ADD  CONSTRAINT [FKepuvpwbykpahqt0gagvvdqoyn] FOREIGN KEY([ProductDetailId])
+ALTER TABLE [dbo].[CartDetail]
+    WITH CHECK ADD CONSTRAINT [FKepuvpwbykpahqt0gagvvdqoyn] FOREIGN KEY ([ProductDetailId])
     REFERENCES [dbo].[ProductDetail] ([Id])
     GO
-ALTER TABLE [dbo].[CartDetail] CHECK CONSTRAINT [FKepuvpwbykpahqt0gagvvdqoyn]
+ALTER TABLE [dbo].[CartDetail]
+    CHECK CONSTRAINT [FKepuvpwbykpahqt0gagvvdqoyn]
     GO
-ALTER TABLE [dbo].[Image]  WITH CHECK ADD  CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c] FOREIGN KEY([ProductId])
+ALTER TABLE [dbo].[Image]
+    WITH CHECK ADD CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c] FOREIGN KEY ([ProductId])
     REFERENCES [dbo].[Product] ([Id])
     GO
-ALTER TABLE [dbo].[Image] CHECK CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c]
+ALTER TABLE [dbo].[Image]
+    CHECK CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c]
     GO
-ALTER TABLE [dbo].[PaymentMethod]  WITH CHECK ADD  CONSTRAINT [FKjity6x6p1194mtoli4abb3jgc] FOREIGN KEY([BillId])
+ALTER TABLE [dbo].[PaymentMethod]
+    WITH CHECK ADD CONSTRAINT [FKjity6x6p1194mtoli4abb3jgc] FOREIGN KEY ([BillId])
     REFERENCES [dbo].[Bill] ([Id])
     GO
-ALTER TABLE [dbo].[PaymentMethod] CHECK CONSTRAINT [FKjity6x6p1194mtoli4abb3jgc]
+ALTER TABLE [dbo].[PaymentMethod]
+    CHECK CONSTRAINT [FKjity6x6p1194mtoli4abb3jgc]
     GO
-ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FK4cx1ir1xlnytlte2quullny9m] FOREIGN KEY([FormId])
+ALTER TABLE [dbo].[Product]
+    WITH CHECK ADD CONSTRAINT [FK4cx1ir1xlnytlte2quullny9m] FOREIGN KEY ([FormId])
     REFERENCES [dbo].[Form] ([Id])
     GO
-ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FK4cx1ir1xlnytlte2quullny9m]
+ALTER TABLE [dbo].[Product]
+    CHECK CONSTRAINT [FK4cx1ir1xlnytlte2quullny9m]
     GO
-ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FK6pnobu31k3yhhmk45s97imkui] FOREIGN KEY([CategoryId])
+ALTER TABLE [dbo].[Product]
+    WITH CHECK ADD CONSTRAINT [FK6pnobu31k3yhhmk45s97imkui] FOREIGN KEY ([CategoryId])
     REFERENCES [dbo].[Category] ([Id])
     GO
-ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FK6pnobu31k3yhhmk45s97imkui]
+ALTER TABLE [dbo].[Product]
+    CHECK CONSTRAINT [FK6pnobu31k3yhhmk45s97imkui]
     GO
-ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FKfc8uiunvrolmn3qa9ahrhmtrw] FOREIGN KEY([MaterialId])
+ALTER TABLE [dbo].[Product]
+    WITH CHECK ADD CONSTRAINT [FKfc8uiunvrolmn3qa9ahrhmtrw] FOREIGN KEY ([MaterialId])
     REFERENCES [dbo].[Material] ([Id])
     GO
-ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FKfc8uiunvrolmn3qa9ahrhmtrw]
+ALTER TABLE [dbo].[Product]
+    CHECK CONSTRAINT [FKfc8uiunvrolmn3qa9ahrhmtrw]
     GO
-ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc] FOREIGN KEY([BrandId])
+ALTER TABLE [dbo].[Product]
+    WITH CHECK ADD CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc] FOREIGN KEY ([BrandId])
     REFERENCES [dbo].[Brand] ([Id])
     GO
-ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc]
+ALTER TABLE [dbo].[Product]
+    CHECK CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc]
     GO
-ALTER TABLE [dbo].[ProductDetail]  WITH CHECK ADD  CONSTRAINT [FKik38y3bjry9u05majdn5u3egj] FOREIGN KEY([ProductId])
+ALTER TABLE [dbo].[ProductDetail]
+    WITH CHECK ADD CONSTRAINT [FKik38y3bjry9u05majdn5u3egj] FOREIGN KEY ([ProductId])
     REFERENCES [dbo].[Product] ([Id])
     GO
-ALTER TABLE [dbo].[ProductDetail] CHECK CONSTRAINT [FKik38y3bjry9u05majdn5u3egj]
+ALTER TABLE [dbo].[ProductDetail]
+    CHECK CONSTRAINT [FKik38y3bjry9u05majdn5u3egj]
     GO
-ALTER TABLE [dbo].[ProductDetail]  WITH CHECK ADD  CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv] FOREIGN KEY([SizeId])
+ALTER TABLE [dbo].[ProductDetail]
+    WITH CHECK ADD CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv] FOREIGN KEY ([SizeId])
     REFERENCES [dbo].[Size] ([Id])
     GO
-ALTER TABLE [dbo].[ProductDetail] CHECK CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv]
+ALTER TABLE [dbo].[ProductDetail]
+    CHECK CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv]
     GO
-ALTER TABLE [dbo].[ProductDetail]  WITH CHECK ADD  CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y] FOREIGN KEY([ColorId])
+ALTER TABLE [dbo].[ProductDetail]
+    WITH CHECK ADD CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y] FOREIGN KEY ([ColorId])
     REFERENCES [dbo].[Color] ([Id])
     GO
-ALTER TABLE [dbo].[ProductDetail] CHECK CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y]
+ALTER TABLE [dbo].[ProductDetail]
+    CHECK CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y]
     GO
-ALTER TABLE [dbo].[PromotionDetail]  WITH CHECK ADD  CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig] FOREIGN KEY([ProductId])
+ALTER TABLE [dbo].[PromotionDetail]
+    WITH CHECK ADD CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig] FOREIGN KEY ([ProductId])
     REFERENCES [dbo].[Product] ([Id])
     GO
-ALTER TABLE [dbo].[PromotionDetail] CHECK CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig]
+ALTER TABLE [dbo].[PromotionDetail]
+    CHECK CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig]
     GO
-ALTER TABLE [dbo].[PromotionDetail]  WITH CHECK ADD  CONSTRAINT [FKos6ftbatvw4mk81km7xpkds5i] FOREIGN KEY([PromotionId])
+ALTER TABLE [dbo].[PromotionDetail]
+    WITH CHECK ADD CONSTRAINT [FKos6ftbatvw4mk81km7xpkds5i] FOREIGN KEY ([PromotionId])
     REFERENCES [dbo].[Promotion] ([Id])
     GO
-ALTER TABLE [dbo].[PromotionDetail] CHECK CONSTRAINT [FKos6ftbatvw4mk81km7xpkds5i]
+ALTER TABLE [dbo].[PromotionDetail]
+    CHECK CONSTRAINT [FKos6ftbatvw4mk81km7xpkds5i]
     GO
     USE [master]
     GO
-ALTER DATABASE [Nova_Store_DB] SET  READ_WRITE
+ALTER DATABASE [Nova_Store_DB] SET READ_WRITE
 GO
 
 USE Nova_Store_DB
 
-SELECT * FROM Brand
+SELECT *
+FROM Brand
     INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
 VALUES ('T1', N'Reebok', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
@@ -605,7 +674,8 @@ INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
 VALUES ('T10', N'Adidas', GETDATE(), GETDATE(), 1)
 
 
-SELECT * FROM Category
+SELECT *
+FROM Category
     INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
 VALUES ('L1', N'Áo thun', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
@@ -627,7 +697,8 @@ VALUES ('L9', N'Quần dài', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
 VALUES ('L10', N'Quần legging', GETDATE(), GETDATE(), 1)
 
-SELECT * FROM Material
+SELECT *
+FROM Material
     INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
 VALUES ('C1', N'Spandex', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
@@ -650,7 +721,8 @@ INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
 VALUES ('C10', N'Fleece', GETDATE(), GETDATE(), 1)
 
 
-SELECT * FROM Form
+SELECT *
+FROM Form
     INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
 VALUES ('K1', N'Bó', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
@@ -673,7 +745,8 @@ INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
 VALUES ('K10', N'Thiếu vải', GETDATE(), GETDATE(), 1)
 
 
-SELECT * FROM Size
+SELECT *
+FROM Size
     INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
 VALUES ('S1', N'28', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
@@ -696,7 +769,8 @@ INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
 VALUES ('S1', N'M', GETDATE(), GETDATE(), 1)
 
 
-SELECT * FROM Color
+SELECT *
+FROM Color
     INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
 VALUES ('M1', N'Đen', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
@@ -719,7 +793,8 @@ INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
 VALUES ('M10', N'Cam', GETDATE(), GETDATE(), 1)
 
 
-SELECT * FROM Product
+SELECT *
+FROM Product
     INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP1', N'Áo thun tay ngắn', N'vip pro', GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
@@ -741,44 +816,53 @@ VALUES ('SP9', N'Áo Superman', N'mua đi đừng ngại', GETDATE(), GETDATE(),
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP10', N'Áo Batman', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 10, 10, 10, 10);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP11', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP11', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP12', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP12', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP13', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP13', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP14', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP14', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP15', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP15', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP16', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP16', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP17', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP17', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP18', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP18', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP19', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP19', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP20', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP20', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP21', N'Áo Superman', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP21', N'Áo Superman', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
 USE Nova_Store_DB
-SELECT * FROM Product
+SELECT *
+FROM Product
 
-SELECT * FROM ProductDetail
-    INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+SELECT *
+FROM ProductDetail
+    INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
+                               ColorId)
 VALUES ('CT00001', 12, 20000, 20000, GETDATE(), GETDATE(), 1, 1, 1, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
+                           ColorId)
 VALUES ('CT00002', 22, 45000, 45000, GETDATE(), GETDATE(), 1, 2, 2, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
+                           ColorId)
 VALUES ('CT00003', 30, 100000, 100000, GETDATE(), GETDATE(), 1, 3, 1, 2);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
+                           ColorId)
 VALUES ('CT00004', 40, 25000, 25000, GETDATE(), GETDATE(), 1, 4, 2, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
+                           ColorId)
 VALUES ('CT00005', 31, 60000, 60000, GETDATE(), GETDATE(), 1, 5, 3, 4);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
+                           ColorId)
 VALUES ('CT00006', 12, 200000, 200000, GETDATE(), GETDATE(), 1, 6, 5, 6);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
+                           ColorId)
 VALUES ('CT00007', 11, 230000, 230000, GETDATE(), GETDATE(), 1, 7, 7, 8);
 INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
                            ColorId)
@@ -911,6 +995,21 @@ INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, Upd
 VALUES ('CT00050', 324, 20000, 20000, GETDATE(), GETDATE(), 1, 8, 2, 3);
 
 
-SELECT * FROM Role
-    INSERT INTO Role (name, CreateDate, UpdateDate, Status) VALUES ('Admin', GETDATE(), GETDATE(), 1);
-INSERT INTO Role (name, CreateDate, UpdateDate, Status) VALUES ('User', GETDATE(), GETDATE(), 1);
+SELECT *
+FROM Role
+    INSERT INTO Role (name, CreateDate, UpdateDate, Status)
+VALUES ('Admin', GETDATE(), GETDATE(), 1);
+INSERT INTO Role (name, CreateDate, UpdateDate, Status)
+VALUES ('Employee', GETDATE(), GETDATE(), 1);
+INSERT INTO Role (name, CreateDate, UpdateDate, Status)
+VALUES ('User', GETDATE(), GETDATE(), 1);
+
+INSERT INTO Account(Name, Email, PhoneNumber, Password, Birthday, Avatar, CreateDate, UpdateDate, Status, RoleId)
+VALUES (N'Phùng Minh Quân', 'admin@gmail.com', '0936163632',
+        '$2a$10$PHNpj3vmMEXFe.HByeH98uzXAk8pj9CLwQJUQxII3jbk/EpA/yJ4e', '2003-06-01 00:00:00.000', 'uid_1.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 1);
+
+INSERT INTO Account(Name, Email, PhoneNumber, Password, Birthday, Avatar, CreateDate, UpdateDate, Status, RoleId)
+VALUES (N'Nguyễn Thanh Tùng', 'employee@gmail.com', '0943670235',
+        '$2a$10$nBJaDOAabttH8yE8pQUxpOXGLEXRP8/NKY8UhmxR5CP/YtGQLsKau', '1999-12-31 00:00:00.000', 'uid_2.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 2);
