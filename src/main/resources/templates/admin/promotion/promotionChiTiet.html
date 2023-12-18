@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <select class="form-control" id="pageSizeSelect">
+                        <select style="width: 300px" class="form-control" id="pageSizeSelect">
                             <option value="5" selected>5 sản phẩm</option>
                             <option value="10">10 sản phẩm</option>
                             <option value="20">20 sản phẩm</option>
@@ -73,29 +73,30 @@
                     <thead>
                     <tr>
                         <th>Sản phẩm</th>
-                        <th>Mã sản phẩm</th>
+                        <th>Tên giảm giá</th>
                         <th>Tên sản phẩm</th>
-                        <th>Giảm (%)</th>
-                        <th>Bắt đầu</th>
-                        <th>Kết thúc</th>
-                        <th>Giá</th>
+                        <th>Mã sản phẩm</th>
+                        <th>Giá ban đầu</th>
                         <th>Giá sau giảm</th>
-
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
+                        <th>Phần trăm giảm</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="promotionDetail : ${promotion.promotionDetails}" th:if="${promotionDetail.product.status == 2}">
+                    <tr th:each="detail : ${promotionDetails}">
                         <td style="padding: 10px;">
-                            <img th:src="@{'/image/product/' + ${promotionDetail.product.id}}"
+                            <img th:src="@{'/image/product/' + ${detail.productId}}"
                                  style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
                         </td>
-                        <td th:text="${promotionDetail.product.code}"></td>
-                        <td th:text="${promotionDetail.product.name}"></td>
-                        <td th:text="${promotionDetail.promotion.value}"></td>
-                        <td th:text="${promotionDetail.promotion.startDate}"></td>
-                        <td th:text="${promotionDetail.promotion.endDate}"></td>
-                        <td th:text="${#numbers.formatDecimal(promotionDetail.product.listProductDetail[0].price, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
-                        <td th:text="${#numbers.formatDecimal((promotionDetail.product.listProductDetail[0].price * (100 - promotionDetail.promotion.value) / 100), 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
+                        <td th:text="${detail.promotionName}"></td>
+                        <td th:text="${detail.productName}"></td>
+                        <td th:text="${detail.productCode}"></td>
+                        <td th:text="${#numbers.formatDecimal(detail.minProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫' + ' - ' + #numbers.formatDecimal(detail.maxProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
+                        <td th:text="${#numbers.formatDecimal(detail.minProductPriceDiscount, 0, 'COMMA', 0, 'POINT') + ' ₫' + ' - ' + #numbers.formatDecimal(detail.maxProductPriceDiscount, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
+                        <td th:text="${detail.promotionStartDate}"></td>
+                        <td th:text="${detail.promotionEndDate}"></td>
+                        <td th:text="${detail.promotionValue}"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -122,7 +123,7 @@
                     var visibleRows = 0;
 
                     allRows.forEach(function (row) {
-                        var td = row.getElementsByTagName("td")[2]; // Điều chỉnh chỉ số cột tương ứng
+                        var td = row.getElementsByTagName("td")[2];
                         var txtValue = td.textContent || td.innerText;
 
                         if (txtValue.toUpperCase().indexOf(filter) > -1 && (pageSize === "all" || visibleRows < parseInt(pageSize))) {

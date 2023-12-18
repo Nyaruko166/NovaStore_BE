@@ -1,6 +1,7 @@
 package com.sd64.novastore.controller.admin;
 
 import com.sd64.novastore.dto.admin.ProductDto;
+import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
 import com.sd64.novastore.dto.admin.thongke.TKKhoangNgay;
 import com.sd64.novastore.dto.admin.thongke.TKNam;
@@ -82,20 +83,11 @@ public class PromotionController {
     public String detailCT(@PathVariable Integer id, Model model) {
         Promotion promotion = promotionService.getOne(id);
         model.addAttribute("promotion", promotion);
+        List<PromotionDetailDTO> promotionDetails = promotionService.getPromotionDetailsByPromotionId(id);
+        model.addAttribute("promotionDetails", promotionDetails);
         return "admin/promotion/promotionChiTiet";
     }
 
-//    @GetMapping("/search")
-//    public String search(@ModelAttribute("promotion") Promotion promotion, Model model, @RequestParam(required = false) String promotionNameSearch,
-//                         @RequestParam(defaultValue = "0") int page) {
-//        Page<Promotion> pagePromotion = promotionService.search(promotionNameSearch, page);
-//        if ("".equals(promotionNameSearch) || promotionNameSearch.isEmpty()) {
-//            return "redirect:/nova/promotion/page";
-//        }
-//        model.addAttribute("promotionNameSearch", promotionNameSearch);
-//        model.addAttribute("pagePromotion", pagePromotion);
-//        return "admin/promotion/promotion";
-//    }
 
     @GetMapping("/search")
     public String search(

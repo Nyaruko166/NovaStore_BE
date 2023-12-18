@@ -1,5 +1,6 @@
 package com.sd64.novastore.repository;
 
+import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Promotion;
@@ -49,6 +50,36 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
             @Param("status") Integer status,
             @Param("name") String name,
             Pageable pageable);
+
+    @Query(value = "SELECT " +
+            "    PD.id AS promotionDetailId, " +
+            "    P.id AS productId, " +
+            "    PR.name AS promotionName, " +
+            "    P.name AS productName, " +
+            "    P.code AS productCode, " +
+            "    MIN(PD2.price) AS minProductPrice, " +
+            "    MAX(PD2.price) AS maxProductPrice, " +
+            "    MIN(PD2.priceDiscount) AS minProductPriceDiscount, " +
+            "    MAX(PD2.priceDiscount) AS maxProductPriceDiscount ," +
+            "    PR.startDate AS promotionStartDate, " +
+            "    PR.endDate AS promotionEndDate, " +
+            "    PR.value AS promotionValue " +
+            "FROM " +
+            "    PromotionDetail PD " +
+            "JOIN " +
+            "    Product P ON PD.product.id = P.id " +
+            "JOIN " +
+            "    Promotion PR ON PD.promotion.id = PR.id " +
+            "JOIN " +
+            "    ProductDetail PD2 ON P.id = PD2.product.id " +
+            "WHERE " +
+            "    PD.promotion.id = :promotionId " +
+            "    AND PD.status = 1 " +
+            "    AND P.status = 2 " +
+            "GROUP BY " +
+            "    PD.id, PR.name, P.name, P.code, PR.startDate, PR.endDate, PR.value, P.id")
+    List<PromotionDetailDTO> getPromotionDetailsByPromotionId(@Param("promotionId") Integer promotionId);
+
 
 
 }

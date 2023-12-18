@@ -301,7 +301,6 @@
                         <table class="table text-center">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Id</th>
                                 <th scope="col">Mã khuyến mãi</th>
                                 <th scope="col">Tên khuyến mãi</th>
                                 <th scope="col">Phần trăm giảm</th>
@@ -313,7 +312,6 @@
                             </thead>
                             <tbody>
                             <tr th:each="items:${pagePromotion}">
-                                <td th:text="${items.id}"></td>
                                 <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
                                 <td th:text="${#numbers.formatDecimal(items.value, 0, 0)}"></td>

@@ -103,6 +103,7 @@ public class VoucherServiceImpl implements VoucherService {
         if (optional.isPresent()) {
             Voucher oldVoucher = optional.get();
             voucher.setId(oldVoucher.getId());
+            voucher.setCode(oldVoucher.getCode());
             voucher.setCreateDate(oldVoucher.getCreateDate());
             voucher.setUpdateDate(new Date());
             voucher.setStatus(oldVoucher.getStatus());

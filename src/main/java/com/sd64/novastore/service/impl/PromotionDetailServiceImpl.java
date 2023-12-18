@@ -1,6 +1,6 @@
 package com.sd64.novastore.service.impl;
 
-import com.sd64.novastore.dto.admin.Impl.PromotionDetailDTOImpl;
+import com.sd64.novastore.dto.admin.ProductPromotionDTO;
 import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
@@ -12,8 +12,8 @@ import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.repository.ProductRepository;
 import com.sd64.novastore.repository.PromotionDetailRepository;
 import com.sd64.novastore.repository.PromotionRepository;
+import com.sd64.novastore.repository.productPromotion;
 import com.sd64.novastore.service.PromotionDetailService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +43,9 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
 
     @Autowired
     private ProductDetailRepository productDetailRepository;
+
+    @Autowired
+    private productPromotion productPromotion;
 
     @Override
     public List<PromotionDetail> getAllPromotionDetail() {
@@ -83,7 +86,6 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
             productDetail.setPriceDiscount(discountedPrice);
             productDetailRepository.save(productDetail);
         }
-
         return savedPromotionDetail;
     }
 
@@ -105,17 +107,26 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
     public PromotionDetail delete(Integer id) {
         Optional<PromotionDetail> promotionDetailOptional = promotionDetailRepository.findById(id);
         return promotionDetailOptional.map(promotionDetail -> {
+            Product product = promotionDetail.getProduct();
+            product.setStatus(1);
+            productRepository.save(product);
+
+            List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
+            for (ProductDetail productDetail : productDetails) {
+                productDetail.setPriceDiscount(productDetail.getPrice());
+                productDetailRepository.save(productDetail);
+            }
             promotionDetail.setStatus(0);
             promotionDetailRepository.save(promotionDetail);
             return promotionDetail;
         }).orElse(null);
     }
 
+
     @Override
     public PromotionDetail getOne(Integer id) {
         return promotionDetailRepository.findById(id).orElse(null);
     }
-
 
     @Override
     public List<Product> getAll() {
@@ -146,6 +157,11 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
     @Override
     public List<ProductDetail> findByProductId(Integer productId) {
         return giamGiaRepository.findByProductId(productId);
+    }
+
+    @Override
+    public List<ProductPromotionDTO> getAllProductPromotionDTO() {
+        return productPromotion.getAllProductPromotionDTO();
     }
 
 
