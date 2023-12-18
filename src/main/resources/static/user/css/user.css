@@ -392,3 +392,6 @@
     margin-bottom: 8px;
 }
 
+.price-product-detail-discount {
+    text-decoration: line-through red;;
+}

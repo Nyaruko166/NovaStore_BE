@@ -34,14 +34,14 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
     @Query(value = "SELECT pd FROM ProductDetail pd\n" +
             "INNER JOIN Product p ON pd.product.id = p.id\n" +
             "INNER JOIN Image i ON i.product.id = p.id\n" +
-            "WHERE p.status = 1 OR p.status = 2 AND pd.status = 1 AND p.id =:productId\n" +
+            "WHERE p.status IN (1,2) AND pd.status = 1 AND p.id =:productId\n" +
             "ORDER BY pd.price DESC")
     List<ProductDetail> getAllProductDetailByProductIdOrderByPriceDesc(Integer productId);
 
     @Query(value = "SELECT pd FROM ProductDetail pd\n" +
             "INNER JOIN Product p ON pd.product.id = p.id\n" +
             "INNER JOIN Image i ON i.product.id = p.id\n" +
-            "WHERE p.status = 1 OR p.status = 2 AND pd.status = 1 AND p.id =:productId\n" +
+            "WHERE p.status IN (1,2) AND pd.status = 1 AND p.id =:productId\n" +
             "ORDER BY pd.price ASC")
     List<ProductDetail> getAllProductDetailByProductIdOrderByPriceAsc(Integer productId);
 
