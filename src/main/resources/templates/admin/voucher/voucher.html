@@ -368,7 +368,6 @@
                         <table class="table text-center">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Id</th>
                                 <th scope="col">Mã voucher</th>
                                 <th scope="col">Tên voucher</th>
                                 <th scope="col">Số lượng</th>
@@ -382,7 +381,6 @@
                             </thead>
                             <tbody>
                             <tr th:each="items:${pageVoucher}">
-                                <td th:text="${items.id}"></td>
                                 <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
                                 <td th:text="${items.quantity}"></td>

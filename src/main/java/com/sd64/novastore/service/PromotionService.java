@@ -1,6 +1,7 @@
 package com.sd64.novastore.service;
 
 import com.sd64.novastore.dto.admin.BillDto;
+import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
 import com.sd64.novastore.model.Promotion;
 import org.springframework.data.domain.Page;
@@ -40,5 +41,5 @@ public interface PromotionService {
             Integer status,
             String name,
             int page);
-
+    List<PromotionDetailDTO> getPromotionDetailsByPromotionId(Integer promotionId);
 }
