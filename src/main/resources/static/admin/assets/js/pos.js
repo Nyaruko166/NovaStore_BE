@@ -186,6 +186,11 @@ function thanhToan() {
         // console.log(khachDua)
 
         if (Number(khachDua) > Number(khachPhaiTra[0])) {
+            Swal.fire({
+                title: "Thanh toán thành công!",
+                text: "Bạn đã thanh toán thành công!",
+                icon: "success"
+            });
             window.location = "/nova/pos/checkout";
         } else {
             Swal.fire({
