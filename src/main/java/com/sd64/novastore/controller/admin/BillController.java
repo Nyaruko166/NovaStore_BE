@@ -7,6 +7,7 @@ import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.PaymentMethod;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.PaymentMethodService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -244,5 +247,54 @@ public class BillController {
             attributes.addFlashAttribute("message", "Không có thông tin đơn hàng này");
         }
         return "redirect:/nova/bill";
+    }
+
+    @GetMapping("/export-bill")
+    public void exportBill(
+            HttpServletResponse response,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "sort", defaultValue = "id,asc") String sortField,
+            @RequestParam(name = "ngayTaoStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTaoStart,
+            @RequestParam(name = "ngayTaoEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTaoEnd,
+            UriComponentsBuilder uriBuilder
+    ) throws IOException {
+        int pageSize = 8;
+        String[] sortParams = sortField.split(",");
+        String sortFieldName = sortParams[0];
+        Sort.Direction sortDirection = Sort.Direction.ASC;
+
+        if (sortParams.length > 1 && sortParams[1].equalsIgnoreCase("desc")) {
+            sortDirection = Sort.Direction.DESC;
+        }
+
+        Sort sort = Sort.by(sortDirection, sortFieldName);
+        Pageable pageable = PageRequest.of(page, pageSize, sort);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Page<BillDto> listBill;
+
+        if (ngayTaoStart != null) {
+            listBill = billService.searchListBill(null, ngayTaoStart, ngayTaoEnd, null, null, null, null, pageable);
+        } else if (ngayTaoEnd != null){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(ngayTaoEnd);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 999);
+            Date ngayEnd = calendar.getTime();
+            listBill = billService.searchListBill(null, null, ngayEnd, null, null, null, null, pageable);
+        } else {
+            listBill = billService.findAll(pageable);
+        }
+
+        String exportUrl = uriBuilder.path("/export-bill")
+                .queryParam("page", page)
+                .queryParam("sort", sortField)
+                .queryParam("ngayTaoStart", ngayTaoStart)
+                .queryParam("ngayTaoEnd", ngayTaoEnd)
+                .toUriString();
+
+        billService.exportToExcel(response, listBill, exportUrl);
     }
 }

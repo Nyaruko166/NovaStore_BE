@@ -5,9 +5,11 @@ import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.SessionCart;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +43,7 @@ public interface BillService {
 
     Bill placeOrderSession(SessionCart cart, String email, String name, String specificAddress, String ward, String district, String city, String phoneNumber, String payment, Integer voucher);
 
-    List<Bill> getNoConfirmOrders(Integer customerId);
+    List<Bill> getStatusOrders(Integer status, Integer customerId);
 
     List<Bill> getAllOrders(Integer customerId);
 
@@ -65,4 +67,6 @@ public interface BillService {
                                  String phoneNumber, String customerName, Pageable pageable);
 
     String generateBillCode();
+
+    void exportToExcel(HttpServletResponse response, Page<BillDto> bills, String exportUrl) throws IOException;
 }
