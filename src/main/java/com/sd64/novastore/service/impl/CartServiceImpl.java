@@ -202,7 +202,7 @@ public class CartServiceImpl implements CartService {
             itemRepository.save(cartDetail);
 
             // Nếu số lượng tồn là 0, xóa CartDetail
-            if (stockQuantity == 0 || productDetail.getStatus() == 0) {
+            if (stockQuantity == 0 || productDetail.getStatus() == 0 || productDetail.getProduct().getStatus() == 0) {
                 iterator.remove();
                 itemRepository.delete(cartDetail);
             }
@@ -237,7 +237,7 @@ public class CartServiceImpl implements CartService {
             cartItem.setPrice(productPrice);
 
             // Nếu số lượng tồn là 0, xóa CartDetail
-            if (stockQuantity == 0 || productDetail.getStatus() == 0) {
+            if (stockQuantity == 0 || productDetail.getStatus() == 0 || productDetail.getProduct().getStatus() == 0) {
                 iterator.remove();
             }
             // Nếu số lượng hiện tại vượt quá số lượng tồn, cập nhật lại số lượng
