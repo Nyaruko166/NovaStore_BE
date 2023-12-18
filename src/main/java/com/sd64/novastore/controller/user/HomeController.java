@@ -72,7 +72,7 @@ public class HomeController {
             Customer customer = customerService.findByEmail(principal.getName());
             session.setAttribute("username", customer.getName());
             session.setAttribute("role", customer.getRole().getName());
-            Cart cart = customer.getCart();
+            Cart cart = cartService.getCart(principal.getName());
             SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
             if (sessionCart != null) {
                 if (sessionCart.getCartDetails() != null) {

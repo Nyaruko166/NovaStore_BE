@@ -64,17 +64,18 @@ public class UserBillController {
     JsonObject jsonData = new JsonObject();
 
     @GetMapping("/checkout")
-    public String checkOut(Principal principal, Model model, HttpSession session) {
+    public String checkOut(Principal principal, Model model, HttpSession session, RedirectAttributes attributes) {
         if (principal == null) {
             SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
             if (sessionCart == null){
                 return "redirect:/cart";
             }
-            if (sessionCart.getCartDetails().isEmpty()){
-                return "redirect:/cart";
-            }
             cartService.reloadCartDetailSession(sessionCart);
             session.setAttribute("sessionCart", sessionCart);
+            if (sessionCart.getCartDetails().isEmpty()){
+                attributes.addFlashAttribute("success", "Sản phẩm hết hàng nên đã bị xoá khỏi giỏ hàng");
+                return "redirect:/cart";
+            }
             session.setAttribute("totalItems", sessionCart.getTotalItems());
             List<Voucher> listVoucher = voucherService.getVoucherByCartPrice(sessionCart.getTotalPrice());
             model.addAttribute("cart", sessionCart);
@@ -87,10 +88,11 @@ public class UserBillController {
             if (cart == null){
                 return "redirect:/cart";
             }
+            cartService.reloadCartDetail(cart);
             if (cart.getCartDetails().isEmpty()){
+                attributes.addFlashAttribute("success", "Sản phẩm hết hàng nên đã bị xoá khỏi giỏ hàng");
                 return "redirect:/cart";
             }
-            cartService.reloadCartDetail(cart);
             session.setAttribute("totalItems", cart.getTotalItems());
             Address defaultAddress = addressService.findAccountDefaultAddress(customer.getId());
             List<Address> listAddress = addressService.findAccountAddress(customer.getId());
@@ -106,12 +108,17 @@ public class UserBillController {
     }
 
     @GetMapping("/orders")
-    public String getOrders(Model model, Principal principal) {
+    public String getOrders(Model model, Principal principal, @RequestParam(required = false) String status) {
         if (principal == null) {
             return "redirect:/login";
         }
         Customer customer = customerService.findByEmail(principal.getName());
-        List<Bill> listBill = billService.getAllOrders(customer.getId());
+        List<Bill> listBill;
+        if (status == null || status.trim().isEmpty()){
+            listBill = billService.getAllOrders(customer.getId());
+        } else {
+            listBill = billService.getStatusOrders(Integer.valueOf(status), customer.getId());
+        }
         model.addAttribute("orders", listBill);
         return "/user/order";
     }
@@ -205,12 +212,26 @@ public class UserBillController {
                               HttpServletRequest request) throws IOException, URISyntaxException {
         if (principal == null){
             SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
+            cartService.reloadCartDetailSession(sessionCart);
+            session.setAttribute("sessionCart", sessionCart);
+            if (sessionCart.getCartDetails().isEmpty()){
+                attributes.addFlashAttribute("success", "Sản phẩm hết hàng đã bị xoá khỏi giỏ hàng");
+                return "redirect:/cart";
+            }
             if (payment.equals("VNPAY")){
                 //Long dok
                 if (voucher == null){
                     jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
+                    if (uuDai.getStatus() != 1){
+                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        return "redirect:/checkout";
+                    }
+                    if (sessionCart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
+                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        return "redirect:/checkout";
+                    }
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
                     jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
@@ -222,6 +243,14 @@ public class UserBillController {
                     jsonData = paymentService.MomoPayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
+                    if (uuDai.getStatus() != 1){
+                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        return "redirect:/checkout";
+                    }
+                    if (sessionCart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
+                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        return "redirect:/checkout";
+                    }
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
                     jsonData = paymentService.MomoPayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
@@ -233,10 +262,25 @@ public class UserBillController {
                     jsonData = paymentService.zalopayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
+                    if (uuDai.getStatus() != 1){
+                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        return "redirect:/checkout";
+                    }
+                    if (sessionCart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
+                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        return "redirect:/checkout";
+                    }
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
                     jsonData = paymentService.zalopayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
+            }
+            if (voucher != null){
+                Voucher uuDai = voucherService.getVoucherById(voucher);
+                if (uuDai.getStatus() != 1){
+                    attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                    return "redirect:/checkout";
+                }
             }
             billService.placeOrderSession(sessionCart, email, name, specificAddress, ward, district, city, phoneNumber, payment, voucher);
             attributes.addFlashAttribute("mess", "Đặt hàng thành công! Vui lòng kiểm tra mail của bạn để biết thêm chi tiết.");
@@ -244,12 +288,25 @@ public class UserBillController {
             return "redirect:/home";
         } else {
             Cart cart = cartService.getCart(principal.getName());
+            cartService.reloadCartDetail(cart);
+            if (cart.getCartDetails().isEmpty()){
+                attributes.addFlashAttribute("success", "Sản phẩm hết hàng nên đã bị xoá khỏi giỏ hàng");
+                return "redirect:/cart";
+            }
             if (payment.equals("VNPAY")){
                 //Long dok
                 if (voucher == null){
                     jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
+                    if (uuDai.getStatus() != 1){
+                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        return "redirect:/checkout";
+                    }
+                    if (cart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
+                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        return "redirect:/checkout";
+                    }
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
                     jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
@@ -261,6 +318,14 @@ public class UserBillController {
                     jsonData = paymentService.MomoPayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
+                    if (uuDai.getStatus() != 1){
+                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        return "redirect:/checkout";
+                    }
+                    if (cart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
+                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        return "redirect:/checkout";
+                    }
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
                     jsonData = paymentService.MomoPayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
@@ -272,10 +337,25 @@ public class UserBillController {
                     jsonData = paymentService.zalopayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
+                    if (uuDai.getStatus() != 1){
+                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        return "redirect:/checkout";
+                    }
+                    if (cart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
+                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        return "redirect:/checkout";
+                    }
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
                     jsonData = paymentService.zalopayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
+            }
+            if (voucher != null){
+                Voucher uuDai = voucherService.getVoucherById(voucher);
+                if (uuDai.getStatus() != 1){
+                    attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                    return "redirect:/checkout";
+                }
             }
             billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, voucher);
             session.removeAttribute("totalItems");

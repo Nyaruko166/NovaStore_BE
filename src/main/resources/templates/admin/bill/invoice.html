@@ -1,0 +1,97 @@
+<!--
+  ~  © 2023 Nyaruko166
+  -->
+
+<!--
+  ~  © 2023 Nyaruko166
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Nova Store - Hoá Đơn</title>
+    <!-- Add Bootstrap CSS -->
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"
+    ></script>
+    <link th:href="@{/admin/images/nova.png}" rel="icon">
+    <!-- Custom CSS for the invoice -->
+    <link rel="stylesheet" href="/admin/assets/css/invoice.css">
+
+</head>
+<body>
+<div id="invoice" class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Cửa Hàng Quần Áo Thể Thao Nam Nova</h1>
+            <p>Tòa nhà FPT Polytechnic, Cổng số 2, 13 P. Trịnh Văn Bô</p>
+            <p>Xuân Phương, Nam Từ Liêm, Hà Nội</p>
+        </div>
+        <div class="col-md-6 text-right">
+            <h3>Hoá Đơn</h3>
+            <p id="date"></p>
+            <p th:text="'Mã Hoá Đơn: '+ ${tempBill.billCode}"></p>
+        </div>
+    </div>
+
+    <div class="invoice-details">
+        <h3>Chi Tiết Hoá Đơn</h3>
+        <p>Tên Khách Hàng: <span
+                th:text="${tempBill.idCustomer == null} ? 'Khách Lẻ' : ${tempBill.customerName} "></span></p>
+        <p>Email: <span
+                th:text="${tempBill.idCustomer == null} ? 'Khách Lẻ' : ${tempBill.customerEmail}"></span></p>
+        <p>Số Điện Thoại: <span
+                th:text="${tempBill.idCustomer == null} ? 'Khách Lẻ' : ${tempBill.customerPhone}"></span></p>
+    </div>
+
+    <div class="items">
+        <div class="item" th:each="x,y:${lstItem}">
+            <p th:text="${y.count} + '. ' + ${x.name}"></p>
+            <p th:text="${x.fieldCombine()}"></p>
+            <p th:text="'Số lượng: ' + ${x.qty}"></p>
+            <p th:text="'Đơn giá: ' + ${x.price}+ ' VNĐ'"></p>
+            <p th:text="'Tổng tiền: ' + ${x.calTotalPrice()} + ' VNĐ'"></p>
+        </div>
+    </div>
+
+    <div class="total text-right">
+        <p th:text="'Tổng Tiền: ' + ${tempBill.totalCartPrice} + ' VNĐ'"></p>
+    </div>
+
+    <script th:src="@{https://kit.fontawesome.com/1943ac9f5b.js}" crossorigin="anonymous"></script>
+    <script>
+        window.onload = function () {
+            getDate();
+            refreshParent();
+        };
+
+        function refreshParent() {
+            window.opener.location.reload();
+        }
+
+        function getDate() {
+            const date = new Date();
+
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+
+            // console.log(currentDate);
+            document.getElementById("date").innerText = "Ngày: " + `${day}-${month}-${year}`;
+        }
+
+        $(document).ready(function () {
+            window.print();
+        });
+    </script>
+</div>
+</body>
+</html>

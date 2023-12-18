@@ -5,6 +5,7 @@ import com.sd64.novastore.dto.admin.thongke.TKNam;
 import com.sd64.novastore.dto.admin.thongke.TKNgay;
 import com.sd64.novastore.dto.admin.thongke.TKSanPham;
 import com.sd64.novastore.dto.admin.thongke.TKThang;
+import com.sd64.novastore.dto.admin.thongke.TKTong;
 import com.sd64.novastore.dto.admin.thongke.TKTrangThaiHoaDon;
 import com.sd64.novastore.dto.admin.thongke.TKTuan;
 import com.sd64.novastore.service.ThongKeService;
@@ -31,12 +32,26 @@ public class ThongKeController {
         model.addAttribute("tkNgay", tkNgay);
         TKTuan tkTuan = thongKeService.getTKTuan();
         model.addAttribute("tkTuan", tkTuan);
+
         TKThang tkThang = thongKeService.getTKThang();
         model.addAttribute("tkThang", tkThang);
         TKNam tkNam = thongKeService.getTKNam();
         model.addAttribute("tkNam", tkNam);
         List<TKSanPham> tkSanPhamList = thongKeService.getTKSanPham();
         model.addAttribute("tkSanPhamList", tkSanPhamList);
+
+        TKTong tkTong = thongKeService.getTKKhachHang();
+        model.addAttribute("tkTong", tkTong);
+
+        TKTong tkTongSanPham = thongKeService.getTKTongSanPham();
+        model.addAttribute("tkTongSanPham", tkTongSanPham);
+
+        TKTong tkTongDonHang = thongKeService.getTKTongDonHang();
+        model.addAttribute("tkTongDonHang", tkTongDonHang);
+
+        TKTong tkTongDoanhThu = thongKeService.getTKTongDoanhThu();
+        model.addAttribute("tkTongDoanhThu", tkTongDoanhThu);
+
         List<TKTrangThaiHoaDon> tkTrangThaiHoaDonList = thongKeService.getTKTrangThaiHoaDon();
         model.addAttribute("tkTrangThaiHoaDonList", tkTrangThaiHoaDonList);
         if (tungay == null || tungay.isEmpty()) {
@@ -51,38 +66,6 @@ public class ThongKeController {
         List<TKKhoangNgay> thongKeKhoangNgayList = thongKeService.getTKSoLuongHD(tungay, denngay);
         model.addAttribute("thongKeKhoangNgayList", thongKeKhoangNgayList);
         return "admin/statistic/statistic";
-    }
-
-//    @GetMapping("/khoangNgay")
-//    public String thongKeNgay(Model model,
-//                              @RequestParam(name = "tungay", required = false) String tungay,
-//                              @RequestParam(name = "denngay", required = false) String denngay) {
-//        if (tungay == null || tungay.isEmpty()) {
-//            tungay = "2023-01-01";
-//        }
-//        if (denngay == null || denngay.isEmpty()) {
-//            denngay = "2023-12-31";
-//        }
-//        model.addAttribute("tungay", tungay);
-//        model.addAttribute("denngay", denngay);
-//
-//        List<TKKhoangNgay> thongKeKhoangNgayList = thongKeService.getTKSoLuongHD(tungay, denngay);
-//        model.addAttribute("thongKeKhoangNgayList", thongKeKhoangNgayList);
-//        return "admin/thongke/thongke";
-//    }
-
-    @GetMapping("/SanPhamBanChay")
-    public String thongKeSanPham(Model model) {
-        List<TKSanPham> tkSanPhamList = thongKeService.getTKSanPham();
-        model.addAttribute("tkSanPhamList", tkSanPhamList);
-        return "admin/thongke/thongke";
-    }
-
-    @GetMapping("/TrangThaiHoaDon")
-    public String thongKeTrangThaiHoaDon(Model model) {
-        List<TKTrangThaiHoaDon> tkTrangThaiHoaDonList = thongKeService.getTKTrangThaiHoaDon();
-        model.addAttribute("tkTrangThaiHoaDonList", tkTrangThaiHoaDonList);
-        return "admin/thongke/thongke";
     }
 
 

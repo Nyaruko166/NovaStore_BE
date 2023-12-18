@@ -5,23 +5,31 @@
 package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.model.*;
-import com.sd64.novastore.repository.ImageRepository;
-import com.sd64.novastore.repository.OfflineCartRepository;
-import com.sd64.novastore.repository.ProductDetailRepository;
+import com.sd64.novastore.repository.*;
+import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.OfflineCartService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class OfflineCartServiceImpl implements OfflineCartService {
 
     @Autowired
     private OfflineCartRepository repository;
+
+    @Autowired
+    private BillService billService;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private ProductDetailRepository productDetailRepository;
@@ -109,8 +117,15 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     public Boolean removeFromLstBill(TempBill tempBill) {
         List<TempBill> lstBill = repository.getLstTempBill();
         for (TempBill x : lstBill) {
-            if (x.getBillId().equals(tempBill.getBillId())) {
+            if (x.getBillId().equals(tempBill.getBillId()) && x.getBillId() == 0) {
+                int index = lstBill.indexOf(x);
+                lstBill.set(index, TempBill.builder().billId(0).billCode(genBillCode())
+                        .lstDetailProduct(new ArrayList<>()).build());
+//                System.out.println("xoa hoa don 0");
+                return true;
+            } else if (x.getBillId().equals(tempBill.getBillId())) {
                 lstBill.remove(x);
+//                System.out.println("xoa hoa don khac 0");
                 return true;
             }
         }
@@ -136,4 +151,103 @@ public class OfflineCartServiceImpl implements OfflineCartService {
         }
         return total;
     }
+
+    @Override
+    public TempBill checkout(TempBill tempBill, RedirectAttributes redirectAttributes) {
+
+        List<OfflineCart> lstOC = tempBill.getLstDetailProduct();
+        List<ProductDetail> lstProd = productDetailRepository.findAll();
+
+        for (OfflineCart x : lstOC) {
+            for (ProductDetail y : lstProd) {
+                if (x.getDetailProductId().equals(y.getCode())) {
+                    if (x.getQty() > y.getQuantity()) {
+                        redirectAttributes.addFlashAttribute("err", "Số lượng sản phẩm "
+                                + x.getDetailProductId() + " trong giỏ vượt quá trong kho!!");
+                        return null;
+                    }
+                }
+            }
+        }
+
+        Bill bill = billService.addBillPos(convertToBill(tempBill));
+        List<OfflineCartView> lstItems = getCart(tempBill.getLstDetailProduct());
+        for (OfflineCartView x : lstItems) {
+            billService.addBillDetailPos(convertToBillDetail(x, bill));
+            ProductDetail productDetail = productDetailRepository.findById(x.getIdCtsp()).orElse(null);
+            productDetail.setQuantity(productDetail.getQuantity() - x.getQty());
+            if (productDetail.getQuantity() == 0) {
+                productDetail.setStatus(0);
+            }
+            productDetailRepository.save(productDetail);
+        }
+        removeFromLstBill(tempBill);
+        return tempBill;
+    }
+
+    @Override
+    public String genBillCode() {
+        Random random = new Random();
+
+        StringBuilder randomString = new StringBuilder("HD");
+        for (int i = 0; i < 6; i++) {
+            int randomNumber = random.nextInt(10);
+            randomString.append(randomNumber);
+        }
+
+        return randomString.toString();
+    }
+
+    private Bill convertToBill(TempBill tempBill) {
+        Date date = new Date();
+        Customer customer = null;
+        if (tempBill.getIdCustomer() != null) {
+            customer = customerRepository.findById(tempBill.getIdCustomer()).orElse(null);
+        } else {
+            tempBill.setCustomerName("Khách Lẻ");
+        }
+        Account employee = null;
+        if (tempBill.getIdEmployee() != null) {
+            employee = accountRepository.findById(tempBill.getIdEmployee()).orElse(null);
+        }
+        return Bill.builder()
+                .id(null)
+                .code(tempBill.getBillCode())
+                .type(1)
+                .customerName(tempBill.getCustomerName())
+                .address("Mua tại quầy")
+                .phoneNumber(tempBill.getCustomerPhone())
+                .status(1)
+                .note(null)
+                .orderDate(date)
+                .paymentDate(date)
+                .confirmationDate(date)
+                .shippingDate(date)
+                .completionDate(date)
+                .cancellationDate(date)
+                .shippingFee(BigDecimal.valueOf(0))
+                .price(tempBill.getTotalCartPrice())
+                .discountAmount(BigDecimal.valueOf(0))
+                .totalPrice(tempBill.getTotalCartPrice())
+                .createDate(date)
+                .updateDate(date)
+                .customer(customer)
+                .employee(employee)
+                .voucher(null)
+                .build();
+    }
+
+    private BillDetail convertToBillDetail(OfflineCartView offlineCartView, Bill bill) {
+
+        ProductDetail productDetail = productDetailRepository.findById(offlineCartView.getIdCtsp()).orElse(null);
+
+        return BillDetail.builder()
+                .id(null)
+                .price(offlineCartView.getPrice())
+                .quantity(offlineCartView.getQty())
+                .bill(bill)
+                .productDetail(productDetail)
+                .build();
+    }
+
 }

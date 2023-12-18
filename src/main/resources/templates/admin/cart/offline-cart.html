@@ -11,6 +11,12 @@
 </head>
 <body>
 <div layout:fragment="content">
+    <div th:if="${err}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p th:text="${err}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="container mt-5 p-3 rounded cart">
         <div class="row">
             <div class="col-7">
@@ -43,13 +49,13 @@
                         <h6 class="mb-0" th:text="'Hoá đơn ' + ${session.posBill.billIdPP()}"></h6>
                         <div id="output">
                             <div class="d-flex justify-content-between"><span
-                                    th:text="${'You have ' + lstCart.size() + ' items in your cart'}"></span>
-                                <div class="d-flex flex-row align-items-center"><span
-                                        class="text-black-50">Sort by:</span>
-                                    <div class="price ml-2"><span class="mr-1">price</span><i
-                                            class="fa fa-angle-down"></i>
-                                    </div>
-                                </div>
+                                    th:text="${'Có ' + lstCart.size() + ' sản phẩm trong giỏ hàng'}"></span>
+                                <!--                                <div class="d-flex flex-row align-items-center"><span-->
+                                <!--                                        class="text-black-50">Sort by:</span>-->
+                                <!--                                    <div class="price ml-2"><span class="mr-1">price</span><i-->
+                                <!--                                            class="fa fa-angle-down"></i>-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
                             </div>
 
                             <div th:each="x:${lstCart}"
@@ -61,7 +67,7 @@
                                                             class="font-weight-bold d-block"></span><span
                                             class="spec" th:text="${x.fieldCombine()}"></span></div>
                                 </div>
-                                <div class="d-flex flex-row align-items-center"><span th:text="${x.qty}"
+                                <div class="d-flex flex-row align-items-center"><span id="qtyInCart" th:text="${x.qty}"
                                                                                       class="d-block"></span><span
                                         th:text="${x.calTotalPrice() + ' VNĐ'}"
                                         class="d-block ml-5 font-weight-bold"></span>
@@ -86,6 +92,10 @@
                                         </div>
                                         <div class="col-6 text-right">
                                             <button type="button" class="btn btn-dark" data-toggle="modal"
+                                                    data-target="#exampleModalCenterProduct">
+                                                <i class="fa-solid fa-shirt" style="color: #ffffff"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-dark" data-toggle="modal"
                                                     data-target="#exampleModalCenter">
                                                 <i class="fa-regular fa-user" style="color: #ffffff;"></i>
                                             </button>
@@ -94,9 +104,19 @@
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
+                                        <li th:if="${tempBill.customerName}"
+                                            class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            Tên Khách Hàng:
+                                            <span th:text="${tempBill.customerName}"></span>
+                                        </li>
                                         <li
                                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                            Products
+                                            Mã Hoá Đơn:
+                                            <span id="billCode" th:text="${tempBill.billCode}"></span>
+                                        </li>
+                                        <li
+                                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            Tổng Tiền:
                                             <span th:text="${tempBill.totalCartPrice != null} ? ${tempBill.totalCartPrice} +' VNĐ' : '0' +' VNĐ'"></span>
                                         </li>
                                         <!--                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">-->
@@ -104,18 +124,50 @@
                                         <!--                                            <span>Gratis</span>-->
                                         <!--                                        </li>-->
                                         <li
-                                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                                            <div>
-                                                <strong>Tổng tiền</strong>
-                                                <strong>
-                                                    <p class="mb-0">(including VAT)</p>
-                                                </strong>
-                                            </div>
-                                            <span><strong
-                                                    th:text="${tempBill.totalCartPrice != null} ? ${tempBill.totalCartPrice} +' VNĐ' : '0' +' VNĐ'"></strong></span>
+                                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            Tiền khách phải trả:
+                                            <span id="khachPhaiTra"
+                                                  th:text="${tempBill.totalCartPrice != null} ? ${tempBill.totalCartPrice} +' VNĐ' : '0' +' VNĐ'"></span>
                                         </li>
+                                        <li
+                                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            Tiền khách đưa:
+                                            <input id="khachDua" class="w3-input" oninput="calCashBack()"
+                                                   th:value="0"></input>
+                                        </li>
+                                        <li
+                                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            Tiền thừa trả khách:
+                                            <span id="tienThua">0 VNĐ</span>
+                                        </li>
+                                        <!--                                        <li-->
+                                        <!--                                                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">-->
+                                        <!--                                            <div>-->
+                                        <!--                                                <strong>Tổng tiền</strong>-->
+                                        <!--                                                <strong>-->
+                                        <!--                                                    <p class="mb-0">(including VAT)</p>-->
+                                        <!--                                                </strong>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <span><strong-->
+                                        <!--                                                    th:text="${tempBill.totalCartPrice != null} ? ${tempBill.totalCartPrice} +' VNĐ' : '0' +' VNĐ'"></strong></span>-->
+                                        <!--                                        </li>-->
                                     </ul>
-                                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                                    <hr>
+                                    <div id="radios">
+                                        <label for="pos" class="material-icons">
+                                            <input type="radio" name="mode" id="pos" value="pos" checked/>
+                                            <span><i class="fa-solid fa-cash-register"></i></span>
+                                        </label>
+                                        <label for="vietqr" class="material-icons">
+                                            <input type="radio" name="mode" id="vietqr" value="vietqr"/>
+                                            <span><i class="fa-solid fa-money-bill-transfer"></i></span>
+                                        </label>
+                                        <!--                                        <label for="walking" class="material-icons">-->
+                                        <!--                                            <input type="radio" name="mode" id="walking" value="walking"/>-->
+                                        <!--                                            <span>&#xE536;</span>-->
+                                        <!--                                        </label>-->
+                                    </div>
+                                    <button type="button" class="btn btn-dark btn-lg btn-block" onclick="thanhToan()">
                                         Thanh Toán
                                     </button>
                                 </div>
@@ -126,6 +178,23 @@
             </div>
         </div>
     </div>
+
+    <!-- Popup content -->
+    <div id="imagePopup" class="popup">
+        <!-- Close button -->
+        <span onclick="closeImagePopup()"
+              style="cursor: pointer; position: absolute; top: 10px; right: 10px;">&times;</span>
+        <!-- Image container -->
+        <img id="popupImage" src="" alt="Popup Image" style="max-width: 100%; max-height: 80vh;">
+        <hr>
+        <div class="container text-center">
+            <button class="btn btn-dark">Xác nhận</button>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay" onclick="closeImagePopup()"></div>
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -138,13 +207,53 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-inline text-center">
-                        <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search"
-                               aria-label="Search" oninput="searchAndReplace()" th:value="${keyword} == null ? '' : ${keyword}">
-                        <!--                            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchAndReplace()">Search-->
-                        <!--                            </button>-->
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="form-inline" style="text-align:center;">
+                                <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="Search"
+                                       aria-label="Search" oninput="searchAndReplace()"
+                                       th:value="${keyword} == null ? '' : ${keyword}">
+                                <!--                            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchAndReplace()">Search-->
+                                <!--                            </button>-->
+                            </div>
+                        </div>
                     </div>
                     <div id="modal_replace">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Product -->
+    <div class="modal fade" id="exampleModalCenterProduct" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitleProduct">Tìm kiếm sản phẩm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="form-inline">
+                                <input id="keywordProduct" class="form-control mr-sm-2" type="search"
+                                       placeholder="Search"
+                                       aria-label="Search" oninput="searchAndReplaceProduct()"
+                                       th:value="${keywordProduct} == null ? '' : ${keywordProduct}">
+                                <!--                            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchAndReplace()">Search-->
+                                <!--                            </button>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modal_product_replace">
 
                     </div>
                 </div>

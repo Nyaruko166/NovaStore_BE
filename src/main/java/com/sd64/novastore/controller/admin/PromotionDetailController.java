@@ -1,17 +1,17 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.dto.admin.ProductPromotionDTO;
+import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
-import com.sd64.novastore.service.ProductDetailService;
 import com.sd64.novastore.service.ProductService;
 import com.sd64.novastore.service.PromotionDetailService;
 import com.sd64.novastore.service.PromotionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/nova/promotion-detail")
@@ -42,12 +40,12 @@ public class PromotionDetailController {
 
     @GetMapping("/page")
     public String getAllPTPagination(@ModelAttribute("promotionDetail") PromotionDetail promotionDetail, @RequestParam(defaultValue = "0", value = "page") Integer page, Model model) {
-        Page<PromotionDetail> pagePromotionDetail = promotionDetailService.getAllPT(page);
+        Page<PromotionDetailDTO> pagePromotionDetail = promotionDetailService.All(page);
         model.addAttribute("pagePromotionDetail", pagePromotionDetail);
         model.addAttribute("page", page);
         List<Promotion> promotionList = promotionService.getAll();
-        List<Product> productList = promotionDetailService.getAll();
-        List<ProductDetail> productDetailList= promotionDetailService.getAllPrDT();
+        List<ProductPromotionDTO> productList = promotionDetailService.getAllProductPromotionDTO();
+        List<ProductDetail> productDetailList = promotionDetailService.getAllPrDT();
         model.addAttribute("productDetailList", productDetailList);
         model.addAttribute("promotionList", promotionList);
         model.addAttribute("productList", productList);
@@ -59,10 +57,7 @@ public class PromotionDetailController {
         PromotionDetail promotionDetail = promotionDetailService.getOne(id);
 
         if (promotionDetail != null) {
-            Product product = promotionDetail.getProduct();
             promotionDetailService.delete(id);
-            product.setStatus(1);
-            promotionDetailService.save(product);
             redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
         }
         return "redirect:/nova/promotion-detail/page";
@@ -84,7 +79,7 @@ public class PromotionDetailController {
             List<Product> productList = promotionDetailService.getAll();
             model.addAttribute("promotionList", promotionList);
             model.addAttribute("productList", productList);
-            List<ProductDetail> productDetailList= promotionDetailService.getAllPrDT();
+            List<ProductDetail> productDetailList = promotionDetailService.getAllPrDT();
             model.addAttribute("productDetailList", productDetailList);
             return "admin/promotiondetail/promotiondetail";
         }
@@ -95,6 +90,7 @@ public class PromotionDetailController {
             Product product = productService.getOne(productId);
             product.setStatus(2);
             promotionDetailService.save(product);
+
             PromotionDetail newPromotionDetail = new PromotionDetail();
             newPromotionDetail.setProduct(product);
             newPromotionDetail.setPromotion(promotion);
@@ -104,5 +100,5 @@ public class PromotionDetailController {
         redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
         return "redirect:/nova/promotion-detail/page";
     }
-
 }
+

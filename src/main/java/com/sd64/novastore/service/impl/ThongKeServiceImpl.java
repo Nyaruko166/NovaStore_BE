@@ -8,9 +8,12 @@ import com.sd64.novastore.dto.admin.thongke.TKSLThang;
 import com.sd64.novastore.dto.admin.thongke.TKSanPham;
 import com.sd64.novastore.dto.admin.thongke.TKSoLuongSanPham;
 import com.sd64.novastore.dto.admin.thongke.TKThang;
+import com.sd64.novastore.dto.admin.thongke.TKTong;
 import com.sd64.novastore.dto.admin.thongke.TKTrangThaiHoaDon;
 import com.sd64.novastore.dto.admin.thongke.TKTuan;
 import com.sd64.novastore.repository.ThongKeRepository;
+import com.sd64.novastore.repository.ThongKeTongSanPham;
+import com.sd64.novastore.repository.ThongkeACountRepository;
 import com.sd64.novastore.repository.ThongkeSanPhamRepository;
 import com.sd64.novastore.service.ThongKeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,11 @@ public class ThongKeServiceImpl implements ThongKeService {
     private ThongKeRepository thongKeRepository;
     @Autowired
     private ThongkeSanPhamRepository thongkeSanPhamRepository;
+    @Autowired
+    private ThongkeACountRepository thongkeACountRepository;
+
+    @Autowired
+    private ThongKeTongSanPham thongKeTongSanPham;
 
     public TKNgay getTKNgay() {
         return thongKeRepository.getThongKeNgay();
@@ -61,6 +69,26 @@ public class ThongKeServiceImpl implements ThongKeService {
     @Override
     public List<TKTrangThaiHoaDon> getTKTrangThaiHoaDon() {
         return thongKeRepository.getTKTrangThaiHoaDon();
+    }
+
+    @Override
+    public TKTong getTKKhachHang() {
+        return thongkeACountRepository.getTKKhachHang();
+    }
+
+    @Override
+    public TKTong getTKTongSanPham() {
+        return thongKeTongSanPham.getTKTongSanPham();
+    }
+
+    @Override
+    public TKTong getTKTongDonHang() {
+        return thongKeRepository.getTKTongDonHang();
+    }
+
+    @Override
+    public TKTong getTKTongDoanhThu() {
+        return thongKeRepository.getTKTongDoanhThu();
     }
 
 

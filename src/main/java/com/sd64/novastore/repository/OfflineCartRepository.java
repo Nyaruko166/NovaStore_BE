@@ -24,7 +24,4 @@ public class OfflineCartRepository {
 
     private List<TempBill> lstTempBill = new ArrayList<>();
 
-    public OfflineCartRepository() {
-        lstTempBill.add(TempBill.builder().billId(0).lstDetailProduct(new ArrayList<>()).build());
-    }
 }

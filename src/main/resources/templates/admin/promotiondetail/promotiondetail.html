@@ -24,11 +24,12 @@
                 <span th:text="${error}"></span>
             </div>
             <div class="card-body card-block">
-                <form id="promotionDetailForm" th:object="${promotionDetail}" th:action="@{/nova/promotion-detail/add}" method="post" class="form-horizontal">
+                <form id="promotionDetailForm" th:object="${promotionDetail}" th:action="@{/nova/promotion-detail/add}"
+                      method="post" class="form-horizontal">
                     <div class="container">
                         <div class="row form-group">
                             <div class="col-md-3">
-                                <label class="form-control-label">Promotion Name</label>
+                                <label class="form-control-label">Danh sách sản phẩm</label>
                             </div>
                             <div class="col-md-9">
                                 <button type="button" class="btn btn-dark" data-toggle="modal"
@@ -91,24 +92,17 @@
                                             <tr th:each="product : ${productList}" class="visible-row">
                                                 <td>
                                                     <label class="checkbox-inline">
-                                                        <input type="checkbox" th:value="${product.id}" th:data-name="${product.name}" name="selectedProducts">
+                                                        <input type="checkbox" th:value="${product.id}"
+                                                               th:data-name="${product.name}" name="selectedProducts">
                                                     </label>
                                                 </td>
                                                 <td style="padding: 10px;">
-                                                    <img th:src="@{'/image/product/' + ${product.id}}" style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
+                                                    <img th:src="@{'/image/product/' + ${product.id}}"
+                                                         style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
                                                 </td>
                                                 <td th:text="${product.code}"></td>
                                                 <td th:text="${product.name}"></td>
-                                                <td>
-                <span th:each="detail : ${product.listProductDetail}" th:if="${detail.product.id == product.id}">
-                    <span th:if="${detail == product.listProductDetail[0]}">
-                        <span th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></span>
-                    </span>
-                    <span th:if="${detail == product.listProductDetail[#lists.size(product.listProductDetail) - 1]}">
-                        <span th:text="${' - ' + #numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></span>
-                    </span>
-                </span>
-                                                </td>
+                                                <td th:text="${#numbers.formatDecimal(product.getMinProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫'} + ' - ' + ${#numbers.formatDecimal(product.getMaxProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -195,10 +189,10 @@
 
                         <div class="row form-group">
                             <div class="col-md-3">
-                                <label class="form-control-label">Promotion Name</label>
+                                <label class="form-control-label">Danh sách giảm giá</label>
                             </div>
                             <div class="col-md-9">
-                                <select class="form-control" name="promotion">
+                                <select class="form-control" style="width: 400px" name="promotion">
                                     <option th:each="x : ${promotionList}" th:value="${x.id}"
                                             th:text="${x.name}"></option>
                                 </select>
@@ -206,24 +200,19 @@
                         </div>
                     </div>
 
-                    <div class="card-footer">
-                        <a th:href="@{/nova/promotion/page}">
-                            <button type="button" class="btn btn-dark"><i class="fa-solid fa-refresh"></i>
-                                Mã khuyến mãi
+                    <div class=" d-flex">
+                        <div>
+                            <button onclick="clickAdd('promotion-detail', 'promotionDetailForm')"
+                                    type="button" class="btn btn-dark">
+                                <i class="fa-solid fa-square-plus "></i>
                             </button>
-                        </a>
-                        <a th:href="@{/nova/product/page}">
-                            <button type="button" class="btn btn-dark"><i class="fa-solid fa-refresh"></i>
-                                Sản phẩm
-                            </button>
-                        </a>
-                    </div>
+                            <a th:href="@{/nova/promotion/page}">
+                                <button type="button" class="btn btn-dark"><i class="fa-solid fa-square-plus "></i>
+                                    Thêm khuyến mãi
+                                </button>
+                            </a>
+                        </div>
 
-                    <div class="card-footer d-flex">
-                        <button onclick="clickAdd('promotion-detail', 'promotionDetailForm')"
-                                type="button" class="btn btn-dark">
-                            <i class="fa-solid fa-square-plus px-4"></i>
-                        </button>
                         <script th:inline="javascript">
                             checkSanPham = () => {
                                 var selectedProducts = document.querySelectorAll("[name='selectedProducts']:checked");
@@ -279,22 +268,37 @@
                         <table class="table text-center">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Tên khuyến mãi</th>
-                                <th scope="col">Function</th>
+                                <th>Sản phẩm</th>
+                                <th>Tên giảm giá</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Mã sản phẩm</th>
+                                <th>Giá ban đầu</th>
+                                <th>Giá sau giảm</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
+                                <th>Phần trăm giảm</th>
+                                <th>Hành động</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="items:${pagePromotionDetail}">
-                                <td th:text="${items.id}"></td>
-                                <td th:text="${items.product.name}"></td>
-                                <td th:text="${items.promotion.name}"></td>
+                            <tr th:each="item:${pagePromotionDetail}">
+                                <td style="padding: 10px;">
+                                    <img th:src="@{'/image/product/' + ${item.productId}}"
+                                         style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
+                                </td>
+                                <td th:text="${item.promotionName}"></td>
+                                <td th:text="${item.productName}"></td>
+                                <td th:text="${item.productCode}"></td>
+                                <td th:text="${#numbers.formatDecimal(item.minProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫' + ' - ' + #numbers.formatDecimal(item.maxProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
+                                <td th:text="${#numbers.formatDecimal(item.minProductPriceDiscount, 0, 'COMMA', 0, 'POINT') + ' ₫' + ' - ' + #numbers.formatDecimal(item.maxProductPriceDiscount, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
+                                <td th:text="${#dates.format(item.promotionStartDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td th:text="${#dates.format(item.promotionEndDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td th:text="${item.promotionValue}"></td>
                                 <td class="d-flex justify-content-center">
                                     <div>
-                                        <button th:onclick="clickDelete('promotion-detail', 'promotionDetailDelete', [[${items.id}]])"
+                                        <button th:onclick="clickDelete('promotion-detail', 'promotionDetailDelete', [[${item.promotionDetailId}]])"
                                                 type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash mr-1"></i>
+                                            Hủy
                                         </button>
                                     </div>
                                 </td>

@@ -9,7 +9,6 @@ public interface TKSanPham {
 
     String getName();
 
-
     String getCode();
 
     Integer getId();

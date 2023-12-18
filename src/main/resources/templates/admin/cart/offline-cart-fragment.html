@@ -12,11 +12,13 @@
 <div th:fragment="frag">
     <div id="output">
         <div class="d-flex justify-content-between"><span
-                th:text="${'You have ' + lstCart.size() + ' items in your cart'}"></span>
-            <div class="d-flex flex-row align-items-center"><span class="text-black-50">Sort by:</span>
-                <div class="price ml-2"><span class="mr-1">price</span><i class="fa fa-angle-down"></i>
-                </div>
-            </div>
+                th:text="${'Có ' + lstCart.size() + ' sản phẩm trong giỏ hàng'}"></span>
+            <!--                                <div class="d-flex flex-row align-items-center"><span-->
+            <!--                                        class="text-black-50">Sort by:</span>-->
+            <!--                                    <div class="price ml-2"><span class="mr-1">price</span><i-->
+            <!--                                            class="fa fa-angle-down"></i>-->
+            <!--                                    </div>-->
+            <!--                                </div>-->
         </div>
 
         <div th:each="x:${lstCart}"
@@ -26,7 +28,7 @@
                 <div class="ml-2"><span th:text="${x.name}" class="font-weight-bold d-block"></span><span
                         class="spec" th:text="${x.fieldCombine()}"></span></div>
             </div>
-            <div class="d-flex flex-row align-items-center"><span th:text="${x.qty}"
+            <div class="d-flex flex-row align-items-center"><span id="qtyInCart" th:text="${x.qty}"
                                                                   class="d-block"></span><span
                     th:text="${x.calTotalPrice() + ' VNĐ'}" class="d-block ml-5 font-weight-bold"></span>
                 <a th:href="@{'/nova/pos/remove/' + ${x.codeCtsp}}" class="trash"><i
@@ -58,5 +60,29 @@
         </div>
     </div>
 </div>
+
+<div th:fragment="product_frag">
+    <div id="modal_product_replace">
+        <hr>
+        <div th:if="${lstPro}">
+            <div th:each="x:${lstPro}" class="card">
+                <div class="card-body" style="padding: 5px">
+                    <div class="row">
+                        <div class="col-10">
+                            <h5 class="card-title" th:text="${x.product.name} + ' | ' + ${x.quantity} + ' cái'"></h5>
+                            <h6 class="card-subtitle mb-2 text-muted" th:text="${x.fieldJoin()}"></h6>
+                        </div>
+                        <div class="col-2">
+                            <button th:value="${x.code} +' | '+ ${x.quantity}" class="btn btn-primary"
+                                    onclick="addItems(this)"
+                                    style="margin-top: 9px"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

@@ -40,10 +40,14 @@ public class RestOfflineCartController {
     @PostMapping("/add")
     public ResponseEntity<?> addToCart(@RequestBody QrRespone response, HttpSession session) {
 //        System.out.println(response.getBillId());
-        List<OfflineCart> cart = offlineCartService.addToCart(response.getBillId(), response.getData(), 1);
+        List<OfflineCart> cart = offlineCartService.addToCart(response.getBillId(), response.getData(), response.getQty());
         BigDecimal total = offlineCartService.calCartPrice(offlineCartService.getCart(cart));
-        offlineCartService.addToLstBill(TempBill.builder().billId(response.getBillId())
-                .totalCartPrice(total).lstDetailProduct(cart).build());
+        TempBill tempBill1 = (TempBill) session.getAttribute("posBill");
+        tempBill1.setTotalCartPrice(total);
+        tempBill1.setLstDetailProduct(cart);
+//        offlineCartService.addToLstBill(TempBill.builder().billId(response.getBillId())
+//                .totalCartPrice(total).lstDetailProduct(cart).build());
+        offlineCartService.addToLstBill(tempBill1);
         TempBill tempBill = offlineCartService.getBillById(response.getBillId());
 //        System.out.println(tempBill.getTotalCartPrice());
         session.setAttribute("posBill", tempBill);

@@ -11,8 +11,65 @@
 <div layout:fragment="content">
     <h5 style="font-weight: bold"><i class="fas fa-chart-bar" style="padding-right: 8px;"></i>Thống kê</h5>
     <br>
+    <div class="col-md-12">
+        <div>
+            <div class="card-body">
+                <h5>Từ trước đến nay</h5>
+            </div>
+        </div>
+    </div>
     <div class="col-md-3">
-        <div class="card" style=" border-radius: 20px;background-color: #98ff98;">
+        <div class="card" style=" border-radius: 20px;background-color: #99FFFF;">
+            <div class="card-body">
+                <p class="card-text" style="color: black"><i class="fas fa-user"
+                                                             style="padding-right: 8px;"></i><span
+                        th:text="${tkTong.getSoLuong() == null ? 0 : tkTong.getSoLuong()}"></span> Khách Hàng
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card" style=" border-radius: 20px;background-color: #99FFFF;">
+            <div class="card-body">
+
+                <p class="card-text" style="color: black"><i class="fas fa-box"
+                                                             style="padding-right: 8px;"></i>Tổng số sản phẩm:
+                    <span
+                            th:text="${tkTongSanPham.getSoLuong() == null ? 0 : tkTongSanPham.getSoLuong()}"></span>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card" style=" border-radius: 20px;background-color: #99FFFF;">
+            <div class="card-body">
+
+                <p class="card-text" style="color: black"><i class="fas fa-check"
+                                                             style="padding-right: 8px;"></i><span
+                        th:text="${tkTongDonHang.getSoLuong() == null ? 0 : tkTongDonHang.getSoLuong()}"></span> Đơn
+                    Hàng Thành Công
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card" style=" border-radius: 20px;background-color:#99FFFF;">
+            <div class="card-body">
+                <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
+                    thu: <span
+                            th:text="${tkTongDoanhThu.getSoLuong() != null ?   #numbers.formatDecimal(tkTongDoanhThu.getSoLuong(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card" style=" border-radius: 20px;background-color: #33FFCC;">
             <div class="card-body">
                 <h6 class="card-title" style="font-weight: bold">Doanh số hôm nay</h6>
                 <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
@@ -34,7 +91,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card" style=" border-radius: 20px;background-color: #ffb6c1;">
+        <div class="card" style=" border-radius: 20px;background-color: #33FFCC;">
             <div class="card-body">
                 <h6 class="card-title" style="font-weight: bold">Doanh số tuần này</h6>
                 <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
@@ -56,7 +113,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card" style=" border-radius: 20px;background-color: #fffacd;">
+        <div class="card" style=" border-radius: 20px;background-color: #33FFCC;">
             <div class="card-body">
                 <h6 class="card-title" style="font-weight: bold">Doanh số tháng này</h6>
                 <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
@@ -81,7 +138,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card" style=" border-radius: 20px;background-color: #87ceeb;">
+        <div class="card" style=" border-radius: 20px;background-color:#33FFCC;">
             <div class="card-body">
                 <h6 class="card-title" style="font-weight: bold">Doanh số năm nay</h6>
                 <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
@@ -125,7 +182,7 @@
     </div>
     <div class="col-md-5">
         <div class="card"
-             style="justify-content: center; text-align: left; border-radius: 20px;background-color: #fff0f5;padding-left: 40px">
+             style="justify-content: center; text-align: left; border-radius: 20px;background-color:#63B8FF;padding-left: 40px">
             <div class="card-body" th:each="thongKeItem : ${thongKeKhoangNgayList}">
                 <h6 class="card-title" style="font-weight: bold">Doanh số theo khoảng ngày</h6>
                 <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
@@ -221,7 +278,7 @@
             return item.percentage;
         });
 
-        var backgroundColors = ["#3498db", "#e74c3c", "#2ecc71", "#f1c40f", "#9b59b6"];
+        var backgroundColors = ["#FF0000", "#00eaff", "#FFFF00", "#800080", "#00CC99"];
 
         var ctx = document.getElementById('myPieChart').getContext('2d');
         var myPieChart = new Chart(ctx, {

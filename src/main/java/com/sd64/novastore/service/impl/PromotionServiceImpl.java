@@ -1,9 +1,13 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
 import com.sd64.novastore.model.Product;
+import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
+import com.sd64.novastore.repository.GiamGiaRepository;
+import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.repository.ProductRepository;
 import com.sd64.novastore.repository.PromotionDetailRepository;
 import com.sd64.novastore.repository.PromotionRepository;
@@ -32,6 +36,10 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Autowired
     private PromotionDetailRepository promotionDetailRepository;
+    @Autowired
+    private GiamGiaRepository giamGiaRepository;
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
 
 
     @Override
@@ -53,13 +61,15 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public void processExpiredPromotion(Promotion promotion) {
         List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(promotion.getId());
-
-
-        promotionDetailRepository.deleteAll(promotionDetails);
-
         for (PromotionDetail promotionDetail : promotionDetails) {
+            promotionDetailRepository.deleteAll(promotionDetails);
             Product product = promotionDetail.getProduct();
             product.setStatus(1);
+            List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
+            for (ProductDetail productDetail : productDetails) {
+                productDetail.setPriceDiscount(productDetail.getPrice());
+                productDetailRepository.save(productDetail);
+            }
         }
         promotion.setStatus(0);
 
@@ -81,10 +91,24 @@ public class PromotionServiceImpl implements PromotionService {
         return promotionRepository.findAllByStatusOrderByIdDesc(pageable);
     }
 
+    public String generateCode() {
+        Promotion latestPromotion = promotionRepository.findTopByOrderByIdDesc();
+
+        if (latestPromotion == null || latestPromotion.getId() == null) {
+            return "M00001";
+        }
+
+        Integer nextId = latestPromotion.getId() + 1;
+        String code = String.format("M%05d", nextId);
+        return code;
+    }
+
+
     @Override
     public Promotion add(Promotion promotion) {
         promotion.setCreateDate(new Date());
         promotion.setUpdateDate(new Date());
+        promotion.setCode(generateCode());
         promotion.updateStatus();
         return promotionRepository.save(promotion);
     }
@@ -94,7 +118,6 @@ public class PromotionServiceImpl implements PromotionService {
     public void updatePromotionStatus() {
         List<Promotion> promotionsToUpdate = promotionRepository.findAllByStatusOrderByIdDesc(2);
         Date currentDate = new Date();
-
         for (Promotion promotion : promotionsToUpdate) {
             if (promotion.getStartDate().before(currentDate)) {
                 promotion.setStatus(1);
@@ -109,6 +132,7 @@ public class PromotionServiceImpl implements PromotionService {
         if (optional.isPresent()) {
             Promotion oldPromotion = optional.get();
             promotion.setId(oldPromotion.getId());
+            promotion.setCode(oldPromotion.getCode());
             promotion.setCreateDate(oldPromotion.getCreateDate());
             promotion.setUpdateDate(new Date());
             promotion.setStatus(oldPromotion.getStatus());
@@ -119,10 +143,16 @@ public class PromotionServiceImpl implements PromotionService {
                     if (product.getStatus() == 2) {
                         product.setStatus(1);
                         productRepository.save(product);
+                        List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
+                        for (ProductDetail productDetail : productDetails) {
+                            productDetail.setPriceDiscount(productDetail.getPrice());
+                            productDetailRepository.save(productDetail);
+                            List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
+                            promotionDetailRepository.deleteAll(promotionDetails);
+                        }
                     }
                 }
             }
-
             return promotionRepository.save(promotion);
         } else {
             return null;
@@ -141,6 +171,11 @@ public class PromotionServiceImpl implements PromotionService {
             for (PromotionDetail promotionDetail : promotionDetails) {
                 Product product = promotionDetail.getProduct();
                 product.setStatus(1);
+                List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
+                for (ProductDetail productDetail : productDetails) {
+                    productDetail.setPriceDiscount(productDetail.getPrice());
+                    productDetailRepository.save(productDetail);
+                }
             }
             promotion.setStatus(0);
             return promotionRepository.save(promotion);
@@ -162,8 +197,21 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public Page<PromotionSearchDTO> getPromoTion(String tungay, String denngay, Pageable pageable) {
-        return promotionRepository.getPromoTion(tungay, denngay, pageable);
+    public Page<PromotionSearchDTO> findAll(Pageable pageable) {
+        return promotionRepository.listPromotions(pageable);
     }
+
+    @Override
+    public Page<PromotionSearchDTO> searchPromotion(String code, Date ngayTaoStart,
+                                                    Date ngayTaoEnd, Integer status, String name, int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return promotionRepository.searchPromotion(code, ngayTaoStart, ngayTaoEnd, status, name, pageable);
+    }
+
+    @Override
+    public List<PromotionDetailDTO> getPromotionDetailsByPromotionId(Integer promotionId) {
+        return promotionRepository.getPromotionDetailsByPromotionId(promotionId);
+    }
+
 
 }
