@@ -104,6 +104,12 @@
                         </div>
                     </div>
                     <script th:inline="javascript">
+                        let enteredCodes = new Set();
+
+                        function onInputText(errorElementId) {
+                            document.getElementById(errorElementId).innerHTML = '';
+                        }
+
                         checkName = () => {
                             let isName = document.getElementById('name').value
                             if (isName.trim() === '') {
@@ -127,17 +133,15 @@
                             }
                             isValue = parseFloat(isValue);
                             if (isValue <= 0) {
-                                errorElement.innerHTML = 'Phần trăm giảm phải lớn hơn  bằng 0 %';
-                                return false;
+                                errorElement.innerHTML = 'Phần trăm giảm phải lớn hơn  0 %';
+                                return false
                             }
-                            if (isValue > 100) {
-                                errorElement.innerHTML = 'Phần trăm giảm phải nhỏ hơn hoặc bằng 100 %';
+                            if (isValue > 50) {
+                                errorElement.innerHTML = 'Phần trăm giảm phải nhỏ hơn hoặc bằng 50 %';
                                 return false;
                             }
                             return true;
                         };
-
-
                         checkStartDate = () => {
                             let startDateInput = document.getElementById('startDate');
                             let errorStartDate = document.getElementById('errorStartDate');
