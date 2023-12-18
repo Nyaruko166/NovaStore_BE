@@ -35,18 +35,18 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             "ORDER BY p.updateDate DESC ")
     List<ProductHomeDto> getAllProductResponseHome();
 
-    @Query(value = "SELECT p.id as productId, " +
-            "p.name as productName, " +
-            "pd.price as price, " +
-            "pd.priceDiscount as priceDiscount, " +
-            "pr.value as value " +
-            "FROM Product p\n" +
-            "INNER JOIN ProductDetail pd ON pd.product.id = p.id\n" +
-            "INNER JOIN Image i ON i.product.id = p.id\n" +
-            "LEFT JOIN PromotionDetail prd ON prd.product.id = p.id\n" +
-            "LEFT JOIN Promotion pr ON pr.id = prd.promotion.id\n" +
-            "WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1\n  " +
-            "ORDER BY p.updateDate DESC ")
+    @Query(value = "SELECT top 10 p.id as productId,\n" +
+            "            p.name as productName,\n" +
+            "            pd.price as price, \n" +
+            "            pd.priceDiscount as priceDiscount,\n" +
+            "            pr.value as value\n" +
+            "            FROM Product p\n" +
+            "            INNER JOIN ProductDetail pd ON pd.productid = p.id\n" +
+            "            INNER JOIN Image i ON i.productid = p.id\n" +
+            "            LEFT JOIN PromotionDetail prd ON prd.productid = p.id\n" +
+            "            LEFT JOIN Promotion pr ON pr.id = prd.promotionid\n" +
+            "           WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1\n" +
+            "            ORDER BY NEWID() ", nativeQuery = true)
     List<ProductDiscountHomeDto> getAllProductAndDiscountResponseHome();
 
 

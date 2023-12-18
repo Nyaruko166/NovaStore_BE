@@ -69,6 +69,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         productDetail.setProduct(Product.builder().id(productId).build());
         productDetail.setQuantity(quantity);
         productDetail.setPrice(price);
+        productDetail.setPriceDiscount(price);
         productDetail.setSize(Size.builder().id(sizeId).build());
         productDetail.setColor(Color.builder().id(colorId).build());
         productDetailRepository.save(productDetail);
@@ -87,6 +88,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             productDetail.setCreateDate(productDetail.getCreateDate());
             productDetail.setQuantity(quantity);
             productDetail.setPrice(price);
+            productDetail.setPriceDiscount(price);
             productDetail.setUpdateDate(new Date());
             productDetail.setProduct(Product.builder().id(productId).build());
             productDetail.setColor(Color.builder().id(colorId).build());

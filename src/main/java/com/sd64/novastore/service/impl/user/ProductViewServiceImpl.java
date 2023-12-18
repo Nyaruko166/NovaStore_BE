@@ -90,7 +90,7 @@ public class ProductViewServiceImpl implements ProductViewService {
     }
 
 
-    
+
     @Override
     public List<ProductDiscountHomeResponse> getRandomProductAndProductDiscount() {
         List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.getAllProductAndDiscountResponseHome()
@@ -110,10 +110,7 @@ public class ProductViewServiceImpl implements ProductViewService {
             }
         }
 
-        List<ProductDiscountHomeResponse> randomElements = new ArrayList<>(productDiscountHomeResponses);
-        Collections.shuffle(randomElements, new Random());
-
-        return randomElements.subList(0, 10);
+        return productDiscountHomeResponses;
     }
 
     @Override
