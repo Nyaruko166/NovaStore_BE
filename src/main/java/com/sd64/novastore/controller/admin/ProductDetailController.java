@@ -242,6 +242,8 @@ public class ProductDetailController {
         Page<ProductDetailSearchResponse> productDetailSearchResponses = productDetailService.getProductByPriceAndSizeIdAndColorId(page, productId, priceMin, priceMax, sizeId, colorId);
         int totalPage = productDetailService.getTotalPage(page, productId, priceMin, priceMax, sizeId, colorId);
         model.addAttribute("pageProductDetail", productDetailSearchResponses);
+        List<Image> listImage = imageService.getAllImageByProductId(productId);
+        model.addAttribute("listImage", listImage);
         model.addAttribute("totalPage", totalPage);
         Product product = productService.getOne(productId);
         model.addAttribute("productId", productId);

@@ -166,6 +166,8 @@ public class SizeServiceImpl implements SizeService {
                 return "Trùng";
             } else if (status.contains("Tồn tại")){
                 return "Tồn tại";
+            } else if (status.contains("Trống")) {
+                return "Trống";
             } else {
                 return "Oke";
             }

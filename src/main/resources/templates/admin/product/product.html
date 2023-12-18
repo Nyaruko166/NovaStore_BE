@@ -356,7 +356,7 @@
                                 <th scope="col">Chất liệu</th>
                                 <th scope="col">Loại sản phẩm</th>
                                 <th scope="col">Kiểu dáng</th>
-<!--                                <th scope="col">Ảnh</th>-->
+                                <th scope="col">Trạng thái</th>
                                 <th scope="col">Chức năng</th>
                             </tr>
                             </thead>
@@ -376,6 +376,8 @@
 <!--                                        </button>-->
 <!--                                    </a>-->
 <!--                                </td>-->
+                                <td th:if="${items.status == 2}" style="color: red">Đang giảm giá</td>
+                                <td th:if="${items.status == 1}">Chưa giảm giá</td>
                                 <td class="d-flex justify-content-center">
                                     <div class="dropdown">
                                         <button class="btn btn-dark" type="button"
@@ -387,7 +389,7 @@
                                             <a class="dropdown-item"
                                                th:href="@{'/nova/product/' + ${items.id} + '/product-detail'}"><i
                                                     class="fa-solid fa-eye mr-2"></i> Chi tiết</a>
-                                            <a class="dropdown-item"
+                                            <a class="dropdown-item" th:if="${items.status == 1}"
                                                th:href="@{'/nova/product/' + ${items.id} + '/view-update'}"><i
                                                     class="fa-solid fa-pen mr-3"></i>Sửa</a>
                                             <button

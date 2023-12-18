@@ -89,6 +89,9 @@ public class CategoryExcelUtil {
             file.delete();
             return "Trùng";
         }
+        if (listName.isEmpty() && setName.isEmpty()) {
+            return "Trống";
+        }
         workbook.close();
         fileInputStream.close();
         return "Oke";

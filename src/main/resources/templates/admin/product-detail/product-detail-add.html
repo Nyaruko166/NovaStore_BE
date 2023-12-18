@@ -55,7 +55,7 @@
 
                     <br>
                     <div class="card-footer d-flex align-items-center form-row">
-                        <button type="button" onclick="addItem()" class="btn btn-dark">
+                        <button type="button" onclick="addItem()" class="btn btn-danger">
                             <i class="fa-solid fa-file-circle-plus px-4"></i>
                         </button>
                         <div id="error" style="color: red; margin-left: 10px">
@@ -135,15 +135,15 @@
                             }
                         })
 
-                        $('.productDetail-price').on('keydown', function (e) {
-                            onlyAllowNumberInput2(e)
-                        })
-
-                        $('.productDetail-price').on('focusout', function (e) {
-                            if ($(this).val() == "") {
-                                $(this).val(0)
-                            }
-                        })
+                        // $('.productDetail-price').on('keydown', function (e) {
+                        //     onlyAllowNumberInput2(e)
+                        // })
+                        //
+                        // $('.productDetail-price').on('focusout', function (e) {
+                        //     if ($(this).val() == "") {
+                        //         $(this).val(0)
+                        //     }
+                        // })
 
                         //Tạo dòng chi tiết sản phẩm đầu tiên
                         document.querySelector('.productDetail-price').value = 1000

@@ -17,33 +17,37 @@ public interface ProductViewService {
 
     Page<ProductHomeResponse> getAllProductHomeResponse(int page);
 
-    Page<ProductHomeResponse> getAllProductShopResponse(int page);
-
-    List<ProductHomeResponse> getAllProductHomeResponse();
-
     List<ProductDiscountHomeResponse> getAllProductDiscountHomeResponse();
+
+    List<ProductDiscountHomeResponse> getAllProductAndProductDiscountShopResponse();
+
+    List<ProductDiscountHomeResponse> getAllProductAndProductDiscountHomeResponse();
+
+    BigDecimal calculatePriceToPriceDiscount(BigDecimal price, Float value);
+
+    List<ProductDiscountHomeResponse> setPriceDiscount(List<ProductDiscountHomeResponse> listProductDiscountHomeResponse);
 
     List<SizeDetailResponse> getAllSizeDetailResponse(Integer productId);
     List<ColorDetailResponse> getAllColorDetailResponse(Integer productId);
-
-    Page<ProductHomeResponse> getAllProductYouMayLike(int page);
 
     BigDecimal getPriceMaxResponseByProductId(Integer productId);
 
     BigDecimal getPriceMinResponseByProductId(Integer productId);
 
-    BigDecimal getPriceProductDetailResponseByProductIdAndSizeIdAndColorId(Integer productId, Integer sizeId, Integer colorId);
+    Page<ProductDiscountHomeResponse> convertlistToPage(List<ProductDiscountHomeResponse> listProductDiscount, int page);
 
-    Page<ProductHomeResponse> searchProductShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
+    List<ProductDiscountHomeResponse> searchProductAndProductDiscountShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
 
-    Page<ProductHomeResponse> searchProductDescShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
+    List<ProductDiscountHomeResponse> searchProductAndProductDiscountDescShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
 
-    Page<ProductHomeResponse> searchProductAscShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
+    List<ProductDiscountHomeResponse> searchProductAscShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
 
-    Page<ProductHomeResponse> searchProductDiscountShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
+    List<ProductDiscountHomeResponse> searchOnlyProductDiscountShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
 
     BigDecimal getPriceMaxBySelected(Integer price);
 
     BigDecimal getPriceMinBySelected(Integer price);
+
+    List<ProductDiscountHomeResponse> getRandomProductAndProductDiscount();
 
 }

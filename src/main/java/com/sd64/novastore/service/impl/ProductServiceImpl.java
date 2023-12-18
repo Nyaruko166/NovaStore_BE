@@ -85,6 +85,15 @@ public class ProductServiceImpl implements ProductService {
         return "CT" + code;
     }
 
+    public String formatName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        return name;
+    }
+
     @Override
     public void addFinal(Product productAdd, List<ProductDetail> listProductDetailAdd, List<MultipartFile> filesAdd) throws IOException {
         List<ProductDetail> listProductDetail = new ArrayList<>();
@@ -115,10 +124,19 @@ public class ProductServiceImpl implements ProductService {
         for (ProductDetail productDetail : productAdd.getListProductDetail()) {
             QRCodeUtil.generateQRCode(productDetail.getCode(), productDetail.getCode());
         }
+        productAdd.setName(formatName(productAdd.getName()));
+        productAdd.setDescription(formatName(productAdd.getDescription()));
         productAdd.setCreateDate(new Date());
         productAdd.setUpdateDate(new Date());
         productAdd.setStatus(1);
         productRepository.save(productAdd);
+    }
+
+    public Boolean isDeletedId(Integer id, List<Integer> productDetailRemoveIds) {
+        if (productDetailRemoveIds.contains(id)) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -148,6 +166,12 @@ public class ProductServiceImpl implements ProductService {
 //            }
 //        }
 
+//        for (int i = 0; i < productDetailRemoveIds.size(); i++) {
+//            ProductDetail productDetail = productDetailService.getOne(productDetailRemoveIds.get(i));
+//            productDetail.setStatus(0);
+//            productDetailRepository.save(productDetail);
+//        }
+
         // List hiển thị tất cả phần tử không quan tâm trang thái
         List<ProductDetail> listProductDetailBefore = productDetailRepository.findAllByProduct_IdOrderByIdAsc(productBefore.getId());
         for (ProductDetail productDetail : listProductDetailBefore) {
@@ -163,32 +187,53 @@ public class ProductServiceImpl implements ProductService {
         // List hiển thị tất cả các phần tử trang thái 1
         List<ProductDetail> listProductDetailNoDelete = productDetailService.getProductDetailNoDeleteResponse(listProductDetailBefore);
         for (int i = 0; i < listProductDetailNoDelete.size(); i++) {
-            ProductDetail productDetail = new ProductDetail();
-            productDetail.setId(listProductDetailBefore.get(i).getId());
-            productDetail.setCode(listProductDetailBefore.get(i).getCode());
-            productDetail.setCreateDate(listProductDetailBefore.get(i).getCreateDate());
-            productDetail.setUpdateDate(new Date());
-            productDetail.setStatus(listProductDetailBefore.get(i).getStatus());
-            productDetail.setProduct(productUpdate);
-            productDetail.setPriceDiscount(listProductDetailNoDelete.get(i).getPriceDiscount());
-            productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
-            productDetail.setPrice(listProductDetailUpdate.get(i).getPrice());
-            productDetail.setSize(listProductDetailUpdate.get(i).getSize());
-            productDetail.setColor(listProductDetailUpdate.get(i).getColor());
-            listProductDetailUpdate.set(i, productDetail);
-            QRCodeUtil.generateQRCode(listProductDetailUpdate.get(i).getCode(), listProductDetailUpdate.get(i).getCode());
+            if (!isDeletedId(listProductDetailNoDelete.get(i).getId(), productDetailRemoveIds)) {
+                ProductDetail productDetail = new ProductDetail();
+                productDetail.setId(listProductDetailNoDelete.get(i).getId());
+                productDetail.setCode(listProductDetailNoDelete.get(i).getCode());
+                productDetail.setCreateDate(listProductDetailNoDelete.get(i).getCreateDate());
+                productDetail.setUpdateDate(new Date());
+                productDetail.setStatus(listProductDetailNoDelete.get(i).getStatus());
+                productDetail.setProduct(productUpdate);
+                productDetail.setPriceDiscount(listProductDetailNoDelete.get(i).getPriceDiscount());
+                productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
+                productDetail.setPrice(listProductDetailUpdate.get(i).getPrice());
+                productDetail.setSize(listProductDetailUpdate.get(i).getSize());
+                productDetail.setColor(listProductDetailUpdate.get(i).getColor());
+                listProductDetailUpdate.set(i, productDetail);
+                QRCodeUtil.generateQRCode(listProductDetailUpdate.get(i).getCode(), listProductDetailUpdate.get(i).getCode());
+            } else {
+                ProductDetail productDetail = new ProductDetail();
+                productDetail.setId(listProductDetailNoDelete.get(i).getId());
+                productDetail.setCode(listProductDetailNoDelete.get(i).getCode());
+                productDetail.setCreateDate(listProductDetailNoDelete.get(i).getCreateDate());
+                productDetail.setUpdateDate(new Date());
+                productDetail.setStatus(listProductDetailNoDelete.get(i).getStatus());
+                productDetail.setProduct(productUpdate);
+                productDetail.setPriceDiscount(listProductDetailNoDelete.get(i).getPriceDiscount());
+                productDetail.setQuantity(listProductDetailNoDelete.get(i).getQuantity());
+                productDetail.setPrice(listProductDetailNoDelete.get(i).getPrice());
+                productDetail.setSize(listProductDetailNoDelete.get(i).getSize());
+                productDetail.setColor(listProductDetailNoDelete.get(i).getColor());
+                listProductDetailUpdate.set(i, productDetail);
+                QRCodeUtil.generateQRCode(listProductDetailUpdate.get(i).getCode(), listProductDetailUpdate.get(i).getCode());
+            }
             index++;
         }
         int count = 1;
+
+
         for (int i = index; i < listProductDetailUpdate.size(); i++) {
             ProductDetail productDetail = new ProductDetail();
             productDetail.setProduct(productUpdate);
             productDetail.setCreateDate(new Date());
             productDetail.setUpdateDate(new Date());
-            productDetail.setStatus(productUpdate.getStatus());
+//            productDetail.setStatus(productUpdate.getStatus());
+            productDetail.setStatus(1);
             productDetail.setCode(generateProductDetailCode(count));
             productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
             productDetail.setPrice(listProductDetailUpdate.get(i).getPrice());
+            productDetail.setPriceDiscount(listProductDetailUpdate.get(i).getPrice());
             productDetail.setSize(listProductDetailUpdate.get(i).getSize());
             productDetail.setColor(listProductDetailUpdate.get(i).getColor());
             listProductDetailUpdate.set(i, productDetail);
@@ -201,6 +246,8 @@ public class ProductServiceImpl implements ProductService {
             }
             return item;
         }).collect(Collectors.toList());
+        productUpdate.setName(formatName(productUpdate.getName()));
+        productUpdate.setDescription(formatName(productUpdate.getDescription()));
         productUpdate.setListImage(listImage);
         productUpdate.setCreateDate(productBefore.getCreateDate());
         productUpdate.setStatus(productBefore.getStatus());

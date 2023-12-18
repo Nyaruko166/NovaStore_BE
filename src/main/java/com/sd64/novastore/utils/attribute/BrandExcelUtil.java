@@ -88,6 +88,9 @@ public class BrandExcelUtil {
             file.delete();
             return "Trùng";
         }
+        if (listName.isEmpty() && setName.isEmpty()) {
+            return "Trống";
+        }
         workbook.close();
         fileInputStream.close();
         return "Oke";
@@ -156,6 +159,8 @@ public class BrandExcelUtil {
             return "Sai dữ liệu";
         } else if (result.contains("Trùng")) {
             return "Trùng";
+        } else if (result.contains("Trống")) {
+            return "Trống";
         }
         return null;
     }

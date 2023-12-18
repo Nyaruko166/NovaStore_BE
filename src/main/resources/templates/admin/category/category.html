@@ -99,7 +99,7 @@
                                     const inputElement = document.getElementById('name');
 
                                     inputElement.addEventListener('input', function(event) {
-                                        const specialCharacters = /[!@#$%^&*()_,.?":{}|<>+\-=~`\\/\[\]]/g;
+                                        const specialCharacters = /[!@#$%^&*()_,.?":{}|'<>+\-=~`\\/\[\]]/g;
                                         const inputValue = event.target.value;
                                         if (specialCharacters.test(inputValue)) {
                                             event.target.value = inputValue.replace(specialCharacters, '');
