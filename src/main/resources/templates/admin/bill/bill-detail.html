@@ -407,42 +407,6 @@
                 }
             })
         });
-
-        $(".btn-update-status").on("click", function (e) {
-            e.stopPropagation();
-            var currentStatus = $(this).attr("data-status");
-            var nextStatus;
-            var statusMessage;
-            switch (currentStatus) {
-                case "CHO_XAC_NHAN":
-                    nextStatus = "CHO_LAY_HANG";
-                    statusMessage = "Chờ lấy hàng";
-                    break;
-                case "CHO_LAY_HANG":
-                    nextStatus = "CHO_GIAO_HANG";
-                    statusMessage = "Chờ giao hàng";
-                    break;
-                case "CHO_GIAO_HANG":
-                    nextStatus = "HOAN_THANH";
-                    statusMessage = "Hoàn thành";
-                    break;
-            }
-            Swal.fire({
-                title: "Xác nhận?",
-                text: `Xác nhận chuyển sang ${statusMessage}`,
-                icon: "warning",
-                showCancelButton: true,
-                cancelButtonText: "Hủy",
-                confirmButtonText: "Xác nhận",
-                reverseButtons: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const form = $(this).closest("form");
-                    var url = form.attr("action") + `?trangThaiDonHang=${nextStatus}`;
-                    window.location.href = url;
-                }
-            });
-        });
     </script>
     <script>
         $(document).ready(function(){

@@ -36,7 +36,7 @@
     <div class="container-fluid">
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
-                <a href="/" class="text-decoration-none">
+                <a href="/home" class="text-decoration-none">
                     <div class="border-name-shop">
                         <span class="nova">NOVA</span>
                         <span class="store">STORE</span>
@@ -44,19 +44,6 @@
                 </a>
             </div>
             <div class="col-lg-6 ">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
-                        <!-- <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div> -->
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        </div>
-                    </div>
-                </form>
             </div>
             <div class="col-lg-3 col-6 text-right d-flex justify-content-end align-items-center">
                 <div class="navbar-nav ml-auto py-0 col-6" th:if="${session.username == null}">
@@ -143,7 +130,7 @@
                         <div class="navbar-nav mr-auto py-0">
                             <!-- <a th:href="@{'/home'}" class="nav-item nav-link">Trang chủ</a> -->
                             <a th:href="@{'/shop'}" class="nav-item nav-link"><i class="fa-solid fa-shirt mr-2"></i>Sản phẩm</a>
-                            <a href="contact.html" class="nav-item nav-link"><i class="fa-solid fa-phone mr-2"></i>Liên hệ</a>
+                            <a th:href="@{/contact}" class="nav-item nav-link"><i class="fa-solid fa-phone mr-2"></i>Liên hệ</a>
                             <a th:href="@{/home}" class="nav-item nav-link"><i class="fa-solid fa-address-card mr-2"></i>Giới thiệu</a>
                             <a th:href="@{/home}" class="nav-item nav-link"><i class="fa-solid fa-newspaper mr-2"></i>Bản tin</a>
                         </div>
@@ -173,9 +160,9 @@
                     </a>
                 </div>
                 <p>Chúng tôi tự tin luôn mang đến cho khách hàng những trải nghiệm tuyệt vời nhất</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Nam Từ Liêm, Hà Nội, Việt Nam</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>novastorecskh@gmail.com</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+0988 622 603</p>
             </div>
             <div class="col-lg-8 col-md-12">
                 <div class="row">
