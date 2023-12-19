@@ -5,9 +5,9 @@ CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-begin
-EXEC [Nova_Store_DB].[dbo].[sp_fulltext_database] @action = 'enable'
-end
+    begin
+        EXEC [Nova_Store_DB].[dbo].[sp_fulltext_database] @action = 'enable'
+    end
 GO
 ALTER DATABASE [Nova_Store_DB] SET ANSI_NULL_DEFAULT OFF
 GO
@@ -94,16 +94,16 @@ CREATE TABLE [dbo].[Account]
     [Status]      [int]                NULL,
     [RoleId]      [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Address]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Address]
 (
     [Id]              [int] IDENTITY (1,1) NOT NULL,
@@ -118,16 +118,16 @@ CREATE TABLE [dbo].[Address]
     [Status]          [int]                NULL,
     [AccountId]       [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Bill]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Bill]
 (
     [Id]               [int] IDENTITY (1,1) NOT NULL,
@@ -154,16 +154,16 @@ CREATE TABLE [dbo].[Bill]
     [CustomerId]       [int]                NULL,
     [VoucherId]        [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[BillDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[BillDetail]
 (
     [Id]              [int] IDENTITY (1,1) NOT NULL,
@@ -173,16 +173,16 @@ CREATE TABLE [dbo].[BillDetail]
     [BillId]          [int]                NULL,
     [ProductDetailId] [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Brand]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Brand]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -192,16 +192,16 @@ CREATE TABLE [dbo].[Brand]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Cart]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Cart]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -209,16 +209,16 @@ CREATE TABLE [dbo].[Cart]
     [TotalItems] [int]                NULL,
     [AccountId]  [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[CartDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[CartDetail]
 (
     [Id]              [int] IDENTITY (1,1) NOT NULL,
@@ -227,16 +227,16 @@ CREATE TABLE [dbo].[CartDetail]
     [CartId]          [int]                NULL,
     [ProductDetailId] [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Category]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Category]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -246,16 +246,16 @@ CREATE TABLE [dbo].[Category]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Color]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Color]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -265,16 +265,16 @@ CREATE TABLE [dbo].[Color]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Form]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Form]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -284,16 +284,16 @@ CREATE TABLE [dbo].[Form]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Image]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Image]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -303,16 +303,16 @@ CREATE TABLE [dbo].[Image]
     [Status]     [int]                NULL,
     [ProductId]  [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Material]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Material]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -322,16 +322,16 @@ CREATE TABLE [dbo].[Material]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[PaymentMethod]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[PaymentMethod]
 (
     [Id]          [int] IDENTITY (1,1) NOT NULL,
@@ -341,16 +341,16 @@ CREATE TABLE [dbo].[PaymentMethod]
     [Status]      [int]                NULL,
     [BillId]      [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Product]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Product]
 (
     [Id]          [int] IDENTITY (1,1) NOT NULL,
@@ -365,16 +365,16 @@ CREATE TABLE [dbo].[Product]
     [FormId]      [int]                NULL,
     [MaterialId]  [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[ProductDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[ProductDetail]
 (
     [Id]            [int] IDENTITY (1,1) NOT NULL,
@@ -389,16 +389,16 @@ CREATE TABLE [dbo].[ProductDetail]
     [SizeId]        [int]                NULL,
     [ColorId]       [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Promotion]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Promotion]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -411,16 +411,16 @@ CREATE TABLE [dbo].[Promotion]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[PromotionDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[PromotionDetail]
 (
     [Id]          [int] IDENTITY (1,1) NOT NULL,
@@ -430,16 +430,16 @@ CREATE TABLE [dbo].[PromotionDetail]
     [ProductId]   [int]                NULL,
     [PromotionId] [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Role]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Role]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -448,16 +448,16 @@ CREATE TABLE [dbo].[Role]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Size]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Size]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -467,16 +467,16 @@ CREATE TABLE [dbo].[Size]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 /****** Object:  Table [dbo].[Voucher]    Script Date: 10/10/2023 9:34:05 PM ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[Voucher]
 (
     [Id]           [int] IDENTITY (1,1) NOT NULL,
@@ -491,160 +491,160 @@ CREATE TABLE [dbo].[Voucher]
     [UpdateDate]   [datetime]           NULL,
     [Status]       [int]                NULL,
     PRIMARY KEY CLUSTERED
-(
-[Id] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
+        (
+         [Id] ASC
+            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 ALTER TABLE [dbo].[Account]
     WITH CHECK ADD CONSTRAINT [FKi9xmahyh65di7x2wn5fvt8lv3] FOREIGN KEY ([RoleId])
-    REFERENCES [dbo].[Role] ([Id])
-    GO
+        REFERENCES [dbo].[Role] ([Id])
+GO
 ALTER TABLE [dbo].[Account]
     CHECK CONSTRAINT [FKi9xmahyh65di7x2wn5fvt8lv3]
-    GO
+GO
 ALTER TABLE [dbo].[Address]
     WITH CHECK ADD CONSTRAINT [FK3haj5uqn2j6ar58mcglooa5bp] FOREIGN KEY ([AccountId])
-    REFERENCES [dbo].[Account] ([Id])
-    GO
+        REFERENCES [dbo].[Account] ([Id])
+GO
 ALTER TABLE [dbo].[Address]
     CHECK CONSTRAINT [FK3haj5uqn2j6ar58mcglooa5bp]
-    GO
+GO
 ALTER TABLE [dbo].[Bill]
     WITH CHECK ADD CONSTRAINT [FK5zxcs2c3vdsauy6541vgj2y5t] FOREIGN KEY ([EmployeeId])
-    REFERENCES [dbo].[Account] ([Id])
-    GO
+        REFERENCES [dbo].[Account] ([Id])
+GO
 ALTER TABLE [dbo].[Bill]
     CHECK CONSTRAINT [FK5zxcs2c3vdsauy6541vgj2y5t]
-    GO
+GO
 ALTER TABLE [dbo].[Bill]
     WITH CHECK ADD CONSTRAINT [FK5mrre5s0gacpqu6737kfocwkl] FOREIGN KEY ([CustomerId])
-    REFERENCES [dbo].[Account] ([Id])
-    GO
+        REFERENCES [dbo].[Account] ([Id])
+GO
 ALTER TABLE [dbo].[Bill]
     CHECK CONSTRAINT [FK5mrre5s0gacpqu6737kfocwkl]
-    GO
+GO
 ALTER TABLE [dbo].[Bill]
     WITH CHECK ADD CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob] FOREIGN KEY ([VoucherId])
-    REFERENCES [dbo].[Voucher] ([Id])
-    GO
+        REFERENCES [dbo].[Voucher] ([Id])
+GO
 ALTER TABLE [dbo].[Bill]
     CHECK CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob]
-    GO
+GO
 ALTER TABLE [dbo].[BillDetail]
     WITH CHECK ADD CONSTRAINT [FK8sw1tfhht3q5xtdsyoe0r7jfd] FOREIGN KEY ([BillId])
-    REFERENCES [dbo].[Bill] ([Id])
-    GO
+        REFERENCES [dbo].[Bill] ([Id])
+GO
 ALTER TABLE [dbo].[BillDetail]
     CHECK CONSTRAINT [FK8sw1tfhht3q5xtdsyoe0r7jfd]
-    GO
+GO
 ALTER TABLE [dbo].[BillDetail]
     WITH CHECK ADD CONSTRAINT [FKnt7lacod5l24jdnfgxfydqiu2] FOREIGN KEY ([ProductDetailId])
-    REFERENCES [dbo].[ProductDetail] ([Id])
-    GO
+        REFERENCES [dbo].[ProductDetail] ([Id])
+GO
 ALTER TABLE [dbo].[BillDetail]
     CHECK CONSTRAINT [FKnt7lacod5l24jdnfgxfydqiu2]
-    GO
+GO
 ALTER TABLE [dbo].[Cart]
     WITH CHECK ADD CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i] FOREIGN KEY ([AccountId])
-    REFERENCES [dbo].[Account] ([Id])
-    GO
+        REFERENCES [dbo].[Account] ([Id])
+GO
 ALTER TABLE [dbo].[Cart]
     CHECK CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i]
-    GO
+GO
 ALTER TABLE [dbo].[CartDetail]
     WITH CHECK ADD CONSTRAINT [FK6unelr9lsy26gw9da5tuuxcsh] FOREIGN KEY ([CartId])
-    REFERENCES [dbo].[Cart] ([Id])
-    GO
+        REFERENCES [dbo].[Cart] ([Id])
+GO
 ALTER TABLE [dbo].[CartDetail]
     CHECK CONSTRAINT [FK6unelr9lsy26gw9da5tuuxcsh]
-    GO
+GO
 ALTER TABLE [dbo].[CartDetail]
     WITH CHECK ADD CONSTRAINT [FKepuvpwbykpahqt0gagvvdqoyn] FOREIGN KEY ([ProductDetailId])
-    REFERENCES [dbo].[ProductDetail] ([Id])
-    GO
+        REFERENCES [dbo].[ProductDetail] ([Id])
+GO
 ALTER TABLE [dbo].[CartDetail]
     CHECK CONSTRAINT [FKepuvpwbykpahqt0gagvvdqoyn]
-    GO
+GO
 ALTER TABLE [dbo].[Image]
     WITH CHECK ADD CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c] FOREIGN KEY ([ProductId])
-    REFERENCES [dbo].[Product] ([Id])
-    GO
+        REFERENCES [dbo].[Product] ([Id])
+GO
 ALTER TABLE [dbo].[Image]
     CHECK CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c]
-    GO
+GO
 ALTER TABLE [dbo].[PaymentMethod]
     WITH CHECK ADD CONSTRAINT [FKjity6x6p1194mtoli4abb3jgc] FOREIGN KEY ([BillId])
-    REFERENCES [dbo].[Bill] ([Id])
-    GO
+        REFERENCES [dbo].[Bill] ([Id])
+GO
 ALTER TABLE [dbo].[PaymentMethod]
     CHECK CONSTRAINT [FKjity6x6p1194mtoli4abb3jgc]
-    GO
+GO
 ALTER TABLE [dbo].[Product]
     WITH CHECK ADD CONSTRAINT [FK4cx1ir1xlnytlte2quullny9m] FOREIGN KEY ([FormId])
-    REFERENCES [dbo].[Form] ([Id])
-    GO
+        REFERENCES [dbo].[Form] ([Id])
+GO
 ALTER TABLE [dbo].[Product]
     CHECK CONSTRAINT [FK4cx1ir1xlnytlte2quullny9m]
-    GO
+GO
 ALTER TABLE [dbo].[Product]
     WITH CHECK ADD CONSTRAINT [FK6pnobu31k3yhhmk45s97imkui] FOREIGN KEY ([CategoryId])
-    REFERENCES [dbo].[Category] ([Id])
-    GO
+        REFERENCES [dbo].[Category] ([Id])
+GO
 ALTER TABLE [dbo].[Product]
     CHECK CONSTRAINT [FK6pnobu31k3yhhmk45s97imkui]
-    GO
+GO
 ALTER TABLE [dbo].[Product]
     WITH CHECK ADD CONSTRAINT [FKfc8uiunvrolmn3qa9ahrhmtrw] FOREIGN KEY ([MaterialId])
-    REFERENCES [dbo].[Material] ([Id])
-    GO
+        REFERENCES [dbo].[Material] ([Id])
+GO
 ALTER TABLE [dbo].[Product]
     CHECK CONSTRAINT [FKfc8uiunvrolmn3qa9ahrhmtrw]
-    GO
+GO
 ALTER TABLE [dbo].[Product]
     WITH CHECK ADD CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc] FOREIGN KEY ([BrandId])
-    REFERENCES [dbo].[Brand] ([Id])
-    GO
+        REFERENCES [dbo].[Brand] ([Id])
+GO
 ALTER TABLE [dbo].[Product]
     CHECK CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc]
-    GO
+GO
 ALTER TABLE [dbo].[ProductDetail]
     WITH CHECK ADD CONSTRAINT [FKik38y3bjry9u05majdn5u3egj] FOREIGN KEY ([ProductId])
-    REFERENCES [dbo].[Product] ([Id])
-    GO
+        REFERENCES [dbo].[Product] ([Id])
+GO
 ALTER TABLE [dbo].[ProductDetail]
     CHECK CONSTRAINT [FKik38y3bjry9u05majdn5u3egj]
-    GO
+GO
 ALTER TABLE [dbo].[ProductDetail]
     WITH CHECK ADD CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv] FOREIGN KEY ([SizeId])
-    REFERENCES [dbo].[Size] ([Id])
-    GO
+        REFERENCES [dbo].[Size] ([Id])
+GO
 ALTER TABLE [dbo].[ProductDetail]
     CHECK CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv]
-    GO
+GO
 ALTER TABLE [dbo].[ProductDetail]
     WITH CHECK ADD CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y] FOREIGN KEY ([ColorId])
-    REFERENCES [dbo].[Color] ([Id])
-    GO
+        REFERENCES [dbo].[Color] ([Id])
+GO
 ALTER TABLE [dbo].[ProductDetail]
     CHECK CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y]
-    GO
+GO
 ALTER TABLE [dbo].[PromotionDetail]
     WITH CHECK ADD CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig] FOREIGN KEY ([ProductId])
-    REFERENCES [dbo].[Product] ([Id])
-    GO
+        REFERENCES [dbo].[Product] ([Id])
+GO
 ALTER TABLE [dbo].[PromotionDetail]
     CHECK CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig]
-    GO
+GO
 ALTER TABLE [dbo].[PromotionDetail]
     WITH CHECK ADD CONSTRAINT [FKos6ftbatvw4mk81km7xpkds5i] FOREIGN KEY ([PromotionId])
-    REFERENCES [dbo].[Promotion] ([Id])
-    GO
+        REFERENCES [dbo].[Promotion] ([Id])
+GO
 ALTER TABLE [dbo].[PromotionDetail]
     CHECK CONSTRAINT [FKos6ftbatvw4mk81km7xpkds5i]
-    GO
-    USE [master]
-    GO
+GO
+USE [master]
+GO
 ALTER DATABASE [Nova_Store_DB] SET READ_WRITE
 GO
 
@@ -652,7 +652,7 @@ USE Nova_Store_DB
 
 SELECT *
 FROM Brand
-    INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
 VALUES ('T1', N'Reebok', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
 VALUES ('T2', N'Asics', GETDATE(), GETDATE(), 1)
@@ -676,7 +676,7 @@ VALUES ('T10', N'Adidas', GETDATE(), GETDATE(), 1)
 
 SELECT *
 FROM Category
-    INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
 VALUES ('L1', N'Áo thun', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
 VALUES ('L2', N'Áo khoác', GETDATE(), GETDATE(), 1)
@@ -699,7 +699,7 @@ VALUES ('L10', N'Quần legging', GETDATE(), GETDATE(), 1)
 
 SELECT *
 FROM Material
-    INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
 VALUES ('C1', N'Spandex', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
 VALUES ('C2', N'Cotton', GETDATE(), GETDATE(), 1)
@@ -723,7 +723,7 @@ VALUES ('C10', N'Fleece', GETDATE(), GETDATE(), 1)
 
 SELECT *
 FROM Form
-    INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
 VALUES ('K1', N'Bó', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
 VALUES ('K2', N'Rộng', GETDATE(), GETDATE(), 1)
@@ -747,7 +747,7 @@ VALUES ('K10', N'Thiếu vải', GETDATE(), GETDATE(), 1)
 
 SELECT *
 FROM Size
-    INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
 VALUES ('S1', N'28', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
 VALUES ('S2', N'29', GETDATE(), GETDATE(), 1)
@@ -771,7 +771,7 @@ VALUES ('S1', N'M', GETDATE(), GETDATE(), 1)
 
 SELECT *
 FROM Color
-    INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
 VALUES ('M1', N'Đen', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
 VALUES ('M2', N'Đỏ', GETDATE(), GETDATE(), 1)
@@ -795,7 +795,7 @@ VALUES ('M10', N'Cam', GETDATE(), GETDATE(), 1)
 
 SELECT *
 FROM Product
-    INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP1', N'Áo thun tay ngắn', N'vip pro', GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP2', N'Áo khoác Flannel tay dài kháo kéo', N'Chiến thần', GETDATE(), GETDATE(), 1, 2, 2, 2, 2);
@@ -843,8 +843,8 @@ FROM Product
 
 SELECT *
 FROM ProductDetail
-    INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                               ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
+                           ColorId)
 VALUES ('CT00001', 12, 20000, 20000, GETDATE(), GETDATE(), 1, 1, 1, 1);
 INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
                            ColorId)
@@ -997,7 +997,7 @@ VALUES ('CT00050', 324, 20000, 20000, GETDATE(), GETDATE(), 1, 8, 2, 3);
 
 SELECT *
 FROM Role
-    INSERT INTO Role (name, CreateDate, UpdateDate, Status)
+INSERT INTO Role (name, CreateDate, UpdateDate, Status)
 VALUES ('Admin', GETDATE(), GETDATE(), 1);
 INSERT INTO Role (name, CreateDate, UpdateDate, Status)
 VALUES ('Employee', GETDATE(), GETDATE(), 1);
@@ -1007,9 +1007,31 @@ VALUES ('User', GETDATE(), GETDATE(), 1);
 INSERT INTO Account(Name, Email, PhoneNumber, Password, Birthday, Avatar, CreateDate, UpdateDate, Status, RoleId)
 VALUES (N'Phùng Minh Quân', 'admin@gmail.com', '0936163632',
         '$2a$10$PHNpj3vmMEXFe.HByeH98uzXAk8pj9CLwQJUQxII3jbk/EpA/yJ4e', '2003-06-01 00:00:00.000', 'uid_1.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 1);
-
-INSERT INTO Account(Name, Email, PhoneNumber, Password, Birthday, Avatar, CreateDate, UpdateDate, Status, RoleId)
-VALUES (N'Nguyễn Thanh Tùng', 'employee@gmail.com', '0943670235',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 1),
+       (N'Nguyễn Thanh Tùng', 'employee@gmail.com', '0943670235',
         '$2a$10$nBJaDOAabttH8yE8pQUxpOXGLEXRP8/NKY8UhmxR5CP/YtGQLsKau', '1999-12-31 00:00:00.000', 'uid_2.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 2);
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 2),
+       (N'Trần Thu Dung', 'dungtt@gmail.com', '0833390195',
+        '$2a$12$UzOpuN1y3ODGkG2jCjBSf.ZT169QpOsL7nUdGFNskIscy9DV509qy', '2003-11-18 00:00:00.000', 'uid_3.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+       (N'Nguyễn Cẩm Linh', 'linhnc@gmail.com', '0982666189',
+        '$2a$12$cxpoRAXvIoi8Zducezc6YOAh8eTvR9ZBTzz.YksZnfEN00QTTddjy', '2003-06-23 00:00:00.000', 'uid_4.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+       (N'Nguyễn Tuấn Hiếu', 'hieunt@gmail.com', '0977572350',
+        '$2a$12$QXRS0HKa.qQiPPYrYh2cBOawwWQzHkWho1BdLQxWdHxd5rvExZopW', '2000-12-21 00:00:00.000', 'uid_5.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+       (N'Nguyễn Văn Tú', 'tunv@gmail.com', '0769347798',
+        '$2a$12$s/pfJpaQST110hwJfuK5KONpDc0YoAFPHhTS5u.c11dwwxurL/w7a', '1999-02-15 00:00:00.000', 'uid_6.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+       (N'Lê Minh Hiếu', 'hieulm@gmail.com', '0963360843',
+        '$2a$12$WmHT5ni/SENjPvaGONRE/ORs/9Bzn0a4hJBuHLttJW3h4U6TGytSG', '1997-10-11 00:00:00.000', 'uid_7.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+       (N'Nguyễn Huy Hoàng', 'hoangnh@gmail.com', '0377733070',
+        '$2a$12$wyQjo6lHWV8pX/vRFITvzuE5EWJeqBKhapYbYVvBI.w6AuQEAu9eG', '2003-06-23 00:00:00.000', 'uid_8.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+       (N'Lê Minh Khuê', 'khuelm@gmail.com', '0588660409',
+        '$2a$12$Pr2.Rcs5YazU8xs8tql4g.eSv2kP.ddC6q5nxhw2gsrehzlGUNU9y', '2002-11-11 00:00:00.000', 'uid_9.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+       (N'Trần Đại Lâm', 'lamtd@gmail.com', '0982666189',
+        '$2a$12$B2Q/SPewPQhZ1prVGsl7zeBBuGWWFKmcfa/RxQTxbyN7KxBXoAZvG', '2001-07-23 00:00:00.000', 'uid_10.png',
+        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3);

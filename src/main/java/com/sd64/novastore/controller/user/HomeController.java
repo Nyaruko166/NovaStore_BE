@@ -271,4 +271,9 @@ public class HomeController {
         model.addAttribute("value", value);
         return "/user/detail";
     }
+
+    @GetMapping("/contact")
+    public String contact(){
+        return "/user/contact";
+    }
 }
