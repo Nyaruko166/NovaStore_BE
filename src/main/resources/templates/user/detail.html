@@ -78,6 +78,7 @@
                         <div id="price-bottom" class="d-flex  price-product-detail">
                             <h3 th:text="'₫' + ${#numbers.formatDecimal(priceDiscountMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h3>
                         </div>
+
                     </div>
                 </div>
 
@@ -128,7 +129,6 @@
                     <script th:inline="javascript">
                         /*<![CDATA[*/
                         var listProductSize = [[${listProductSize}]];
-                        debugger
                         var listProductColor = [[${listProductColor}]];
                         var discount = [[${discount}]];
                         var value = [[${value}]]
@@ -193,24 +193,45 @@
                             discountPriceFormatted = discountPriceFormatted.toString().replaceAll("₫", "").replaceAll('.', ',')
                             document.getElementById('product-code').innerText = code
                             document.getElementById('productDetail-quantity').innerText = quantity
-                            if (document.getElementById('price-top') != null) {
-                                document.getElementById('price-top').innerText = '₫' + discountPriceFormatted
+                            debugger
+                            let priceDiscountMax = [[${priceDiscountMax}]]
+                            let priceDiscountMin = [[${priceDiscountMin}]]
+                            if (priceDiscountMin !== priceDiscountMax) {
+                                if (document.getElementById('price-top') != null) {
+                                    document.getElementById('price-top').innerText = '₫' + discountPriceFormatted
+                                }
+
+
+                                if (document.getElementById('price-top-discount') != null) {
+                                    document.getElementById('price-top-discount').innerText = '₫' + formattedPriceTop
+                                }
+
+                                let formattedPriceButtom = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                formattedPriceButtom = formattedPriceButtom.toString().replaceAll("₫", "")
+                                formattedPriceButtom = formattedPriceButtom.toString().replaceAll(".", ",")
+                                document.getElementById('product-code').innerText = code
+                                document.getElementById('productDetail-quantity').innerText = quantity
+                                if (document.getElementById('price-bottom') != null) {
+                                    document.getElementById('price-bottom').innerText = '₫' + formattedPriceButtom
+                                }
+                                colorSelected = id;
+                                return id;
+                            } else {
+                                debugger
+                                if (document.getElementById('price-bottom') != null) {
+                                    document.getElementById('price-bottom').innerText = '₫' + discountPriceFormatted
+                                }
+
+
+                                if (document.getElementById('price-top-discount') != null) {
+                                    document.getElementById('price-top-discount').innerText = '₫' + formattedPriceTop
+                                }
+
+
+                                colorSelected = id;
+                                return id;
                             }
 
-                            if (document.getElementById('price-top-discount') != null) {
-                                document.getElementById('price-top-discount').innerText = '₫' + formattedPriceTop
-                            }
-
-                            let formattedPriceButtom = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                            formattedPriceButtom = formattedPriceButtom.toString().replaceAll("₫", "")
-                            formattedPriceButtom = formattedPriceButtom.toString().replaceAll(".", ",")
-                            document.getElementById('product-code').innerText = code
-                            document.getElementById('productDetail-quantity').innerText = quantity
-                            if (document.getElementById('price-bottom') != null) {
-                                document.getElementById('price-bottom').innerText = '₫' + formattedPriceButtom
-                            }
-                            colorSelected = id;
-                            return id;
                         }
                     </script>
                     <span id="error-message" style="color: red;"></span>

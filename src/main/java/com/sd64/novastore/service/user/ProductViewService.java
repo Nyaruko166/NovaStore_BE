@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.user;
 
+import com.sd64.novastore.dto.common.ProductAndValueDiscountDto;
 import com.sd64.novastore.dto.common.ProductDetailAndValueDiscountDto;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.response.ColorDetailResponse;
@@ -59,6 +60,7 @@ public interface ProductViewService {
 
     Float getValueDiscountByProductId(Integer productId);
 
+    ProductAndValueDiscountDto getProductAndValueDiscount(Integer productId);
 
 
 }

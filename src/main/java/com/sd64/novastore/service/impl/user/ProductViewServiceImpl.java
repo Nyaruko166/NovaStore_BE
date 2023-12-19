@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl.user;
 
+import com.sd64.novastore.dto.common.ProductAndValueDiscountDto;
 import com.sd64.novastore.dto.common.ProductDetailAndValueDiscountDto;
 import com.sd64.novastore.dto.common.impl.ProductDiscountHomeDtoImpl;
 import com.sd64.novastore.dto.common.impl.ProductHomeDtoImpl;
@@ -85,8 +86,15 @@ public class ProductViewServiceImpl implements ProductViewService {
 
     @Override
     public ProductDetailAndValueDiscountDto getProductDetailAndValueDiscount(Integer productDetailId) {
-        ProductDetailAndValueDiscountDto productDetailAndValueDiscountDto = productViewRepository.getProductDetailDto(productDetailId);
-        return productDetailAndValueDiscountDto;
+//        ProductDetailAndValueDiscountDto productDetailAndValueDiscountDto = productViewRepository.getProductDetailDto(productDetailId);
+//        return productDetailAndValueDiscountDto;
+        return null;
+    }
+
+    @Override
+    public ProductAndValueDiscountDto getProductAndValueDiscount(Integer productId) {
+        ProductAndValueDiscountDto productAndValueDiscountDto = productViewRepository.getProductDetailDto(productId);
+        return productAndValueDiscountDto;
     }
 
 
