@@ -192,10 +192,11 @@
                                 <label class="form-control-label">Danh sách giảm giá</label>
                             </div>
                             <div class="col-md-9">
-                                <select class="form-control" style="width: 400px" name="promotion">
-                                    <option th:each="x : ${promotionList}" th:value="${x.id}"
-                                            th:text="${x.name}"></option>
+                                <select class="form-control" style="width: 400px" name="promotion" th:if="${promotionList != null and not #lists.isEmpty(promotionList)}">
+                                    <option th:each="x : ${promotionList}" th:value="${x.id}" th:text="${x.name}"></option>
                                 </select>
+
+                                <span th:unless="${promotionList != null and not #lists.isEmpty(promotionList)}">Không có chương trình khuyến mãi</span>
                             </div>
                         </div>
                     </div>
@@ -222,6 +223,18 @@
                                     swal("Lỗi", "Vui lòng chọn ít nhất một sản phẩm.", "error");
                                     return false;
                                 }
+                                var promotionSelect = document.querySelector("[name='promotion']");
+                                if (!promotionSelect) {
+                                    swal("Lỗi", "Danh sách chương trình khuyến mãi không khả dụng.", "error");
+                                    return false;
+                                }
+
+                                // Kiểm tra xem danh sách promotion có trống hay không
+                                if (promotionSelect.options.length === 0) {
+                                    swal("Lỗi", "Không có chương trình khuyến mãi.", "error");
+                                    return false;
+                                }
+
                                 return true;
                             }
 
