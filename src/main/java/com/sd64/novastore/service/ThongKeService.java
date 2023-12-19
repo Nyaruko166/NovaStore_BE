@@ -38,4 +38,6 @@ public interface ThongKeService {
     public TKTong getTKTongDonHang();
 
     public TKTong getTKTongDoanhThu();
+
+    public TKTong getTKNhanVien();
 }

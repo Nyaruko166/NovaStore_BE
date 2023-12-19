@@ -205,10 +205,12 @@
                             <button onclick="clickAdd('promotion-detail', 'promotionDetailForm')"
                                     type="button" class="btn btn-dark">
                                 <i class="fa-solid fa-square-plus "></i>
+                                Thêm mới
                             </button>
                             <a th:href="@{/nova/promotion/page}">
-                                <button type="button" class="btn btn-dark"><i class="fa-solid fa-square-plus "></i>
-                                    Thêm khuyến mãi
+                                <button type="button" class="btn btn-dark"><i
+                                        class="fa-solid fa-circle-left mr-1 "></i>
+                                    Khuyến mãi
                                 </button>
                             </a>
                         </div>
@@ -269,14 +271,14 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th>Sản phẩm</th>
-                                <th>Tên giảm giá</th>
-                                <th>Tên sản phẩm</th>
                                 <th>Mã sản phẩm</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Tên giảm giá</th>
+                                <th>Phần trăm giảm</th>
                                 <th>Giá ban đầu</th>
                                 <th>Giá sau giảm</th>
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày kết thúc</th>
-                                <th>Phần trăm giảm</th>
                                 <th>Hành động</th>
                             </tr>
                             </thead>
@@ -286,14 +288,14 @@
                                     <img th:src="@{'/image/product/' + ${item.productId}}"
                                          style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
                                 </td>
-                                <td th:text="${item.promotionName}"></td>
-                                <td th:text="${item.productName}"></td>
                                 <td th:text="${item.productCode}"></td>
+                                <td th:text="${item.productName}"></td>
+                                <td th:text="${item.promotionName}"></td>
+                                <td th:text="${item.promotionValue}+ '%'"></td>
                                 <td th:text="${#numbers.formatDecimal(item.minProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫' + ' - ' + #numbers.formatDecimal(item.maxProductPrice, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
                                 <td th:text="${#numbers.formatDecimal(item.minProductPriceDiscount, 0, 'COMMA', 0, 'POINT') + ' ₫' + ' - ' + #numbers.formatDecimal(item.maxProductPriceDiscount, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
                                 <td th:text="${#dates.format(item.promotionStartDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                 <td th:text="${#dates.format(item.promotionEndDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                <td th:text="${item.promotionValue}"></td>
                                 <td class="d-flex justify-content-center">
                                     <div>
                                         <button th:onclick="clickDelete('promotion-detail', 'promotionDetailDelete', [[${item.promotionDetailId}]])"

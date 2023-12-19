@@ -64,6 +64,7 @@
                                      height: 40px;" type="button" class="btn btn-dark" data-toggle="modal"
                                     data-target="#addModal">
                                 <i class="fa-solid fa-square-plus "></i>
+                                Thêm mới
                             </button>
                         </div>
                         <div class="ml-2">
@@ -71,7 +72,7 @@
                                 <button style="
                                      height: 40px;" type="button" class="btn btn-dark"><i
                                         class="fa-solid fa-square-plus "></i>
-                                    Thêm sản phẩm
+                                    Thêm giảm giá cho sản phẩm
                                 </button>
                             </a>
                         </div>
@@ -198,11 +199,11 @@
                                                         }
                                                         isValue = parseFloat(isValue);
                                                         if (isValue <= 0) {
-                                                            errorElement.innerHTML = 'Phần trăm giảm phải lớn hơn  bằng 0 %';
+                                                            errorElement.innerHTML = 'Phần trăm giảm phải lớn hơn  0 %';
                                                             return false;
                                                         }
-                                                        if (isValue > 100) {
-                                                            errorElement.innerHTML = 'Phần trăm giảm phải nhỏ hơn hoặc bằng 100 %';
+                                                        if (isValue > 50) {
+                                                            errorElement.innerHTML = 'Phần trăm giảm phải nhỏ hơn hoặc bằng 50 %';
                                                             return false;
                                                         }
                                                         return true;
@@ -235,8 +236,15 @@
                                                         let startDate = new Date(startDateValue);
                                                         let endDate = new Date(endDateValue);
 
+                                                        let currentDate = new Date();
+
                                                         if (endDate <= startDate) {
                                                             errorEndDate.innerHTML = `Ngày kết thúc phải lớn hơn ngày bắt đầu`;
+                                                            return false;
+                                                        }
+
+                                                        if (endDate <= currentDate) {
+                                                            errorEndDate.innerHTML = `Ngày kết thúc phải lớn hơn ngày hiện tại`;
                                                             return false;
                                                         }
 
@@ -314,7 +322,7 @@
                             <tr th:each="items:${pagePromotion}">
                                 <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
-                                <td th:text="${#numbers.formatDecimal(items.value, 0, 0)}"></td>
+                                <td th:text="${items.value}+ '%'"></td>
                                 <td th:text="${#dates.format(items.startDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td th:text="${#dates.format(items.endDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td>
@@ -334,7 +342,7 @@
                                                 <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
                                             <a class="dropdown-item"
                                                th:href="@{'/nova/promotion/promotionChiTiet/' + ${items.id}}">
-                                                <i class="fa-solid fa-pen mr-3"></i>Chi tiết</a>
+                                                <i class="fa-solid fa-eye mr-2"></i>Chi tiết</a>
                                             <button
                                                     th:onclick="clickDelete('promotion', 'promotionDelete', [[${items.id}]])"
                                                     type="button" class="dropdown-item"><i

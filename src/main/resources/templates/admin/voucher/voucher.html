@@ -261,8 +261,8 @@
                                                             return false;
                                                         }
 
-                                                        if (isValue !== '' && isMinimumPrice !== '' && parseFloat(isValue) >= isMinimumPrice) {
-                                                            document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải nhỏ hơn giá tối thiểu.';
+                                                        if (isValue !== '' && isMinimumPrice !== '' && parseFloat(isValue) > isMinimumPrice) {
+                                                            document.getElementById('errorValue').innerHTML = 'Số tiền giảm phải nhỏ hơn hoặc bằng giá tối thiểu.';
                                                             return false;
                                                         }
 
@@ -301,8 +301,15 @@
                                                         let startDate = new Date(startDateValue);
                                                         let endDate = new Date(endDateValue);
 
+                                                        let currentDate = new Date();
+
                                                         if (endDate <= startDate) {
                                                             errorEndDate.innerHTML = `Ngày kết thúc phải lớn hơn ngày bắt đầu`;
+                                                            return false;
+                                                        }
+
+                                                        if (endDate <= currentDate) {
+                                                            errorEndDate.innerHTML = `Ngày kết thúc phải lớn hơn ngày hiện tại`;
                                                             return false;
                                                         }
                                                         errorEndDate.innerHTML = '';
