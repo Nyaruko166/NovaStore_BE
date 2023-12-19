@@ -93,7 +93,7 @@ public class ProductViewServiceImpl implements ProductViewService {
 
     @Override
     public List<ProductDiscountHomeResponse> getRandomProductAndProductDiscount() {
-        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.getAllProductAndDiscountResponseHome()
+        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.getAllProductAndDiscountResponseRandom()
                 .stream().map(ProductDiscountHomeDtoImpl::toData).toList();
         List<ProductDiscountHomeResponse> productDiscountHomeResponses = new ArrayList<>();
         for (int index = 0; index < productDiscountHomeResponseDtoList.size(); index++) {
@@ -158,6 +158,7 @@ public class ProductViewServiceImpl implements ProductViewService {
             } else {
                 int i = productDiscountHomeResponses.indexOf(prdDiscountResponse);
                 productDiscountHomeResponses.get(i).comparePrice(productDiscountHomeResponseDtoList.get(finalIndex).getPrice());
+//                productDiscountHomeResponses.get(i).comparePriceDiscount(productDiscountHomeResponseDtoList.get(finalIndex).getPriceDiscount());
 //                productDiscountHomeResponses.get(i).comparePriceDiscount(calculatePriceToPriceDiscount(productDiscountHomeResponseDtoList.get(finalIndex).getPrice(), productDiscountHomeResponseDtoList.get(finalIndex).getValue()));
             }
         }
@@ -308,6 +309,20 @@ public class ProductViewServiceImpl implements ProductViewService {
         List<ProductDetail> listProductDetail = productDetailRepository.getAllProductDetailByProductIdOrderByPriceAsc(productId);
         BigDecimal priceMin = listProductDetail.get(0).getPrice();
         return priceMin;
+    }
+
+    @Override
+    public BigDecimal getPriceDiscountMaxResponseByProductId(Integer productId) {
+        List<ProductDetail> listProductDetail = productDetailRepository.getAllProductDetailByProductIdOrderByPriceDiscountDesc(productId);
+        BigDecimal priceMaxDiscount = listProductDetail.get(0).getPriceDiscount();
+        return priceMaxDiscount;
+    }
+
+    @Override
+    public BigDecimal getPriceDiscountMinResponseByProductId(Integer productId) {
+        List<ProductDetail> listProductDetail = productDetailRepository.getAllProductDetailByProductIdOrderByPriceDiscountAsc(productId);
+        BigDecimal priceMinDiscount = listProductDetail.get(0).getPriceDiscount();
+        return priceMinDiscount;
     }
 
 

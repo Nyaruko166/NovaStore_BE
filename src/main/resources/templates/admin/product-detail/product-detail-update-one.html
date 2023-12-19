@@ -47,7 +47,7 @@
             </div>
             <div class="card-body card-block">
                 <form id="productDetailUpdate" th:object="${productDetail}"
-                      th:action="@{/nova/product-detail/update/{id}(id=${productDetail.id})}"
+                      th:action="@{/nova/product-detail/update-one/{id}(id=${productDetail.id})}"
                       method="post" class="form-horizontal" enctype="multipart/form-data">
 
                     <input type="hidden" class="form-control" th:value="*{product.id}" name="productId">

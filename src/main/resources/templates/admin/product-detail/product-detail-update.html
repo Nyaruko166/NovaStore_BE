@@ -546,7 +546,11 @@
                                         body: formData,
                                     })
 
-                                    window.location = "/nova/product/page";
+                                    document.getElementById('productDetailUpdate').action = '/nova/product-detail/update-success'
+                                    document.getElementById('productDetailUpdate').method = 'get'
+                                    document.getElementById('productDetailUpdate').submit()
+
+                                    // window.location = "/nova/product/page";
 
                                     // document.getElementById('productDetailUpdate').action = '/nova/product/page'
                                     // document.getElementById('productDetailUpdate').method = 'get'

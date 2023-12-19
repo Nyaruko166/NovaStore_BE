@@ -1,6 +1,7 @@
 package com.sd64.novastore.controller.user;
 
 import com.sd64.novastore.dto.common.ProductDetailAndValueDiscountDto;
+import com.sd64.novastore.dto.common.impl.ProductDetailDiscountDtoImpl;
 import com.sd64.novastore.model.*;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.Customer;
@@ -87,6 +88,7 @@ public class HomeController {
         }
         List<ProductDiscountHomeResponse> listProducAndDiscountHomeResponse = productViewService.getAllProductAndProductDiscountHomeResponse();
         model.addAttribute("listProducAndDiscountHomeResponse", productViewService.setPriceDiscount(listProducAndDiscountHomeResponse));
+//        model.addAttribute("listProducAndDiscountHomeResponse", listProducAndDiscountHomeResponse);
         List<ProductDiscountHomeResponse> listProductDiscountHomeResponse = productViewService.getAllProductDiscountHomeResponse();
         model.addAttribute("listProductDiscountHomeResponse", productViewService.setPriceDiscount(listProductDiscountHomeResponse));
 
@@ -230,8 +232,8 @@ public class HomeController {
         ProductDetailAndValueDiscountDto productDetailAndValueDiscountDto = productViewService.getProductDetailAndValueDiscount(productId);
         BigDecimal priceMax = productViewService.getPriceMaxResponseByProductId(productId);
         BigDecimal priceMin = productViewService.getPriceMinResponseByProductId(productId);
-        BigDecimal priceDiscountMax = productViewService.calculatePriceToPriceDiscount(priceMax, productDetailAndValueDiscountDto.getValue());
-        BigDecimal priceDiscountMin = productViewService.calculatePriceToPriceDiscount(priceMin, productDetailAndValueDiscountDto.getValue());
+        BigDecimal priceDiscountMax = productViewService.getPriceDiscountMaxResponseByProductId(productId);
+        BigDecimal priceDiscountMin = productViewService.getPriceDiscountMinResponseByProductId(productId);
         var listProductSize = productViewService.getAllSizeDetailResponse(productId);
         var listProductColor = productViewService.getAllColorDetailResponse(productId);
         model.addAttribute("product", product);
@@ -244,7 +246,13 @@ public class HomeController {
         model.addAttribute("priceMin", priceMin);
         model.addAttribute("priceDiscountMax", priceDiscountMax);
         model.addAttribute("priceDiscountMin", priceDiscountMin);
-        model.addAttribute("discount", productDetailAndValueDiscountDto);
+        var discount = ProductDetailDiscountDtoImpl.toResponse(productDetailAndValueDiscountDto);
+        model.addAttribute("discount", discount);
+        Float value = null;
+        if (productDetailAndValueDiscountDto == null) {
+            value = null;
+        }
+        model.addAttribute("value", value);
         return "/user/detail";
     }
 }

@@ -63,21 +63,26 @@
                 </div>
 <!--                <h3 class="font-weight-semi-bold mb-4" th:text="'₫' + ${#numbers.formatDecimal(priceMin, 0, 'COMMA', 0, 'POINT')}"></h3>-->
 <!--                <p class="mb-4" th:text="${product.description}"></p>-->
+
+<!--                Hiển thị giá đã giảm -->
+
                 <div class=" mb-3">
-                    <div  th:if="${priceMax != priceMin}">
+                    <div th:if="${priceDiscountMin != priceDiscountMax}">
                         <div id="price-top" class="d-flex  price-product-detail">
                             <h3 class="" th:text="'₫' + ${#numbers.formatDecimal(priceDiscountMin, 0, 'COMMA', 0, 'POINT')}"></h3>
                             <h3 class="ml-1 mr-1 "> ~ </h3>
                             <h3 class="" th:text="'₫' + ${#numbers.formatDecimal(priceDiscountMax, 0, 'COMMA', 0, 'POINT')}"></h3>
                         </div>
                     </div>
-                    <div  th:if="${priceMax == priceMin}">
+                    <div  th:if="${priceDiscountMin == priceDiscountMax}">
                         <div id="price-bottom" class="d-flex  price-product-detail">
-                            <h3 th:text="'₫' + ${#numbers.formatDecimal(priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h3>
+                            <h3 th:text="'₫' + ${#numbers.formatDecimal(priceDiscountMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h3>
                         </div>
                     </div>
                 </div>
-                <div th:unless="${discount.value == null}" class=" mb-3">
+
+
+                <div th:if="${discount.isDiscount}" class=" mb-3">
                     <div  th:if="${priceMax != priceMin}">
                         <div id="price-top-discount" class="d-flex  price-product-detail-discount">
                             <div class="" th:text="'₫' + ${#numbers.formatDecimal(priceMin, 0, 'COMMA', 0, 'POINT')}"></div>

@@ -159,7 +159,7 @@ public class ProductDetailController {
                       @RequestParam BigDecimal price,
                       @RequestParam Integer sizeId,
                       @RequestParam Integer colorId,
-                      RedirectAttributes redirectAttributes) {
+                      RedirectAttributes redirectAttributes) throws IOException {
         if (productDetailService.add(productId, quantity, price, sizeId, colorId)) {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
             return "redirect:/nova/product/" + productId + "/product-detail";
@@ -185,6 +185,13 @@ public class ProductDetailController {
         }
     }
 
+
+    @GetMapping("/product-detail/update-success")
+    public String updateSuccess(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mess", "Cập nhật dữ liệu thành công");
+        return "redirect:/nova/product/page";
+    }
+
     @GetMapping("/product-detail/detail/{id}")
     public String detail(@PathVariable Integer id, Model model) {
         ProductDetail productDetail = productDetailService.getOne(id);
@@ -196,7 +203,7 @@ public class ProductDetailController {
         return "admin/product-detail/product-detail-update-one";
     }
 
-    @PostMapping("/product-detail/update/{id}/one")
+    @PostMapping("/product-detail/update-one/{id}")
     public String update(@PathVariable Integer id,
                          @RequestParam Integer productId,
                          @RequestParam Integer quantity,

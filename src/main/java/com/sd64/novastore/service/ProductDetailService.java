@@ -16,7 +16,7 @@ public interface ProductDetailService {
 
     Page<ProductDetail> getAllPT(Integer page);
 
-    Boolean add(Integer productId, Integer quantity, BigDecimal price, Integer sizeId, Integer colorId);
+    Boolean add(Integer productId, Integer quantity, BigDecimal price, Integer sizeId, Integer colorId) throws IOException;
 
     ProductDetail update(Integer id, Integer productId, Integer quantity, BigDecimal price, Integer sizeId, Integer colorId);
 

@@ -45,6 +45,21 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             "ORDER BY pd.price ASC")
     List<ProductDetail> getAllProductDetailByProductIdOrderByPriceAsc(Integer productId);
 
+
+    @Query(value = "SELECT pd FROM ProductDetail pd\n" +
+            "INNER JOIN Product p ON pd.product.id = p.id\n" +
+            "INNER JOIN Image i ON i.product.id = p.id\n" +
+            "WHERE p.status IN (1,2) AND pd.status = 1 AND i.status = 1 AND p.id =:productId\n" +
+            "ORDER BY pd.priceDiscount DESC")
+    List<ProductDetail> getAllProductDetailByProductIdOrderByPriceDiscountDesc(Integer productId);
+
+    @Query(value = "SELECT pd FROM ProductDetail pd\n" +
+            "INNER JOIN Product p ON pd.product.id = p.id\n" +
+            "INNER JOIN Image i ON i.product.id = p.id\n" +
+            "WHERE p.status IN (1,2) AND pd.status = 1 AND i.status = 1 AND p.id =:productId\n" +
+            "ORDER BY pd.priceDiscount ASC")
+    List<ProductDetail> getAllProductDetailByProductIdOrderByPriceDiscountAsc(Integer productId);
+
     @Query(value = "SELECT pd.id as id, " +
             " pd.code as code, " +
             " pd.quantity as quantity," +
