@@ -1,6 +1,8 @@
 package com.sd64.novastore.controller.user;
 
+import com.sd64.novastore.dto.common.ProductAndValueDiscountDto;
 import com.sd64.novastore.dto.common.ProductDetailAndValueDiscountDto;
+import com.sd64.novastore.dto.common.impl.ProductAndValueDiscountDtoImpl;
 import com.sd64.novastore.dto.common.impl.ProductDetailDiscountDtoImpl;
 import com.sd64.novastore.model.*;
 import com.sd64.novastore.model.Cart;
@@ -233,7 +235,7 @@ public class HomeController {
         Float value = productViewService.getValueDiscountByProductId(productId);
         BigDecimal priceMax = productViewService.getPriceMaxResponseByProductId(productId);
         BigDecimal priceMin = productViewService.getPriceMinResponseByProductId(productId);
-
+        ProductAndValueDiscountDto productAndValueDiscountDto = productViewService.getProductAndValueDiscount(productId);
         if (productDetailAndValueDiscountDto != null) {
             BigDecimal priceDiscountMax = productViewService.calculatePriceToPriceDiscount(priceMax, productDetailAndValueDiscountDto.getValue());
             BigDecimal priceDiscountMin = productViewService.calculatePriceToPriceDiscount(priceMin, productDetailAndValueDiscountDto.getValue());
@@ -260,7 +262,11 @@ public class HomeController {
         model.addAttribute("priceMin", priceMin);
 //        model.addAttribute("priceDiscountMax", priceDiscountMax);
 //        model.addAttribute("priceDiscountMin", priceDiscountMin);
-        var discount = ProductDetailDiscountDtoImpl.toResponse(productDetailAndValueDiscountDto);
+//        var discount = ProductDetailDiscountDtoImpl.toResponse(productDetailAndValueDiscountDto);
+        var discount = ProductAndValueDiscountDtoImpl.toResponse(productAndValueDiscountDto);
+//        if (discount.getIsDiscount() == false) {
+//
+//        }
         model.addAttribute("discount", discount);
         model.addAttribute("value", value);
         return "/user/detail";
