@@ -49,6 +49,29 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             "ORDER BY p.updateDate DESC ")
     List<ProductDiscountHomeDto> getAllProductAndDiscountResponseHome();
 
+    @Query(value = "SELECT pr.value FROM Product p\n" +
+            "LEFT JOIN PromotionDetail prd ON prd.ProductId = p.id\n" +
+            "LEFT JOIN Promotion pr ON pr.Id = prd.PromotionId\n" +
+            "INNER JOIN Image i ON i.ProductId = p.Id\n" +
+            "INNER JOIN ProductDetail pd ON pd.ProductId = p.id\n" +
+            "WHERE p.status IN (1,2) AND i.Status = 1 AND p.id =:productId\n" +
+            "GROUP BY pr.value", nativeQuery = true)
+    Float getValueDiscountByProductId(Integer productId);
+
+    @Query(value = "SELECT p.id as productId, " +
+            "p.name as productName, " +
+            "pd.price as price, " +
+            "pd.priceDiscount as priceDiscount, " +
+            "pr.value as value " +
+            "FROM Product p\n" +
+            "INNER JOIN ProductDetail pd ON pd.productId = p.id\n" +
+            "INNER JOIN Image i ON i.productId = p.id\n" +
+            "LEFT JOIN PromotionDetail prd ON prd.productId = p.id\n" +
+            "LEFT JOIN Promotion pr ON pr.id = prd.promotionId\n" +
+            "WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1\n  " +
+            "ORDER BY NEWID() ", nativeQuery = true)
+    List<ProductDiscountHomeDto> getAllProductAndDiscountResponseRandom();
+
 
     @Query(value = "SELECT p.id as productId, " +
             "p.name as productName, " +
@@ -162,7 +185,7 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             " LEFT JOIN Promotion pr ON pr.id = prd.promotion.id " +
             " INNER JOIN Image i ON i.product.id = p.id " +
             " WHERE (p.name LIKE %:productName% OR p.name IS NULL) " +
-            " AND (pd.price >= :priceMin AND pd.price <= :priceMax)" +
+            " AND (pd.priceDiscount >= :priceMin AND pd.priceDiscount <= :priceMax)" +
             " AND (p.brand.id=:brandId OR :brandId IS NULL) " +
             " AND (p.material.id=:materialId OR :materialId IS NULL) " +
             " AND (p.category.id=:categoryId OR :categoryId IS NULL) " +
@@ -181,7 +204,7 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             " LEFT JOIN Promotion pr ON pr.id = prd.promotion.id " +
             " INNER JOIN Image i ON i.product.id = p.id " +
             " WHERE (p.name LIKE %:productName% OR p.name IS NULL) " +
-            " AND (pd.price >= :priceMin AND pd.price <= :priceMax)" +
+            " AND (pd.priceDiscount >= :priceMin AND pd.priceDiscount <= :priceMax)" +
             " AND (p.brand.id=:brandId OR :brandId IS NULL) " +
             " AND (p.material.id=:materialId OR :materialId IS NULL) " +
             " AND (p.category.id=:categoryId OR :categoryId IS NULL) " +
@@ -199,7 +222,7 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             " LEFT JOIN Promotion pr ON pr.id = prd.promotion.id " +
             " INNER JOIN Image i ON i.product.id = p.id " +
             " WHERE (p.name LIKE %:productName% OR p.name IS NULL) " +
-            " AND (pd.price >= :priceMin AND pd.price <= :priceMax)" +
+            " AND (pd.priceDiscount >= :priceMin AND pd.priceDiscount <= :priceMax)" +
             " AND (p.brand.id=:brandId OR :brandId IS NULL) " +
             " AND (p.material.id=:materialId OR :materialId IS NULL) " +
             " AND (p.category.id=:categoryId OR :categoryId IS NULL) " +

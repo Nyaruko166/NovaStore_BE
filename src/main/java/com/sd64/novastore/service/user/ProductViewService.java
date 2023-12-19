@@ -49,8 +49,16 @@ public interface ProductViewService {
 
     BigDecimal getPriceMinBySelected(Integer price);
 
+    BigDecimal getPriceDiscountMaxResponseByProductId(Integer productId);
+
+    BigDecimal getPriceDiscountMinResponseByProductId(Integer productId);
+
     List<ProductDiscountHomeResponse> getRandomProductAndProductDiscount();
 
     ProductDetailAndValueDiscountDto getProductDetailAndValueDiscount(Integer productDetailId);
+
+    Float getValueDiscountByProductId(Integer productId);
+
+
 
 }

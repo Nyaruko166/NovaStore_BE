@@ -225,193 +225,167 @@
         </div>
     </div>
 
-    <!--    Product Detail Add Start-->
-    <!--    <form id="productDetailAdd" th:object="${product}" class="form-horizontal">-->
-    <!--        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"-->
-    <!--             aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-    <!--            <div class="modal-dialog" role="document">-->
-    <!--                <div class="modal-content">-->
-    <!--                    <div class="modal-header">-->
-    <!--                        <h5 class="modal-title" id="exampleModalLabel">Thêm dữ liệu</h5>-->
-    <!--                        <button type="button" class="close" data-dismiss="modal"-->
-    <!--                                aria-label="Close">-->
-    <!--                            <span aria-hidden="true">&times;</span>-->
-    <!--                        </button>-->
-    <!--                    </div>-->
-    <!--                    <div class="modal-body">-->
-    <!--                        <div class="form-group row">-->
-    <!--                            <div class="col-sm-10">-->
-    <!--                                <input type="hidden" class="form-control" th:value="${product.id}" name="productId">-->
-    <!--                            </div>-->
-    <!--                        </div>-->
+    <!--        Product Detail Add Start-->
+    <form id="productDetailAdd" th:object="${product}" class="form-horizontal">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Thêm chi tiết sản phẩm</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                                <input type="hidden" class="form-control" th:value="${product.id}" name="productId">
+                        <div class="mb-3">
+                            <div class="">
+                                <label class="font-weight-bold form-control-label">Mã sản phẩm</label>
+                                <input type="text" class="form-control" th:value="*{code}" disabled>
+                            </div>
+                        </div>
 
 
-    <!--                        <div class="mb-3">-->
-    <!--                            <div class="">-->
-    <!--                                <label class="font-weight-bold form-control-label">Mã sản phẩm</label>-->
-    <!--                                <input type="text" class="form-control" th:value="*{code}" disabled>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
+                        <div class="mb-3">
+                            <div class="">
+                                <label class="font-weight-bold form-control-label">Tên sản phẩm</label>
+                                <input type="text" class="form-control" th:value="*{name}" disabled>
+                            </div>
+                        </div>
 
 
-    <!--                        <div class="mb-3">-->
-    <!--                            <div class="">-->
-    <!--                                <label class="font-weight-bold form-control-label">Tên sản phẩm</label>-->
-    <!--                                <input type="text" class="form-control" th:value="*{name}" disabled>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
+                        <!--                        <div class="mb-3">-->
+                        <!--                            <div class="d-flex justify-content-between">-->
+                        <!--                                <label class="font-weight-bold form-control-label">Mã chi tiết-->
+                        <!--                                </label>-->
+                        <!--                                <div class="" style="color: red" id="errorCode"></div>-->
+                        <!--                            </div>-->
+                        <!--                            <input type="text" class="form-control" id="code" name="code"-->
+                        <!--                                   oninput="onInputText('errorCode')">-->
+                        <!--                        </div>-->
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Số lượng
+                                </label>
+                                <div class="" style="color: red" id="errorQuantity"></div>
+                            </div>
+                            <input type="number" class="form-control" id="quantity" name="quantity"
+                                   oninput="onInputText('errorQuantity')">
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Giá
+                                </label>
+                                <div class="" style="color: red" id="errorPrice"></div>
+                            </div>
+                            <input type="number" id="price" name="price"
+                                   class="form-control" oninput="onInputText('errorPrice')">
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Kích cỡ
+                                </label>
+                            </div>
+                            <select class="form-control" name="sizeId">
+                                <option th:value="${size.id}" th:each="size: ${listSize}"
+                                        th:text="${size.name}"></option>
+                            </select>
+                        </div>
 
 
-    <!--                        &lt;!&ndash;                        <div class="mb-3">&ndash;&gt;-->
-    <!--                        &lt;!&ndash;                            <div class="d-flex justify-content-between">&ndash;&gt;-->
-    <!--                        &lt;!&ndash;                                <label class="font-weight-bold form-control-label">Mã chi tiết&ndash;&gt;-->
-    <!--                        &lt;!&ndash;                                </label>&ndash;&gt;-->
-    <!--                        &lt;!&ndash;                                <div class="" style="color: red" id="errorCode"></div>&ndash;&gt;-->
-    <!--                        &lt;!&ndash;                            </div>&ndash;&gt;-->
-    <!--                        &lt;!&ndash;                            <input type="text" class="form-control" id="code" name="code"&ndash;&gt;-->
-    <!--                        &lt;!&ndash;                                   oninput="onInputText('errorCode')">&ndash;&gt;-->
-    <!--                        &lt;!&ndash;                        </div>&ndash;&gt;-->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="font-weight-bold form-control-label">Màu sắc
+                                </label>
+                            </div>
+                            <select class="form-control" name="colorId">
+                                <option th:value="${color.id}" th:each="color: ${listColor}"
+                                        th:text="${color.name}"></option>
+                            </select>
+                        </div>
 
-    <!--                        <div class="mb-3">-->
-    <!--                            <div class="d-flex justify-content-between">-->
-    <!--                                <label class="font-weight-bold form-control-label">Số lượng-->
-    <!--                                </label>-->
-    <!--                                <div class="" style="color: red" id="errorQuantity"></div>-->
-    <!--                            </div>-->
-    <!--                            <input type="number" class="form-control" id="quantity" name="quantity"-->
-    <!--                                   oninput="onInputText('errorQuantity')">-->
-    <!--                        </div>-->
-
-    <!--                        <div class="mb-3">-->
-    <!--                            <div class="d-flex justify-content-between">-->
-    <!--                                <label class="font-weight-bold form-control-label">Giá-->
-    <!--                                </label>-->
-    <!--                                <div class="" style="color: red" id="errorPrice"></div>-->
-    <!--                            </div>-->
-    <!--                            <input type="number" id="price" name="price"-->
-    <!--                                   class="form-control" oninput="onInputText('errorPrice')">-->
-    <!--                        </div>-->
-
-    <!--                        <div class="mb-3">-->
-    <!--                            <div class="d-flex justify-content-between">-->
-    <!--                                <label class="font-weight-bold form-control-label">Kích cỡ-->
-    <!--                                </label>-->
-    <!--                            </div>-->
-    <!--                            <select class="form-control" name="sizeId">-->
-    <!--                                <option th:value="${size.id}" th:each="size: ${listSize}"-->
-    <!--                                        th:text="${size.name}"></option>-->
-    <!--                            </select>-->
-    <!--                        </div>-->
+                        <script th:inline="javascript">
+                            checkQuantity = () => {
+                                let quantity = document.getElementById('quantity').value
+                                if (quantity === "") {
+                                    document.getElementById('errorQuantity').innerHTML = `Chưa nhập số lượng`
+                                    return false;
+                                }
+                                if (quantity < 0) {
+                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải lớn hơn hoặc bằng 0`
+                                    return false;
+                                }
+                                if (Number.isInteger(quantity)) {
+                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải là số nguyên`
+                                    return false;
+                                }
+                                return true;
+                            }
 
 
-    <!--                        <div class="mb-3">-->
-    <!--                            <div class="d-flex justify-content-between">-->
-    <!--                                <label class="font-weight-bold form-control-label">Màu sắc-->
-    <!--                                </label>-->
-    <!--                            </div>-->
-    <!--                            <select class="form-control" name="colorId">-->
-    <!--                                <option th:value="${color.id}" th:each="color: ${listColor}"-->
-    <!--                                        th:text="${color.name}"></option>-->
-    <!--                            </select>-->
-    <!--                        </div>-->
+                            checkPriceAdd = () => {
+                                let isPrice = document.getElementById('price').value
+                                if (isPrice.trim() === '') {
+                                    document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`
+                                    return false;
+                                }
+                                if (isPrice < 1000) {
+                                    document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn hoặc bằng 1000`
+                                    return false;
+                                }
+                                if (isPrice > 2147483647) {
+                                    document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`
+                                    return false;
+                                }
+                                return true;
+                            }
 
-    <!--                        <script th:inline="javascript">-->
-    <!--                            checkQuantity = () => {-->
-    <!--                                let quantity = document.getElementById('quantity').value-->
-    <!--                                if (quantity === "") {-->
-    <!--                                    document.getElementById('errorQuantity').innerHTML = `Chưa nhập số lượng`-->
-    <!--                                    return false;-->
-    <!--                                }-->
-    <!--                                if (quantity < 0) {-->
-    <!--                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải lớn hơn hoặc bằng 0`-->
-    <!--                                    return false;-->
-    <!--                                }-->
-    <!--                                if (Number.isInteger(quantity)) {-->
-    <!--                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải là số nguyên`-->
-    <!--                                    return false;-->
-    <!--                                }-->
-    <!--                                return true;-->
-    <!--                            }-->
+                            validate = () => {
+                                let isQuantity = checkQuantity();
+                                let isPrice = checkPriceAdd();
+                                if (isQuantity === true && isPrice === true) {
+                                    return true;
+                                }
+                            }
 
-
-    <!--                            checkPriceAdd = () => {-->
-    <!--                                let isPrice = document.getElementById('price').value-->
-    <!--                                if (isPrice.trim() === '') {-->
-    <!--                                    document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`-->
-    <!--                                    return false;-->
-    <!--                                }-->
-    <!--                                if (isPrice < 1000) {-->
-    <!--                                    document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn hoặc bằng 1000`-->
-    <!--                                    return false;-->
-    <!--                                }-->
-    <!--                                if (isPrice > 2147483647) {-->
-    <!--                                    document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`-->
-    <!--                                    return false;-->
-    <!--                                }-->
-    <!--                                return true;-->
-    <!--                            }-->
-
-    <!--                            validate = () => {-->
-    <!--                                let isQuantity = checkQuantity();-->
-    <!--                                let isPrice = checkPriceAdd();-->
-    <!--                                if (isQuantity === true && isPrice === true) {-->
-    <!--                                    return true;-->
-    <!--                                }-->
-    <!--                            }-->
-
-    <!--                            add = () => {-->
-    <!--                                if (validate()) {-->
-    <!--                                    swal({-->
-    <!--                                        title: "Thêm dữ liệu",-->
-    <!--                                        text: "Bạn có muốn thêm dữ liệu không ?",-->
-    <!--                                        icon: "warning",-->
-    <!--                                        buttons: ["Không", "Có"],-->
-    <!--                                        dangerMode: true,-->
-    <!--                                        closeOnClickOutside: false,-->
-    <!--                                    }).then((add) => {-->
-    <!--                                        if (add) {-->
-    <!--                                            document.getElementById('productDetailAdd').action = '/nova/product-detail/add'-->
-    <!--                                            document.getElementById('productDetailAdd').method = 'post'-->
-    <!--                                            document.getElementById('productDetailAdd').submit()-->
-    <!--                                        }-->
-    <!--                                    });-->
-    <!--                                }-->
-    <!--                            }-->
-
-    <!--                            checkPrice = () => {-->
-    <!--                                let priceMin = document.getElementById('priceMin').value-->
-    <!--                                let priceMax = document.getElementById('priceMax').value-->
-    <!--                                debugger-->
-    <!--                                if (priceMin < 0 || priceMax < 0) {-->
-    <!--                                    document.getElementById('error').innerHTML = `Giá phải là số dương`-->
-    <!--                                    return false;-->
-    <!--                                }-->
-    <!--                                if (Number(priceMax) < Number(priceMin)) {-->
-    <!--                                    document.getElementById('error').innerHTML = `Giá bắt đầu phải nhỏ hơn giá kết thúc`-->
-    <!--                                    return false;-->
-    <!--                                }-->
-    <!--                                return true;-->
-    <!--                            }-->
-
-    <!--                            search = (productId) => {-->
-    <!--                                if (checkPrice()) {-->
-    <!--                                    document.getElementById('productDetailForm').action = '/nova/product/' + productId + '/product-detail/search'-->
-    <!--                                    document.getElementById('productDetailForm').method = 'get'-->
-    <!--                                    document.getElementById('productDetailForm').submit()-->
-    <!--                                }-->
-    <!--                            }-->
-    <!--                        </script>-->
-    <!--                    </div>-->
-    <!--                    <div class="modal-footer">-->
-    <!--                        <button onclick="add()"-->
-    <!--                                type="button" class="btn btn-dark"><i-->
-    <!--                                class="fa-solid fa-square-plus px-4"></i></button>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </form>-->
-    <!--    Product Detail Add End-->
+                            add = () => {
+                                if (validate()) {
+                                    Swal.fire({
+                                        title: "Thêm dữ liệu",
+                                        text: "Bạn có muốn thêm dữ liệu không ?",
+                                        icon: "question",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#0DC149",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Có",
+                                        cancelButtonText: "Không",
+                                        allowOutsideClick: false
+                                    }).then((add) => {
+                                        if (add) {
+                                            document.getElementById('productDetailAdd').action = '/nova/product-detail/add/one'
+                                            document.getElementById('productDetailAdd').method = 'post'
+                                            document.getElementById('productDetailAdd').submit()
+                                        }
+                                    });
+                                }
+                            }
+                        </script>
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="add()"
+                                type="button" class="btn btn-dark"><i
+                                class="fa-solid fa-square-plus px-4"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+<!--            Product Detail Add End-->
 
     <div class="col">
         <div class="card">
@@ -541,11 +515,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer d-flex align-items-center">
+                <div class="card-footer d-flex align-items-center justify-content-between">
                     <div class="">
                         <button th:onclick="search([[${product.id}]])" type="button"
                                 class="btn btn-dark">
                             <i class="fa-solid fa-magnifying-glass px-4"></i>
+                        </button>
+                    </div>
+                    <div th:if="${pageProductDetail.isEmpty()}">
+                        <button type="button" class="btn btn-dark" data-toggle="modal"
+                            data-target="#exampleModal">
+                            <i class="fa-solid fa-square-plus px-4"></i>
                         </button>
                     </div>
                 </div>
@@ -632,7 +612,7 @@
                                 <td th:text="${items.sizeName}"></td>
                                 <td>
                                     <div th:onclick="showQrCodeImage([[${items.id}]])"
-                                            class="display-qr-btn btn btn-dark px-4 text-dark font-weight-bold cursor-pointer">
+                                         class="display-qr-btn btn btn-dark px-4 text-dark font-weight-bold cursor-pointer">
                                         <i class="fa-solid fa-qrcode" style="color: white"></i>
                                     </div>
                                 </td>
@@ -712,9 +692,9 @@
                                             <i class="fa-solid fa-ellipsis-vertical"></i>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-<!--                                            <a class="dropdown-item"-->
+<!--                                            <a class="dropdown-item" th:if="${product.status == 1}"-->
 <!--                                               th:href="@{'/nova/product-detail/detail/' + ${items.id}}">-->
-<!--                                                <i class="fa-solid fa-pen mr-3"></i>Sửa</a>-->
+<!--                                            <i class="fa-solid fa-pen mr-3"></i>Sửa</a>-->
                                             <button
                                                     th:onclick="clickDelete('product-detail', 'productDetailDelete', [[${items.id}]])"
                                                     type="button" class="dropdown-item"><i

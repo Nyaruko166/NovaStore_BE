@@ -153,21 +153,21 @@ public class ProductDetailController {
 
 
 
-//    @PostMapping("/product-detail/add")
-//    public String add(@RequestParam Integer productId,
-//                      @RequestParam Integer quantity,
-//                      @RequestParam BigDecimal price,
-//                      @RequestParam Integer sizeId,
-//                      @RequestParam Integer colorId,
-//                      RedirectAttributes redirectAttributes) {
-//        if (productDetailService.add(productId, quantity, price, sizeId, colorId)) {
-//            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
-//            return "redirect:/nova/product/" + productId + "/product-detail";
-//        } else {
-//            redirectAttributes.addFlashAttribute("error", "Mã chi tiết đã tồn tại, Thêm dữ liệu thất bại");
-//            return "redirect:/nova/product/" + productId + "/product-detail";
-//        }
-//    }
+    @PostMapping("/product-detail/add/one")
+    public String add(@RequestParam Integer productId,
+                      @RequestParam Integer quantity,
+                      @RequestParam BigDecimal price,
+                      @RequestParam Integer sizeId,
+                      @RequestParam Integer colorId,
+                      RedirectAttributes redirectAttributes) throws IOException {
+        if (productDetailService.add(productId, quantity, price, sizeId, colorId)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/product/" + productId + "/product-detail";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Mã chi tiết đã tồn tại, Thêm dữ liệu thất bại");
+            return "redirect:/nova/product/" + productId + "/product-detail";
+        }
+    }
 
     @PostMapping("/product-detail/excel")
     public String importExcel(@RequestParam Integer productId,
@@ -185,6 +185,13 @@ public class ProductDetailController {
         }
     }
 
+
+    @GetMapping("/product-detail/update-success")
+    public String updateSuccess(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("mess", "Cập nhật dữ liệu thành công");
+        return "redirect:/nova/product/page";
+    }
+
     @GetMapping("/product-detail/detail/{id}")
     public String detail(@PathVariable Integer id, Model model) {
         ProductDetail productDetail = productDetailService.getOne(id);
@@ -193,10 +200,10 @@ public class ProductDetailController {
         List<Color> listColor = colorService.getAll();
         model.addAttribute("listSize", listSize);
         model.addAttribute("listColor", listColor);
-        return "admin/product-detail/product-detail-update";
+        return "admin/product-detail/product-detail-update-one";
     }
 
-    @PostMapping("/product-detail/update/{id}")
+    @PostMapping("/product-detail/update-one/{id}")
     public String update(@PathVariable Integer id,
                          @RequestParam Integer productId,
                          @RequestParam Integer quantity,

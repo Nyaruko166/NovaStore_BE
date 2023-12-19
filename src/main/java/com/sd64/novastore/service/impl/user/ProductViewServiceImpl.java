@@ -89,9 +89,15 @@ public class ProductViewServiceImpl implements ProductViewService {
         return productDetailAndValueDiscountDto;
     }
 
+
+    @Override
+    public Float getValueDiscountByProductId(Integer productId) {
+        return productViewRepository.getValueDiscountByProductId(productId);
+    }
+
     @Override
     public List<ProductDiscountHomeResponse> getRandomProductAndProductDiscount() {
-        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.getAllProductAndDiscountResponseHome()
+        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.getAllProductAndDiscountResponseRandom()
                 .stream().map(ProductDiscountHomeDtoImpl::toData).toList();
         List<ProductDiscountHomeResponse> productDiscountHomeResponses = new ArrayList<>();
         for (int index = 0; index < productDiscountHomeResponseDtoList.size(); index++) {
@@ -108,10 +114,7 @@ public class ProductViewServiceImpl implements ProductViewService {
             }
         }
 
-        List<ProductDiscountHomeResponse> randomElements = new ArrayList<>(productDiscountHomeResponses);
-        Collections.shuffle(randomElements, new Random());
-
-        return randomElements.subList(0, 10);
+        return productDiscountHomeResponses;
     }
 
     @Override
@@ -159,6 +162,7 @@ public class ProductViewServiceImpl implements ProductViewService {
             } else {
                 int i = productDiscountHomeResponses.indexOf(prdDiscountResponse);
                 productDiscountHomeResponses.get(i).comparePrice(productDiscountHomeResponseDtoList.get(finalIndex).getPrice());
+//                productDiscountHomeResponses.get(i).comparePriceDiscount(productDiscountHomeResponseDtoList.get(finalIndex).getPriceDiscount());
 //                productDiscountHomeResponses.get(i).comparePriceDiscount(calculatePriceToPriceDiscount(productDiscountHomeResponseDtoList.get(finalIndex).getPrice(), productDiscountHomeResponseDtoList.get(finalIndex).getValue()));
             }
         }
@@ -248,6 +252,7 @@ public class ProductViewServiceImpl implements ProductViewService {
                 PropertiesResponse propertiesResponse = new PropertiesResponse();
                 propertiesResponse.setCode(listProductDetail.get(i).getCode());
                 propertiesResponse.setPrice(listProductDetail.get(i).getPrice());
+                propertiesResponse.setPriceDiscount(listProductDetail.get(i).getPriceDiscount());
                 propertiesResponse.setQuantity(listProductDetail.get(i).getQuantity());
                 propertiesResponse.setId(colorId);
                 propertiesResponseList.add(propertiesResponse);
@@ -260,6 +265,7 @@ public class ProductViewServiceImpl implements ProductViewService {
                     PropertiesResponse propertiesResponse = new PropertiesResponse();
                     propertiesResponse.setCode(listProductDetail.get(i).getCode());
                     propertiesResponse.setPrice(listProductDetail.get(i).getPrice());
+                    propertiesResponse.setPriceDiscount(listProductDetail.get(i).getPriceDiscount());
                     propertiesResponse.setQuantity(listProductDetail.get(i).getQuantity());
                     propertiesResponse.setId(colorId);
                     listSizeDetailResponse.get(index).getPropertiesResponseList().add(propertiesResponse);
@@ -309,6 +315,20 @@ public class ProductViewServiceImpl implements ProductViewService {
         List<ProductDetail> listProductDetail = productDetailRepository.getAllProductDetailByProductIdOrderByPriceAsc(productId);
         BigDecimal priceMin = listProductDetail.get(0).getPrice();
         return priceMin;
+    }
+
+    @Override
+    public BigDecimal getPriceDiscountMaxResponseByProductId(Integer productId) {
+        List<ProductDetail> listProductDetail = productDetailRepository.getAllProductDetailByProductIdOrderByPriceDiscountDesc(productId);
+        BigDecimal priceMaxDiscount = listProductDetail.get(0).getPriceDiscount();
+        return priceMaxDiscount;
+    }
+
+    @Override
+    public BigDecimal getPriceDiscountMinResponseByProductId(Integer productId) {
+        List<ProductDetail> listProductDetail = productDetailRepository.getAllProductDetailByProductIdOrderByPriceDiscountAsc(productId);
+        BigDecimal priceMinDiscount = listProductDetail.get(0).getPriceDiscount();
+        return priceMinDiscount;
     }
 
 

@@ -9,6 +9,7 @@ import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
 import com.sd64.novastore.service.ProductDetailService;
 import com.sd64.novastore.utils.FileUtil;
+import com.sd64.novastore.utils.QRCodeUtil;
 import com.sd64.novastore.utils.productdetail.ProductDetailExcelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +61,27 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return listProductDetailResponse;
     }
 
+    public String generateProductDetailCode(int count) {
+        ProductDetail productDetailFinalPresent = productDetailRepository.findTopByOrderByIdDesc();
+        if (productDetailFinalPresent == null) {
+            return "CT00001";
+        }
+        Integer idFinalPresent = productDetailFinalPresent.getId() + count;
+        String code = String.format("%05d", idFinalPresent);
+        return "CT" + code;
+    }
+
+    public String formatName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        return name;
+    }
+
     @Override
-    public Boolean add(Integer productId, Integer quantity, BigDecimal price, Integer sizeId, Integer colorId) {
+    public Boolean add(Integer productId, Integer quantity, BigDecimal price, Integer sizeId, Integer colorId) throws IOException {
         ProductDetail productDetail = new ProductDetail();
         productDetail.setStatus(1);
         productDetail.setCreateDate(new java.util.Date());
@@ -69,10 +89,11 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         productDetail.setProduct(Product.builder().id(productId).build());
         productDetail.setQuantity(quantity);
         productDetail.setPrice(price);
+        productDetail.setPriceDiscount(price);
         productDetail.setSize(Size.builder().id(sizeId).build());
         productDetail.setColor(Color.builder().id(colorId).build());
-        productDetailRepository.save(productDetail);
-        productDetail.setCode("CT" + productDetail.getId());
+        productDetail.setCode(generateProductDetailCode(1));
+        QRCodeUtil.generateQRCode(productDetail.getCode(), productDetail.getCode());
         productDetailRepository.save(productDetail);
         return true;
     }
@@ -87,6 +108,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             productDetail.setCreateDate(productDetail.getCreateDate());
             productDetail.setQuantity(quantity);
             productDetail.setPrice(price);
+            productDetail.setPriceDiscount(price);
             productDetail.setUpdateDate(new Date());
             productDetail.setProduct(Product.builder().id(productId).build());
             productDetail.setColor(Color.builder().id(colorId).build());

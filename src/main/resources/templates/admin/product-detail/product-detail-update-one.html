@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart Detail </title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h5 style="font-weight: bold">CẬP NHẬT CHI TIẾT SẢN PHẨM</h5>
+            </div>
+            <div th:if="${mess}">
+                <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnSuccess = document.getElementById("btnSuccess");
+                        btnSuccess.click();
+                    }
+                    alertSuccess = (content) => {
+                        Swal.fire({
+                            title: content,
+                            icon: "success",
+                            confirmButtonColor: "#0DC149"
+                        });
+                    }
+                </script>
+            </div>
+            <div th:if="${error}">
+                <button hidden id="btnError" th:onclick="alertError([[${error}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnError = document.getElementById("btnError");
+                        btnError.click();
+                    }
+                    alertError = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thất bại",
+                            text: content,
+                            icon: "error",
+                            confirmButtonColor: "#d33"
+                        });
+                    }
+                </script>
+            </div>
+            <div class="card-body card-block">
+                <form id="productDetailUpdate" th:object="${productDetail}"
+                      th:action="@{/nova/product-detail/update-one/{id}(id=${productDetail.id})}"
+                      method="post" class="form-horizontal" enctype="multipart/form-data">
+
+                    <input type="hidden" class="form-control" th:value="*{product.id}" name="productId">
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Mã sản phẩm
+                            </label>
+                        </div>
+                        <input type="text" class="form-control" th:value="*{product.code}" disabled>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Tên sản phẩm
+                            </label>
+                        </div>
+                        <input type="text" class="form-control" th:value="*{product.name}" disabled>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Mã chi tiết
+                            </label>
+                        </div>
+                        <input type="text" class="form-control" name="code" th:value="*{code}" disabled>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Số lượng
+                            </label>
+                            <div class="" style="color: red" id="errorQuantity"></div>
+                        </div>
+                        <input type="number" class="form-control" id="quantity" name="quantity" th:value="*{quantity}"
+                               oninput="onInputText('errorQuantity')">
+                    </div>
+
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Giá
+                            </label>
+                            <div class="" style="color: red" id="errorPrice"></div>
+                        </div>
+                        <input type="number" class="form-control" id="price" name="price"
+                               th:value="*{price}" oninput="onInputText('errorPrice')">
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label class="font-weight-bold">Kích cỡ</label>
+                        <div class="w-100 d-flex justify-content-between">
+                            <div class="w-95">
+                                <select class="form-control" name="sizeId">
+                                    <option th:value="${size.id}" th:each="size: ${listSize}"
+                                            th:text="${size.name}" th:selected="(*{size.id} == ${size.id})"></option>
+                                </select>
+                            </div>
+                            <div class="w-5 d-flex justify-content-end">
+                                <button type="button" class="btn btn-dark" data-toggle="modal"
+                                        data-target="#exampleModalSize">
+                                    <i class="fa-solid fa-square-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label class="font-weight-bold">Màu sắc</label>
+                        <div class="w-100 d-flex justify-content-between">
+                            <div class="w-95">
+                                <select class="form-control" name="colorId">
+                                    <option th:value="${color.id}" th:each="color: ${listColor}"
+                                            th:text="${color.name}" th:selected="(*{color.id} == ${color.id})"></option>
+                                </select>
+                            </div>
+                            <div class="w-5 d-flex justify-content-end">
+                                <button type="button" class="btn btn-dark" data-toggle="modal"
+                                        data-target="#exampleModalColor">
+                                    <i class="fa-solid fa-square-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card-footer">
+                        <button onclick="updateProductDetail()" type="button" class="btn btn-dark"><i
+                                class="fa-solid fa-pen px-4"></i>
+                        </button>
+                        <script th:inline="javascript">
+
+                            checkQuantity = () => {
+                                let quantity = document.getElementById('quantity').value
+                                if (quantity === "") {
+                                    document.getElementById('errorQuantity').innerHTML = `Chưa nhập số lượng`
+                                    return false;
+                                }
+                                if (quantity < 0) {
+                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải lớn hơn hoặc bằng 0`
+                                    return false;
+                                }
+                                if (Number.isInteger(quantity)) {
+                                    document.getElementById('errorQuantity').innerHTML = `Số lượng phải là số nguyên`
+                                    return false;
+                                }
+                                return true;
+                            }
+
+
+                            checkPrice = () => {
+                                let isPrice = document.getElementById('price').value
+                                if (isPrice.trim() === '') {
+                                    document.getElementById('errorPrice').innerHTML = `Chưa nhập giá`
+                                    return false;
+                                }
+                                if (isPrice < 0) {
+                                    document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn hoặc bằng 0`
+                                    return false;
+                                }
+                                if (isPrice > 2147483647) {
+                                    document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`
+                                    return false;
+                                }
+                                return true;
+                            }
+
+                            validate = () => {
+                                let isQuantity = checkQuantity();
+                                let isPrice = checkPrice();
+                                if (isQuantity === true && isPrice === true) {
+                                    return true;
+                                }
+                            }
+
+                            checkName = (attributeName, errorAttributeName, title) => {
+                                debugger
+                                let isName = document.getElementById(attributeName).value
+                                if (isName.trim() === '') {
+                                    document.getElementById(errorAttributeName).innerHTML = `Chưa nhập ${title}`
+                                    return false;
+                                }
+                                return true;
+                            }
+
+                            clickAttribute = (entity, idForm, attributeName, errorAttributeName, title) => {
+                                if (checkName(attributeName, errorAttributeName, title)) {
+                                    Swal.fire({
+                                        title: "Thêm dữ liệu",
+                                        text: "Bạn có muốn thêm dữ liệu không ?",
+                                        icon: "question",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#0DC149",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Có",
+                                        cancelButtonText: "Không",
+                                        allowOutsideClick: false
+                                    }).then((add) => {
+                                        if (add.isConfirmed) {
+                                            document.getElementById(idForm).action = '/nova/' + entity + '/attribute'
+                                            document.getElementById(idForm).method = 'post'
+                                            document.getElementById(idForm).submit()
+                                        }
+                                    });
+                                }
+                            }
+
+                            updateProductDetail = () => {
+                                if (validate()) {
+                                    Swal.fire({
+                                        title: "Sửa dữ liệu",
+                                        text: "Bạn có muốn sửa dữ liệu không ?",
+                                        icon: "question",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#0DC149",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Có",
+                                        cancelButtonText: "Không",
+                                        allowOutsideClick: false
+                                    }).then((update) => {
+                                        if (update.isConfirmed) {
+                                            document.getElementById('productDetailUpdate').submit()
+                                        }
+                                    });
+                                }
+                            }
+                        </script>
+                        <a th:href="@{|/nova/product/*{product.id}/product-detail|}">
+                            <button type="button" class="btn btn-warning"><i
+                                    class="fa-solid fa-circle-left px-4"></i>
+                            </button>
+                        </a>
+                    </div>
+                </form>
+
+                <!--Color Add Start-->
+                <form id="colorForm">
+                    <div class="modal fade" id="exampleModalColor" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelColor">Thêm dữ liệu</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" th:value="*{id}" name="productDetailId">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="font-weight-bold form-control-label">Tên màu sắc</label>
+                                            <div class="" style="color: red" id="errorColorName"></div>
+                                        </div>
+                                        <input type="text" id="colorName" name="colorName"
+                                               class="form-control" oninput="onInputText('errorColorName')">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="clickAttribute('color', 'colorForm', 'colorName', 'errorColorName', 'tên màu sắc')"
+                                            type="button" class="btn btn-dark"><i
+                                            class="fa-solid fa-square-plus px-4"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--Size Add Start-->
+
+                <!--Size Add Start-->
+                <form id="sizeForm" th:object="${productDetail}">
+                    <div class="modal fade" id="exampleModalSize" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelSize">Thêm dữ liệu</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" th:value="*{id}" name="productDetailId">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="font-weight-bold form-control-label">Tên kích cỡ</label>
+                                            <div class="" style="color: red" id="errorSizeName"></div>
+                                        </div>
+                                        <input type="text" id="sizeName" name="sizeName"
+                                               class="form-control" oninput="onInputText('errorSizeName')">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button onclick="clickAttribute('size', 'sizeForm', 'sizeName', 'errorSizeName', 'tên kích cỡ')"
+                                            type="button" class="btn btn-dark"><i
+                                            class="fa-solid fa-square-plus px-4"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--Size Add Start-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

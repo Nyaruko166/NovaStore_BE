@@ -1,6 +1,7 @@
 package com.sd64.novastore.controller.user;
 
 import com.sd64.novastore.dto.common.ProductDetailAndValueDiscountDto;
+import com.sd64.novastore.dto.common.impl.ProductDetailDiscountDtoImpl;
 import com.sd64.novastore.model.*;
 import com.sd64.novastore.model.Cart;
 import com.sd64.novastore.model.Customer;
@@ -87,6 +88,7 @@ public class HomeController {
         }
         List<ProductDiscountHomeResponse> listProducAndDiscountHomeResponse = productViewService.getAllProductAndProductDiscountHomeResponse();
         model.addAttribute("listProducAndDiscountHomeResponse", productViewService.setPriceDiscount(listProducAndDiscountHomeResponse));
+//        model.addAttribute("listProducAndDiscountHomeResponse", listProducAndDiscountHomeResponse);
         List<ProductDiscountHomeResponse> listProductDiscountHomeResponse = productViewService.getAllProductDiscountHomeResponse();
         model.addAttribute("listProductDiscountHomeResponse", productViewService.setPriceDiscount(listProductDiscountHomeResponse));
 
@@ -228,10 +230,24 @@ public class HomeController {
         List<ProductDiscountHomeResponse> listProductYouMayLikeResponse = productViewService.getRandomProductAndProductDiscount();
         model.addAttribute("listProductYouMayLikeResponse", listProductYouMayLikeResponse);
         ProductDetailAndValueDiscountDto productDetailAndValueDiscountDto = productViewService.getProductDetailAndValueDiscount(productId);
+        Float value = productViewService.getValueDiscountByProductId(productId);
         BigDecimal priceMax = productViewService.getPriceMaxResponseByProductId(productId);
         BigDecimal priceMin = productViewService.getPriceMinResponseByProductId(productId);
-        BigDecimal priceDiscountMax = productViewService.calculatePriceToPriceDiscount(priceMax, productDetailAndValueDiscountDto.getValue());
-        BigDecimal priceDiscountMin = productViewService.calculatePriceToPriceDiscount(priceMin, productDetailAndValueDiscountDto.getValue());
+
+        if (productDetailAndValueDiscountDto != null) {
+            BigDecimal priceDiscountMax = productViewService.calculatePriceToPriceDiscount(priceMax, productDetailAndValueDiscountDto.getValue());
+            BigDecimal priceDiscountMin = productViewService.calculatePriceToPriceDiscount(priceMin, productDetailAndValueDiscountDto.getValue());
+            model.addAttribute("priceDiscountMax", priceDiscountMax);
+            model.addAttribute("priceDiscountMin", priceDiscountMin);
+        } else {
+            BigDecimal priceDiscountMax = productViewService.getPriceDiscountMaxResponseByProductId(productId);
+            BigDecimal priceDiscountMin = productViewService.getPriceDiscountMinResponseByProductId(productId);
+            model.addAttribute("priceDiscountMax", priceDiscountMax);
+            model.addAttribute("priceDiscountMin", priceDiscountMin);
+        }
+
+//        BigDecimal priceDiscountMax = productViewService.getPriceDiscountMaxResponseByProductId(productId);
+//        BigDecimal priceDiscountMin = productViewService.getPriceDiscountMinResponseByProductId(productId);
         var listProductSize = productViewService.getAllSizeDetailResponse(productId);
         var listProductColor = productViewService.getAllColorDetailResponse(productId);
         model.addAttribute("product", product);
@@ -242,9 +258,11 @@ public class HomeController {
         model.addAttribute("listProductSize", listProductSize);
         model.addAttribute("priceMax", priceMax);
         model.addAttribute("priceMin", priceMin);
-        model.addAttribute("priceDiscountMax", priceDiscountMax);
-        model.addAttribute("priceDiscountMin", priceDiscountMin);
-        model.addAttribute("discount", productDetailAndValueDiscountDto);
+//        model.addAttribute("priceDiscountMax", priceDiscountMax);
+//        model.addAttribute("priceDiscountMin", priceDiscountMin);
+        var discount = ProductDetailDiscountDtoImpl.toResponse(productDetailAndValueDiscountDto);
+        model.addAttribute("discount", discount);
+        model.addAttribute("value", value);
         return "/user/detail";
     }
 }
