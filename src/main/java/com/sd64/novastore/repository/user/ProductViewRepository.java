@@ -1,6 +1,7 @@
 package com.sd64.novastore.repository.user;
 
 import com.sd64.novastore.dto.admin.ProductDto;
+import com.sd64.novastore.dto.common.ProductAndValueDiscountDto;
 import com.sd64.novastore.dto.common.ProductDetailAndValueDiscountDto;
 import com.sd64.novastore.dto.common.ProductDiscountHomeDto;
 import com.sd64.novastore.dto.common.ProductHomeDto;
@@ -101,16 +102,38 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             "ORDER BY p.updateDate DESC ")
     List<ProductDiscountHomeDto> getAllProductAndProductDiscountDiscountShopResponse();
 
-    @Query(value = "SELECT pr.value as value, " +
-            "pd.id as productDetailId " +
+//    @Query(value = "SELECT pr.value as value, " +
+//            "pd.id as productDetailId " +
+//            "FROM Product p\n" +
+//            "INNER JOIN ProductDetail pd ON pd.product.id = p.id\n" +
+//            "INNER JOIN Image i ON i.product.id = p.id\n" +
+//            "LEFT JOIN PromotionDetail prd ON prd.product.id = p.id\n" +
+//            "LEFT JOIN Promotion pr ON pr.id = prd.promotion.id\n" +
+//            "WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1 AND pd.id =:productDetailId \n  " +
+//            "GROUP BY pd.id, pr.value")
+//    ProductDetailAndValueDiscountDto getProductDetailDto(Integer productDetailId);
+
+
+//    @Query(value = "SELECT pr.value as value, p.id as productId FROM Product p\n" +
+//            "LEFT JOIN PromotionDetail prd ON prd.ProductId = p.id\n" +
+//            "LEFT JOIN Promotion pr ON pr.Id = prd.PromotionId\n" +
+//            "INNER JOIN Image i ON i.ProductId = p.Id\n" +
+//            "INNER JOIN ProductDetail pd ON pd.ProductId = p.id\n" +
+//            "WHERE p.status IN (1,2) AND i.Status = 1 AND p.id =:productId\n" +
+//            "GROUP BY pr.value", nativeQuery = true)
+//    ProductAndValueDiscountDto getProductDetailDto(Integer productId);
+
+
+        @Query(value = "SELECT pr.value as value, " +
+            "p.id as productId " +
             "FROM Product p\n" +
             "INNER JOIN ProductDetail pd ON pd.product.id = p.id\n" +
             "INNER JOIN Image i ON i.product.id = p.id\n" +
             "LEFT JOIN PromotionDetail prd ON prd.product.id = p.id\n" +
             "LEFT JOIN Promotion pr ON pr.id = prd.promotion.id\n" +
-            "WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1 AND pd.id =:productDetailId \n  " +
-            "GROUP BY pd.id, pr.value")
-    ProductDetailAndValueDiscountDto getProductDetailDto(Integer productDetailId);
+            "WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1 AND p.id =:productId \n  " +
+            "GROUP BY p.id, pr.value")
+    ProductAndValueDiscountDto getProductDetailDto(Integer productId);
 
 
     @Query(value = "SELECT p.id as productId, " +
