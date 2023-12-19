@@ -128,8 +128,10 @@
                     <script th:inline="javascript">
                         /*<![CDATA[*/
                         var listProductSize = [[${listProductSize}]];
+                        debugger
                         var listProductColor = [[${listProductColor}]];
                         var discount = [[${discount}]];
+                        var value = [[${value}]]
                         var discountValue = discount.value ? discount.value : 0
                         var colorSelected = null;
                         var sizeSelected = null;
@@ -183,7 +185,7 @@
                             const code = color.code
                             const quantity = color.quantity
                             let price = color.price
-                            let discountPrice = color.price - color.price * discountValue / 100
+                            let discountPrice = color.price - color.price * value / 100
                             let formattedPriceTop = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                             formattedPriceTop = formattedPriceTop.toString().replaceAll("₫", "")
                             formattedPriceTop = formattedPriceTop.toString().replaceAll(".", ",")

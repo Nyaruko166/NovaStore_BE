@@ -57,6 +57,8 @@ public interface ProductViewService {
 
     ProductDetailAndValueDiscountDto getProductDetailAndValueDiscount(Integer productDetailId);
 
+    Float getValueDiscountByProductId(Integer productId);
+
 
 
 }

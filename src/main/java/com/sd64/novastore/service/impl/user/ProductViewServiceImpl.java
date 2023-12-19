@@ -90,6 +90,10 @@ public class ProductViewServiceImpl implements ProductViewService {
     }
 
 
+    @Override
+    public Float getValueDiscountByProductId(Integer productId) {
+        return productViewRepository.getValueDiscountByProductId(productId);
+    }
 
     @Override
     public List<ProductDiscountHomeResponse> getRandomProductAndProductDiscount() {
@@ -248,6 +252,7 @@ public class ProductViewServiceImpl implements ProductViewService {
                 PropertiesResponse propertiesResponse = new PropertiesResponse();
                 propertiesResponse.setCode(listProductDetail.get(i).getCode());
                 propertiesResponse.setPrice(listProductDetail.get(i).getPrice());
+                propertiesResponse.setPriceDiscount(listProductDetail.get(i).getPriceDiscount());
                 propertiesResponse.setQuantity(listProductDetail.get(i).getQuantity());
                 propertiesResponse.setId(colorId);
                 propertiesResponseList.add(propertiesResponse);
@@ -260,6 +265,7 @@ public class ProductViewServiceImpl implements ProductViewService {
                     PropertiesResponse propertiesResponse = new PropertiesResponse();
                     propertiesResponse.setCode(listProductDetail.get(i).getCode());
                     propertiesResponse.setPrice(listProductDetail.get(i).getPrice());
+                    propertiesResponse.setPriceDiscount(listProductDetail.get(i).getPriceDiscount());
                     propertiesResponse.setQuantity(listProductDetail.get(i).getQuantity());
                     propertiesResponse.setId(colorId);
                     listSizeDetailResponse.get(index).getPropertiesResponseList().add(propertiesResponse);

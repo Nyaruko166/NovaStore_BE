@@ -49,6 +49,15 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             "ORDER BY p.updateDate DESC ")
     List<ProductDiscountHomeDto> getAllProductAndDiscountResponseHome();
 
+    @Query(value = "SELECT pr.value FROM Product p\n" +
+            "LEFT JOIN PromotionDetail prd ON prd.ProductId = p.id\n" +
+            "LEFT JOIN Promotion pr ON pr.Id = prd.PromotionId\n" +
+            "INNER JOIN Image i ON i.ProductId = p.Id\n" +
+            "INNER JOIN ProductDetail pd ON pd.ProductId = p.id\n" +
+            "WHERE p.status IN (1,2) AND i.Status = 1 AND p.id =:productId\n" +
+            "GROUP BY pr.value", nativeQuery = true)
+    Float getValueDiscountByProductId(Integer productId);
+
     @Query(value = "SELECT p.id as productId, " +
             "p.name as productName, " +
             "pd.price as price, " +

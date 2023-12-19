@@ -15,14 +15,14 @@ public class ProductDetailDiscountDtoImpl {
 
         ProductDetailDiscountDtoImpl response = new ProductDetailDiscountDtoImpl();
         if (dto == null) {
-            response.setValue(new Float(0));
+            response.setValue((float) 0);
             response.setIsDiscount(false);
         } else {
             response.setId(dto.getProductDetailId());
             response.setValue(dto.getValue());
             if (dto.getValue() == null) {
                 response.setIsDiscount(false);
-                response.setValue(new Float(0));
+                response.setValue((float) 0);
             } else {
                 response.setIsDiscount(true);
             }
