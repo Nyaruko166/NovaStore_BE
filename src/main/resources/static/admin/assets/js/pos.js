@@ -192,7 +192,7 @@ function thanhToan() {
         //     check = urlParam.get('check');
         // }
 
-        if (Number(khachDua) > Number(khachPhaiTra[0])) {
+        if (Number(khachDua) >= Number(khachPhaiTra[0])) {
             Swal.fire({
                 title: "Thanh toán thành công!",
                 text: "Bạn đã thanh toán thành công!",
