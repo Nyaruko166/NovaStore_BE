@@ -182,9 +182,9 @@ public class ProductServiceImpl implements ProductService {
                 productDetail.setUpdateDate(new Date());
                 productDetail.setStatus(listProductDetailNoDelete.get(i).getStatus());
                 productDetail.setProduct(productUpdate);
-                productDetail.setPriceDiscount(listProductDetailNoDelete.get(i).getPrice());
-                productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
                 productDetail.setPrice(listProductDetailUpdate.get(i).getPrice());
+                productDetail.setPriceDiscount(listProductDetailUpdate.get(i).getPrice());
+                productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
                 productDetail.setSize(listProductDetailUpdate.get(i).getSize());
                 productDetail.setColor(listProductDetailUpdate.get(i).getColor());
                 listProductDetailUpdate.set(i, productDetail);
