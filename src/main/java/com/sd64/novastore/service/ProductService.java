@@ -23,13 +23,17 @@ public interface ProductService {
 
     Product getOne(Integer id);
 
-    Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page);
+    Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, int page);
+
+    Page<ProductDto> searchProductDefault(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, int page);
+
+    Page<ProductDto> searchProductDiscount(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, int page);
 
     Integer importExcelProduct(MultipartFile file) throws IOException;
 
     Page<ProductDto> getAllProductDeleted(int page);
 
-    Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page);
+    Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, int page);
 
     Product restore(Integer id);
 

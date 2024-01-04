@@ -136,8 +136,8 @@
                     </div>
                 </div>
                 <div class="text-center py-4 border-info-product-home">
-                    <a class="h5 text-decoration-none text-truncate" th:href="@{'/product-detail/' + ${product.id}}"
-                       th:text="${product.name}"></a>
+                    <div class="h5 text-decoration-none text-truncate" th:href="@{'/product-detail/' + ${product.id}}"
+                       th:text="${product.name}" style="text-overflow: ellipsis;"></div>
                     <div th:if="${product.value == null}" class="d-flex align-items-center justify-content-center mt-2">
                         <div class="d-flex justify-content-center price" th:if="${product.priceMax != product.priceMin}">
                             <span th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></span>
@@ -240,8 +240,8 @@
                     </div>
                 </div>
                 <div class="text-center py-4 border-info-product-home">
-                    <a class="h5 text-decoration-none text-truncate" th:href="@{'/product-detail/' + ${product.id}}"
-                       th:text="${product.name}"></a>
+                    <div class="h5 text-decoration-none text-truncate" th:href="@{'/product-detail/' + ${product.id}}"
+                       th:text="${product.name}"></div>
                     <div class="d-flex align-items-center justify-content-center mt-2">
 <!--                        Chi tiết sản phẩm có 2 giá-->
                         <div class="d-flex justify-content-center price-discout" th:if="${product.priceMax != product.priceMin}">

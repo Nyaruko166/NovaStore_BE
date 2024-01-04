@@ -1,6 +1,5 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.model.*;
 import com.sd64.novastore.response.CreateProductDetails;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
@@ -16,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +46,8 @@ public class ProductDetailController {
         List<Image> listImage = imageService.getAllImageByProductId(productId);
         model.addAttribute("listImage", listImage);
         Product product = productService.getOne(productId);
+        BigInteger totalQuantity = productDetailService.getTotalQuantityByProductId(productId);
+        model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("product", product);
         model.addAttribute("listSize", listSize);
         model.addAttribute("listColor", listColor);
@@ -250,6 +252,8 @@ public class ProductDetailController {
         int totalPage = productDetailService.getTotalPage(page, productId, priceMin, priceMax, sizeId, colorId);
         model.addAttribute("pageProductDetail", productDetailSearchResponses);
         List<Image> listImage = imageService.getAllImageByProductId(productId);
+        BigInteger totalQuantity = productDetailService.getTotalQuantityByProductId(productId);
+        model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("listImage", listImage);
         model.addAttribute("totalPage", totalPage);
         Product product = productService.getOne(productId);

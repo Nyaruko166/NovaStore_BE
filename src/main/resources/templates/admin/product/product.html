@@ -47,22 +47,22 @@
             </div>
 
             <div class="card-body card-block">
-<!--                <form id="productExcel" enctype="multipart/form-data" action="/nova/product/excel">-->
-<!--                    <div class="card-footer">-->
-<!--                        <div class="custom-file">-->
-<!--                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx"-->
-<!--                                   onchange="setFileName()">-->
-<!--                            <label class="custom-file-label" for="importFile">Chọn tệp excel</label>-->
-<!--                        </div>-->
-<!--                        <div class="mt-2 d-flex align-items-center">-->
-<!--                            <button type="button" onclick="importExcel('productExcel', 'importFile', 'errorExcel')"-->
-<!--                                    class="btn btn-success">-->
-<!--                                <i class="fa-solid fa-file-excel px-4"></i>-->
-<!--                            </button>-->
-<!--                            <div id="errorExcel" class="ml-2" style="color: red;"></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </form>-->
+                <!--                <form id="productExcel" enctype="multipart/form-data" action="/nova/product/excel">-->
+                <!--                    <div class="card-footer">-->
+                <!--                        <div class="custom-file">-->
+                <!--                            <input type="file" id="importFile" name="excelFile" accept=".xls, .xlsx"-->
+                <!--                                   onchange="setFileName()">-->
+                <!--                            <label class="custom-file-label" for="importFile">Chọn tệp excel</label>-->
+                <!--                        </div>-->
+                <!--                        <div class="mt-2 d-flex align-items-center">-->
+                <!--                            <button type="button" onclick="importExcel('productExcel', 'importFile', 'errorExcel')"-->
+                <!--                                    class="btn btn-success">-->
+                <!--                                <i class="fa-solid fa-file-excel px-4"></i>-->
+                <!--                            </button>-->
+                <!--                            <div id="errorExcel" class="ml-2" style="color: red;"></div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </form>-->
                 <form id="productForm" class="form-horizontal">
                     <div class="row">
                         <div class="form-group col-2">
@@ -70,11 +70,11 @@
                             <input type="text" class="form-control" th:name="productName"
                                    th:value="${productName}">
                         </div>
-                        <div class="form-group col-2">
-                            <label class="font-weight-bold">Mô tả</label>
-                            <input type="text" class="form-control" th:name="description"
-                                   th:value="${description}">
-                        </div>
+<!--                        <div class="form-group col-2">-->
+<!--                            <label class="font-weight-bold">Mô tả</label>-->
+<!--                            <input type="text" class="form-control" th:name="description"-->
+<!--                                   th:value="${description}">-->
+<!--                        </div>-->
                         <div class="form-group col-2">
                             <label class="font-weight-bold">Chất liệu</label>
                             <div th:if="${materialId} == null">
@@ -151,6 +151,14 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group col-2">
+                            <label class="font-weight-bold">Trạng thái</label>
+                            <select class="form-control" name="status">
+                                <option value="">Tất cả</option>
+                                <option value="1" th:selected="${status == 1}">Còn bán</option>
+                                <option value="2" th:selected="${status == 2}">Đang giảm giá</option>
+                            </select>
+                        </div>
                     </div>
 
                     <br>
@@ -163,20 +171,26 @@
                         </div>
                     </div>
                     <br>
-                    <div class="card-footer d-flex justify-content-end">
-                        <div>
-                            <a href="/nova/product/view-add">
-                                <button type="button" class="btn btn-dark">
-                                    <i class="fa-solid fa-square-plus px-4"></i>
-                                </button>
-                            </a>
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <div class="d-flex">
+                            <div class="font-weight-bold mr-1">Tổng số chi tiết sản phẩm:</div>
+                            <div class="font-weight-bold" th:text="${totalQuantityProductDetail}"></div>
                         </div>
-                        <div class="ml-2">
-                            <a href="/nova/product/view-restore">
-                                <button type="button" class="btn btn-dark">
-                                    <i class="fa-solid fa-warehouse px-4"></i>
-                                </button>
-                            </a>
+                        <div class="d-flex ">
+                            <div>
+                                <a href="/nova/product/view-add">
+                                    <button type="button" class="btn btn-dark">
+                                        <i class="fa-solid fa-square-plus px-4"></i>
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="ml-2">
+                                <a href="/nova/product/view-restore">
+                                    <button type="button" class="btn btn-dark">
+                                        <i class="fa-solid fa-warehouse px-4"></i>
+                                    </button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -351,7 +365,7 @@
                             <tr>
                                 <th scope="col">Mã sản phẩm</th>
                                 <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Mô tả</th>
+                                <!--                                <th scope="col">Mô tả</th>-->
                                 <th scope="col">Thương hiệu</th>
                                 <th scope="col">Chất liệu</th>
                                 <th scope="col">Loại sản phẩm</th>
@@ -364,20 +378,24 @@
                             <tr th:each="items:${pageProduct}">
                                 <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
-                                <td th:text="${items.description}"></td>
+                                <!--                                <td th:text="${items.description}"></td>-->
                                 <td th:text="${items.brandName}"></td>
                                 <td th:text="${items.materialName}"></td>
                                 <td th:text="${items.categoryName}"></td>
                                 <td th:text="${items.formName}"></td>
-<!--                                <td>-->
-<!--                                    <a th:href="@{'/nova/product/' + ${items.id} + '/image'}">-->
-<!--                                        <button type="button" class="btn btn-dark px-4">-->
-<!--                                            <i class="fa-solid fa-image"></i>-->
-<!--                                        </button>-->
-<!--                                    </a>-->
-<!--                                </td>-->
-                                <td th:if="${items.status == 2}" style="color: red">Đang giảm giá</td>
-                                <td th:if="${items.status == 1}">Chưa giảm giá</td>
+                                <!--                                <td>-->
+                                <!--                                    <a th:href="@{'/nova/product/' + ${items.id} + '/image'}">-->
+                                <!--                                        <button type="button" class="btn btn-dark px-4">-->
+                                <!--                                            <i class="fa-solid fa-image"></i>-->
+                                <!--                                        </button>-->
+                                <!--                                    </a>-->
+                                <!--                                </td>-->
+                                <td th:if="${items.status == 2}">
+                                    <p class="status-discount" >Giảm giá</p>
+                                </td>
+                                <td th:if="${items.status == 1}">
+                                    <p class="status-default">Còn bán</p>
+                                </td>
                                 <td class="d-flex justify-content-center">
                                     <div class="dropdown">
                                         <button class="btn btn-dark" type="button"
@@ -408,11 +426,11 @@
                     <!--                    Pagination-->
                     <div class="d-flex justify-content-center align-items-center">
                         <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=0&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
+                            <a th:href="@{|?page=0&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&status=${status == null ? '' : status}|}">
                                 </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
                         </div>
                         <div th:if="${pageProduct.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=${pageProduct.getNumber() - 1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
+                            <a th:href="@{|?page=${pageProduct.getNumber() - 1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&status=${status == null ? '' : status}|}">
                                 <i style="color: white" class="fa-solid fa-left-long"></i></a>
                         </div>
                         <div class="btn btn-dark d-flex">
@@ -422,12 +440,12 @@
                         </div>
                         <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}"
                              class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageProduct.getNumber()+1}&productName=${productName == null ? '' : productName }&materialId=${materialId== null ? '' : materialId}&categoryId=${categoryId== null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
+                            <a th:href="@{|?page=${pageProduct.getNumber()+1}&productName=${productName == null ? '' : productName }&materialId=${materialId== null ? '' : materialId}&categoryId=${categoryId== null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&status=${status == null ? '' : status}|}">
                                 <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                         </div>
                         <div th:if="${pageProduct.getNumber() + 1 lt pageProduct.getTotalPages()}"
                              class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageProduct.getTotalPages()-1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&description=${description == null ? '' : description}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}|}">
+                            <a th:href="@{|?page=${pageProduct.getTotalPages()-1}&productName=${productName == null ? '' : productName}&materialId=${materialId == null ? '' : materialId}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&formId=${formId == null ? '' : formId}&status=${status == null ? '' : status}|}">
                                 <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                         </div>
                     </div>

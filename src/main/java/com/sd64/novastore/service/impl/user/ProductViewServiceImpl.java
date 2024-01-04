@@ -51,11 +51,7 @@ public class ProductViewServiceImpl implements ProductViewService {
     @Override
     public Product getOne(Integer id) {
         Optional<Product> optional = productViewRepository.findById(id);
-        if (optional.isPresent()) {
-            return optional.get();
-        } else {
-            return null;
-        }
+        return optional.orElse(null);
     }
 
     @Override
@@ -93,8 +89,7 @@ public class ProductViewServiceImpl implements ProductViewService {
 
     @Override
     public ProductAndValueDiscountDto getProductAndValueDiscount(Integer productId) {
-        ProductAndValueDiscountDto productAndValueDiscountDto = productViewRepository.getProductDetailDto(productId);
-        return productAndValueDiscountDto;
+        return productViewRepository.getProductDetailDto(productId);
     }
 
 
@@ -340,9 +335,28 @@ public class ProductViewServiceImpl implements ProductViewService {
     }
 
 
+    public List<Integer> getStatusProductAndProductDiscount(Integer status) {
+        List<Integer> listStatus = null;
+        if (status == null) {
+            listStatus = new ArrayList<>();
+            listStatus.add(1);
+            listStatus.add(2);
+        } else if (status == 1) {
+            listStatus = new ArrayList<>();
+            listStatus.add(1);
+        } else if (status == 2) {
+            listStatus = new ArrayList<>();
+            listStatus.add(2);
+        }
+        return listStatus;
+    }
+
     @Override
-    public List<ProductDiscountHomeResponse> searchProductAndProductDiscountShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page) {
-        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchProductAndProductDiscountShopResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin)
+    public List<ProductDiscountHomeResponse> searchProductAndProductDiscountShopResponse(
+            List<Integer> listBrandId, List<Integer> listCategoryId, List<Integer> listFormId, List<Integer> listMaterialId,
+            List<Integer> listSizeId, List<Integer> listColorId, String productNameSearch, BigDecimal priceMax,
+            BigDecimal priceMin, Integer status) {
+        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchProductAndProductDiscountShopResponse(listBrandId, listCategoryId, listFormId, listMaterialId, listSizeId, listColorId, productNameSearch, priceMax, priceMin, getStatusProductAndProductDiscount(status))
                 .stream().map(ProductDiscountHomeDtoImpl::toData).toList();
         List<ProductDiscountHomeResponse> productDiscountHomeResponses = new ArrayList<>();
         for (int index = 0; index < productDiscountHomeResponseDtoList.size(); index++) {
@@ -356,15 +370,14 @@ public class ProductViewServiceImpl implements ProductViewService {
             } else {
                 int i = productDiscountHomeResponses.indexOf(prdDiscountResponse);
                 productDiscountHomeResponses.get(i).comparePrice(productDiscountHomeResponseDtoList.get(finalIndex).getPrice());
-//                productDiscountHomeResponses.get(i).comparePriceDiscount(calculatePriceToPriceDiscount(productDiscountHomeResponseDtoList.get(finalIndex).getPrice(), productDiscountHomeResponseDtoList.get(finalIndex).getValue()));
             }
         }
         return productDiscountHomeResponses;
     }
 
     @Override
-    public List<ProductDiscountHomeResponse> searchOnlyProductDiscountShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page) {
-        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchOnlyProductDiscountShopResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin)
+    public List<ProductDiscountHomeResponse> searchOnlyProductDiscountShopResponse(List<Integer> listBrandId, List<Integer> listCategoryId, List<Integer> listFormId, List<Integer> listMaterialId, List<Integer> listSizeId, List<Integer> listColorId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin) {
+        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchOnlyProductDiscountShopResponse(listBrandId, listCategoryId, listFormId, listMaterialId, listSizeId, listColorId, productNameSearch, priceMax, priceMin)
                 .stream().map(ProductDiscountHomeDtoImpl::toData).toList();
         List<ProductDiscountHomeResponse> productDiscountHomeResponses = new ArrayList<>();
         for (int index = 0; index < productDiscountHomeResponseDtoList.size(); index++) {
@@ -378,7 +391,6 @@ public class ProductViewServiceImpl implements ProductViewService {
             } else {
                 int i = productDiscountHomeResponses.indexOf(prdDiscountResponse);
                 productDiscountHomeResponses.get(i).comparePrice(productDiscountHomeResponseDtoList.get(finalIndex).getPrice());
-//                productDiscountHomeResponses.get(i).comparePriceDiscount(calculatePriceToPriceDiscount(productDiscountHomeResponseDtoList.get(finalIndex).getPrice(), productDiscountHomeResponseDtoList.get(finalIndex).getValue()));
             }
         }
         return productDiscountHomeResponses;
@@ -394,8 +406,33 @@ public class ProductViewServiceImpl implements ProductViewService {
     }
 
     @Override
-    public List<ProductDiscountHomeResponse> searchProductAndProductDiscountDescShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page) {
-        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchProductAndProductDiscountDescResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin)
+    public List<ProductDiscountHomeResponse> searchProductAndProductDiscountDescShopResponse(
+            List<Integer> listBrandId, List<Integer> listCategoryId, List<Integer> listFormId, List<Integer> listMaterialId,
+            List<Integer> listSizeId, List<Integer> listColorId, String productNameSearch, BigDecimal priceMax,
+            BigDecimal priceMin, Integer status) {
+        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchProductAndProductDiscountDescResponse(
+                listBrandId, listCategoryId, listFormId, listMaterialId, listSizeId, listColorId, productNameSearch, priceMax, priceMin, getStatusProductAndProductDiscount(status))
+                .stream().map(ProductDiscountHomeDtoImpl::toData).toList();
+        List<ProductDiscountHomeResponse> productDiscountHomeResponses = new ArrayList<>();
+        for (int index = 0; index < productDiscountHomeResponseDtoList.size(); index++) {
+            int finalIndex = index;
+            ProductDiscountHomeResponse prdDiscountResponse = productDiscountHomeResponses.stream()
+                    .filter(e -> e.getId().intValue() == productDiscountHomeResponseDtoList.get(finalIndex).getProductId().intValue())
+                    .findFirst().orElse(null);
+            if (prdDiscountResponse == null) {
+                prdDiscountResponse = productDiscountHomeResponseDtoList.get(finalIndex).toResponse();
+                productDiscountHomeResponses.add(prdDiscountResponse);
+            } else {
+                int i = productDiscountHomeResponses.indexOf(prdDiscountResponse);
+                productDiscountHomeResponses.get(i).comparePrice(productDiscountHomeResponseDtoList.get(finalIndex).getPrice());
+            }
+        }
+        return productDiscountHomeResponses;
+    }
+
+    @Override
+    public List<ProductDiscountHomeResponse> searchProductAndProductDiscountAscShopResponse(List<Integer> listBrandId, List<Integer> listCategoryId, List<Integer> listFormId, List<Integer> listMaterialId, List<Integer> listSizeId, List<Integer> listColorId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, Integer status) {
+        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchProductAndProductDiscountAscResponse(listBrandId, listCategoryId, listFormId, listMaterialId, listSizeId, listColorId, productNameSearch, priceMax, priceMin, status)
                 .stream().map(ProductDiscountHomeDtoImpl::toData).toList();
         List<ProductDiscountHomeResponse> productDiscountHomeResponses = new ArrayList<>();
         for (int index = 0; index < productDiscountHomeResponseDtoList.size(); index++) {
@@ -416,25 +453,103 @@ public class ProductViewServiceImpl implements ProductViewService {
     }
 
     @Override
-    public List<ProductDiscountHomeResponse> searchProductAscShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page) {
-        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchProductAndProductDiscountAscResponse(brandId, categoryId, formId, materialId, productNameSearch, priceMax, priceMin)
-                .stream().map(ProductDiscountHomeDtoImpl::toData).toList();
-        List<ProductDiscountHomeResponse> productDiscountHomeResponses = new ArrayList<>();
-        for (int index = 0; index < productDiscountHomeResponseDtoList.size(); index++) {
-            int finalIndex = index;
-            ProductDiscountHomeResponse prdDiscountResponse = productDiscountHomeResponses.stream()
-                    .filter(e -> e.getId().intValue() == productDiscountHomeResponseDtoList.get(finalIndex).getProductId().intValue())
-                    .findFirst().orElse(null);
-            if (prdDiscountResponse == null) {
-                prdDiscountResponse = productDiscountHomeResponseDtoList.get(finalIndex).toResponse();
-                productDiscountHomeResponses.add(prdDiscountResponse);
-            } else {
-                int i = productDiscountHomeResponses.indexOf(prdDiscountResponse);
-                productDiscountHomeResponses.get(i).comparePrice(productDiscountHomeResponseDtoList.get(finalIndex).getPrice());
-//                productDiscountHomeResponses.get(i).comparePriceDiscount(calculatePriceToPriceDiscount(productDiscountHomeResponseDtoList.get(finalIndex).getPrice(), productDiscountHomeResponseDtoList.get(finalIndex).getValue()));
-            }
+    public StringBuilder pageListColor(List<Integer> listColorId) {
+        if (listColorId == null) {
+            return new StringBuilder("");
         }
-        return productDiscountHomeResponses;
+        StringBuilder prefix = new StringBuilder("");
+        StringBuilder fullPage = new StringBuilder("");
+        for (Integer integer : listColorId) {
+            prefix = new StringBuilder("&listColorId=");
+            prefix.append(integer);
+            fullPage.append(prefix);
+        }
+        return fullPage;
+    }
+
+    @Override
+    public StringBuilder pageListSize(List<Integer> listSizeId) {
+        if (listSizeId == null) {
+            return new StringBuilder("");
+        }
+        StringBuilder prefix = new StringBuilder("");
+        StringBuilder fullPage = new StringBuilder("");
+        for (Integer integer : listSizeId) {
+            prefix = new StringBuilder("&listSizeId=");
+            prefix.append(integer);
+            fullPage.append(prefix);
+        }
+        return fullPage;
+    }
+
+    @Override
+    public StringBuilder pageListCategory(List<Integer> listCategoryId) {
+        if (listCategoryId == null) {
+            return new StringBuilder("");
+        }
+        StringBuilder prefix = new StringBuilder("");
+        StringBuilder fullPage = new StringBuilder("");
+        for (Integer integer : listCategoryId) {
+            prefix = new StringBuilder("&listCategoryId=");
+            prefix.append(integer);
+            fullPage.append(prefix);
+        }
+        return fullPage;
+    }
+
+    @Override
+    public StringBuilder pageListForm(List<Integer> listFormId) {
+        if (listFormId == null) {
+            return new StringBuilder("");
+        }
+        StringBuilder prefix = new StringBuilder("");
+        StringBuilder fullPage = new StringBuilder("");
+        for (Integer integer : listFormId) {
+            prefix = new StringBuilder("&listFormId=");
+            prefix.append(integer);
+            fullPage.append(prefix);
+        }
+        return fullPage;
+    }
+
+    @Override
+    public StringBuilder pageListMaterial(List<Integer> listMaterialId) {
+        if (listMaterialId == null) {
+            return new StringBuilder("");
+        }
+        StringBuilder prefix = new StringBuilder("");
+        StringBuilder fullPage = new StringBuilder("");
+        for (Integer integer : listMaterialId) {
+            prefix = new StringBuilder("&listMaterialId=");
+            prefix.append(integer);
+            fullPage.append(prefix);
+        }
+        return fullPage;
+    }
+
+    @Override
+    public StringBuilder pageListBrand(List<Integer> listBrandId) {
+        if (listBrandId == null) {
+            return new StringBuilder("");
+        }
+        StringBuilder prefix = new StringBuilder("");
+        StringBuilder fullPage = new StringBuilder("");
+        for (Integer integer : listBrandId) {
+            prefix = new StringBuilder("&listBrandId=");
+            prefix.append(integer);
+            fullPage.append(prefix);
+        }
+        return fullPage;
+    }
+
+    @Override
+    public List<Integer> removeNullValueInList(List<Integer> list) {
+        if (list == null || list.size() == 0) {
+            return null;
+        } else {
+            list.removeIf(Objects::isNull);
+            return list;
+        }
     }
 
     @Override

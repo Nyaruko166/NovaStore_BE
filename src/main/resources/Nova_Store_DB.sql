@@ -1,13 +1,13 @@
 USE [master]
 GO
-/****** Object:  Database [Nova_Store_DB]    Update: 25/11/2023 00:31 AM ******/
+/****** Object:  Database [Nova_Store_DB]    Update: 4/1/2024 13:06 PM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-    begin
-        EXEC [Nova_Store_DB].[dbo].[sp_fulltext_database] @action = 'enable'
-    end
+begin
+EXEC [Nova_Store_DB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
 GO
 ALTER DATABASE [Nova_Store_DB] SET ANSI_NULL_DEFAULT OFF
 GO
@@ -94,16 +94,16 @@ CREATE TABLE [dbo].[Account]
     [Status]      [int]                NULL,
     [RoleId]      [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Address]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Address]
 (
     [Id]              [int] IDENTITY (1,1) NOT NULL,
@@ -118,16 +118,16 @@ CREATE TABLE [dbo].[Address]
     [Status]          [int]                NULL,
     [AccountId]       [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Bill]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Bill]
 (
     [Id]               [int] IDENTITY (1,1) NOT NULL,
@@ -154,16 +154,16 @@ CREATE TABLE [dbo].[Bill]
     [CustomerId]       [int]                NULL,
     [VoucherId]        [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[BillDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[BillDetail]
 (
     [Id]              [int] IDENTITY (1,1) NOT NULL,
@@ -173,16 +173,16 @@ CREATE TABLE [dbo].[BillDetail]
     [BillId]          [int]                NULL,
     [ProductDetailId] [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Brand]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Brand]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -192,16 +192,16 @@ CREATE TABLE [dbo].[Brand]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Cart]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Cart]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -209,16 +209,16 @@ CREATE TABLE [dbo].[Cart]
     [TotalItems] [int]                NULL,
     [AccountId]  [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[CartDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[CartDetail]
 (
     [Id]              [int] IDENTITY (1,1) NOT NULL,
@@ -227,16 +227,16 @@ CREATE TABLE [dbo].[CartDetail]
     [CartId]          [int]                NULL,
     [ProductDetailId] [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Category]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Category]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -246,16 +246,16 @@ CREATE TABLE [dbo].[Category]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Color]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Color]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -265,16 +265,16 @@ CREATE TABLE [dbo].[Color]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Form]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Form]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -284,16 +284,16 @@ CREATE TABLE [dbo].[Form]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Image]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Image]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -303,16 +303,16 @@ CREATE TABLE [dbo].[Image]
     [Status]     [int]                NULL,
     [ProductId]  [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Material]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Material]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -322,16 +322,16 @@ CREATE TABLE [dbo].[Material]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[PaymentMethod]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[PaymentMethod]
 (
     [Id]          [int] IDENTITY (1,1) NOT NULL,
@@ -341,22 +341,22 @@ CREATE TABLE [dbo].[PaymentMethod]
     [Status]      [int]                NULL,
     [BillId]      [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Product]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Product]
 (
     [Id]          [int] IDENTITY (1,1) NOT NULL,
     [Code]        [varchar](50) UNIQUE,
-    [Name]        [nvarchar](50)       NULL,
-    [Description] [nvarchar](255)      NULL,
+    [Name]        [nvarchar](MAX)       NULL,
+    [Description] [nvarchar](MAX)      NULL,
     [CreateDate]  [datetime]           NULL,
     [UpdateDate]  [datetime]           NULL,
     [Status]      [int]                NULL,
@@ -365,16 +365,16 @@ CREATE TABLE [dbo].[Product]
     [FormId]      [int]                NULL,
     [MaterialId]  [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[ProductDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[ProductDetail]
 (
     [Id]            [int] IDENTITY (1,1) NOT NULL,
@@ -389,16 +389,16 @@ CREATE TABLE [dbo].[ProductDetail]
     [SizeId]        [int]                NULL,
     [ColorId]       [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Promotion]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Promotion]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -411,16 +411,16 @@ CREATE TABLE [dbo].[Promotion]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[PromotionDetail]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[PromotionDetail]
 (
     [Id]          [int] IDENTITY (1,1) NOT NULL,
@@ -430,16 +430,16 @@ CREATE TABLE [dbo].[PromotionDetail]
     [ProductId]   [int]                NULL,
     [PromotionId] [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Role]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Role]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -448,16 +448,16 @@ CREATE TABLE [dbo].[Role]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Size]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Size]
 (
     [Id]         [int] IDENTITY (1,1) NOT NULL,
@@ -467,16 +467,16 @@ CREATE TABLE [dbo].[Size]
     [UpdateDate] [datetime]           NULL,
     [Status]     [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 /****** Object:  Table [dbo].[Voucher]    Script Date: 10/10/2023 9:34:05 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+    SET ANSI_NULLS ON
+    GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 CREATE TABLE [dbo].[Voucher]
 (
     [Id]           [int] IDENTITY (1,1) NOT NULL,
@@ -491,547 +491,529 @@ CREATE TABLE [dbo].[Voucher]
     [UpdateDate]   [datetime]           NULL,
     [Status]       [int]                NULL,
     PRIMARY KEY CLUSTERED
-        (
-         [Id] ASC
-            ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+(
+[Id] ASC
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
+    GO
 ALTER TABLE [dbo].[Account]
     WITH CHECK ADD CONSTRAINT [FKi9xmahyh65di7x2wn5fvt8lv3] FOREIGN KEY ([RoleId])
-        REFERENCES [dbo].[Role] ([Id])
-GO
+    REFERENCES [dbo].[Role] ([Id])
+    GO
 ALTER TABLE [dbo].[Account]
     CHECK CONSTRAINT [FKi9xmahyh65di7x2wn5fvt8lv3]
-GO
+    GO
 ALTER TABLE [dbo].[Address]
     WITH CHECK ADD CONSTRAINT [FK3haj5uqn2j6ar58mcglooa5bp] FOREIGN KEY ([AccountId])
-        REFERENCES [dbo].[Account] ([Id])
-GO
+    REFERENCES [dbo].[Account] ([Id])
+    GO
 ALTER TABLE [dbo].[Address]
     CHECK CONSTRAINT [FK3haj5uqn2j6ar58mcglooa5bp]
-GO
+    GO
 ALTER TABLE [dbo].[Bill]
     WITH CHECK ADD CONSTRAINT [FK5zxcs2c3vdsauy6541vgj2y5t] FOREIGN KEY ([EmployeeId])
-        REFERENCES [dbo].[Account] ([Id])
-GO
+    REFERENCES [dbo].[Account] ([Id])
+    GO
 ALTER TABLE [dbo].[Bill]
     CHECK CONSTRAINT [FK5zxcs2c3vdsauy6541vgj2y5t]
-GO
+    GO
 ALTER TABLE [dbo].[Bill]
     WITH CHECK ADD CONSTRAINT [FK5mrre5s0gacpqu6737kfocwkl] FOREIGN KEY ([CustomerId])
-        REFERENCES [dbo].[Account] ([Id])
-GO
+    REFERENCES [dbo].[Account] ([Id])
+    GO
 ALTER TABLE [dbo].[Bill]
     CHECK CONSTRAINT [FK5mrre5s0gacpqu6737kfocwkl]
-GO
+    GO
 ALTER TABLE [dbo].[Bill]
     WITH CHECK ADD CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob] FOREIGN KEY ([VoucherId])
-        REFERENCES [dbo].[Voucher] ([Id])
-GO
+    REFERENCES [dbo].[Voucher] ([Id])
+    GO
 ALTER TABLE [dbo].[Bill]
     CHECK CONSTRAINT [FK2hf3g6padqdy15tccpshmpxob]
-GO
+    GO
 ALTER TABLE [dbo].[BillDetail]
     WITH CHECK ADD CONSTRAINT [FK8sw1tfhht3q5xtdsyoe0r7jfd] FOREIGN KEY ([BillId])
-        REFERENCES [dbo].[Bill] ([Id])
-GO
+    REFERENCES [dbo].[Bill] ([Id])
+    GO
 ALTER TABLE [dbo].[BillDetail]
     CHECK CONSTRAINT [FK8sw1tfhht3q5xtdsyoe0r7jfd]
-GO
+    GO
 ALTER TABLE [dbo].[BillDetail]
     WITH CHECK ADD CONSTRAINT [FKnt7lacod5l24jdnfgxfydqiu2] FOREIGN KEY ([ProductDetailId])
-        REFERENCES [dbo].[ProductDetail] ([Id])
-GO
+    REFERENCES [dbo].[ProductDetail] ([Id])
+    GO
 ALTER TABLE [dbo].[BillDetail]
     CHECK CONSTRAINT [FKnt7lacod5l24jdnfgxfydqiu2]
-GO
+    GO
 ALTER TABLE [dbo].[Cart]
     WITH CHECK ADD CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i] FOREIGN KEY ([AccountId])
-        REFERENCES [dbo].[Account] ([Id])
-GO
+    REFERENCES [dbo].[Account] ([Id])
+    GO
 ALTER TABLE [dbo].[Cart]
     CHECK CONSTRAINT [FK1w1km3ww10t0maawf2cymyx5i]
-GO
+    GO
 ALTER TABLE [dbo].[CartDetail]
     WITH CHECK ADD CONSTRAINT [FK6unelr9lsy26gw9da5tuuxcsh] FOREIGN KEY ([CartId])
-        REFERENCES [dbo].[Cart] ([Id])
-GO
+    REFERENCES [dbo].[Cart] ([Id])
+    GO
 ALTER TABLE [dbo].[CartDetail]
     CHECK CONSTRAINT [FK6unelr9lsy26gw9da5tuuxcsh]
-GO
+    GO
 ALTER TABLE [dbo].[CartDetail]
     WITH CHECK ADD CONSTRAINT [FKepuvpwbykpahqt0gagvvdqoyn] FOREIGN KEY ([ProductDetailId])
-        REFERENCES [dbo].[ProductDetail] ([Id])
-GO
+    REFERENCES [dbo].[ProductDetail] ([Id])
+    GO
 ALTER TABLE [dbo].[CartDetail]
     CHECK CONSTRAINT [FKepuvpwbykpahqt0gagvvdqoyn]
-GO
+    GO
 ALTER TABLE [dbo].[Image]
     WITH CHECK ADD CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c] FOREIGN KEY ([ProductId])
-        REFERENCES [dbo].[Product] ([Id])
-GO
+    REFERENCES [dbo].[Product] ([Id])
+    GO
 ALTER TABLE [dbo].[Image]
     CHECK CONSTRAINT [FKdtaisglfgjjj5j1a7g3fcev7c]
-GO
+    GO
 ALTER TABLE [dbo].[PaymentMethod]
     WITH CHECK ADD CONSTRAINT [FKjity6x6p1194mtoli4abb3jgc] FOREIGN KEY ([BillId])
-        REFERENCES [dbo].[Bill] ([Id])
-GO
+    REFERENCES [dbo].[Bill] ([Id])
+    GO
 ALTER TABLE [dbo].[PaymentMethod]
     CHECK CONSTRAINT [FKjity6x6p1194mtoli4abb3jgc]
-GO
+    GO
 ALTER TABLE [dbo].[Product]
     WITH CHECK ADD CONSTRAINT [FK4cx1ir1xlnytlte2quullny9m] FOREIGN KEY ([FormId])
-        REFERENCES [dbo].[Form] ([Id])
-GO
+    REFERENCES [dbo].[Form] ([Id])
+    GO
 ALTER TABLE [dbo].[Product]
     CHECK CONSTRAINT [FK4cx1ir1xlnytlte2quullny9m]
-GO
+    GO
 ALTER TABLE [dbo].[Product]
     WITH CHECK ADD CONSTRAINT [FK6pnobu31k3yhhmk45s97imkui] FOREIGN KEY ([CategoryId])
-        REFERENCES [dbo].[Category] ([Id])
-GO
+    REFERENCES [dbo].[Category] ([Id])
+    GO
 ALTER TABLE [dbo].[Product]
     CHECK CONSTRAINT [FK6pnobu31k3yhhmk45s97imkui]
-GO
+    GO
 ALTER TABLE [dbo].[Product]
     WITH CHECK ADD CONSTRAINT [FKfc8uiunvrolmn3qa9ahrhmtrw] FOREIGN KEY ([MaterialId])
-        REFERENCES [dbo].[Material] ([Id])
-GO
+    REFERENCES [dbo].[Material] ([Id])
+    GO
 ALTER TABLE [dbo].[Product]
     CHECK CONSTRAINT [FKfc8uiunvrolmn3qa9ahrhmtrw]
-GO
+    GO
 ALTER TABLE [dbo].[Product]
     WITH CHECK ADD CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc] FOREIGN KEY ([BrandId])
-        REFERENCES [dbo].[Brand] ([Id])
-GO
+    REFERENCES [dbo].[Brand] ([Id])
+    GO
 ALTER TABLE [dbo].[Product]
     CHECK CONSTRAINT [FKnuw1iwpj73v904j79uc8qurgc]
-GO
+    GO
 ALTER TABLE [dbo].[ProductDetail]
     WITH CHECK ADD CONSTRAINT [FKik38y3bjry9u05majdn5u3egj] FOREIGN KEY ([ProductId])
-        REFERENCES [dbo].[Product] ([Id])
-GO
+    REFERENCES [dbo].[Product] ([Id])
+    GO
 ALTER TABLE [dbo].[ProductDetail]
     CHECK CONSTRAINT [FKik38y3bjry9u05majdn5u3egj]
-GO
+    GO
 ALTER TABLE [dbo].[ProductDetail]
     WITH CHECK ADD CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv] FOREIGN KEY ([SizeId])
-        REFERENCES [dbo].[Size] ([Id])
-GO
+    REFERENCES [dbo].[Size] ([Id])
+    GO
 ALTER TABLE [dbo].[ProductDetail]
     CHECK CONSTRAINT [FK61xkqx42jtcc8we64hahp05pv]
-GO
+    GO
 ALTER TABLE [dbo].[ProductDetail]
     WITH CHECK ADD CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y] FOREIGN KEY ([ColorId])
-        REFERENCES [dbo].[Color] ([Id])
-GO
+    REFERENCES [dbo].[Color] ([Id])
+    GO
 ALTER TABLE [dbo].[ProductDetail]
     CHECK CONSTRAINT [FKntlsi9s4irkogtc9mbw03s90y]
-GO
+    GO
 ALTER TABLE [dbo].[PromotionDetail]
     WITH CHECK ADD CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig] FOREIGN KEY ([ProductId])
-        REFERENCES [dbo].[Product] ([Id])
-GO
+    REFERENCES [dbo].[Product] ([Id])
+    GO
 ALTER TABLE [dbo].[PromotionDetail]
     CHECK CONSTRAINT [FKa83ktjk5axkasy5c9v2s1ukig]
-GO
+    GO
 ALTER TABLE [dbo].[PromotionDetail]
     WITH CHECK ADD CONSTRAINT [FKos6ftbatvw4mk81km7xpkds5i] FOREIGN KEY ([PromotionId])
-        REFERENCES [dbo].[Promotion] ([Id])
-GO
+    REFERENCES [dbo].[Promotion] ([Id])
+    GO
 ALTER TABLE [dbo].[PromotionDetail]
     CHECK CONSTRAINT [FKos6ftbatvw4mk81km7xpkds5i]
-GO
-USE [master]
-GO
+    GO
+    USE [master]
+    GO
 ALTER DATABASE [Nova_Store_DB] SET READ_WRITE
 GO
 
 USE Nova_Store_DB
 
-SELECT *
-FROM Brand
+SELECT * FROM Brand
+    INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
+VALUES ('TH0001', N'Reebok', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T1', N'Reebok', GETDATE(), GETDATE(), 1)
+VALUES ('TH0002', N'Asics', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T2', N'Asics', GETDATE(), GETDATE(), 1)
+VALUES ('TH0003', N'Brooks', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T3', N'Brooks', GETDATE(), GETDATE(), 1)
+VALUES ('TH0004', N'Mizuno', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T4', N'Mizuno', GETDATE(), GETDATE(), 1)
+VALUES ('TH0005', N'New balance', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T5', N'New balance', GETDATE(), GETDATE(), 1)
+VALUES ('TH0006', N'Puma', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T6', N'Puma', GETDATE(), GETDATE(), 1)
+VALUES ('TH0007', N'Nike', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T7', N'Nike', GETDATE(), GETDATE(), 1)
+VALUES ('TH0008', N'Skechers', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T8', N'Skechers', GETDATE(), GETDATE(), 1)
+VALUES ('TH0009', N'Under armour', GETDATE(), GETDATE(), 1)
 INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T9', N'Under armour', GETDATE(), GETDATE(), 1)
-INSERT INTO Brand (code, name, CreateDate, UpdateDate, Status)
-VALUES ('T10', N'Adidas', GETDATE(), GETDATE(), 1)
+VALUES ('TH0010', N'Adidas', GETDATE(), GETDATE(), 1)
 
 
-SELECT *
-FROM Category
+SELECT * FROM Category
+    INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
+VALUES ('L0001', N'Áo thun', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L1', N'Áo thun', GETDATE(), GETDATE(), 1)
+VALUES ('L0002', N'Áo khoác', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L2', N'Áo khoác', GETDATE(), GETDATE(), 1)
+VALUES ('L0003', N'Áo ngắn tay', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L3', N'Áo ngắn tay', GETDATE(), GETDATE(), 1)
+VALUES ('L0004', N'Áo Polo', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L4', N'Áo Polo', GETDATE(), GETDATE(), 1)
+VALUES ('L0005', N'Áo dài tay', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L5', N'Áo dài tay', GETDATE(), GETDATE(), 1)
+VALUES ('L0006', N'Quần bó', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L6', N'Quần bó', GETDATE(), GETDATE(), 1)
+VALUES ('L0007', N'Quần cạp cao', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L7', N'Quần cạp cao', GETDATE(), GETDATE(), 1)
+VALUES ('L0008', N'Quần đùi', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L8', N'Quần đùi', GETDATE(), GETDATE(), 1)
+VALUES ('L0009', N'Quần dài', GETDATE(), GETDATE(), 1)
 INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L9', N'Quần dài', GETDATE(), GETDATE(), 1)
-INSERT INTO Category (code, name, CreateDate, UpdateDate, Status)
-VALUES ('L10', N'Quần legging', GETDATE(), GETDATE(), 1)
+VALUES ('L0010', N'Quần legging', GETDATE(), GETDATE(), 1)
 
-SELECT *
-FROM Material
+SELECT * FROM Material
+    INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
+VALUES ('CL0001', N'Spandex', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C1', N'Spandex', GETDATE(), GETDATE(), 1)
+VALUES ('CL0002', N'Cotton', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C2', N'Cotton', GETDATE(), GETDATE(), 1)
+VALUES ('CL0003', N'Mesh', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C3', N'Mesh', GETDATE(), GETDATE(), 1)
+VALUES ('CL0004', N'Nylon', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C4', N'Nylon', GETDATE(), GETDATE(), 1)
+VALUES ('CL0005', N'Viscose', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C5', N'Viscose', GETDATE(), GETDATE(), 1)
+VALUES ('CL0006', N'Microfiber', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C6', N'Microfiber', GETDATE(), GETDATE(), 1)
+VALUES ('CL0007', N'Linen', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C7', N'Linen', GETDATE(), GETDATE(), 1)
+VALUES ('CL0008', N'Syntheic', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C8', N'Syntheic', GETDATE(), GETDATE(), 1)
+VALUES ('CL0009', N'Polyester', GETDATE(), GETDATE(), 1)
 INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C9', N'Polyester', GETDATE(), GETDATE(), 1)
-INSERT INTO Material (code, name, CreateDate, UpdateDate, Status)
-VALUES ('C10', N'Fleece', GETDATE(), GETDATE(), 1)
+VALUES ('CL0010', N'Fleece', GETDATE(), GETDATE(), 1)
 
 
-SELECT *
-FROM Form
+SELECT * FROM Form
+    INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
+VALUES ('KD0001', N'Bó', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K1', N'Bó', GETDATE(), GETDATE(), 1)
+VALUES ('KD0002', N'Rộng', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K2', N'Rộng', GETDATE(), GETDATE(), 1)
+VALUES ('KD0003', N'Tank top', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K3', N'Tank top', GETDATE(), GETDATE(), 1)
+VALUES ('KD0004', N'Jogger', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K4', N'Jogger', GETDATE(), GETDATE(), 1)
+VALUES ('KD0005', N'Dài', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K5', N'Dài', GETDATE(), GETDATE(), 1)
+VALUES ('KD0006', N'Ngắn', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K6', N'Ngắn', GETDATE(), GETDATE(), 1)
+VALUES ('KD0007', N'Dày', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K7', N'Dày', GETDATE(), GETDATE(), 1)
+VALUES ('KD0008', N'Mỏng', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K8', N'Mỏng', GETDATE(), GETDATE(), 1)
+VALUES ('KD0009', N'Lưới', GETDATE(), GETDATE(), 1)
 INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K9', N'Lưới', GETDATE(), GETDATE(), 1)
-INSERT INTO Form (code, name, CreateDate, UpdateDate, Status)
-VALUES ('K10', N'Thiếu vải', GETDATE(), GETDATE(), 1)
+VALUES ('KD0010', N'Thiếu vải', GETDATE(), GETDATE(), 1)
 
 
-SELECT *
-FROM Size
+SELECT * FROM Size
+    INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
+VALUES ('S0001', N'28', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S1', N'28', GETDATE(), GETDATE(), 1)
+VALUES ('S0002', N'29', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S2', N'29', GETDATE(), GETDATE(), 1)
+VALUES ('S0003', N'30', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S3', N'30', GETDATE(), GETDATE(), 1)
+VALUES ('S0004', N'31', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S4', N'31', GETDATE(), GETDATE(), 1)
+VALUES ('S0005', N'32', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S5', N'32', GETDATE(), GETDATE(), 1)
+VALUES ('S0006', N'XXL', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S6', N'XXL', GETDATE(), GETDATE(), 1)
+VALUES ('S0007', N'XL', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S7', N'XL', GETDATE(), GETDATE(), 1)
+VALUES ('S0008', N'L', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S8', N'L', GETDATE(), GETDATE(), 1)
+VALUES ('S0009', N'S', GETDATE(), GETDATE(), 1)
 INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S9', N'S', GETDATE(), GETDATE(), 1)
-INSERT INTO Size (code, name, CreateDate, UpdateDate, Status)
-VALUES ('S1', N'M', GETDATE(), GETDATE(), 1)
+VALUES ('S0010', N'M', GETDATE(), GETDATE(), 1)
 
 
-SELECT *
-FROM Color
+SELECT * FROM Color
+    INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
+VALUES ('M0001', N'Đen', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M1', N'Đen', GETDATE(), GETDATE(), 1)
+VALUES ('M0002', N'Đỏ', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M2', N'Đỏ', GETDATE(), GETDATE(), 1)
+VALUES ('M0003', N'Xanh dương', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M3', N'Xanh dương', GETDATE(), GETDATE(), 1)
+VALUES ('M0004', N'Xanh lá', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M4', N'Xanh lá', GETDATE(), GETDATE(), 1)
+VALUES ('M0005', N'Vàng', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M5', N'Vàng', GETDATE(), GETDATE(), 1)
+VALUES ('M0006', N'Trắng', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M6', N'Trắng', GETDATE(), GETDATE(), 1)
+VALUES ('M0007', N'Xám', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M7', N'Xám', GETDATE(), GETDATE(), 1)
+VALUES ('M0008', N'Ghi', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M8', N'Ghi', GETDATE(), GETDATE(), 1)
+VALUES ('M0009', N'Nâu', GETDATE(), GETDATE(), 1)
 INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M9', N'Nâu', GETDATE(), GETDATE(), 1)
-INSERT INTO Color (code, name, CreateDate, UpdateDate, Status)
-VALUES ('M10', N'Cam', GETDATE(), GETDATE(), 1)
+VALUES ('M0010', N'Cam', GETDATE(), GETDATE(), 1)
 
 
-SELECT *
-FROM Product
+SELECT * FROM Product
+    INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00001', N'Áo nam thể thao YOLO logo nổi 3D 7 màu vải xuất', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP1', N'Áo thun tay ngắn', N'vip pro', GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
+VALUES ('SP00002', N'Quần đùi thể thao nam thun YOLO phối chữ dọc ống', N'Mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng. Không nhăn, Không biến dạng (co, rút) khi giặt, không cần ủi/là', GETDATE(), GETDATE(), 1, 2, 2, 2, 2);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP2', N'Áo khoác Flannel tay dài kháo kéo', N'Chiến thần', GETDATE(), GETDATE(), 1, 2, 2, 2, 2);
+VALUES ('SP00003', N'Áo tay ngắn nam sọc vân', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 3, 3, 3, 3);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP3', N'Áo khoác bomber Nylon', N'quá là áo', GETDATE(), GETDATE(), 1, 3, 3, 3, 3);
+VALUES ('SP00004', N'Áo ba lỗ Tank top Nam Cotton YL Lưng Phối', N'Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động. Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,…', GETDATE(), GETDATE(), 1, 4, 4, 4, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP4', N'Áo len Polo', N'vip plus', GETDATE(), GETDATE(), 1, 4, 4, 4, 4);
+VALUES ('SP00005', N'Quần dài thể thao nam A-CHILL TOUCH Anta',N'Chất liệu vải cao cấp, mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. ' , GETDATE(), GETDATE(), 1, 5, 5, 5, 5);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP5', N'Áo Gile len', N'trên cả tuyệt vời', GETDATE(), GETDATE(), 1, 5, 5, 5, 5);
+VALUES ('SP00006', N'Quần dài thể thao nam A-CHILL TOUCH Anta', N'Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Tạo cảm giác thoải mái khi vận động. ', GETDATE(), GETDATE(), 1, 6, 6, 6, 6);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP6', N'Áo Hoodie unisex', N'áo này đẹp lắm', GETDATE(), GETDATE(), 1, 6, 6, 6, 6);
+VALUES ('SP00007', N'Quần dài thể thao nam Anta', N'Quần dài thể thao nam Anta được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi, form vừa vặn, giúp bạn vừa thể hiện phong cách thời trang của mình, vừa thoải mái trong mọi hoạt động, mang lại sự tự tin trước những người xung quanh.', GETDATE(), GETDATE(), 1, 7, 7, 7, 7);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP7', N'Áo Polo vải gân', N'mua đi đừng ngại', GETDATE(), GETDATE(), 1, 7, 7, 7, 7);
+VALUES ('SP00008', N'Áo thể thao nam Cross-training A-CHILL TOUCH Anta', N'Áo thể thao nam Cross-training A-CHILL TOUCH Anta với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi.', GETDATE(), GETDATE(), 1, 8, 8, 8, 8);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP8', N'Áo dài tay', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 8, 8, 8, 8);
+VALUES ('SP00009', N'Áo thể thao nam Running A-DRY FAST Anta', N'với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi. Chất liệu vải cao cấp, giữ ấm tốt, mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Tạo cảm giác thoải mái khi vận động. Sản phẩm ôm sát cơ thể nhưng mềm mịn và ôm sát nhẹ nhàng vào cơ thể nên bạn vẫn cảm thấy rất dễ thở khi tập luyện.', GETDATE(), GETDATE(), 1, 9, 9, 9, 9);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP9', N'Áo Superman', N'mua đi đừng ngại', GETDATE(), GETDATE(), 1, 9, 9, 9, 9);
+VALUES ('SP00010', N'Áo thể thao nam Running A-COOL', N'với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi. Chất liệu vải cao cấp mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Sản phẩm ôm sát cơ thể nhưng mềm mịn và ôm sát nhẹ nhàng vào cơ thể nên bạn vẫn cảm thấy rất dễ thở khi tập luyện.', GETDATE(), GETDATE(), 1, 10, 10, 10, 10);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP10', N'Áo Batman', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 10, 10, 10, 10);
+VALUES ('SP00011', N'Áo ba lỗ thể thao nam A-COOL', N'với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi. Chất liệu vải cao cấp, mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Tạo cảm giác thoải mái khi vận động. Dễ dàng phối hợp với nhiều trang phục và phụ kiện tạo nên cho bạn một phong thời trang thật trẻ trung, năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP11', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00012', N'Áo nam thể thao lưới kim logo ngực lưng YL', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động. Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,…', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP12', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00013', N'Áo tay dài nam giữ nhiệt Body UV', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP13', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00014', N'Áo thun thể thao nam Yolo vạch PQ tay thoáng khí', N'Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,… Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP14', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00015', N'BỘ ĐỒ THU ĐÔNG NAM KWIN', N'Áo kéo khóa, cổ bản 6cm, túi xẻ không khóa kéo, dệt bo gấu áo gọn gàng. Quần cạp chun dây rút co giãn thoải mái và túi xẻ 2 bên tiện lợi. Dệt terry nỉ xéo giúp sản phẩm có độ mềm mại, đồng thời vẫn dày dặn, đứng dáng. Thiết kế basic, màu sắc nam tính kết hợp hiệu ứng màu melange cho vẻ ngoài thu hút.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP15', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00016', N'BỘ ĐỒ THU ĐÔNG KWIN', N'Thiết kế Thiết kế áo cổ trụ có khóa kéo, bo viền cổ tay và gấu áo, quần cạp chun dễ chịu, gấu quần bo nhẹ tạo nét khỏe khoắn và nam tính.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP16', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00017', N'QUẦN RỜI THU ĐÔNG KWIN', N'Thiết kế basic với túi xẻ hai bên cạp chun co giãn dễ chịu thoải mái với người mặc. Màu sắc nam tính, dễ kết hợp trang phục.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP17', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00018', N'Shorts thể thao 7" New Ultra', N'Nhanh khô do ứng dụng công nghệ Quickdry giúp tạo cảm giác khô ráo, thoáng khí khi vận động. Đặc điểm này cũng rất hữu ích vào những ngày mưa nhiều hoặc những ngày nồm ẩm đặc trưng của miền Bắc.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP18', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00019', N'Set đồ thể thao Pro Active', N'Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động. Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP19', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00020', N'Bộ Quần Áo Thể Thao Nam Tay In Phản Quang', N'Bộ đồ nam thể thao - nam tính, năng động, thoải mái Hạn chế nhăn nhàu, giữ form tốt, chống tĩnh điện', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP20', N'Áo Hulk', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00021', N'Bộ Đồ Thể Thao Nam Nỉ Cổ Dựng In Sườn', N'Xốp nhẹ và giữ ấm: Cấu trúc double face được thiết kế như chiếc bánh sandwich với lớp giữa mềm xốp chứa đựng không khí tĩnh. Tăng cường khả năng giữ ấm cơ thể Giữ phom - Không bai dão: Cấu trúc với 4 hệ sợi liên kết chặt chẽ giúp bề mặt ổn định về kết cấu, không làm biến dạng trong quá trình sử dụng', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP21', N'Áo Superman', N'mua đi nghèo lắm rồi', GETDATE(), GETDATE(), 1, 1, 2, 3, 4);
+VALUES ('SP00022', N'Áo Tanktop Thể Thao Nam Sát Nách Form Regular', N'Áo Tanktop Thể Thao Nam Sát Nách Form Regular là một item có tính chất mỏng nhẹ, thoáng mát nên rất thích hợp cho các hoạt động thể thao. Mang form dáng rộng rãi, thoải mái kết hợp chất liệu bền đẹp, chống nhăn, chống khuẩn tốt. Thân trước được thiết kế trơn, phía sau được thêm vào họa tiết in cá tính, là chiếc áo thun đáp ứng đầy đủ các tiêu chí để tập luyện thể thao.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00023', N'Áo Thun Thể Thao Nam Tay Ngắn Rã Vai Form Fitted', N'Áo Thun Thể Thao Nam Tay Ngắn Rã Vai Form Fitted là một item có tính chất mỏng nhẹ, thoáng mát nên rất thích hợp cho các hoạt động thể thao. Mang form dáng rộng rãi, thoải mái kết hợp chất liệu bền đẹp, chống nhăn, chống khuẩn tốt. Thân trước được thiết kế trơn, phía sau được thêm vào họa tiết in cá tính, là chiếc áo thun đáp ứng đầy đủ các tiêu chí để tập luyện thể thao.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00024', N'Áo Thun Thể Thao Nam Tay Ngắn Phối Màu Form Slim', N'Áo Thun Tay Ngắn Nam Form Slim là sản phẩm nằm trong bộ sưu tập "Active Wear". Áo được sử dụng chất vải nhẹ, trượt nước, co giãn 4 chiều và được dệt kim nguyên vòng với kỹ thuật thoáng khí. Thiết kế không đường may tinh tế ôm vừa cơ thể, tay áo raglan kết hợp kiểu dệt gân ở hai bên sườn và trước ngực tôn lên vòng ngực, tạo cảm giác thon gọn người mặc.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00025', N'Áo Hoodie Thể Thao Tay Ngắn Có Nón Form Regular', N'Áo Hoodie Thể Thao Tay Ngắn Có Nón Form Regular với phong cách thiết kế phá cách, mới lạ với form rộng, tay ngắn, có nón giúp cho người mặc tự tin phối nhiều style trang phục khác nhau. Chất vải pha Nylon Spandex kết hợp với kiểu dáng cổ điển, suông thẳng, vừa vặn vào phần cơ thể mang đến sự nhẹ nhàng, thoáng mát và dễ chịu cho người mặc. Áo hoodie form regular không chỉ đem đến sự thoải mái khi hoạt động mà còn giữ ấm trong thời tiết tập luyện lạnh.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00026', N'QUẦN SHORT TẬP GYM NAM 2 LỚP NAVY BB619', N'Quần short tập gym nam 2 lớp Navy là một sản phẩm thời trang dành cho những người yêu thích thể hình và sức khỏe. Quần có thiết kế đơn giản nhưng hiện đại, với 2 lớp vải chất lượng cao, thoáng mát và co giãn tốt. Quần có nhiều màu sắc và kích cỡ để bạn lựa chọn, phù hợp với mọi phong cách và dáng người. Quần short tập gym nam 2 lớp Navy không chỉ giúp bạn thoải mái khi tập luyện, mà còn tôn lên vẻ đẹp nam tính và khỏe khoắn của bạn. Quần cũng rất dễ phối đồ bạn có thể kết hợp với áo thun, áo sơ mi hay áo khoác… Để tạo nên những bộ trang phục năng động và cá tính.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00027', N'Quần Short Thể Thao Xẻ Lai Dây Rút Form Regular', N'Quần Short Thể Thao Xẻ Lai Dây Rút Form Regular là thiết kế dành riêng cho các chàng trai đam mê thể thao. Với chất vải nhẹ co giãn, không thấm nước và kỹ thuật in chuyển nhiệt mang lại chất lượng sắc nét, bền màu hơn, quần short in chuyển nhiệt có thể giặt và ủi trực tiếp mà không ảnh hưởng đến màu săc, chất lượng. Form quần rộng rãi, ống suống thẳng đứng từ trên xuống cho người mặc thoải mái vận động, chi tiết xẻ lai ngắn ở ống quần tạo điểm nhấn riêng biệt hơn.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00028', N'Áo thể thao nam YOLO Powerfit logo chìm', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động. Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,…', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00029', N'Áo nam thể thao siêu thoáng lỗ kim YOLO CoolFit Tech', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động.  Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00030', N'Áo tay ngắn nam sọc vân', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 USE Nova_Store_DB
-SELECT *
-FROM Product
+SELECT * FROM Product
 
-SELECT *
-FROM ProductDetail
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00001', 12, 20000, 20000, GETDATE(), GETDATE(), 1, 1, 1, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00002', 22, 45000, 45000, GETDATE(), GETDATE(), 1, 2, 2, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
+SELECT * FROM ProductDetail
+    INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00001', 12, 490000, 490000, GETDATE(), GETDATE(), 1, 1, 1, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00002', 22, 90000, 90000, GETDATE(), GETDATE(), 1, 2, 2, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
 VALUES ('CT00003', 30, 100000, 100000, GETDATE(), GETDATE(), 1, 3, 1, 2);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00004', 40, 25000, 25000, GETDATE(), GETDATE(), 1, 4, 2, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00005', 31, 60000, 60000, GETDATE(), GETDATE(), 1, 5, 3, 4);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00006', 12, 200000, 200000, GETDATE(), GETDATE(), 1, 6, 5, 6);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00007', 11, 230000, 230000, GETDATE(), GETDATE(), 1, 7, 7, 8);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00008', 60, 40000, 40000, GETDATE(), GETDATE(), 1, 8, 9, 10);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00009', 27, 55000, 55000, GETDATE(), GETDATE(), 1, 9, 2, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00010', 38, 20000, 20000, GETDATE(), GETDATE(), 1, 10, 4, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00011', 36, 12000, 12000, GETDATE(), GETDATE(), 1, 11, 4, 9);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00012', 18, 22000, 22000, GETDATE(), GETDATE(), 1, 12, 2, 7);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00013', 24, 44000, 44000, GETDATE(), GETDATE(), 1, 13, 3, 8);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00014', 44, 56000, 56000, GETDATE(), GETDATE(), 1, 14, 10, 4);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00015', 55, 62000, 62000, GETDATE(), GETDATE(), 1, 15, 6, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00016', 46, 72000, 72000, GETDATE(), GETDATE(), 1, 16, 3, 5);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00017', 71, 88000, 88000, GETDATE(), GETDATE(), 1, 17, 1, 4);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00018', 28, 78000, 78000, GETDATE(), GETDATE(), 1, 18, 9, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00019', 23, 98000, 98000, GETDATE(), GETDATE(), 1, 19, 10, 2);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00020', 26, 230000, 230000, GETDATE(), GETDATE(), 1, 20, 2, 4);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00004', 40, 670000, 670000, GETDATE(), GETDATE(), 1, 4, 2, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00005', 31, 1300000, 1300000, GETDATE(), GETDATE(), 1, 5, 3, 4);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00006', 12, 250000, 250000, GETDATE(), GETDATE(), 1, 6, 5, 6);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00007', 11, 500000, 500000, GETDATE(), GETDATE(), 1, 7, 7, 8);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00008', 60, 4000000, 4000000, GETDATE(), GETDATE(), 1, 8, 9, 10);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00009', 27, 5500000, 5500000, GETDATE(), GETDATE(), 1, 9, 2, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00010', 38, 2400000, 2400000, GETDATE(), GETDATE(), 1, 10, 4, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00011', 36, 7800000, 7800000, GETDATE(), GETDATE(), 1, 11, 4, 9);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00012', 18, 999000, 999000, GETDATE(), GETDATE(), 1, 12, 2, 7);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00013', 24, 4400000, 4400000, GETDATE(), GETDATE(), 1, 13, 3, 8);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00014', 44, 346000, 346000, GETDATE(), GETDATE(), 1, 14, 10, 4);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00015', 55, 89000, 89000, GETDATE(), GETDATE(), 1, 15, 6, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00016', 46, 5500000, 5500000, GETDATE(), GETDATE(), 1, 16, 3, 5);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00017', 71, 456000, 456000, GETDATE(), GETDATE(), 1, 17, 1, 4);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00018', 28, 8000000, 8000000, GETDATE(), GETDATE(), 1, 18, 9, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00019', 23, 9800000, 9800000, GETDATE(), GETDATE(), 1, 19, 10, 2);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00020', 26, 2300000, 2300000, GETDATE(), GETDATE(), 1, 20, 2, 4);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
 VALUES ('CT00021', 2, 340000, 340000, GETDATE(), GETDATE(), 1, 21, 5, 8);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00022', 34, 20000, 20000, GETDATE(), GETDATE(), 1, 1, 2, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00023', 51, 210000, 210000, GETDATE(), GETDATE(), 1, 2, 3, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00024', 61, 65000, 65000, GETDATE(), GETDATE(), 1, 3, 2, 8);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00025', 73, 56000, 56000, GETDATE(), GETDATE(), 1, 4, 3, 5);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00026', 82, 23000, 23000, GETDATE(), GETDATE(), 1, 5, 2, 7);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00027', 23, 31000, 31000, GETDATE(), GETDATE(), 1, 6, 4, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00028', 73, 900000, 900000, GETDATE(), GETDATE(), 1, 7, 2, 2);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00029', 28, 230000, 230000, GETDATE(), GETDATE(), 1, 8, 5, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00030', 38, 48000, 48000, GETDATE(), GETDATE(), 1, 9, 3, 9);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00031', 128, 20000, 20000, GETDATE(), GETDATE(), 1, 10, 2, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00032', 38, 20000, 20000, GETDATE(), GETDATE(), 1, 11, 2, 9);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00033', 282, 22000, 22000, GETDATE(), GETDATE(), 1, 12, 5, 7);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00034', 382, 77000, 77000, GETDATE(), GETDATE(), 1, 13, 5, 4);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00035', 311, 88000, 88000, GETDATE(), GETDATE(), 1, 14, 5, 5);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00022', 300, 6880000, 6880000, GETDATE(), GETDATE(), 1, 22, 6, 2);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00023', 77, 250000, 250000, GETDATE(), GETDATE(), 1, 23, 1, 9);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00024', 210, 85000, 85000, GETDATE(), GETDATE(), 1, 24, 6, 5);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00025', 99, 67000, 67000, GETDATE(), GETDATE(), 1, 25, 7, 8);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00026', 100, 35000, 35000, GETDATE(), GETDATE(), 1, 26, 7, 10);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00027', 46, 45000, 45000, GETDATE(), GETDATE(), 1, 27, 2, 8);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00028', 340, 1000000, 1000000, GETDATE(), GETDATE(), 1, 28, 5, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00029', 290, 300000, 300000, GETDATE(), GETDATE(), 1, 29, 6, 9);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00030', 40, 5700000, 5700000, GETDATE(), GETDATE(), 1, 30, 1, 6);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00031', 128, 2650000, 2650000, GETDATE(), GETDATE(), 1, 10, 2, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00032', 38, 8000000, 8000000, GETDATE(), GETDATE(), 1, 11, 2, 9);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00033', 282, 950000, 950000, GETDATE(), GETDATE(), 1, 12, 5, 7);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00034', 382, 4500000, 4500000, GETDATE(), GETDATE(), 1, 13, 5, 4);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00035', 311, 300000, 300000, GETDATE(), GETDATE(), 1, 14, 5, 5);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
 VALUES ('CT00036', 111, 99000, 99000, GETDATE(), GETDATE(), 1, 15, 9, 7);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00037', 112, 24000, 24000, GETDATE(), GETDATE(), 1, 16, 10, 10);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00038', 138, 25000, 25000, GETDATE(), GETDATE(), 1, 17, 5, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00039', 222, 67000, 67000, GETDATE(), GETDATE(), 1, 18, 6, 6);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00040', 100, 45000, 45000, GETDATE(), GETDATE(), 1, 19, 2, 10);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00041', 99, 78000, 78000, GETDATE(), GETDATE(), 1, 20, 1, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00042', 28, 56000, 56000, GETDATE(), GETDATE(), 1, 21, 2, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00043', 12, 43000, 43000, GETDATE(), GETDATE(), 1, 1, 1, 4);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00037', 112, 5600000, 5600000, GETDATE(), GETDATE(), 1, 16, 10, 10);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00038', 138, 430000, 430000, GETDATE(), GETDATE(), 1, 17, 5, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00039', 222, 7800000, 7800000, GETDATE(), GETDATE(), 1, 18, 6, 6);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00040', 100, 10000000, 10000000, GETDATE(), GETDATE(), 1, 19, 2, 10);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00041', 99, 2000000, 2000000, GETDATE(), GETDATE(), 1, 20, 1, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00042', 28, 360000, 360000, GETDATE(), GETDATE(), 1, 21, 2, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00043', 12, 430000, 430000, GETDATE(), GETDATE(), 1, 1, 1, 4);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
 VALUES ('CT00044', 14, 78000, 78000, GETDATE(), GETDATE(), 1, 2, 2, 5);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00045', 223, 30000, 30000, GETDATE(), GETDATE(), 1, 3, 9, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00046', 333, 20000, 20000, GETDATE(), GETDATE(), 1, 4, 8, 3);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00047', 492, 20000, 20000, GETDATE(), GETDATE(), 1, 5, 2, 1);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00048', 389, 20000, 20000, GETDATE(), GETDATE(), 1, 6, 2, 4);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00049', 123, 20000, 20000, GETDATE(), GETDATE(), 1, 7, 1, 2);
-INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId,
-                           ColorId)
-VALUES ('CT00050', 324, 20000, 20000, GETDATE(), GETDATE(), 1, 8, 2, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00045', 223, 130000, 130000, GETDATE(), GETDATE(), 1, 3, 9, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00046', 333, 600000, 600000, GETDATE(), GETDATE(), 1, 4, 8, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00047', 492, 1500000, 1500000, GETDATE(), GETDATE(), 1, 5, 2, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00048', 389, 234000, 234000, GETDATE(), GETDATE(), 1, 6, 2, 4);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00049', 123, 456000, 456000, GETDATE(), GETDATE(), 1, 7, 1, 2);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00050', 324, 4200000, 4200000, GETDATE(), GETDATE(), 1, 8, 2, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00051', 34, 6780000, 6780000, GETDATE(), GETDATE(), 1, 22, 2, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00052', 51, 210000, 210000, GETDATE(), GETDATE(), 1, 23, 3, 3);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00053', 61, 65000, 65000, GETDATE(), GETDATE(), 1, 24, 2, 8);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00054', 73, 56000, 56000, GETDATE(), GETDATE(), 1, 25, 3, 5);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00055', 82, 23000, 23000, GETDATE(), GETDATE(), 1, 26, 2, 7);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00056', 23, 31000, 31000, GETDATE(), GETDATE(), 1, 27, 4, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00057', 73, 900000, 900000, GETDATE(), GETDATE(), 1, 28, 2, 2);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00058', 28, 230000, 230000, GETDATE(), GETDATE(), 1, 29, 5, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00059', 38, 5500000, 5500000, GETDATE(), GETDATE(), 1, 30, 3, 9);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00060', 38, 5600000, 5600000, GETDATE(), GETDATE(), 1, 9, 3, 9);
 
 
-SELECT *
-FROM Role
-INSERT INTO Role (name, CreateDate, UpdateDate, Status)
+
+
+SELECT * FROM Role
+    INSERT INTO Role (name, CreateDate, UpdateDate, Status)
 VALUES ('Admin', GETDATE(), GETDATE(), 1);
 INSERT INTO Role (name, CreateDate, UpdateDate, Status)
 VALUES ('Employee', GETDATE(), GETDATE(), 1);
 INSERT INTO Role (name, CreateDate, UpdateDate, Status)
 VALUES ('User', GETDATE(), GETDATE(), 1);
 
-INSERT INTO Account(Name, Email, PhoneNumber, Password, Birthday, Avatar, CreateDate, UpdateDate, Status, RoleId)
+SELECT * FROM Account
+
+    INSERT INTO Account(Name, Email, PhoneNumber, Password, Birthday, Avatar, CreateDate, UpdateDate, Status, RoleId)
 VALUES (N'Phùng Minh Quân', 'admin@gmail.com', '0936163632',
-        '$2a$10$PHNpj3vmMEXFe.HByeH98uzXAk8pj9CLwQJUQxII3jbk/EpA/yJ4e', '2003-06-01 00:00:00.000', 'uid_1.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 1),
-       (N'Nguyễn Thanh Tùng', 'employee@gmail.com', '0943670235',
-        '$2a$10$nBJaDOAabttH8yE8pQUxpOXGLEXRP8/NKY8UhmxR5CP/YtGQLsKau', '1999-12-31 00:00:00.000', 'uid_2.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 2),
-       (N'Trần Thu Dung', 'dungtt@gmail.com', '0833390195',
-        '$2a$12$UzOpuN1y3ODGkG2jCjBSf.ZT169QpOsL7nUdGFNskIscy9DV509qy', '2003-11-18 00:00:00.000', 'uid_3.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
-       (N'Nguyễn Cẩm Linh', 'linhnc@gmail.com', '0982666189',
-        '$2a$12$cxpoRAXvIoi8Zducezc6YOAh8eTvR9ZBTzz.YksZnfEN00QTTddjy', '2003-06-23 00:00:00.000', 'uid_4.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
-       (N'Nguyễn Tuấn Hiếu', 'hieunt@gmail.com', '0977572350',
-        '$2a$12$QXRS0HKa.qQiPPYrYh2cBOawwWQzHkWho1BdLQxWdHxd5rvExZopW', '2000-12-21 00:00:00.000', 'uid_5.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
-       (N'Nguyễn Văn Tú', 'tunv@gmail.com', '0769347798',
-        '$2a$12$s/pfJpaQST110hwJfuK5KONpDc0YoAFPHhTS5u.c11dwwxurL/w7a', '1999-02-15 00:00:00.000', 'uid_6.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
-       (N'Lê Minh Hiếu', 'hieulm@gmail.com', '0963360843',
-        '$2a$12$WmHT5ni/SENjPvaGONRE/ORs/9Bzn0a4hJBuHLttJW3h4U6TGytSG', '1997-10-11 00:00:00.000', 'uid_7.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
-       (N'Nguyễn Huy Hoàng', 'hoangnh@gmail.com', '0377733070',
-        '$2a$12$wyQjo6lHWV8pX/vRFITvzuE5EWJeqBKhapYbYVvBI.w6AuQEAu9eG', '2003-06-23 00:00:00.000', 'uid_8.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
-       (N'Lê Minh Khuê', 'khuelm@gmail.com', '0588660409',
-        '$2a$12$Pr2.Rcs5YazU8xs8tql4g.eSv2kP.ddC6q5nxhw2gsrehzlGUNU9y', '2002-11-11 00:00:00.000', 'uid_9.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
-       (N'Trần Đại Lâm', 'lamtd@gmail.com', '0982666189',
-        '$2a$12$B2Q/SPewPQhZ1prVGsl7zeBBuGWWFKmcfa/RxQTxbyN7KxBXoAZvG', '2001-07-23 00:00:00.000', 'uid_10.png',
-        '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3);
+    '$2a$10$PHNpj3vmMEXFe.HByeH98uzXAk8pj9CLwQJUQxII3jbk/EpA/yJ4e', '2003-06-01 00:00:00.000', 'uid_1.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 1),
+    (N'Nguyễn Thanh Tùng', 'employee@gmail.com', '0943670235',
+    '$2a$10$nBJaDOAabttH8yE8pQUxpOXGLEXRP8/NKY8UhmxR5CP/YtGQLsKau', '1999-12-31 00:00:00.000', 'uid_2.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 2),
+    (N'Trần Thu Dung', 'dungtt@gmail.com', '0833390195',
+    '$2a$12$UzOpuN1y3ODGkG2jCjBSf.ZT169QpOsL7nUdGFNskIscy9DV509qy', '2003-11-18 00:00:00.000', 'uid_3.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+    (N'Nguyễn Cẩm Linh', 'linhnc@gmail.com', '0982666189',
+    '$2a$12$cxpoRAXvIoi8Zducezc6YOAh8eTvR9ZBTzz.YksZnfEN00QTTddjy', '2003-06-23 00:00:00.000', 'uid_4.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+    (N'Nguyễn Tuấn Hiếu', 'hieunt@gmail.com', '0977572350',
+    '$2a$12$QXRS0HKa.qQiPPYrYh2cBOawwWQzHkWho1BdLQxWdHxd5rvExZopW', '2000-12-21 00:00:00.000', 'uid_5.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+    (N'Nguyễn Văn Tú', 'tunv@gmail.com', '0769347798',
+    '$2a$12$s/pfJpaQST110hwJfuK5KONpDc0YoAFPHhTS5u.c11dwwxurL/w7a', '1999-02-15 00:00:00.000', 'uid_6.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+    (N'Lê Minh Hiếu', 'hieulm@gmail.com', '0963360843',
+    '$2a$12$WmHT5ni/SENjPvaGONRE/ORs/9Bzn0a4hJBuHLttJW3h4U6TGytSG', '1997-10-11 00:00:00.000', 'uid_7.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+    (N'Nguyễn Huy Hoàng', 'hoangnh@gmail.com', '0377733070',
+    '$2a$12$wyQjo6lHWV8pX/vRFITvzuE5EWJeqBKhapYbYVvBI.w6AuQEAu9eG', '2003-06-23 00:00:00.000', 'uid_8.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+    (N'Lê Minh Khuê', 'khuelm@gmail.com', '0588660409',
+    '$2a$12$Pr2.Rcs5YazU8xs8tql4g.eSv2kP.ddC6q5nxhw2gsrehzlGUNU9y', '2002-11-11 00:00:00.000', 'uid_9.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+    (N'Trần Đại Lâm', 'lamtd@gmail.com', '0982666189',
+    '$2a$12$B2Q/SPewPQhZ1prVGsl7zeBBuGWWFKmcfa/RxQTxbyN7KxBXoAZvG', '2001-07-23 00:00:00.000', 'uid_10.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3);

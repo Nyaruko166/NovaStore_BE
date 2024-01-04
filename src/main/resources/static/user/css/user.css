@@ -395,3 +395,341 @@
 .price-product-detail-discount {
     text-decoration: line-through red;;
 }
+
+.search-not-product {
+    text-align: center;
+    color: black;
+    width: 1060px;
+    font-size: 22px;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.option-list {
+    background-color: #d19c97;
+    border-radius: 8px;
+    border: 1px #d19c97;
+    width: 100%;
+    height: 38px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 17px;
+}
+
+.option-list:active {
+    border: 1px #d19c97 !important;
+}
+
+.option-list:focus {
+    border: 1px #d19c97;
+    outline: 1px auto #d19c97;
+}
+
+.text-option-search {
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
+    margin-bottom: 22px;
+}
+
+/*Sweet Alert 2*/
+.swal2-popup-error {
+    /* Màu nền */
+    background-color: white !important;
+    border: 2px solid red;
+}
+
+.swal2-title-error {
+    /* Màu chữ */
+    color: red !important;
+}
+
+.swal2-timer-progress-bar-error {
+    /* Màu thanh thời gian chạy */
+    background-color: red;
+}
+
+.swal2-icon-error {
+    /* Màu icon */
+    /*background-color: white;*/
+}
+
+
+
+[slider] {
+    position: relative;
+    height: 14px;
+    border-radius: 10px;
+    text-align: left;
+    margin: 45px 0 10px 0;
+}
+
+[slider] > div {
+    position: absolute;
+    left: 13px;
+    right: 15px;
+    height: 14px;
+}
+
+[slider] > div > [inverse-left] {
+    position: absolute;
+    left: 0;
+    height: 14px;
+    border-radius: 10px;
+    background-color: rgb(237, 241, 255);
+    margin: 0 7px;
+}
+
+[slider] > div > [inverse-right] {
+    position: absolute;
+    right: 0;
+    height: 14px;
+    border-radius: 10px;
+    background-color: rgb(237, 241, 255);;
+    margin: 0 7px;
+}
+
+[slider] > div > [range] {
+    position: absolute;
+    left: 0;
+    height: 14px;
+    border-radius: 14px;
+    background-color: #d19c97;
+}
+
+[slider] > div > [thumb] {
+    position: absolute;
+    top: -7px;
+    z-index: 2;
+    height: 28px;
+    width: 28px;
+    text-align: left;
+    margin-left: -11px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    background-color: rgb(237, 241, 255);
+    border-radius: 50%;
+    outline: none;
+}
+
+[slider] > input[type=range] {
+    position: absolute;
+    pointer-events: none;
+    -webkit-appearance: none;
+    z-index: 3;
+    height: 14px;
+    top: -2px;
+    width: 100%;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    opacity: 0;
+}
+
+div[slider] > input[type=range]::-ms-track {
+    -webkit-appearance: none;
+    background: transparent;
+    color: transparent;
+}
+
+div[slider] > input[type=range]::-moz-range-track {
+    -moz-appearance: none;
+    background: transparent;
+    color: transparent;
+}
+
+div[slider] > input[type=range]:focus::-webkit-slider-runnable-track {
+    background: transparent;
+    border: transparent;
+}
+
+div[slider] > input[type=range]:focus {
+    outline: none;
+}
+
+div[slider] > input[type=range]::-ms-thumb {
+    pointer-events: all;
+    width: 28px;
+    height: 28px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+}
+
+div[slider] > input[type=range]::-moz-range-thumb {
+    pointer-events: all;
+    width: 28px;
+    height: 28px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+}
+
+div[slider] > input[type=range]::-webkit-slider-thumb {
+    pointer-events: all;
+    width: 28px;
+    height: 28px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+    -webkit-appearance: none;
+}
+
+div[slider] > input[type=range]::-ms-fill-lower {
+    background: transparent;
+    border: 0 none;
+}
+
+div[slider] > input[type=range]::-ms-fill-upper {
+    background: transparent;
+    border: 0 none;
+}
+
+div[slider] > input[type=range]::-ms-tooltip {
+    display: none;
+}
+
+[slider] > div > [sign] {
+    opacity: 0;
+    position: absolute;
+    margin-left: -40px;
+    top: -39px;
+    z-index:3;
+    background-color: #d19c97;
+    color: rgb(237, 241, 255);
+    width: 85px;
+    height: 28px;
+    border-radius: 28px;
+    -webkit-border-radius: 70px;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    text-align: center;
+}
+
+[slider] > div > [sign]:after {
+    position: absolute;
+    content: '';
+    left: 29px;
+    border-radius: 16px;
+    top: 19px;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top-width: 16px;
+    border-top-style: solid;
+    border-top-color: #d19c97;
+}
+
+[slider] > div > [sign] > span {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 28px;
+}
+
+[slider]:hover > div > [sign] {
+    opacity: 1;
+}
+
+
+
+
+.price-input .price-field {
+    display: flex;
+    margin-bottom: 22px;
+}
+
+.price-field span {
+    margin-right: 10px;
+    margin-top: 6px;
+    font-size: 17px;
+    width: 10%;
+}
+
+.price-field input {
+    flex: 1;
+    height: 35px;
+    font-size: 15px;
+    font-family: "DM Sans", sans-serif;
+    border-radius: 9px;
+    text-align: center;
+    border: 0px;
+    background: #d19c97;
+    color: white;
+}
+
+.price-field input:focus-visible {
+    outline: none;
+    border: 1px solid #d19c97 !important;
+}
+
+.price-input {
+    width: 100%;
+    font-size: 19px;
+    color: black;
+}
+
+/* Remove Arrows/Spinners */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.slider-container {
+    width: 100%;
+}
+
+.slider-container {
+    height: 6px;
+    position: relative;
+    background: #e4e4e4;
+    border-radius: 5px;
+}
+
+.slider-container .price-slider {
+    height: 100%;
+    left: 0%;
+    right: 0%;
+    position: absolute;
+    border-radius: 5px;
+    background: #d19c97;
+}
+
+.range-input {
+    position: relative;
+}
+
+.range-input input {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background: none;
+    top: -5px;
+    pointer-events: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+/* Styles for the range thumb in WebKit browsers */
+input[type="range"]::-webkit-slider-thumb {
+    height: 18px;
+    width: 18px;
+    border-radius: 70%;
+    background: #d19c97;
+    pointer-events: auto;
+    -webkit-appearance: none;
+}
+
+@media screen and (max-width: 768px) {
+    .price-input {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .price-field {
+        margin-bottom: 10px;
+    }
+}

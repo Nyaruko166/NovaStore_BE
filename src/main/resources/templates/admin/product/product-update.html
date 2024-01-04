@@ -551,6 +551,48 @@
                 </form>
                 <!--                Material Add Start-->
             </div>
+            <script th:inline="javascript">
+                const inputElementFormName = document.getElementById('formName');
+                const inputElementBrandName = document.getElementById('brandName');
+                const inputElementMaterialName = document.getElementById('materialName');
+                const inputElementCategoryName = document.getElementById('categoryName');
+
+                inputElementFormName.addEventListener('input', function(event) {
+                    debugger
+                    const specialCharacters = /[!@#$%^&*()_,.?":{}|'<>+\-=~`\\/\[\]]/g;
+                    const inputValue = event.target.value;
+                    if (specialCharacters.test(inputValue)) {
+                        event.target.value = inputValue.replace(specialCharacters, '');
+                    }
+                });
+
+                inputElementBrandName.addEventListener('input', function(event) {
+                    debugger
+                    const specialCharacters = /[!@#$%^&*()_,.?":{}|'<>+\-=~`\\/\[\]]/g;
+                    const inputValue = event.target.value;
+                    if (specialCharacters.test(inputValue)) {
+                        event.target.value = inputValue.replace(specialCharacters, '');
+                    }
+                });
+
+                inputElementMaterialName.addEventListener('input', function(event) {
+                    debugger
+                    const specialCharacters = /[!@#$%^&*()_,.?":{}|'<>+\-=~`\\/\[\]]/g;
+                    const inputValue = event.target.value;
+                    if (specialCharacters.test(inputValue)) {
+                        event.target.value = inputValue.replace(specialCharacters, '');
+                    }
+                });
+
+                inputElementCategoryName.addEventListener('input', function(event) {
+                    debugger
+                    const specialCharacters = /[!@#$%^&*()_,.?":{}|'<>+\-=~`\\/\[\]]/g;
+                    const inputValue = event.target.value;
+                    if (specialCharacters.test(inputValue)) {
+                        event.target.value = inputValue.replace(specialCharacters, '');
+                    }
+                });
+            </script>
         </div>
     </div>
 </div>

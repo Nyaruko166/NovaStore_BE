@@ -6,6 +6,7 @@ import com.sd64.novastore.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +47,8 @@ public class ProductController {
         List<Category> listCategory = categoryService.getAll();
         List<Form> listForm = formService.getAll();
         List<Brand> listBrand = brandService.getAll();
+        BigInteger totalQuantityProductDetail = productDetailService.getTotalQuantityProductDetail();
+        model.addAttribute("totalQuantityProductDetail", totalQuantityProductDetail);
         model.addAttribute("listMaterial", listMaterial);
         model.addAttribute("listCategory", listCategory);
         model.addAttribute("listForm", listForm);
@@ -154,16 +158,26 @@ public class ProductController {
                          @RequestParam(required = false) Integer materialId,
                          @RequestParam(required = false) Integer categoryId,
                          @RequestParam(required = false) Integer formId,
-                         @RequestParam(required = false) String description,
+                         @RequestParam(required = false) Integer status,
+//                         @RequestParam(required = false) String description,
                          @RequestParam(defaultValue = "0") int page,
                          Model model) {
-        if (productName.isEmpty() && description.isEmpty() && brandId == null && materialId == null && categoryId == null && formId == null) {
+        if (productName.isEmpty() && brandId == null && materialId == null && categoryId == null && formId == null && status == null) {
             return "redirect:/nova/product/page";
         }
-        Page<ProductDto> pageProductDto = productService.search(materialId, brandId, formId, categoryId, productName, description, page);
+        Page<ProductDto> pageProductDto = null;
+        if (status == null) {
+            pageProductDto = productService.search(materialId, brandId, formId, categoryId, productName, page);
+        } else if (status == 1) {
+            pageProductDto = productService.searchProductDefault(materialId, brandId, formId, categoryId, productName, page);
+        } else if (status == 2) {
+            pageProductDto = productService.searchProductDiscount(materialId, brandId, formId, categoryId, productName, page);
+        }
         model.addAttribute("pageProduct", pageProductDto);
         model.addAttribute("productName", productName);
-        model.addAttribute("description", description);
+//        model.addAttribute("description", description);
+        BigInteger totalQuantityProductDetail = productDetailService.getTotalQuantityProductDetail();
+        model.addAttribute("totalQuantityProductDetail", totalQuantityProductDetail);
         List<Material> listMaterial = materialService.getAll();
         List<Category> listCategory = categoryService.getAll();
         List<Form> listForm = formService.getAll();
@@ -176,7 +190,7 @@ public class ProductController {
         model.addAttribute("materialId", materialId);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("formId", formId);
-
+        model.addAttribute("status", status);
         return "admin/product/product";
     }
 
@@ -223,18 +237,18 @@ public class ProductController {
                                       @RequestParam(required = false) Integer materialId,
                                       @RequestParam(required = false) Integer categoryId,
                                       @RequestParam(required = false) Integer formId,
-                                      @RequestParam(required = false) String description,
+//                                      @RequestParam(required = false) String description,
 
                                       @RequestParam(defaultValue = "0") int page,
                                       Model model) {
 
-        if (productName.isEmpty() && description.isEmpty() && brandId == null && materialId == null && categoryId == null && formId == null) {
+        if (productName.isEmpty() && brandId == null && materialId == null && categoryId == null && formId == null) {
             return "redirect:/nova/product/view-restore";
         }
-        Page<ProductDto> pageProductDto = productService.searchProductDeleted(materialId, brandId, formId, categoryId, productName, description, page);
+        Page<ProductDto> pageProductDto = productService.searchProductDeleted(materialId, brandId, formId, categoryId, productName, page);
         model.addAttribute("pageProduct", pageProductDto);
         model.addAttribute("productName", productName);
-        model.addAttribute("description", description);
+//        model.addAttribute("description", description);
         List<Material> listMaterial = materialService.getAll();
         List<Category> listCategory = categoryService.getAll();
         List<Form> listForm = formService.getAll();

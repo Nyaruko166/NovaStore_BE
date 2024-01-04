@@ -18,7 +18,7 @@ public class ExcelTemplate {
 
     @GetMapping("/material")
     public ResponseEntity<?> templateMaterial() throws FileNotFoundException {
-        String path = "D:\\Study\\FPTPolytechnic\\2023\\FALL_2023\\PRO2111_DuAnTotNghiep\\NoveStore\\materialTemplate.xlsx";
+        String path = "./src/main/resources/static/template/materialTemplate.xlsx";
         File file = new File(path);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()
@@ -31,7 +31,7 @@ public class ExcelTemplate {
 
     @GetMapping("/brand")
     public ResponseEntity<?> templateBrand() throws FileNotFoundException {
-        String path = "D:\\Study\\FPTPolytechnic\\2023\\FALL_2023\\PRO2111_DuAnTotNghiep\\NoveStore\\brandTemplate.xlsx";
+        String path = "./src/main/resources/static/template/brandTemplate.xlsx";
         File file = new File(path);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()
@@ -44,7 +44,7 @@ public class ExcelTemplate {
 
     @GetMapping("/category")
     public ResponseEntity<?> templateCategory() throws FileNotFoundException {
-        String path = "D:\\Study\\FPTPolytechnic\\2023\\FALL_2023\\PRO2111_DuAnTotNghiep\\NoveStore\\categoryTemplate.xlsx";
+        String path = "./src/main/resources/static/template/categoryTemplate.xlsx";
         File file = new File(path);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()
@@ -57,7 +57,7 @@ public class ExcelTemplate {
 
     @GetMapping("/form")
     public ResponseEntity<?> templateForm() throws FileNotFoundException {
-        String path = "D:\\Study\\FPTPolytechnic\\2023\\FALL_2023\\PRO2111_DuAnTotNghiep\\NoveStore\\formTemplate.xlsx";
+        String path = "./src/main/resources/static/template/formTemplate.xlsx";
         File file = new File(path);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()
@@ -70,7 +70,7 @@ public class ExcelTemplate {
 
     @GetMapping("/color")
     public ResponseEntity<?> templateColor() throws FileNotFoundException {
-        String path = "D:\\Study\\FPTPolytechnic\\2023\\FALL_2023\\PRO2111_DuAnTotNghiep\\NoveStore\\colorTemplate.xlsx";
+        String path = "./src/main/resources/static/template/colorTemplate.xlsx";
         File file = new File(path);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()
@@ -83,7 +83,7 @@ public class ExcelTemplate {
 
     @GetMapping("/size")
     public ResponseEntity<?> templateSize() throws FileNotFoundException {
-        String path = "D:\\Study\\FPTPolytechnic\\2023\\FALL_2023\\PRO2111_DuAnTotNghiep\\NoveStore\\sizeTemplate.xlsx";
+        String path = "./src/main/resources/static/template/sizeTemplate.xlsx";
         File file = new File(path);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()

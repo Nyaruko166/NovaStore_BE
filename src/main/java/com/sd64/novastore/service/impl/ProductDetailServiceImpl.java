@@ -7,6 +7,7 @@ import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Size;
 import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
+import com.sd64.novastore.response.ProductHomeResponse;
 import com.sd64.novastore.service.ProductDetailService;
 import com.sd64.novastore.utils.FileUtil;
 import com.sd64.novastore.utils.QRCodeUtil;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -136,12 +138,6 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return productDetailRepository.findById(id).orElse(null);
     }
 
-
-    @Override
-    public List<ProductDetail> getProductDetailByProductId(Integer productId) {
-        return productDetailRepository.findAllByProductIdAndStatusOrderByUpdateDateDesc(productId, 1);
-    }
-
     @Override
     public String importExcelProduct(MultipartFile file, Integer productId) throws IOException {
         if (productDetailExcelUtil.isValidExcel(file)) {
@@ -167,8 +163,10 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         Pageable pageable = PageRequest.of(page, 10);
         var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMin, priceMax, sizeId, colorId, pageable)
                 .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
-        long totalElements = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMin, priceMax, sizeId, colorId).stream().count();
-        return new PageImpl(pageProductDetailDto, pageable, totalElements);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), pageProductDetailDto.size());
+        List<ProductDetailSearchResponse> pageContent = pageProductDetailDto.subList(start, end);
+        return new PageImpl<>(pageContent, pageable, pageProductDetailDto.size());
     }
 
     public int calculateTotalPages(int totalElemets, int elementsPerpage) {
@@ -276,5 +274,15 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Override
     public Page<ProductDetail> findAllByProductNameAndStatus(String name, Integer status, Pageable pageable) {
         return productDetailRepository.searchAllByProductNameAndStatus(name, status, pageable);
+    }
+
+    @Override
+    public BigInteger getTotalQuantityProductDetail() {
+        return productDetailRepository.getTotalQuantity(1);
+    }
+
+    @Override
+    public BigInteger getTotalQuantityByProductId(Integer productId) {
+        return productDetailRepository.getTotalQuantityById(1, productId);
     }
 }

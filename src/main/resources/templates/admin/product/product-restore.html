@@ -37,11 +37,11 @@
                             <input type="text" class="form-control" th:name="productName"
                                    th:value="${productName}">
                         </div>
-                        <div class="form-group col-2">
-                            <label class="font-weight-bold">Mô tả</label>
-                            <input type="text" class="form-control" th:name="description"
-                                   th:value="${description}">
-                        </div>
+<!--                        <div class="form-group col-2">-->
+<!--                            <label class="font-weight-bold">Mô tả</label>-->
+<!--                            <input type="text" class="form-control" th:name="description"-->
+<!--                                   th:value="${description}">-->
+<!--                        </div>-->
                         <div class="form-group col-2">
                             <label class="font-weight-bold">Chất liệu</label>
                             <div th:if="${materialId} == null">
@@ -157,68 +157,27 @@
                             <tr>
                                 <th scope="col">Mã sản phẩm</th>
                                 <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Mô tả</th>
+<!--                                <th scope="col">Mô tả</th>-->
                                 <th scope="col">Thương hiệu</th>
                                 <th scope="col">Chất liệu</th>
                                 <th scope="col">Loại sản phẩm</th>
                                 <th scope="col">Kiểu dáng</th>
+                                <th scope="col">Trạng thái</th>
                                 <th scope="col">Khôi phục</th>
-                                <!--                <th scope="col">Ảnh</th>-->
-                                <!--                                <th scope="col">-->
-                                <!--                                    <div class="custom-control custom-checkbox">-->
-                                <!--                                        <input type="checkbox" hidden class="custom-control-input"-->
-                                <!--                                               id="selectAllCheckbox">-->
-                                <!--                                        <label class="custom-control-label" for="selectAllCheckbox">Chọn tất cả</label>-->
-                                <!--                                    </div>-->
-                                <!--                                    <script th:inline="javascript">-->
-                                <!--                                        // Chọn tất cả checkbox-->
-                                <!--                                        var selectAllCheckbox = document.getElementById('selectAllCheckbox');-->
-                                <!--                                        var ids = [];-->
-                                <!--                                        selectAllCheckbox.addEventListener('change', function () {-->
-                                <!--                                            var checkboxes = document.querySelectorAll('input[name="selectedProducts"]'); // tra ve list tat ca nhung thang co name = selectedProducts-->
-                                <!--                                            ids = []-->
-                                <!--                                            checkboxes.forEach(function (checkbox) {-->
-                                <!--                                                checkbox.checked = selectAllCheckbox.checked;-->
-                                <!--                                                if (checkbox.checked) {-->
-                                <!--                                                    ids.push(checkbox.id)-->
-                                <!--                                                }-->
-                                <!--                                            });-->
-                                <!--                                            if (ids.length > 0) {-->
-                                <!--                                                fetch('http://localhost:8080/nova/product/restore', {-->
-                                <!--                                                    method: 'POST',-->
-                                <!--                                                    body: {-->
-                                <!--                                                        listProductId: ids-->
-                                <!--                                                    }-->
-                                <!--                                                })-->
-                                <!--                                            }-->
-                                <!--                                        });-->
-                                <!--                                    </script>-->
-                                <!--                                </th>-->
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="items:${pageProduct}">
                                 <td th:text="${items.code}"></td>
                                 <td th:text="${items.name}"></td>
-                                <td th:text="${items.description}"></td>
+<!--                                <td th:text="${items.description}"></td>-->
                                 <td th:text="${items.brandName}"></td>
                                 <td th:text="${items.materialName}"></td>
                                 <td th:text="${items.categoryName}"></td>
                                 <td th:text="${items.formName}"></td>
-                                <!--                <td>-->
-                                <!--                  <a th:href="@{'/nova/product/' + ${items.id} + '/image'}">-->
-                                <!--                    <button type="button" class="btn btn-dark px-4">-->
-                                <!--                      <i class="fa-solid fa-image"></i>-->
-                                <!--                    </button>-->
-                                <!--                  </a>-->
-                                <!--                </td>-->
-                                <!--                                <td class="">-->
-                                <!--                                    <div class="custom-control custom-checkbox" style="top: -11px;">-->
-                                <!--                                        <input type="checkbox" class="custom-control-input"-->
-                                <!--                                               th:id="${items.id}" name="selectedProducts" >-->
-                                <!--                                        <label class="custom-control-label" th:for="${items.id}"></label>-->
-                                <!--                                    </div>-->
-                                <!--                                </td>-->
+                                <td th:if="${items.status == 0}">
+                                    <p class="status-deleted" >Ngừng bán</p>
+                                </td>
                                 <td>
                                     <button th:onclick="clickRestore('product', 'productRestore', [[${items.id}]])"
                                             type="button"

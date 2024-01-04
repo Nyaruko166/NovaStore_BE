@@ -55,7 +55,7 @@ public class FormController {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
             return "redirect:/nova/product/view-add";
         } else {
-            redirectAttributes.addFlashAttribute("error", "Tên chất liệu đã tồn tại");
+            redirectAttributes.addFlashAttribute("error", "Tên kiểu dáng đã tồn tại");
             return "redirect:/nova/product/view-add";
         }
     }
