@@ -390,11 +390,15 @@
     <div class="col">
         <div class="card">
             <div class="card-body card-block">
-                <div class="title-name-product" th:text="${product.name}">
+                <div class="title-name-product" >
                 </div>
                 <div class="w-100 px-1 d-flex">
                     <table class="table table-hover w-45">
                         <tbody>
+                        <tr>
+                            <th scope="col"><i class="fa-solid fa-book-open-reader mr-3"></i>Tên sản phẩm</th>
+                            <td th:text="${product.name}"></td>
+                        </tr>
                         <tr>
                             <th scope="col"><i class="fa-solid fa-credit-card mr-3"></i>Mã sản phẩm</th>
                             <td th:text="${product.code}"></td>
@@ -408,8 +412,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <th scope="col"><i class="fa-solid fa-bandage mr-3"></i>Thương hiệu</th>
-                            <td th:text="${product.brand.name}"></td>
+                            <th scope="col"><i class="fa-solid fa-hashtag mr-3"></i>Tổng số sản phẩm chi tiết</th>
+                            <td th:text="${totalQuantity}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -427,6 +431,10 @@
                         <tr>
                             <th scope="col"><i class="fa-solid fa-person mr-3"></i>Kiểu dáng</th>
                             <td th:text="${product.form.name}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="col"><i class="fa-solid fa-bandage mr-3"></i>Thương hiệu</th>
+                            <td th:text="${product.brand.name}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -611,7 +619,7 @@
                                 <td th:text="${items.colorName}"></td>
                                 <td th:text="${items.sizeName}"></td>
                                 <td>
-                                    <div th:onclick="showQrCodeImage([[${items.id}]])"
+                                    <div th:onclick="showQrCodeImage([[${items.code}]])"
                                          class="display-qr-btn btn btn-dark px-4 text-dark font-weight-bold cursor-pointer">
                                         <i class="fa-solid fa-qrcode" style="color: white"></i>
                                     </div>
@@ -623,12 +631,10 @@
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <img th:src="@{'/qrcode/' + ${items.id}}" alt=""
-                                             style="width: 200px;height: 200px"
-                                             class="barcode-img">
+                                    <div class="showImage m-2">
+
                                     </div>
-                                    <div class="print-qr btn btn-dark text-center mb-2"><i
+                                    <div th:onclick="printQR([[${items.id}]])" class="print-qr btn btn-dark text-center mb-2"><i
                                             class="fa-solid fa-print px-4"></i></div>
                                 </div>
                                 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -638,51 +644,79 @@
                                     function showQrCodeImage(id) {
                                         let content = document.querySelector('.qrcode-container');
                                         content.classList.add("active")
-                                        content.querySelector("div img").src = "/qrcode/" + id;
-                                        // window.addEventListener('beforeunload', function(event) {
-                                        //     // Hủy bỏ sự kiện mặc định
-                                        //     event.preventDefault();
-                                        //     // Gán thông báo xác nhận rời khỏi trang (không được hỗ trợ trên tất cả các trình duyệt)
-                                        //     event.returnValue = '';
-                                        // });
+                                       if(content.querySelectorAll("canvas").length > 0){
+                                           content.querySelector(".showImage").querySelector("img").remove();
+                                           content.querySelector(".showImage").querySelector("canvas").remove();
+                                       }
+                                            var qrcode = new QRCode(content.querySelector(".showImage"), {
+                                            text: `${id}`,
+                                            width: 128,
+                                            height: 128,
+                                        });
+                                        // content.querySelector("div img").src = "/qrcode/" + id;
                                     }
 
-                                    // $('.display-qr-btn').on('click', function () {
-                                    //     debugger
-                                    //     var versionItem = $(this).closest('.version-item');
-                                    //     console.log(versionItem)
-                                    //     var itemQRContainer = versionItem.find('.qrcode-container');
-                                    //     let content = document.querySelector('.qrcode-container');
-                                    //     content.classList.add("active")
-                                    //     console.log(itemQRContainer)
-                                    // })
                                     $('.close-qr').on('click', function () {
+
                                         $('.qrcode-container.active').removeClass('active')
+                                        // $('img,canvas').remove();
                                     })
 
-                                    $('.print-qr').on('click', printImage)
+                                    // $('.print-qr').on('click', function () {
+                                    //     var id = $(this).attr('data-id')
+                                    //     var iframe = document.createElement('iframe');
+                                    //     iframe.style.display = 'none'; // Hide the iframe
+                                    //     document.body.appendChild(iframe);
+                                    //
+                                    //     // Set the iframe source to the specified URL
+                                    //     // iframe.src = `/upload-barcode/${code}.png`;
+                                    //     debugger
+                                    //     iframe.src = `/qrcode/${id}`;
+                                    //     debugger
+                                    //     // Wait for the iframe to load and then print
+                                    //     iframe.onload = function() {
+                                    //         setTimeout(function() {
+                                    //             iframe.contentWindow.print();
+                                    //             // Remove the iframe from the DOM after printing
+                                    //             document.body.removeChild(iframe);
+                                    //         }, 200); // Adjust the delay as needed
+                                    //     };
+                                    // })
 
-                                    function printImage() {
-
-                                        // Lấy ảnh theo ID
-                                        const imageElement = document.querySelector('.qrcode-container.active img');
-
-                                        // Tạo của sổ để in
-                                        const printWindow = window.open('', '', 'width=800,height=500');
-                                        printWindow.document.open();
-                                        // Viết nội dung HTML ở cửa số in
-                                        printWindow.document.write('<html><head><title>Print Image</title></head><body>');
-                                        printWindow.document.write('<img src="' + imageElement.src + '" alt="Printed Image">');
-                                        printWindow.document.write('</body></html>');
-                                        printWindow.document.close();
-                                        // In
-                                        printWindow.print();
-
-                                        // Tắt cửa sổ in sau khi in
-                                        printWindow.onafterprint = function () {
-                                            printWindow.close();
-                                        };
+                                    function printQR(id) {
+                                        console.log(id);
+                                        var canvas = document.querySelector(".showImage").querySelector("canvas");
+                                        var qrCodeDataUri = canvas.toDataURL();
+                                        setTimeout(() => {
+                                            printJS({
+                                                printable: qrCodeDataUri,
+                                                type: "image",
+                                                imageStyle: "width:100%;",
+                                            });
+                                        }, 500);
                                     }
+
+                                    // function printImage() {
+                                    //
+                                    //     // Lấy ảnh theo ID
+                                    //     const imageElement = document.querySelector('.qrcode-container.active img');
+                                    //
+                                    //     // Tạo của sổ để in
+                                    //     const printWindow = window.open('', '', 'width=800,height=500');
+                                    //     printWindow.document.open();
+                                    //     // Viết nội dung HTML ở cửa số in
+                                    //     printWindow.document.write('<html><head><title>Print Image</title></head><body>');
+                                    //     printWindow.document.write('<img src="' + imageElement.src + '" alt="Printed Image">');
+                                    //     printWindow.document.write('</body></html>');
+                                    //     printWindow.document.close();
+                                    //     // In
+                                    //     printWindow.print();
+                                    //
+                                    //     // Tắt cửa sổ in sau khi in
+                                    //     printWindow.onafterprint = function () {
+                                    //         printWindow.close();
+                                    //     };
+                                    // }
                                 </script>
                                 <td class="d-flex justify-content-center">
                                     <div class="dropdown">

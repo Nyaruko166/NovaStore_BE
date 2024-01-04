@@ -160,17 +160,6 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-//        if (!productDetailRemoveIds.isEmpty()) {
-//            for (Integer items : productDetailRemoveIds) {
-//                productDetailService.delete(items);
-//            }
-//        }
-
-//        for (int i = 0; i < productDetailRemoveIds.size(); i++) {
-//            ProductDetail productDetail = productDetailService.getOne(productDetailRemoveIds.get(i));
-//            productDetail.setStatus(0);
-//            productDetailRepository.save(productDetail);
-//        }
 
         // List hiển thị tất cả phần tử không quan tâm trang thái
         List<ProductDetail> listProductDetailBefore = productDetailRepository.findAllByProduct_IdOrderByIdAsc(productBefore.getId());
@@ -180,8 +169,6 @@ public class ProductServiceImpl implements ProductService {
         for (ProductDetail productDetail : listProductDetailUpdate) {
             productDetail.setProduct(productUpdate);
         }
-//        productBefore.setListProductDetail(listProductDetailUpdate);
-//        productUpdate.setListProductDetail(listProductDetailUpdate);
         int index = 0;
 
         // List hiển thị tất cả các phần tử trang thái 1
@@ -195,7 +182,7 @@ public class ProductServiceImpl implements ProductService {
                 productDetail.setUpdateDate(new Date());
                 productDetail.setStatus(listProductDetailNoDelete.get(i).getStatus());
                 productDetail.setProduct(productUpdate);
-                productDetail.setPriceDiscount(listProductDetailNoDelete.get(i).getPriceDiscount());
+                productDetail.setPriceDiscount(listProductDetailNoDelete.get(i).getPrice());
                 productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
                 productDetail.setPrice(listProductDetailUpdate.get(i).getPrice());
                 productDetail.setSize(listProductDetailUpdate.get(i).getSize());
@@ -228,7 +215,6 @@ public class ProductServiceImpl implements ProductService {
             productDetail.setProduct(productUpdate);
             productDetail.setCreateDate(new Date());
             productDetail.setUpdateDate(new Date());
-//            productDetail.setStatus(productUpdate.getStatus());
             productDetail.setStatus(1);
             productDetail.setCode(generateProductDetailCode(count));
             productDetail.setQuantity(listProductDetailUpdate.get(i).getQuantity());
@@ -327,9 +313,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page) {
+    public Page<ProductDto> search(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        return productRepository.search(pageable, brandId, categoryId, formId, materialId, productName.trim(), description.trim());
+        return productRepository.search(pageable, brandId, categoryId, formId, materialId, productName.trim());
+    }
+
+    @Override
+    public Page<ProductDto> searchProductDefault(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return productRepository.searchProductDefault(pageable, brandId, categoryId, formId, materialId, productName.trim());
+    }
+
+    @Override
+    public Page<ProductDto> searchProductDiscount(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return productRepository.searchProductDiscount(pageable, brandId, categoryId, formId, materialId, productName.trim());
     }
 
     @Override
@@ -362,9 +360,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, String description, int page) {
+    public Page<ProductDto> searchProductDeleted(Integer materialId, Integer brandId, Integer formId, Integer categoryId, String productName, int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        return productRepository.searchProductDeleted(pageable, brandId, categoryId, formId, materialId, productName.trim(), description.trim());
+        return productRepository.searchProductDeleted(pageable, brandId, categoryId, formId, materialId, productName.trim());
     }
 
     @Override

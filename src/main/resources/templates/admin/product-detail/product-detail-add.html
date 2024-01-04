@@ -135,6 +135,7 @@
                             }
                         })
 
+
                         // $('.productDetail-price').on('keydown', function (e) {
                         //     onlyAllowNumberInput2(e)
                         // })
@@ -261,7 +262,7 @@
 
                         function checkDuplicateSizeAndColor(color, size, template) {
                             listDetail.forEach(item => {
-                                if (item.color == color && item.size == size) {
+                                if (item.color === color && item.size === size) {
                                     document.querySelector('.form-detail').removeChild(template)
                                     const Toast = Swal.mixin({
                                         toast: true,
@@ -292,11 +293,11 @@
 
 
                         //Handle file input
-                        const fileInput = document.getElementById("file-input")
+                        let fileInput = document.getElementById("file-input")
                         fileInput.addEventListener('change', (e) => displaySelectedImages(e))
                         const selectedFileNames = new Set();
                         var fileSend = [];
-
+                        let sizeImageRemove = 0;
                         function displaySelectedImages(event) {
                             const selectedImagesContainer = document.getElementById('selected-images');
 
@@ -310,7 +311,27 @@
                                     const fileSizeInMB = file.size / (1024 * 1024);
                                     if (fileSizeInMB > 3) {
                                         // Swal.fire("Lỗi", "Vui lòng chọn ảnh có dung lượng < 3MB")
-                                        document.getElementById('errorImage').innerHTML = 'Vui lòng chọn ảnh có dung lượng < 3MB'
+                                        const Toast = Swal.mixin({
+                                            toast: true,
+                                            position: "top-end",
+                                            showConfirmButton: false,
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            didOpen: (toast) => {
+                                                toast.onmouseenter = Swal.stopTimer;
+                                                toast.onmouseleave = Swal.resumeTimer;
+                                            },
+                                            customClass: {
+                                                popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                                title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                                icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                                timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                            }
+                                        });
+                                        Toast.fire({
+                                            icon: "error",
+                                            title: "Vui lòng chọn ảnh có dung lượng nhỏ hơn 3MB !"
+                                        });
                                     } else {
                                         const fileName = file.name
                                         if (!selectedFileNames.has(fileName)) {
@@ -318,28 +339,27 @@
                                             const reader = new FileReader();
 
                                             reader.onload = function (e) {
-                                                // Create a new div for the image
+                                                // Tạo thẻ div chứa ảnh
                                                 const imageDiv = document.createElement('div');
                                                 imageDiv.className = 'selected-file me-2';
 
-                                                // Create an image element
+                                                // Tạo ảnh
                                                 const image = document.createElement('img');
                                                 image.src = e.target.result;
                                                 image.alt = 'Selected Image';
                                                 image.width = 110;
                                                 image.height = 120;
 
-                                                // Create a div for file details
 
-
-                                                // Create a button to remove the image
-                                                const removeButton = document.createElement('button');
-                                                removeButton.className = 'btn btn-sm btn-outline-danger rounded-circle';
+                                                // Tạo nút xóa ảnh
+                                                const removeButton = document.createElement('div');
+                                                removeButton.className = 'delete-img-btn';
                                                 removeButton.type = 'button';
-                                                removeButton.innerText = 'X';
+                                                removeButton.innerHTML = '<i class="fa-solid fa-xmark" style="caret-color: transparent;"></i>';
                                                 removeButton.onclick = function () {
-                                                    // Remove the selected image when the button is clicked
+                                                    // Xóa ảnh
                                                     selectedImagesContainer.removeChild(imageDiv);
+                                                    sizeImageRemove++;
                                                 };
                                                 const fileDetailsDiv = document.createElement('div');
                                                 fileDetailsDiv.className = 'file-details';
@@ -362,9 +382,56 @@
 
                         document.getElementById("productDetailForm").addEventListener('submit', async function (e) {
                             e.preventDefault()
-                            if (fileSend.length < 1) {
+                            if (fileSend.length < 1 || fileSend.length === sizeImageRemove) {
                                 // Swal.fire('Lỗi', "Vui lòng chọn ít nhất một hình ảnh", "error")
-                                document.getElementById('errorImage').innerHTML = 'Vui lòng chọn nhất 1 ảnh'
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    },
+                                    customClass: {
+                                        popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                        title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                        icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                        timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                    }
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Vui lòng chọn ít nhất 1 ảnh cho sản phẩm !"
+                                });
+                                return false
+                                // document.getElementById('errorImage').innerHTML = 'Vui lòng chọn nhất 1 ảnh'
+                                // return
+                            }
+                            let fileImage = document.getElementById("file-input").files
+                            if (fileImage.length === 0){
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    },
+                                    customClass: {
+                                        popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                        title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                        icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                        timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                    }
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Vui lòng chọn ít nhất 1 ảnh cho sản phẩm !"
+                                });
                                 return
                             }
                             var canAdd = true
@@ -372,7 +439,28 @@
                                 console.log($(item).val())
                                 if ($(item).val() == null) {
                                     // Swal.fire("Lỗi", "Vui lòng chọn màu cho sản phẩm");
-                                    document.getElementById('error').innerHTML = 'Vui lòng chọn màu cho sản phẩm'
+                                    // document.getElementById('error').innerHTML = 'Vui lòng chọn màu cho sản phẩm'
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        },
+                                        customClass: {
+                                            popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                            title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                            icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                            timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                        }
+                                    });
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: "Vui lòng chọn màu cho sản phẩm !"
+                                    });
                                     canAdd = false;
                                     return false; // To break out of the loop
                                 }
@@ -381,7 +469,28 @@
                             $('.size-select').each(function (index, item) {
                                 if ($(item).val() == null) {
                                     // swal("Lỗi", "Vui lòng chọn kích cỡ cho sản phẩm");
-                                    document.getElementById('error').innerHTML = 'Vui lòng chọn kích cỡ cho sản phẩm'
+                                    // document.getElementById('error').innerHTML = 'Vui lòng chọn kích cỡ cho sản phẩm'
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        },
+                                        customClass: {
+                                            popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                            title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                            icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                            timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                        }
+                                    });
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: "Vui lòng chọn kích cỡ cho sản phẩm !"
+                                    });
                                     canAdd = false;
                                     return false; // To break out of the loop
                                 }
@@ -390,6 +499,57 @@
                                 return false
                             }
 
+                            let price = document.querySelector('.productDetail-price').value
+                            if (price > 10000000) {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    },
+                                    customClass: {
+                                        popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                        title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                        icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                        timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                    }
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Cửa hàng chỉ kinh doanh sản phẩm nhỏ hơn hoặc bằng 10 triệu !"
+                                });
+                                return false
+                            }
+
+                            let quantity = document.querySelector('.productDetail-quantity').value
+                            if (quantity > 1000000) {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    },
+                                    customClass: {
+                                        popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                        title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                        icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                        timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                    }
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Số lượng cho 1 sản phẩm tối đa là 1 triệu !"
+                                });
+                                return false
+                            }
                             // Swal.fire({
                             //     title: "Thêm dữ liệu",
                             //     text: "Bạn có muốn thêm dữ liệu không ?",

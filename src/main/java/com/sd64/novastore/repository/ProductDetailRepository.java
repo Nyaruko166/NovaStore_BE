@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,13 @@ import java.util.Optional;
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Integer> {
     Page<ProductDetail> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
 
-    Page<ProductDetail> getAllProductDetailByProduct_IdAndStatusOrderByUpdateDateDesc(Pageable pageable, Integer id, Integer status);
+    @Query(value = "SELECT SUM(pd.quantity) FROM ProductDetail pd WHERE pd.status =:status", nativeQuery = true)
+    BigInteger getTotalQuantity(Integer status);
+
+    @Query(value = "SELECT SUM(quantity) as totalQuantity FROM ProductDetail pd\n" +
+            "INNER JOIN Product p ON pd.productId = p.id\n" +
+            "WHERE p.id =:productId AND pd.status = :status", nativeQuery = true)
+    BigInteger getTotalQuantityById(Integer status, Integer productId);
 
     List<ProductDetail> findAllByProductIdAndStatusOrderByUpdateDateDesc(Integer productId, Integer status);
 

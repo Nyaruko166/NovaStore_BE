@@ -36,153 +36,497 @@
                     </div>
 
                     <div class="border-bottom mb-4 pb-4 mt-5">
+                        <h5 class="font-weight-semi-bold mb-4">Trạng thái</h5>
+                        <div th:if="${status == null}">
+                            <select class="form-control combobox-select" name="status">
+                                <option value="">Tất cả</option>
+                                <option value="1">Không giảm giá</option>
+                                <option value="2">Đang giảm giá</option>
+                            </select>
+                        </div>
+
+                        <div th:if="${status != null}">
+                            <select class="form-control combobox-select" name="status">
+                                <option value="">Tất cả</option>
+                                <option value="1" th:selected="${status == 1}">Không giảm giá</option>
+                                <option value="2" th:selected="${status == 2}">Đang giảm giá</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="border-bottom mb-4 pb-4 mt-5">
                         <h5 class="font-weight-semi-bold mb-4">Sắp xếp theo</h5>
                         <div th:if="${sort == null}">
                             <select class="form-control combobox-select" name="sort">
                                 <option value="">Tất cả</option>
-                                <option value="1">Giảm dần</option>
-                                <option value="2">Tăng dần</option>
-                                <option value="3">Đang giảm giá</option>
+                                <option value="1">Giá giảm dần</option>
+                                <option value="2">Giá tăng dần</option>
                             </select>
                         </div>
 
                         <div th:if="${sort != null}">
                             <select class="form-control combobox-select" name="sort">
                                 <option value="">Tất cả</option>
-                                <option value="1" th:selected="${sort == 1}">Giảm dần</option>
-                                <option value="2" th:selected="${sort == 2}">Tăng dần</option>
-                                <option value="3" th:selected="${sort == 3}">Đang giảm giá</option>
+                                <option value="1" th:selected="${sort == 1}">Giá giảm dần</option>
+                                <option value="2" th:selected="${sort == 2}">Giá tăng dần</option>
                             </select>
                         </div>
-
                     </div>
 
+                    <!-- Price Start -->
+<!--                    <div class="border-bottom mb-4 pb-4 mt-5">-->
+<!--                        <h5 class="font-weight-semi-bold mb-4">Giá</h5>-->
+<!--                        <div th:if="${price == null}">-->
+<!--                            <select class="form-control combobox-select" name="price">-->
+<!--                                <option value="">Tất cả</option>-->
+<!--                                <option value="1">₫0 ~ ₫100.000</option>-->
+<!--                                <option value="2">₫100.000 ~ ₫500.000</option>-->
+<!--                                <option value="3">₫500.000 ~ ₫1.000.000</option>-->
+<!--                                <option value="4">₫1.000.000 ~ ₫5.000.000</option>-->
+<!--                                <option value="5">₫5.000.000 ~ ₫10.000.000</option>-->
+<!--                                <option value="6">₫10.000.000 ~ ₫50.000.000</option>-->
+<!--                                <option value="7">₫50.000.000 ~ ₫100.000.000</option>-->
+<!--                                <option value="8">₫100.000.000 ~ ₫500.000.000</option>-->
+<!--                                <option value="9">₫500.000.000 ~ ₫2.000.000.000</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div th:if="${price != null}">-->
+<!--                            <select class="form-control combobox-select" name="price">-->
+<!--                                <option value="">Tất cả</option>-->
+<!--                                <option value="1" th:selected="${price == 1}">₫0 ~ ₫100.000</option>-->
+<!--                                <option value="2" th:selected="${price == 2}">₫100.000 ~ ₫500.000</option>-->
+<!--                                <option value="3" th:selected="${price == 3}">₫500.000 ~ ₫1.000.000</option>-->
+<!--                                <option value="4" th:selected="${price == 4}">₫1.000.000 ~ ₫5.000.000</option>-->
+<!--                                <option value="5" th:selected="${price == 5}">₫5.000.000 ~ ₫10.000.000</option>-->
+<!--                                <option value="6" th:selected="${price == 6}">₫10.000.000 ~ ₫50.000.000</option>-->
+<!--                                <option value="7" th:selected="${price == 7}">₫50.000.000 ~ ₫100.000.000</option>-->
+<!--                                <option value="8" th:selected="${price == 8}">₫100.000.000 ~ ₫500.000.000</option>-->
+<!--                                <option value="9" th:selected="${price == 9}">₫500.000.000 ~ ₫2.000.000.000</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
                     <div class="border-bottom mb-4 pb-4 mt-5">
                         <h5 class="font-weight-semi-bold mb-4">Giá</h5>
-                        <div th:if="${price == null}">
-                            <select class="form-control combobox-select" name="price">
-                                <option value="">Tất cả</option>
-                                <option value="1">₫0 ~ ₫100.000</option>
-                                <option value="2">₫100.000 ~ ₫500.000</option>
-                                <option value="3">₫500.000 ~ ₫1.000.000</option>
-                                <option value="4">₫1.000.000 ~ ₫5.000.000</option>
-                                <option value="5">₫5.000.000 ~ ₫10.000.000</option>
-                                <option value="6">₫10.000.000 ~ ₫50.000.000</option>
-                                <option value="7">₫50.000.000 ~ ₫100.000.000</option>
-                                <option value="8">₫100.000.000 ~ ₫500.000.000</option>
-                                <option value="9">₫500.000.000 ~ ₫2.000.000.000</option>
-                            </select>
+<!--                        <div slider id="slider-distance">-->
+<!--                            <div>-->
+<!--                                <div inverse-left style="width:100%;"></div>-->
+<!--                                <div inverse-right style="width:100%;"></div>-->
+<!--                                <div range style="left:0%;right:0%;"></div>-->
+<!--                                <span thumb style="left:0%;"></span>-->
+<!--                                <span thumb style="left:100%;"></span>-->
+<!--                                <div sign style="left:0%;">-->
+<!--                                    <span id="valueMin">₫0</span>-->
+<!--                                </div>-->
+<!--                                <div sign style="left:100%;">-->
+<!--                                    <span id="valueMax">₫10.000.000</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <input type="range" id="priceMin" tabindex="0" value="1" max="10000000" name="priceMin" min="0" step="1000" oninput="-->
+<!--                            this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);-->
+<!--                            var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);-->
+<!--                            var children = this.parentNode.childNodes[1].childNodes;-->
+<!--                            children[1].style.width=value+'%';-->
+<!--                            children[5].style.left=value+'%';-->
+<!--                            children[7].style.left=value+'%';children[11].style.left=value+'%';-->
+<!--                            var formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', currencyDisplay: 'narrowSymbol' });-->
+<!--                            var formattedValue = formatter.format(this.value);-->
+<!--                            children[11].childNodes[1].innerText='₫' + formattedValue.replaceAll('₫', '')" />-->
+
+<!--                            <input type="range" th:id="priceMax" tabindex="0" value="10000000" max="10000000" name="priceMax" min="0" step="1000" oninput="-->
+<!--                            this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));-->
+<!--                            var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);-->
+<!--                            var children = this.parentNode.childNodes[1].childNodes;-->
+<!--                            children[3].style.width=(100-value)+'%';-->
+<!--                            children[5].style.right=(100-value)+'%';-->
+<!--                            children[9].style.left=value+'%';children[13].style.left=value+'%';-->
+<!--                            var formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', currencyDisplay: 'narrowSymbol' });-->
+<!--                            var formattedValue = formatter.format(this.value);-->
+<!--                            children[13].childNodes[1].innerText='₫' + formattedValue.replaceAll('₫', '')" />-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <div th:text="${priceMin}"></div>-->
+<!--                            <div th:text="${priceMin}"></div>-->
+<!--                        </div>-->
+
+                        <div class="custom-wrapper">
+                            <div class="price-input">
+                                <div class="price-field">
+                                    <span>Từ</span>
+                                    <input type="number" id="priceMin" name="priceMin" th:value="${priceMin}" class="min-input">
+                                </div>
+                                <div class="price-field">
+                                    <span>Đến</span>
+                                    <input type="number" id="priceMax" name="priceMax" th:value="${priceMax}" class="max-input"/>
+                                </div>
+                            </div>
+                            <div class="slider-container">
+                                <div class="price-slider">
+                                </div>
+                            </div>
+
+                            <!-- Slider -->
+                            <div class="range-input">
+                                <input type="range" class="min-range" name="priceMin"  min="0" max="10000000" th:value="${priceMin}" step="1000">
+                                <input type="range" class="max-range" name="priceMax" min="0" max="10000000" th:value="${priceMax}" step="1000">
+                            </div>
                         </div>
-                        <div th:if="${price != null}">
-                            <select class="form-control combobox-select" name="price">
-                                <option value="">Tất cả</option>
-                                <option value="1" th:selected="${price == 1}">₫0 ~ ₫100.000</option>
-                                <option value="2" th:selected="${price == 2}">₫100.000 ~ ₫500.000</option>
-                                <option value="3" th:selected="${price == 3}">₫500.000 ~ ₫1.000.000</option>
-                                <option value="4" th:selected="${price == 4}">₫1.000.000 ~ ₫5.000.000</option>
-                                <option value="5" th:selected="${price == 5}">₫5.000.000 ~ ₫10.000.000</option>
-                                <option value="6" th:selected="${price == 6}">₫10.000.000 ~ ₫50.000.000</option>
-                                <option value="7" th:selected="${price == 7}">₫50.000.000 ~ ₫100.000.000</option>
-                                <option value="8" th:selected="${price == 8}">₫100.000.000 ~ ₫500.000.000</option>
-                                <option value="9" th:selected="${price == 9}">₫500.000.000 ~ ₫2.000.000.000</option>
-                            </select>
-                        </div>
+
+                        <script th:inline="javascript">
+                            const rangevalue = document.querySelector(".slider-container .price-slider");
+                            const rangeInputvalue = document.querySelectorAll(".range-input input");
+                            // Đặt khoảng cách giá
+                            let priceGap = 500;
+
+                            // Thêm trình xử lý sự kiện vào các yếu tố đầu vào giá
+                            const priceInputvalue = document.querySelectorAll(".price-input input");
+                            for (let i = 0; i < priceInputvalue.length; i++) {
+                                priceInputvalue[i].addEventListener("input", e => {
+
+                                    // Phân tích các giá trị tối thiểu và tối đa của phạm vi đầu vào
+                                    let minp = parseInt(priceInputvalue[0].value);
+                                    let maxp = parseInt(priceInputvalue[1].value);
+                                    let diff = maxp - minp
+
+                                    if (minp < 0) {
+                                        const Toast = Swal.mixin({
+                                            toast: true,
+                                            position: "top-end",
+                                            showConfirmButton: false,
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            didOpen: (toast) => {
+                                                toast.onmouseenter = Swal.stopTimer;
+                                                toast.onmouseleave = Swal.resumeTimer;
+                                            },
+                                            customClass: {
+                                                popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                                title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                                icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                                timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                            }
+                                        });
+                                        Toast.fire({
+                                            icon: "error",
+                                            title: "Giá không thể nhỏ hơn 0 !"
+                                        });
+                                        priceInputvalue[0].value = 0;
+                                        minp = 0;
+                                    }
+
+                                    // Validate the input values
+                                    if (maxp > 10000000) {
+                                        const Toast = Swal.mixin({
+                                            toast: true,
+                                            position: "top-end",
+                                            showConfirmButton: false,
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            didOpen: (toast) => {
+                                                toast.onmouseenter = Swal.stopTimer;
+                                                toast.onmouseleave = Swal.resumeTimer;
+                                            },
+                                            customClass: {
+                                                popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                                title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                                icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                                timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                            }
+                                        });
+                                        Toast.fire({
+                                            icon: "error",
+                                            title: "Giá cao nhất là 10 triệu !"
+                                        });
+                                        priceInputvalue[1].value = 10000000;
+                                        maxp = 10000000;
+                                    }
+
+                                    if (minp > maxp - priceGap) {
+                                        priceInputvalue[0].value = maxp - priceGap;
+                                        minp = maxp - priceGap;
+
+                                        if (minp < 0) {
+                                            priceInputvalue[0].value = 0;
+                                            minp = 0;
+                                        }
+                                    }
+
+                                    // Kiểm tra xem khoảng cách giá có được đáp ứng không và giá tối đa có nằm trong phạm vi không
+                                    if (diff >= priceGap && maxp <= rangeInputvalue[1].max) {
+                                        if (e.target.className === "min-input") {
+                                            rangeInputvalue[0].value = minp;
+                                            let value1 = rangeInputvalue[0].max;
+                                            rangevalue.style.left = `${(minp / value1) * 100}%`;
+                                        }
+                                        else {
+                                            rangeInputvalue[1].value = maxp;
+                                            let value2 = rangeInputvalue[1].max;
+                                            rangevalue.style.right =
+                                                `${100 - (maxp / value2) * 100}%`;
+                                        }
+                                    }
+                                });
+
+                                // Thêm trình xử lý sự kiện vào các phần tử đầu vào trong phạm vi
+                                for (let i = 0; i < rangeInputvalue.length; i++) {
+                                    rangeInputvalue[i].addEventListener("input", e => {
+                                        let minVal = parseInt(rangeInputvalue[0].value);
+                                        let maxVal = parseInt(rangeInputvalue[1].value);
+
+                                        let diff = maxVal - minVal
+
+                                        // Check if the price gap is exceeded
+                                        if (diff < priceGap) {
+
+                                            // Kiểm tra xem đầu vào có phải là đầu vào phạm vi tối thiểu không
+                                            if (e.target.className === "min-range") {
+                                                rangeInputvalue[0].value = maxVal - priceGap;
+                                            }
+                                            else {
+                                                rangeInputvalue[1].value = minVal + priceGap;
+                                            }
+                                        }
+                                        else {
+
+                                            // Cập nhật giá đầu vào và tiến độ phạm vi
+                                            priceInputvalue[0].value = minVal;
+                                            priceInputvalue[1].value = maxVal;
+                                            rangevalue.style.left = `${(minVal / rangeInputvalue[0].max) * 100}%`;
+                                            rangevalue.style.right = `${100 - (maxVal / rangeInputvalue[1].max) * 100}%`;
+                                        }
+                                    });
+                                }
+                            }
+                        </script>
                     </div>
                     <!-- Price End -->
 
+                    <!-- Color Start-->
+                    <div class="border-bottom mb-4 pb-4 mt-5">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-option-search">Màu sắc</div>
+                            <div th:if="${listColorId != null}">
+                                <div class="text-option-search" th:text="${listColorId.size()}"></div>
+                            </div>
+                        </div>
+                        <p>
+                            <button class="option-list" type="button" data-toggle="collapse"
+                                    data-target="#colorExample" aria-expanded="false" aria-controls="colorExample">
+                                Danh sách màu sắc<i class="fa-solid fa-caret-down"></i>
+                            </button>
+                        </p>
+                        <div class="collapse" id="colorExample">
+                            <div class="card card-body" th:if="${listColorId == null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="color: ${listColor}">
+                                        <input type="checkbox" name="listColorId" class="custom-control-input"
+                                               th:value="${color.id}" th:id="color+${color.id}" >
+                                        <label class="custom-control-label" th:for="color+${color.id}" th:text="${color.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card card-body" th:if="${listColorId != null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="color: ${listColor}">
+                                        <input type="checkbox" name="listColorId" class="custom-control-input"
+                                               th:value="${color.id}" th:id="color+${color.id}" th:checked="${listColorId.contains(color.id)}">
+                                        <label class="custom-control-label" th:for="color+${color.id}" th:text="${color.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Color End-->
+
+                    <!-- Size Start-->
+                    <div class="border-bottom mb-4 pb-4 mt-5">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-option-search">Kích cỡ</div>
+                            <div th:if="${listSizeId != null}">
+                                <div class="text-option-search" th:text="${listSizeId.size()}"></div>
+                            </div>
+                        </div>
+                        <p>
+                            <button class="option-list" type="button" data-toggle="collapse"
+                                    data-target="#sizeExample" aria-expanded="false" aria-controls="sizeExample">
+                                Danh sách kích cỡ<i class="fa-solid fa-caret-down"></i>
+                            </button>
+                        </p>
+                        <div class="collapse" id="sizeExample">
+                            <div class="card card-body" th:if="${listSizeId == null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="size: ${listSize}">
+                                        <input type="checkbox" name="listSizeId" class="custom-control-input"
+                                               th:value="${size.id}" th:id="size+${size.id}" >
+                                        <label class="custom-control-label" th:for="size+${size.id}" th:text="${size.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card card-body" th:if="${listSizeId != null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="size: ${listSize}">
+                                        <input type="checkbox" name="listSizeId" class="custom-control-input"
+                                               th:value="${size.id}" th:id="size+${size.id}" th:checked="${listSizeId.contains(size.id)}">
+                                        <label class="custom-control-label" th:for="size+${size.id}" th:text="${size.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Size End-->
+
+
                     <!-- Category Start -->
                     <div class="border-bottom mb-4 pb-4 mt-5">
-                        <h5 class="font-weight-semi-bold mb-4">Thể loại</h5>
-                        <div th:if="${categoryId == null}">
-                            <select class="form-control combobox-select" name="categoryId">
-                                <option value="">Tất cả</option>
-                                <option th:value="${category.id}"
-                                        th:each="category: ${listCategory}" th:text="${category.name}">
-                                </option>
-                            </select>
+                        <div class="d-flex justify-content-between">
+                            <div class="text-option-search">Thể loại</div>
+                            <div th:if="${listCategoryId != null}">
+                                <div class="text-option-search" th:text="${listCategoryId.size()}"></div>
+                            </div>
                         </div>
+                        <p>
+                            <button class="option-list" type="button" data-toggle="collapse"
+                                    data-target="#categoryExample" aria-expanded="false" aria-controls="categoryExample">
+                                Danh sách thể loại<i class="fa-solid fa-caret-down"></i>
+                            </button>
+                        </p>
+                        <div class="collapse" id="categoryExample">
+                            <div class="card card-body" th:if="${listCategoryId == null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="category: ${listCategory}">
+                                        <input type="checkbox" name="listCategoryId" class="custom-control-input"
+                                               th:value="${category.id}" th:id="category+${category.id}" >
+                                        <label class="custom-control-label" th:for="category+${category.id}" th:text="${category.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div th:if="${categoryId != null}">
-                            <select class="form-control combobox-select" name="categoryId">
-                                <option value="">Tất cả</option>
-                                <option th:value="${category.id}"
-                                        th:each="category: ${listCategory}" th:text="${category.name}"
-                                th:selected="${categoryId == category.id}">
-                                </option>
-                            </select>
+                            <div class="card card-body" th:if="${listCategoryId != null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="category: ${listCategory}">
+                                        <input type="checkbox" name="listCategoryId" class="custom-control-input"
+                                               th:value="${category.id}" th:id="category+${category.id}" th:checked="${listCategoryId.contains(category.id)}">
+                                        <label class="custom-control-label" th:for="category+${category.id}" th:text="${category.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Category End -->
 
                     <!-- Brand Start -->
                     <div class="border-bottom mb-4 pb-4 mt-5">
-                        <h5 class="font-weight-semi-bold mb-4">Thương hiệu</h5>
-                        <div th:if="${brandId == null}">
-                            <select class="form-control combobox-select" name="brandId">
-                                <option value="">Tất cả</option>
-                                <option th:value="${brand.id}"
-                                        th:each="brand: ${listBrand}" th:text="${brand.name}">
-                                </option>
-                            </select>
+                        <div class="d-flex justify-content-between">
+                            <div class="text-option-search">Thương hiệu</div>
+                            <div th:if="${listBrandId != null}">
+                                <div class="text-option-search" th:text="${listBrandId.size()}"></div>
+                            </div>
                         </div>
+                        <p>
+                            <button class="option-list" type="button" data-toggle="collapse"
+                                    data-target="#brandExample" aria-expanded="false" aria-controls="brandExample">
+                                Danh sách thương hiệu<i class="fa-solid fa-caret-down"></i>
+                            </button>
+                        </p>
+                        <div class="collapse" id="brandExample">
+                            <div class="card card-body" th:if="${listBrandId == null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="brand: ${listBrand}">
+                                        <input type="checkbox" name="listBrandId" class="custom-control-input"
+                                               th:value="${brand.id}" th:id="brand+${brand.id}" >
+                                        <label class="custom-control-label" th:for="brand+${brand.id}" th:text="${brand.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div th:if="${brandId != null}">
-                            <select class="form-control combobox-select" name="brandId">
-                                <option value="">Tất cả</option>
-                                <option th:value="${brand.id}"
-                                        th:each="brand: ${listBrand}" th:text="${brand.name}"
-                                        th:selected="${brandId == brand.id}">
-                                </option>
-                            </select>
+                            <div class="card card-body" th:if="${listBrandId != null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="brand: ${listBrand}">
+                                        <input type="checkbox" name="listBrandId" class="custom-control-input"
+                                               th:value="${brand.id}" th:id="brand+${brand.id}" th:checked="${listBrandId.contains(brand.id)}">
+                                        <label class="custom-control-label" th:for="brand+${brand.id}" th:text="${brand.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Brand End -->
 
                     <!-- Material Start -->
                     <div class="border-bottom mb-4 pb-4 mt-5">
-                        <h5 class="font-weight-semi-bold mb-4">Chất liệu</h5>
-                        <div th:if="${materialId == null}">
-                            <select class="form-control combobox-select" name="materialId">
-                                <option value="">Tất cả</option>
-                                <option th:value="${material.id}"
-                                        th:each="material: ${listMaterial}" th:text="${material.name}">
-                                </option>
-                            </select>
+                        <div class="d-flex justify-content-between">
+                            <div class="text-option-search">Chất liệu</div>
+                            <div th:if="${listMaterialId != null}">
+                                <div class="text-option-search" th:text="${listMaterialId.size()}"></div>
+                            </div>
                         </div>
+                        <p>
+                            <button class="option-list" type="button" data-toggle="collapse"
+                                    data-target="#materialExample" aria-expanded="false" aria-controls="materialExample">
+                                Danh sách chất liệu<i class="fa-solid fa-caret-down"></i>
+                            </button>
+                        </p>
+                        <div class="collapse" id="materialExample">
+                            <div class="card card-body" th:if="${listMaterialId == null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="material: ${listMaterial}">
+                                        <input type="checkbox" name="listMaterialId" class="custom-control-input"
+                                               th:value="${material.id}" th:id="material+${material.id}" >
+                                        <label class="custom-control-label" th:for="material+${material.id}" th:text="${material.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div th:if="${materialId != null}">
-                            <select class="form-control combobox-select" name="materialId">
-                                <option value="">Tất cả</option>
-                                <option th:value="${material.id}"
-                                        th:each="material: ${listMaterial}" th:text="${material.name}"
-                                        th:selected="${materialId == material.id}">
-                                </option>
-                            </select>
+                            <div class="card card-body" th:if="${listMaterialId != null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="material: ${listMaterial}">
+                                        <input type="checkbox" name="listMaterialId" class="custom-control-input"
+                                               th:value="${material.id}" th:id="material+${material.id}" th:checked="${listMaterialId.contains(material.id)}">
+                                        <label class="custom-control-label" th:for="material+${material.id}" th:text="${material.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Material End -->
 
                     <!-- Form Start -->
                     <div class="border-bottom mb-4 pb-4 mt-5">
-                        <h5 class="font-weight-semi-bold mb-4">Kiểu dáng</h5>
-                        <div th:if="${formId == null}">
-                            <select class="form-control combobox-select" name="formId">
-                                <option value="">Tất cả</option>
-                                <option th:value="${form.id}"
-                                        th:each="form: ${listForm}" th:text="${form.name}">
-                                </option>
-                            </select>
+                        <div class="d-flex justify-content-between">
+                            <div class="text-option-search">Kiểu dáng</div>
+                            <div th:if="${listFormId != null}">
+                                <div class="text-option-search" th:text="${listFormId.size()}"></div>
+                            </div>
                         </div>
+                        <p>
+                            <button class="option-list" type="button" data-toggle="collapse"
+                                    data-target="#formExample" aria-expanded="false" aria-controls="formExample">
+                                Danh sách kiểu dáng<i class="fa-solid fa-caret-down"></i>
+                            </button>
+                        </p>
+                        <div class="collapse" id="formExample">
+                            <div class="card card-body" th:if="${listFormId == null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="form: ${listForm}">
+                                        <input type="checkbox" name="listFormId" class="custom-control-input"
+                                               th:value="${form.id}" th:id="form+${form.id}" >
+                                        <label class="custom-control-label" th:for="form+${form.id}" th:text="${form.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div th:if="${formId != null}">
-                            <select class="form-control combobox-select" name="formId">
-                                <option value="">Tất cả</option>
-                                <option th:value="${form.id}"
-                                        th:each="form: ${listForm}" th:text="${form.name}"
-                                        th:selected="${formId == form.id}">
-                                </option>
-                            </select>
+                            <div class="card card-body" th:if="${listFormId != null}">
+                                <div class="row px-3">
+                                    <div class="custom-control custom-checkbox col-6" th:each="form: ${listForm}">
+                                        <input type="checkbox" name="listFormId" class="custom-control-input"
+                                               th:value="${form.id}" th:id="form+${form.id}" th:checked="${listFormId.contains(form.id)}">
+                                        <label class="custom-control-label" th:for="form+${form.id}" th:text="${form.name}"></label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Form End -->
@@ -195,7 +539,7 @@
             </form>
 
         <!-- Shop Product Start -->
-        <div class="font-weight-semi-bold mb-4" th:if="${pageProductShopResponse.isEmpty()}">
+        <div class="search-not-product" th:if="${pageProductShopResponse.isEmpty()}">
             Không có sản phẩm nào
         </div>
 
@@ -217,8 +561,8 @@
                                     </div>
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3 border-info-product-home">
-                                    <a class="h5 text-decoration-none text-truncate"
-                                       th:href="@{'/product-detail/' + ${product.id}}" th:text="${product.name}"></a>
+                                    <div class="h5 text-decoration-none text-truncate"
+                                       th:href="@{'/product-detail/' + ${product.id}}" th:text="${product.name}"></div>
                                     <div th:if="${product.value == null}" class="d-flex align-items-center justify-content-center mt-2">
                                         <div class="d-flex justify-content-center price" th:if="${product.priceMax != product.priceMin}">
                                             <span th:text="'₫' + ${#numbers.formatDecimal(product.priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></span>
@@ -265,11 +609,11 @@
 <!--                    Pagination-->
                     <div class="d-flex justify-content-center align-items-center">
                         <div th:if="${pageProductShopResponse.getNumber() + 1 > 1}" class="btn btn-pagination mr-1">
-                            <a th:href="@{|?page=0&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&sort=${sort == null ? '' : sort}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                            <a th:href="@{|?page=0&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&status=${status == null ? '' : status}&sort=${sort == null ? '' : sort}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}${listColorId == null ? '' : pageListColor}${listSizeId == null ? '' : pageListSize}${listCategoryId == null ? '' : pageListCategory}${listBrandId == null ? '' : pageListBrand}${listMaterialId == null ? '' : pageListMaterial}${listFormId == null ? '' : pageListForm}|}">
                                 </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
                         </div>
                         <div th:if="${pageProductShopResponse.getNumber() + 1 > 1}" class="btn btn-pagination mr-1">
-                            <a th:href="@{|?page=${pageProductShopResponse.getNumber() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&sort=${sort == null ? '' : sort}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                            <a th:href="@{|?page=${pageProductShopResponse.getNumber() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch.trim()}&status=${status == null ? '' : status}&sort=${sort == null ? '' : sort}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}${listColorId == null ? '' : pageListColor}${listSizeId == null ? '' : pageListSize}${listCategoryId == null ? '' : pageListCategory}${listBrandId == null ? '' : pageListBrand}${listMaterialId == null ? '' : pageListMaterial}${listFormId == null ? '' : pageListForm}|}">
                                 <i style="color: white" class="fa-solid fa-left-long"></i></a>
                         </div>
                         <div class="btn btn-pagination d-flex">
@@ -279,12 +623,12 @@
                         </div>
                         <div th:if="${pageProductShopResponse.getNumber() + 1 lt pageProductShopResponse.getTotalPages()}"
                              class="btn btn-pagination ml-1">
-                            <a th:href="@{|?page=${pageProductShopResponse.getNumber()+1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&sort=${sort == null ? '' : sort}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                            <a th:href="@{|?page=${pageProductShopResponse.getNumber()+1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch.trim()}&status=${status == null ? '' : status}&sort=${sort == null ? '' : sort}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}${listColorId == null ? '' : pageListColor}${listSizeId == null ? '' : pageListSize}${listCategoryId == null ? '' : pageListCategory}${listBrandId == null ? '' : pageListBrand}${listMaterialId == null ? '' : pageListMaterial}${listFormId == null ? '' : pageListForm}|}">
                                 <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                         </div>
                         <div th:if="${pageProductShopResponse.getNumber() + 1 lt pageProductShopResponse.getTotalPages()}"
                              class="btn btn-pagination ml-1">
-                            <a th:href="@{|?page=${pageProductShopResponse.getTotalPages() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&sort=${sort == null ? '' : sort}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&categoryId=${categoryId == null ? '' : categoryId}&brandId=${brandId == null ? '' : brandId}&materialId=${materialId == null ? '' : materialId}&formId=${formId == null ? '' : formId}|}">
+                            <a th:href="@{|?page=${pageProductShopResponse.getTotalPages() - 1}&productNameSearch=${productNameSearch == null ? '' : productNameSearch}&status=${status == null ? '' : status}&sort=${sort == null ? '' : sort}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}${listColorId == null ? '' : pageListColor}${listSizeId == null ? '' : pageListSize}${listCategoryId == null ? '' : pageListCategory}${listBrandId == null ? '' : pageListBrand}${listMaterialId == null ? '' : pageListMaterial}${listFormId == null ? '' : pageListForm}|}">
                                 <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                         </div>
                     </div>

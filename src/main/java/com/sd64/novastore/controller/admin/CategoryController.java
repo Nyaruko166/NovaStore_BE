@@ -49,7 +49,7 @@ public class CategoryController {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
             return "redirect:/nova/category/page";
         } else {
-            redirectAttributes.addFlashAttribute("error", "Tên loại đã tồn tại");
+            redirectAttributes.addFlashAttribute("error", "Tên loại sản phẩm đã tồn tại");
             return "redirect:/nova/category/page";
         }
     }
@@ -61,7 +61,7 @@ public class CategoryController {
             redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
             return "redirect:/nova/product/view-add";
         } else {
-            redirectAttributes.addFlashAttribute("error", "Tên chất liệu đã tồn tại");
+            redirectAttributes.addFlashAttribute("error", "Tên loại sản phẩm đã tồn tại");
             return "redirect:/nova/product/view-add";
         }
     }

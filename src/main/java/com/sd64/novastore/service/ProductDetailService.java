@@ -1,6 +1,5 @@
 package com.sd64.novastore.service;
 
-import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
 import org.springframework.data.domain.Page;
@@ -9,10 +8,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 public interface ProductDetailService {
-    List<ProductDetail> getProductDetailByProductId(Integer productId);
+    BigInteger getTotalQuantityProductDetail();
+
+    BigInteger getTotalQuantityByProductId(Integer productId);
 
     Page<ProductDetail> getAllPT(Integer page);
 

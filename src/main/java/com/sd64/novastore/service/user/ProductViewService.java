@@ -38,13 +38,13 @@ public interface ProductViewService {
 
     Page<ProductDiscountHomeResponse> convertlistToPage(List<ProductDiscountHomeResponse> listProductDiscount, int page);
 
-    List<ProductDiscountHomeResponse> searchProductAndProductDiscountShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
+    List<ProductDiscountHomeResponse> searchProductAndProductDiscountShopResponse(List<Integer> listBrandId, List<Integer> listCategoryId, List<Integer> listFormId, List<Integer> listMaterialId, List<Integer> listSizeId, List<Integer> listColorId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, Integer status);
 
-    List<ProductDiscountHomeResponse> searchProductAndProductDiscountDescShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
+    List<ProductDiscountHomeResponse> searchProductAndProductDiscountDescShopResponse(List<Integer> listBrandId, List<Integer> listCategoryId, List<Integer> listFormId, List<Integer> listMaterialId, List<Integer> listSizeId, List<Integer> listColorId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, Integer status);
 
-    List<ProductDiscountHomeResponse> searchProductAscShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
+    List<ProductDiscountHomeResponse> searchProductAndProductDiscountAscShopResponse(List<Integer> listBrandId, List<Integer> listCategoryId, List<Integer> listFormId, List<Integer> listMaterialId, List<Integer> listSizeId, List<Integer> listColorId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, Integer status);
 
-    List<ProductDiscountHomeResponse> searchOnlyProductDiscountShopResponse(Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, int page);
+    List<ProductDiscountHomeResponse> searchOnlyProductDiscountShopResponse(List<Integer> listBrandId, List<Integer> listCategoryId, List<Integer> listFormId, List<Integer> listMaterialId, List<Integer> listSizeId, List<Integer> listColorId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin);
 
     BigDecimal getPriceMaxBySelected(Integer price);
 
@@ -62,5 +62,18 @@ public interface ProductViewService {
 
     ProductAndValueDiscountDto getProductAndValueDiscount(Integer productId);
 
+    StringBuilder pageListColor(List<Integer> listColorId);
+
+    StringBuilder pageListSize(List<Integer> listSizeId);
+
+    StringBuilder pageListBrand(List<Integer> listBrandId);
+
+    StringBuilder pageListMaterial(List<Integer> listMaterialId);
+
+    StringBuilder pageListCategory(List<Integer> lisCategoryId);
+
+    StringBuilder pageListForm(List<Integer> listFormId);
+
+    List<Integer> removeNullValueInList(List<Integer> list);
 
 }

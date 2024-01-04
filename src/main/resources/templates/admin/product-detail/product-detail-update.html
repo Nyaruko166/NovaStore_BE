@@ -18,22 +18,25 @@
                       enctype="multipart/form-data">
                     <div class="form-detail">
                         <div class="form-table " th:each="productDetail, iterStat : *{listProductDetail}">
-<!--                            <input hidden th:field="*{listProductDetail[__${iterStat.index}__].code}">-->
+                            <!--                            <input hidden th:field="*{listProductDetail[__${iterStat.index}__].code}">-->
                             <div class="row form-row" th:id="${'form-row-' + productDetail.id}">
                                 <div class="form-group col-2">
                                     <label class="font-weight-bold">Mã chi tiết</label>
                                     <input type="text" class="form-control code-select"
-                                           th:field="*{listProductDetail[__${iterStat.index}__].code}" readonly required>
+                                           th:field="*{listProductDetail[__${iterStat.index}__].code}" readonly
+                                           required>
                                 </div>
                                 <div class="form-group col-2">
                                     <label class="font-weight-bold">Số lượng</label>
                                     <input type="number" class="form-control productDetail-quantity" min="0" value="1"
-                                           th:field="*{listProductDetail[__${iterStat.index}__].quantity}">
+                                           th:field="*{listProductDetail[__${iterStat.index}__].quantity}"
+                                           id="productDetail-quantity">
                                 </div>
                                 <div class="form-group col-2">
                                     <label class="font-weight-bold">Giá tiền</label>
                                     <input type="number" class="form-control productDetail-price" min="0" value="0"
-                                           th:field="*{listProductDetail[__${iterStat.index}__].price}">
+                                           th:field="*{listProductDetail[__${iterStat.index}__].price}"
+                                           id="productDetail-price">
                                 </div>
                                 <div class="form-group col-2">
                                     <label class="font-weight-bold">Màu sắc</label>
@@ -53,11 +56,11 @@
                                         </option>
                                     </select>
                                 </div>
-<!--                                <div>-->
-<!--                                    <button type="button" class="btn btn-danger remove-row" style="margin-top: 32px">-->
-<!--                                        <i class="fa fa-trash" aria-hidden="true"></i>-->
-<!--                                    </button>-->
-<!--                                </div>-->
+                                <!--                                <div>-->
+                                <!--                                    <button type="button" class="btn btn-danger remove-row" style="margin-top: 32px">-->
+                                <!--                                        <i class="fa fa-trash" aria-hidden="true"></i>-->
+                                <!--                                    </button>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -86,12 +89,12 @@
                             </label>
                             <div class="image-group d-flex">
                                 <div class="selected-files row" id="selected-images">
-                                    <div th:each="items : ${listImage}" class="selected-file me-2">
+                                    <div th:each="items : ${listImage}" class="selected-file me-2 pos-relative">
                                         <div class="file-details">
-                                            <button class="btn btn-sm btn-outline-danger rounded-circle delete-img-btn"
+                                            <div class="delete-img-btn"
                                                     type="button"
-                                            >X
-                                            </button>
+                                            ><i class="fa-solid fa-xmark"></i>
+                                            </div>
                                         </div>
                                         <img class="exists-image" th:src="@{'/image/' + ${items.id}}"
                                              alt="Selected Image" width="100" height="120" th:data-image="${items.id}">
@@ -151,7 +154,7 @@
                             }
                         })
                         $('.productDetail-quantity').on('focusout', function (e) {
-                            if ($(this).val() == "") {
+                            if ($(this).val() === "") {
                                 $(this).val(0)
                             }
                         })
@@ -170,6 +173,7 @@
                         // Khoi tao list detail color and size hiện tại để chuẩn bị cho việc check trùng size và color
                         var listDetail = []
 
+                        // add size và color đang có trên combobox vào listDetail
                         document.querySelectorAll(".form-row").forEach(item => {
                             var color = item.querySelector('.color-select').value;
                             var size = item.querySelector('.size-select').value;
@@ -181,14 +185,14 @@
 
                         var previousColorValue
                         $('.color-select').on('click', function () {
-                            // Lưu giá trị hiện tại khi phần tử nhận sự tập trung (focus)
+                            // Lưu giá trị hiện tại khi click vào select color
                             previousColorValue = $(this).val();
                         }).on('change', function () {
                             var currentValue = $(this).val();
                             var currentSize = $(this).closest('.form-row').find('.size-select').val();
+                            // khi select color thay đổi sẽ tìm select size và lấy giá trị cùng so sánh với các color và size khác
                             if (checkDuplidateExists(currentValue, currentSize)) {
                                 $(this).val(previousColorValue)
-
                             } else {
                                 listDetail = listDetail.filter(item => item.color !== previousColorValue || item.size !== currentSize)
                                 listDetail.push({
@@ -200,7 +204,7 @@
 
                         var previousSizeValue
                         $('.size-select').on('click', function () {
-                            // Lưu giá trị hiện tại khi phần tử nhận sự tập trung (focus)
+
                             previousSizeValue = $(this).val();
                         }).on('change', function () {
                             var currentValue = $(this).val();
@@ -217,10 +221,11 @@
                             }
                         });
 
+                        // Check trùng màu và size
                         function checkDuplidateExists(color, size) {
                             var isdup = false
                             listDetail.forEach(item => {
-                                if (item.color == color && item.size == size) {
+                                if (item.color === color && item.size === size) {
                                     const Toast = Swal.mixin({
                                         toast: true,
                                         position: "top-end",
@@ -250,27 +255,27 @@
                         }
 
 
-                        //XỬ LÝ THÊM THUỘC TÍNH
-                        // bắt sự kiện xóa ảnh
+                        // Tạo list để chứa những id ảnh đã bị xóa
                         var removeImageId = []
                         addEventRemoveImage()
 
                         function addEventRemoveImage() {
                             $('.delete-img-btn').on('click', function () {
-                                debugger
                                 const selectedImageEle = $(this).closest('.selected-file')
                                 removeImageId.push(selectedImageEle.find('.exists-image').attr("data-image"))
                                 selectedImageEle.remove()
                             })
                         }
 
-                        function clickRemoveImage () {
-                            const selectedImageEle = $(this).closest('.selected-file')
-                            removeImageId.push(selectedImageEle.find('.exists-image').attr("data-image"))
-                            selectedImageEle.remove()
-                        }
+                        // function clickRemoveImage() {
+                        //     const selectedImageEle = $(this).closest('.selected-file')
+                        //     removeImageId.push(selectedImageEle.find('.exists-image').attr("data-image"))
+                        //     selectedImageEle.remove()
+                        // }
 
+                        // List chứa những sản phẩm chi tiết bị xóa
                         var removeProductDetail = []
+
                         function addEventRemoveRow() {
                             $('.remove-row').on('click', function (e) {
                                 let id = getRowId(e)
@@ -281,6 +286,7 @@
                                 debugger
                             })
                         }
+
                         function getRowId(e) {
                             let id = e.currentTarget.parentElement.parentElement.id
                             if (id) {
@@ -288,6 +294,7 @@
                             }
                             return null
                         }
+
                         addEventRemoveRow()
 
 
@@ -295,7 +302,9 @@
                             // var detailId = detail.id + 1;
                             var template = document.querySelector('.form-table').cloneNode(true);
                             var formRows = template.querySelectorAll('.form-row');
-                            formRows.forEach(e => {e.id = ''})
+                            formRows.forEach(e => {
+                                e.id = ''
+                            })
                             // numberical++
                             // Update the index to ensure uniqueness for the new product detail
                             var newIndex = document.querySelectorAll('.form-table').length;
@@ -321,7 +330,7 @@
                                 }
                             })
                             $('.productDetail-quantity').on('focusout', function (e) {
-                                if ($(this).val() == "") {
+                                if ($(this).val() === "") {
                                     $(this).val(0)
                                 }
                             })
@@ -340,7 +349,7 @@
                             var size = ''
                             template.querySelector(".color-select").addEventListener('change', function (e) {
                                 color = e.target.value
-                                if (!checkDuplicateSizeAndColor(color, size, template) && color != '' && template.querySelector(".size-select").value != '') {
+                                if (!checkDuplicateSizeAndColor(color, size, template) && color !== '' && template.querySelector(".size-select").value !== '') {
                                     listDetail.push({
                                         color: color,
                                         size: size
@@ -350,7 +359,7 @@
 
                             template.querySelector(".size-select").addEventListener('change', function (e) {
                                 size = e.target.value
-                                if (!checkDuplicateSizeAndColor(color, size, template) && size != '' && template.querySelector(".color-select").value != '') {
+                                if (!checkDuplicateSizeAndColor(color, size, template) && size !== '' && template.querySelector(".color-select").value !== '') {
                                     listDetail.push({
                                         color: color,
                                         size: size
@@ -364,11 +373,9 @@
                                 document.querySelector('.form-row').removeChild(template)
                                 removeDetailObj(color, size)
                             }
-
                         }
 
-
-
+                        // Xóa 1 dòng chi tiết sản phẩm
                         function removeDetailObj(color, size) {
 
                             listDetail = listDetail.filter(function (obj) {
@@ -378,7 +385,7 @@
 
                         function checkDuplicateSizeAndColor(color, size, template) {
                             listDetail.forEach(item => {
-                                if (item.color == color && item.size == size) {
+                                if (item.color === color && item.size === size) {
                                     document.querySelector('.form-detail').removeChild(template)
                                     const Toast = Swal.mixin({
                                         toast: true,
@@ -407,12 +414,15 @@
                             return false
                         }
 
-                        //Handle file input
+
+                        // Xử lý file ảnh khi chọn ảnh
                         const fileInput = document.getElementById("file-input")
                         fileInput.addEventListener('change', (e) => displaySelectedImages(e))
                         const selectedFileNames = new Set();
                         var fileSend = [];
+                        let sizeImageRemove = 0;
 
+                        // Hàm hiển thị ảnh
                         function displaySelectedImages(event) {
                             const selectedImagesContainer = document.getElementById('selected-images');
 
@@ -421,12 +431,32 @@
                             for (let i = 0; i < files.length; i++) {
                                 const file = files[i];
 
-                                // Check if the selected file is an image
+                                // Kiểm tra xem file đã chọn có phải là ảnh không
                                 if (file.type.startsWith('image/')) {
                                     const fileSizeInMB = file.size / (1024 * 1024);
                                     if (fileSizeInMB > 3) {
                                         // Swal.fire("Lỗi", "Vui lòng chọn ảnh có dung lượng < 3MB")
-                                        document.getElementById('errorImage').innerHTML = 'Vui lòng chọn ảnh có dung lượng < 3MB'
+                                        const Toast = Swal.mixin({
+                                            toast: true,
+                                            position: "top-end",
+                                            showConfirmButton: false,
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            didOpen: (toast) => {
+                                                toast.onmouseenter = Swal.stopTimer;
+                                                toast.onmouseleave = Swal.resumeTimer;
+                                            },
+                                            customClass: {
+                                                popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                                title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                                icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                                timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                            }
+                                        });
+                                        Toast.fire({
+                                            icon: "error",
+                                            title: "Vui lòng chọn ảnh có dung lượng nhỏ hơn hoặc bằng 3MB !"
+                                        });
                                     } else {
                                         const fileName = file.name
                                         if (!selectedFileNames.has(fileName)) {
@@ -435,32 +465,29 @@
                                             const reader = new FileReader();
 
                                             reader.onload = function (e) {
-                                                // Create a new div for the image
+                                                // Tạo thể div cho ảnh
                                                 const imageDiv = document.createElement('div');
-                                                imageDiv.className = 'selected-file me-2 ';
+                                                imageDiv.className = 'selected-file me-2 pos-relative';
 
-                                                // Create an image element
+                                                // Tạo ảnh
                                                 const image = document.createElement('img');
                                                 image.src = e.target.result;
                                                 image.alt = 'Selected Image';
                                                 image.width = 110;
                                                 image.height = 120;
 
-                                                // Create a div for file details
-
-
-                                                // Create a button to remove the image
-                                                const removeButton = document.createElement('button');
-                                                removeButton.className = 'btn btn-sm btn-outline-danger rounded-circle delete-img-btn delete-img-btn-new';
-                                                removeButton.imageCode = new Date().getTime()
+                                                // Tạo nút xóa ảnh
+                                                    const removeButton = document.createElement('div');
+                                                removeButton.className = 'delete-img-btn';
+                                                // removeButton.imageCode = new Date().getTime()
                                                 removeButton.type = 'button';
-                                                removeButton.innerText = 'X';
+                                                // removeButton.innerText = '<i class="fa-solid fa-xmark"></i>';
+                                                removeButton.innerHTML = `<i class="fa-solid fa-xmark"></i>`
                                                 removeButton.onclick = function () {
-                                                    // Remove the selected image when the button is clicked
+                                                    // Hàm xóa ảnh
                                                     const lastModified = file.lastModified
                                                     let theIndex = -1;
                                                     selectedImagesContainer.removeChild(imageDiv);
-                                                    debugger
                                                     for (let j = 0; j < fileSend.length; j++) {
                                                         if (fileSend[j].lastModified === lastModified) {
                                                             theIndex = j;
@@ -480,6 +507,7 @@
 
                                                 // Append the image div to the selectedImagesContainer
                                                 selectedImagesContainer.appendChild(imageDiv);
+                                                sizeImageRemove++
                                             };
 
                                             reader.readAsDataURL(file);
@@ -488,7 +516,6 @@
 
                                 }
                             }
-
                             addEventRemoveImage()
                         }
 
@@ -500,11 +527,112 @@
                             //     return
                             // }
                             var canAdd = true
+                            $('.productDetail-price').each(function (index, item) {
+                                console.log($(item).val())
+                                if ($(item).val() > 10000000) {
+                                    // Swal.fire("Lỗi", "Vui lòng chọn màu cho sản phẩm");
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        },
+                                        customClass: {
+                                            popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                            title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                            icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                            timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                        }
+                                    });
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: "Cửa hàng chỉ kinh doanh sản phẩm nhỏ hơn hoặc bằng 10 triệu !"
+                                    });
+                                    canAdd = false;
+                                    return false; // To break out of the loop
+                                }
+                            });
+                            let price = document.querySelector('.productDetail-price').value
+                            if (price > 10000000) {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    },
+                                    customClass: {
+                                        popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                        title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                        icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                        timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                    }
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Cửa hàng chỉ kinh doanh sản phẩm nhỏ hơn hoặc bằng 10 triệu !"
+                                });
+                                return false
+                            }
+
+                            let quantity = document.querySelector('.productDetail-quantity').value
+                            if (quantity > 1000000) {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    },
+                                    customClass: {
+                                        popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                        title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                        icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                        timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                    }
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Số lượng cho 1 sản phẩm tối đa là 1 triệu !"
+                                });
+                                return false
+                            }
+
                             $('.color-select').each(function (index, item) {
                                 console.log($(item).val())
                                 if ($(item).val() == null) {
                                     // Swal.fire("Lỗi", "Vui lòng chọn màu cho sản phẩm");
-                                    document.getElementById('error').innerHTML = 'Vui lòng chọn màu cho sản phẩm'
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        },
+                                        customClass: {
+                                            popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                            title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                            icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                            timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                        }
+                                    });
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: "Vui lòng chọn màu sắc cho sản phẩm !"
+                                    });
                                     canAdd = false;
                                     return false; // To break out of the loop
                                 }
@@ -513,7 +641,27 @@
                             $('.size-select').each(function (index, item) {
                                 if ($(item).val() == null) {
                                     // swal("Lỗi", "Vui lòng chọn kích cỡ cho sản phẩm");
-                                    document.getElementById('error').innerHTML = 'Vui lòng chọn kích cỡ cho sản phẩm'
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        },
+                                        customClass: {
+                                            popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                            title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                            icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                            timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                        }
+                                    });
+                                    Toast.fire({
+                                        icon: "error",
+                                        title: "Vui lòng chọn kích cỡ cho sản phẩm !"
+                                    });
                                     canAdd = false;
                                     return false; // To break out of the loop
                                 }
@@ -551,10 +699,6 @@
                                     document.getElementById('productDetailUpdate').submit()
 
                                     // window.location = "/nova/product/page";
-
-                                    // document.getElementById('productDetailUpdate').action = '/nova/product/page'
-                                    // document.getElementById('productDetailUpdate').method = 'get'
-                                    // document.getElementById('productDetailUpdate').submit()
                                 }
                             });
                         })
