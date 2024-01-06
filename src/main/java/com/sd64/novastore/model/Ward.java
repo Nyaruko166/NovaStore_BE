@@ -15,10 +15,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class District {
+public class Ward {
 
-    private String DistrictID;
+    private String WardCode;
 
-    private String DistrictName;
+    private String WardName;
 
 }
