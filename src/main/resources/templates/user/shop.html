@@ -179,6 +179,12 @@
                             // Đặt khoảng cách giá
                             let priceGap = 500;
 
+                            const minV = parseInt(rangeInputvalue[0].value);
+                            const maxV = parseInt(rangeInputvalue[1].value);
+
+                            rangevalue.style.left = `${(minV / rangeInputvalue[0].max) * 100}%`;
+                            rangevalue.style.right = `${100 - (maxV / rangeInputvalue[1].max) * 100}%`;
+
                             // Thêm trình xử lý sự kiện vào các yếu tố đầu vào giá
                             const priceInputvalue = document.querySelectorAll(".price-input input");
                             for (let i = 0; i < priceInputvalue.length; i++) {
