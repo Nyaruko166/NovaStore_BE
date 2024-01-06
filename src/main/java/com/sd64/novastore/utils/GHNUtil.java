@@ -113,8 +113,8 @@ public class GHNUtil {
         return gson.toJson(jsonElement);
     }
 
-    public static void main(String[] args) {
-        GHNUtil ghnUtil = new GHNUtil();
+//    public static void main(String[] args) {
+//        GHNUtil ghnUtil = new GHNUtil();
 //        List<Province> lstProvince = ghnUtil.getProvinces();
 //        List<District> lstDistrict = ghnUtil.getDistricts(String.valueOf(201));
 //        List<Ward> lstWard = ghnUtil.getWard(String.valueOf(3440));
@@ -128,12 +128,12 @@ public class GHNUtil {
 //        for (Ward x : lstWard) {
 //            System.out.println(x.toString());
 //        }
-        ghnUtil.getServices();
+//        ghnUtil.getServices();
 //        JsonObject jsonObject = new JsonObject();
 //        jsonObject.addProperty("shop_id", GHNConfig.senderId.get("shopID"));
 //        jsonObject.addProperty("from_district", GHNConfig.senderId.get("districtID"));
 //        jsonObject.addProperty("to_district", 1442);
 //        System.out.println(jsonObject);
-    }
+//    }
 
 }
