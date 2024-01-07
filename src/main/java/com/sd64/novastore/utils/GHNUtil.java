@@ -41,6 +41,9 @@ import java.util.Map;
 @Component
 public class GHNUtil {
 
+//    Truyền vào địa chỉ ship và số lượng
+//    ghnUtil.calculateShippingFee(toAddress, 2);
+
     Gson gson = new Gson();
 
     private JsonArray sendRequest(String apiUrl) {
@@ -169,8 +172,8 @@ public class GHNUtil {
         return BigDecimal.valueOf(resultObject.get("data").getAsJsonObject().get("total").getAsLong());
     }
 
-    public static void main(String[] args) {
-        GHNUtil ghnUtil = new GHNUtil();
+//    public static void main(String[] args) {
+//        GHNUtil ghnUtil = new GHNUtil();
 //        Address address = Address.builder().city("Thành phố Hà Nội")
 //                .district("Quận Nam Từ Liêm").ward("Phường Xuân Phương").build();
 //        System.out.println(ghnUtil.getProvinces(address.getCity()));
@@ -178,15 +181,15 @@ public class GHNUtil {
 //        System.out.println(ghnUtil.getWard(3440, address.getWard()));
 //        ghnUtil.getServices();
 
-        Address toAddress = Address.builder()
-                .city("Thành phố Hà Nội").district("Huyện Quốc Oai").ward("Xã Yên Sơn")
-                .build();
+//        Address toAddress = Address.builder()
+//                .city("Thành phố Hà Nội").district("Huyện Quốc Oai").ward("Xã Yên Sơn")
+//                .build();
 
 //        System.out.println(ghnUtil.getProvinces(toAddress.getCity()));
 //        System.out.println(ghnUtil.getDistricts(201, toAddress.getDistrict()));
 //        System.out.println(ghnUtil.getWard(2004, toAddress.getWard()));
 
 
-    }
+//    }
 
 }
