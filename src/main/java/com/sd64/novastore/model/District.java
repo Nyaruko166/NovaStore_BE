@@ -17,7 +17,7 @@ import lombok.*;
 @ToString
 public class District {
 
-    private String DistrictID;
+    private Integer DistrictID;
 
     private String DistrictName;
 

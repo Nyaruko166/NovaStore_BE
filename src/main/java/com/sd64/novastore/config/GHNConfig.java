@@ -21,6 +21,8 @@ public class GHNConfig {
 
     public static String apiServices = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services";
 
+    public static String apiFee = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee";
+
     public static String headerToken = "ae5e892b-8b9b-11ee-96dc-de6f804954c9";
 
     public static Map<String, Integer> senderId = new HashMap<>();
