@@ -73,7 +73,7 @@ public class UserBillController {
             cartService.reloadCartDetailSession(sessionCart);
             session.setAttribute("sessionCart", sessionCart);
             if (sessionCart.getCartDetails().isEmpty()){
-                attributes.addFlashAttribute("success", "Sản phẩm hết hàng nên đã bị xoá khỏi giỏ hàng");
+                attributes.addFlashAttribute("error", "Các sản phẩm trong giỏ hàng của bạn đã hết hàng");
                 return "redirect:/cart";
             }
             session.setAttribute("totalItems", sessionCart.getTotalItems());
@@ -90,7 +90,7 @@ public class UserBillController {
             }
             cartService.reloadCartDetail(cart);
             if (cart.getCartDetails().isEmpty()){
-                attributes.addFlashAttribute("success", "Sản phẩm hết hàng nên đã bị xoá khỏi giỏ hàng");
+                attributes.addFlashAttribute("error", "Các sản phẩm trong giỏ hàng của bạn đã hết hàng");
                 return "redirect:/cart";
             }
             session.setAttribute("totalItems", cart.getTotalItems());
@@ -131,7 +131,7 @@ public class UserBillController {
         Customer customer = customerService.findByEmail(principal.getName());
         Bill bill = billService.getOneBill(id);
         if (bill == null){
-            attributes.addFlashAttribute("success", "Không có thông tin đơn hàng tương ứng");
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng tương ứng");
             return "redirect:/orders";
         }
         if (customer.getId().equals(bill.getCustomer().getId())){
@@ -142,7 +142,7 @@ public class UserBillController {
             model.addAttribute("listPaymentMethod", listPaymentMethod);
             return "/user/order-detail";
         } else {
-            attributes.addFlashAttribute("success", "Bạn không có quyền xem đơn hàng này");
+            attributes.addFlashAttribute("error", "Bạn không có quyền xem đơn hàng này");
             return "redirect:/orders";
         }
     }
@@ -155,18 +155,18 @@ public class UserBillController {
         Customer customer = customerService.findByEmail(principal.getName());
         Bill bill = billService.getOneBill(id);
         if (bill == null){
-            attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+            attributes.addFlashAttribute("error", "Bạn không có quyền huỷ đơn này");
             return "redirect:/orders";
         }
         if (customer.getId().equals(bill.getCustomer().getId())){
             boolean check = billService.userCancelOrder(id);
             if (check){
-                attributes.addFlashAttribute("success", "Huỷ đơn hàng thành công");
+                attributes.addFlashAttribute("mess", "Huỷ đơn hàng thành công");
             } else {
-                attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+                attributes.addFlashAttribute("error", "Bạn không có quyền huỷ đơn này");
             }
         } else {
-            attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+            attributes.addFlashAttribute("error", "Bạn không có quyền huỷ đơn này");
         }
         return "redirect:/orders";
     }
@@ -179,19 +179,19 @@ public class UserBillController {
         Customer customer = customerService.findByEmail(principal.getName());
         Bill bill = billService.getOneBill(id);
         if (bill == null){
-            attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+            attributes.addFlashAttribute("error", "Bạn không có quyền huỷ đơn này");
             return "redirect:/orders";
         }
         if (customer.getId().equals(bill.getCustomer().getId())){
             boolean check = billService.userCancelOrder(id);
             if (check){
-                attributes.addFlashAttribute("success", "Huỷ đơn hàng thành công");
+                attributes.addFlashAttribute("mess", "Huỷ đơn hàng thành công");
             } else {
-                attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+                attributes.addFlashAttribute("error", "Bạn không có quyền huỷ đơn này");
             }
             return "redirect:/order-detail/" + id;
         } else {
-            attributes.addFlashAttribute("success", "Bạn không có quyền huỷ đơn này");
+            attributes.addFlashAttribute("error", "Bạn không có quyền huỷ đơn này");
             return "redirect:/orders";
         }
     }
@@ -215,7 +215,7 @@ public class UserBillController {
             cartService.reloadCartDetailSession(sessionCart);
             session.setAttribute("sessionCart", sessionCart);
             if (sessionCart.getCartDetails().isEmpty()){
-                attributes.addFlashAttribute("success", "Sản phẩm hết hàng đã bị xoá khỏi giỏ hàng");
+                attributes.addFlashAttribute("error", "Các sản phẩm trong giỏ hàng của bạn đã hết hàng");
                 return "redirect:/cart";
             }
             if (payment.equals("VNPAY")){
@@ -225,11 +225,11 @@ public class UserBillController {
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
-                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        attributes.addFlashAttribute("error", "Voucher đã hết số lượng hoặc hết hạn");
                         return "redirect:/checkout";
                     }
                     if (sessionCart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
-                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
@@ -244,11 +244,11 @@ public class UserBillController {
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
-                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        attributes.addFlashAttribute("error", "Voucher đã hết số lượng hoặc hết hạn");
                         return "redirect:/checkout";
                     }
                     if (sessionCart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
-                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
@@ -263,11 +263,11 @@ public class UserBillController {
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
-                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        attributes.addFlashAttribute("error", "Voucher đã hết số lượng hoặc hết hạn");
                         return "redirect:/checkout";
                     }
                     if (sessionCart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
-                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
                     BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
@@ -278,7 +278,7 @@ public class UserBillController {
             if (voucher != null){
                 Voucher uuDai = voucherService.getVoucherById(voucher);
                 if (uuDai.getStatus() != 1){
-                    attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                    attributes.addFlashAttribute("error", "Voucher đã hết số lượng hoặc hết hạn");
                     return "redirect:/checkout";
                 }
             }
@@ -290,7 +290,7 @@ public class UserBillController {
             Cart cart = cartService.getCart(principal.getName());
             cartService.reloadCartDetail(cart);
             if (cart.getCartDetails().isEmpty()){
-                attributes.addFlashAttribute("success", "Sản phẩm hết hàng nên đã bị xoá khỏi giỏ hàng");
+                attributes.addFlashAttribute("error", "Các sản phẩm trong giỏ hàng của bạn đã hết hàng");
                 return "redirect:/cart";
             }
             if (payment.equals("VNPAY")){
@@ -300,11 +300,11 @@ public class UserBillController {
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
-                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        attributes.addFlashAttribute("error", "Voucher đã hết số lượng hoặc hết hạn");
                         return "redirect:/checkout";
                     }
                     if (cart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
-                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
@@ -319,11 +319,11 @@ public class UserBillController {
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
-                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        attributes.addFlashAttribute("error", "Voucher đã hết số lượng hoặc hết hạn");
                         return "redirect:/checkout";
                     }
                     if (cart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
-                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
@@ -338,11 +338,11 @@ public class UserBillController {
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
-                        attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                        attributes.addFlashAttribute("error", "Voucher đã hết số lượng hoặc hết hạn");
                         return "redirect:/checkout";
                     }
                     if (cart.getTotalPrice().compareTo(uuDai.getMinimumPrice()) < 0){
-                        attributes.addFlashAttribute("mess", "Đơn hàng không đủ giá tối thiểu của voucher");
+                        attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
                     BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
@@ -353,13 +353,13 @@ public class UserBillController {
             if (voucher != null){
                 Voucher uuDai = voucherService.getVoucherById(voucher);
                 if (uuDai.getStatus() != 1){
-                    attributes.addFlashAttribute("mess", "Voucher đã hết số lượng hoặc hết hạn");
+                    attributes.addFlashAttribute("error", "Voucher đã hết số lượng hoặc hết hạn");
                     return "redirect:/checkout";
                 }
             }
             billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, voucher);
             session.removeAttribute("totalItems");
-            attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+            attributes.addFlashAttribute("mess", "Đặt hàng thành công!");
         }
         return "redirect:/orders";
     }
@@ -387,7 +387,7 @@ public class UserBillController {
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
-                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                attributes.addFlashAttribute("error", "Thanh toán không thành công");
                 return "redirect:/checkout";
             }
         } else {
@@ -407,10 +407,10 @@ public class UserBillController {
                     billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 }
                 session.removeAttribute("totalItems");
-                attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+                attributes.addFlashAttribute("mess", "Đặt hàng thành công!");
                 return "redirect:/orders";
             } else {
-                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                attributes.addFlashAttribute("error", "Thanh toán không thành công");
                 return "redirect:/checkout";
             }
         }
@@ -439,7 +439,7 @@ public class UserBillController {
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
-                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                attributes.addFlashAttribute("error", "Thanh toán không thành công");
                 return "redirect:/checkout";
             }
         } else {
@@ -459,10 +459,10 @@ public class UserBillController {
                     billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 }
                 session.removeAttribute("totalItems");
-                attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+                attributes.addFlashAttribute("mess", "Đặt hàng thành công!");
                 return "redirect:/orders";
             } else {
-                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                attributes.addFlashAttribute("error", "Thanh toán không thành công");
                 return "redirect:/checkout";
             }
         }
@@ -491,7 +491,7 @@ public class UserBillController {
                 session.removeAttribute("totalItems");
                 return "redirect:/home";
             } else {
-                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                attributes.addFlashAttribute("error", "Thanh toán không thành công");
                 return "redirect:/checkout";
             }
         } else {
@@ -511,10 +511,10 @@ public class UserBillController {
                     billService.placeOrder(cart, name, specificAddress, ward, district, city, phoneNumber, payment, Integer.valueOf(voucher));
                 }
                 session.removeAttribute("totalItems");
-                attributes.addFlashAttribute("success", "Đặt hàng thành công!");
+                attributes.addFlashAttribute("mess", "Đặt hàng thành công!");
                 return "redirect:/orders";
             } else {
-                attributes.addFlashAttribute("mess", "Thanh toán không thành công");
+                attributes.addFlashAttribute("error", "Thanh toán không thành công");
                 return "redirect:/checkout";
             }
         }
