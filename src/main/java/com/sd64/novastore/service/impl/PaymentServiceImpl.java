@@ -99,17 +99,17 @@ public class PaymentServiceImpl implements PaymentService {
 //        item.addProperty("itemquantity", 1);
 //        jsonObject.add("item", item);
 
-        Map<String, Object> order = new HashMap<String, Object>() {{
-            put("app_id", ZaloPayConfig.appid);
-            put("app_trans_id", ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id); // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
-            put("app_time", System.currentTimeMillis()); // milliseconds
-            put("app_user", "Nyaruko166");
-            put("amount", amount);
-            put("description", "NovaStore - Thanh Toán Đơn Hàng #" + random_id);
-            put("bank_code", "");
-            put("item", "[{}]");
-            put("embed_data", embed_data);
-        }};
+//        Map<String, Object> order = new HashMap<String, Object>() {{
+//            put("app_id", ZaloPayConfig.appid);
+//            put("app_trans_id", ZaloPayConfig.getCurrentTimeString("yyMMdd") + "_" + random_id); // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+//            put("app_time", System.currentTimeMillis()); // milliseconds
+//            put("app_user", "Nyaruko166");
+//            put("amount", amount);
+//            put("description", "NovaStore - Thanh Toán Đơn Hàng #" + random_id);
+//            put("bank_code", "");
+//            put("item", "[{}]");
+//            put("embed_data", embed_data);
+//        }};
 
         ZaloPaymentRequest zaloPaymentRequest = ZaloPaymentRequest.builder()
                 .app_id(Long.valueOf(ZaloPayConfig.appid))
@@ -142,10 +142,10 @@ public class PaymentServiceImpl implements PaymentService {
         StringEntity requestEntity = new StringEntity(jsonPost, ContentType.APPLICATION_JSON);
         post.setEntity(requestEntity);
 
-        List<NameValuePair> params = new ArrayList<>();
-        for (Map.Entry<String, Object> e : order.entrySet()) {
-            params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
-        }
+//        List<NameValuePair> params = new ArrayList<>();
+//        for (Map.Entry<String, Object> e : order.entrySet()) {
+//            params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
+//        }
 //        System.out.println(params);
 
 //        Content - Type:application / x - www - form - urlencoded

@@ -17,7 +17,7 @@ import lombok.*;
 @ToString
 public class Province {
 
-    private String ProvinceID;
+    private Integer ProvinceID;
 
     private String ProvinceName;
 
