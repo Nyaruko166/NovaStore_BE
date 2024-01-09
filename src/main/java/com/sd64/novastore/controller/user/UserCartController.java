@@ -84,7 +84,7 @@ public class UserCartController {
                 session.setAttribute("totalItems", sessionCart.getTotalItems());
                 redirectAttributes.addFlashAttribute("mess", "Thêm giỏ hàng thành công!");
             } else {
-                redirectAttributes.addFlashAttribute("mess", "Không thể thêm vì sẽ vượt quá giới hạn số lượng của sản phẩm này trong giỏ hàng của bạn!");
+                redirectAttributes.addFlashAttribute("error", "Không thể thêm vì sẽ vượt quá giới hạn số lượng của sản phẩm này trong giỏ hàng!");
             }
         } else {
             String email = principal.getName();
@@ -94,7 +94,7 @@ public class UserCartController {
                 session.setAttribute("totalItems", cart.getTotalItems());
                 redirectAttributes.addFlashAttribute("mess", "Thêm giỏ hàng thành công!");
             } else {
-                redirectAttributes.addFlashAttribute("mess", "Không thể thêm vì sẽ vượt quá giới hạn số lượng của sản phẩm này trong giỏ hàng của bạn!");
+                redirectAttributes.addFlashAttribute("error", "Không thể thêm vì sẽ vượt quá giới hạn số lượng của sản phẩm này trong giỏ hàng!");
             }
         }
         return "redirect:/product-detail/" + productId;
@@ -114,19 +114,19 @@ public class UserCartController {
                 SessionCart sessionCart = (SessionCart) session.getAttribute("sessionCart");
                 session.setAttribute("sessionCart", sessionCart);
                 session.setAttribute("totalItems", sessionCart.getTotalItems());
-                redirectAttributes.addFlashAttribute("success","Đã update số lượng sản phẩm");
+                redirectAttributes.addFlashAttribute("mess","Đã update số lượng sản phẩm");
             } else {
-                redirectAttributes.addFlashAttribute("success","Số lượng phải nhỏ hơn hoặc bằng số lượng tồn");
+                redirectAttributes.addFlashAttribute("error","Số lượng phải nhỏ hơn hoặc bằng số lượng tồn");
             }
         } else {
             String email = principal.getName();
             boolean check = cartService.updateCart(productDetail, quantity, email);
             if (check){
-                redirectAttributes.addFlashAttribute("success","Đã update số lượng sản phẩm");
+                redirectAttributes.addFlashAttribute("mess","Đã update số lượng sản phẩm");
                 Cart cart = cartService.getCart(email);
                 session.setAttribute("totalItems", cart.getTotalItems());
             } else {
-                redirectAttributes.addFlashAttribute("success","Số lượng phải nhỏ hơn hoặc bằng số lượng tồn");
+                redirectAttributes.addFlashAttribute("error","Số lượng phải nhỏ hơn hoặc bằng số lượng tồn");
             }
         }
         return "redirect:/cart";
