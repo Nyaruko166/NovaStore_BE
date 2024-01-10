@@ -2,6 +2,7 @@ package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
+import com.sd64.novastore.model.Material;
 import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Promotion;
@@ -62,7 +63,8 @@ public class PromotionServiceImpl implements PromotionService {
     public void processExpiredPromotion(Promotion promotion) {
         List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(promotion.getId());
         for (PromotionDetail promotionDetail : promotionDetails) {
-            promotionDetailRepository.deleteAll(promotionDetails);
+            promotionDetail.setStatus(0);
+            promotionDetailRepository.save(promotionDetail);
             Product product = promotionDetail.getProduct();
             product.setStatus(1);
             List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
@@ -105,12 +107,16 @@ public class PromotionServiceImpl implements PromotionService {
 
 
     @Override
-    public Promotion add(Promotion promotion) {
-        promotion.setCreateDate(new Date());
-        promotion.setUpdateDate(new Date());
-        promotion.setCode(generateCode());
-        promotion.updateStatus();
-        return promotionRepository.save(promotion);
+    public Boolean add(Promotion promotion) {
+        if (checkName(promotion.getName())){
+            promotion.setCreateDate(new Date());
+            promotion.setUpdateDate(new Date());
+            promotion.setCode(generateCode());
+            promotion.updateStatus();
+             promotionRepository.save(promotion);
+             return true;
+        }
+        return false;
     }
 
     @Scheduled(cron = "0 * * * * ?")
@@ -127,36 +133,40 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public Promotion update(Promotion promotion, Integer id) {
-        Optional<Promotion> optional = promotionRepository.findById(id);
-        if (optional.isPresent()) {
-            Promotion oldPromotion = optional.get();
-            promotion.setId(oldPromotion.getId());
-            promotion.setCode(oldPromotion.getCode());
-            promotion.setCreateDate(oldPromotion.getCreateDate());
-            promotion.setUpdateDate(new Date());
-            promotion.setStatus(oldPromotion.getStatus());
-            promotion.updateStatus();
-            if (oldPromotion.getStatus() != promotion.getStatus() && promotion.getStatus() == 2) {
-                for (PromotionDetail promotionDetail : oldPromotion.getPromotionDetails()) {
-                    Product product = promotionDetail.getProduct();
-                    if (product.getStatus() == 2) {
-                        product.setStatus(1);
-                        productRepository.save(product);
-                        List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
-                        for (ProductDetail productDetail : productDetails) {
-                            productDetail.setPriceDiscount(productDetail.getPrice());
-                            productDetailRepository.save(productDetail);
-                            List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
-                            promotionDetailRepository.deleteAll(promotionDetails);
-                        }
-                    }
-                }
-            }
-            return promotionRepository.save(promotion);
-        } else {
-            return null;
-        }
+    public Boolean update(Promotion promotion, Integer id) {
+       if (checkName(promotion.getName())){
+           Optional<Promotion> optional = promotionRepository.findById(id);
+           if (optional.isPresent()) {
+               Promotion oldPromotion = optional.get();
+               promotion.setId(oldPromotion.getId());
+               promotion.setCode(oldPromotion.getCode());
+               promotion.setCreateDate(oldPromotion.getCreateDate());
+               promotion.setUpdateDate(new Date());
+               promotion.setStatus(oldPromotion.getStatus());
+               promotion.updateStatus();
+               if (oldPromotion.getStatus() != promotion.getStatus() && promotion.getStatus() == 2) {
+                   for (PromotionDetail promotionDetail : oldPromotion.getPromotionDetails()) {
+                       Product product = promotionDetail.getProduct();
+                       if (product.getStatus() == 2) {
+                           product.setStatus(1);
+                           productRepository.save(product);
+                           List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
+                           for (ProductDetail productDetail : productDetails) {
+                               productDetail.setPriceDiscount(productDetail.getPrice());
+                               productDetailRepository.save(productDetail);
+                               List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
+                               promotionDetailRepository.deleteAll(promotionDetails);
+                           }
+                       }
+                   }
+               }
+                promotionRepository.save(promotion);
+               return true;
+           } else {
+               return false;
+           }
+       }
+       return false;
     }
 
 
@@ -167,8 +177,9 @@ public class PromotionServiceImpl implements PromotionService {
         if (optional.isPresent()) {
             Promotion promotion = optional.get();
             List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
-            promotionDetailRepository.deleteAll(promotionDetails);
             for (PromotionDetail promotionDetail : promotionDetails) {
+                promotionDetail.setStatus(0);
+                promotionDetailRepository.save(promotionDetail);
                 Product product = promotionDetail.getProduct();
                 product.setStatus(1);
                 List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
@@ -211,6 +222,19 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public List<PromotionDetailDTO> getPromotionDetailsByPromotionId(Integer promotionId) {
         return promotionRepository.getPromotionDetailsByPromotionId(promotionId);
+    }
+
+    private Boolean checkName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        Promotion promotion = promotionRepository.findByNameAndStatus(name, 1);
+        if (promotion != null) {
+            return false;
+        }
+        return true;
     }
 
 

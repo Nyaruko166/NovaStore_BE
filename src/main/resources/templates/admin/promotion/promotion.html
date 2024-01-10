@@ -12,18 +12,44 @@
             <div class="card-header">
                 <h5 style="font-weight: bold">KHUYẾN MÃI</h5>
             </div>
-            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${mess}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div th:if="${mess}">
+                <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnSuccess = document.getElementById("btnSuccess");
+                        btnSuccess.click();
+                    }
+                    alertSuccess = (content) => {
+                        Swal.fire({
+                            title: content,
+                            icon: "success",
+                            confirmButtonColor: "#0DC149"
+                        });
+                    }
+                </script>
+            </div>
+            <div th:if="${error}">
+                <button hidden id="btnError" th:onclick="alertError1([[${error}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnError = document.getElementById("btnError");
+                        btnError.click();
+                    }
+                    alertError1 = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thất bại",
+                            text: content,
+                            icon: "error",
+                            confirmButtonColor: "#d33"
+                        });
+                    }
+                </script>
             </div>
             <div class="card-body card-block">
                 <form th:action="@{/nova/promotion/search}" method="get">
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="code">Mã khuyến mãi</label>
+                            <label >Mã khuyến mãi</label>
                             <input type="text" class="form-control" name="code" th:value="${code}">
                         </div>
                         <div class="form-group col-md-2">
@@ -58,26 +84,24 @@
 
                 <form id="promotionForm" th:action="@{/nova/promotion/add}" th:object="${promotion}" method="post"
                       class="form-horizontal">
-                    <div class=" d-flex">
-                        <div class="ml-2">
+                    <div class=" d-flex " >
+                        <div class="ml-2" style="padding-right: 15px">
                             <button style="
                                      height: 40px;" type="button" class="btn btn-dark" data-toggle="modal"
                                     data-target="#addModal">
                                 <i class="fa-solid fa-square-plus "></i>
-                                Thêm mới
+                                Thêm mới khuyến mãi
                             </button>
                         </div>
                         <div class="ml-2">
                             <a th:href="@{/nova/promotion-detail/page}">
                                 <button style="
-                                     height: 40px;" type="button" class="btn btn-dark"><i
-                                        class="fa-solid fa-square-plus "></i>
+                                     height: 40px;" type="button" class="btn btn-warning"><i class="fa-solid fa-arrows-rotate"></i>
                                     Thêm giảm giá cho sản phẩm
                                 </button>
                             </a>
                         </div>
 
-                        <!-- Modal -->
                         <div class="modal fade" id="addModal" tabindex="-1" role="dialog"
                              aria-labelledby="addModalLabel"
                              aria-hidden="true">
@@ -264,15 +288,18 @@
 
                                                     clickAdd = (entity, idForm) => {
                                                         if (validate()) {
-                                                            swal({
+                                                            Swal.fire({
                                                                 title: "Thêm dữ liệu",
                                                                 text: "Bạn có muốn thêm dữ liệu không ?",
-                                                                icon: "warning",
-                                                                buttons: ["Không", "Có"],
-                                                                dangerMode: true,
-                                                                closeOnClickOutside: false,
+                                                                icon: "question",
+                                                                showCancelButton: true,
+                                                                confirmButtonColor: "#0DC149",
+                                                                cancelButtonColor: "#d33",
+                                                                confirmButtonText: "Có",
+                                                                cancelButtonText: "Không",
+                                                                allowOutsideClick: false
                                                             }).then((add) => {
-                                                                if (add) {
+                                                                if (add.isConfirmed) {
                                                                     document.getElementById(idForm).action = '/nova/' + entity + '/add'
                                                                     document.getElementById(idForm).method = 'post'
                                                                     document.getElementById(idForm).submit()

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -89,6 +90,7 @@ public class PromotionDetailController {
         for (Integer productId : selectedProducts) {
             Product product = productService.getOne(productId);
             product.setStatus(2);
+            product.setUpdateDate(new Date());
             promotionDetailService.save(product);
 
             PromotionDetail newPromotionDetail = new PromotionDetail();

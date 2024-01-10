@@ -13,18 +13,44 @@
                 <strong>Voucher</strong>
             </div>
             <!--            Notification-->
-            <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
-                 style="margin: 5px">
-                <span th:text="${mess}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div th:if="${mess}">
+                <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnSuccess = document.getElementById("btnSuccess");
+                        btnSuccess.click();
+                    }
+                    alertSuccess = (content) => {
+                        Swal.fire({
+                            title: content,
+                            icon: "success",
+                            confirmButtonColor: "#0DC149"
+                        });
+                    }
+                </script>
+            </div>
+            <div th:if="${error}">
+                <button hidden id="btnError" th:onclick="alertError1([[${error}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnError = document.getElementById("btnError");
+                        btnError.click();
+                    }
+                    alertError1 = (content) => {
+                        Swal.fire({
+                            title: "Thêm dữ liệu thất bại",
+                            text: content,
+                            icon: "error",
+                            confirmButtonColor: "#d33"
+                        });
+                    }
+                </script>
             </div>
             <div class="card-body card-block">
                 <form th:action="@{/nova/voucher/search}" method="get">
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="code">Mã voucher</label>
+                            <label >Mã voucher</label>
                             <input type="text" class="form-control" name="code" th:value="${code}">
                         </div>
                         <div class="form-group col-md-2">
@@ -330,15 +356,18 @@
 
                                                     clickAdd = (entity, idForm) => {
                                                         if (validate()) {
-                                                            swal({
+                                                            Swal.fire({
                                                                 title: "Thêm dữ liệu",
                                                                 text: "Bạn có muốn thêm dữ liệu không ?",
-                                                                icon: "warning",
-                                                                buttons: ["Không", "Có"],
-                                                                dangerMode: true,
-                                                                closeOnClickOutside: false,
+                                                                icon: "question",
+                                                                showCancelButton: true,
+                                                                confirmButtonColor: "#0DC149",
+                                                                cancelButtonColor: "#d33",
+                                                                confirmButtonText: "Có",
+                                                                cancelButtonText: "Không",
+                                                                allowOutsideClick: false
                                                             }).then((add) => {
-                                                                if (add) {
+                                                                if (add.isConfirmed) {
                                                                     document.getElementById(idForm).action = '/nova/' + entity + '/add'
                                                                     document.getElementById(idForm).method = 'post'
                                                                     document.getElementById(idForm).submit()

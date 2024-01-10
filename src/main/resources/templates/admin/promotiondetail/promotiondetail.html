@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>Promotion Detail</strong>
+                <strong>Khuyến mãi chi tiết</strong>
             </div>
             <!--            Notification-->
             <div th:if="${mess}" class="alert alert-success alert-dismissible fade show" role="alert"
@@ -203,13 +203,13 @@
 
                     <div class=" d-flex">
                         <div>
-                            <button onclick="clickAdd('promotion-detail', 'promotionDetailForm')"
-                                    type="button" class="btn btn-dark">
+                            <button  onclick="clickAdd('promotion-detail', 'promotionDetailForm')"
+                                    type="button" class="btn btn-dark mr-2" >
                                 <i class="fa-solid fa-square-plus "></i>
                                 Thêm mới
                             </button>
                             <a th:href="@{/nova/promotion/page}">
-                                <button type="button" class="btn btn-dark"><i
+                                <button type="button" class="btn btn-warning"><i
                                         class="fa-solid fa-circle-left mr-1 "></i>
                                     Khuyến mãi
                                 </button>
