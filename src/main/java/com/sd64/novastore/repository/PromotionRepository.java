@@ -2,7 +2,7 @@ package com.sd64.novastore.repository;
 
 import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
-import com.sd64.novastore.model.Color;
+import com.sd64.novastore.model.Material;
 import com.sd64.novastore.model.Promotion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,9 +77,10 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
             "    AND PD.status = 1 " +
             "    AND P.status = 2 " +
             "GROUP BY " +
-            "    PD.id, PR.name, P.name, P.code, PR.startDate, PR.endDate, PR.value, P.id")
+            "    PD.id, PR.name, P.name, P.code, PR.startDate, PR.endDate, PR.value, P.id,P.createDate"+
+            " ORDER BY P.createDate DESC"
+    )
     List<PromotionDetailDTO> getPromotionDetailsByPromotionId(@Param("promotionId") Integer promotionId);
 
-
-
+    Promotion findByNameAndStatus(String name, Integer status);
 }

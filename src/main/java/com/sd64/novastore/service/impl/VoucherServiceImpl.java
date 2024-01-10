@@ -2,6 +2,7 @@ package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.dto.admin.thongke.VoucherSearchDTO;
 import com.sd64.novastore.model.Color;
+import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.repository.VoucherRepository;
 import com.sd64.novastore.service.VoucherService;
@@ -23,6 +24,18 @@ public class VoucherServiceImpl implements VoucherService {
     @Autowired
     private VoucherRepository voucherRepository;
 
+    private Boolean checkName(String name) {
+        // Loại bỏ dấu cách đầu tiên
+        name = name.replaceFirst("^\\s+", "");
+
+        // Loại bỏ các dấu cách khi có hai dấu cách trở lên liền nhau
+        name = name.replaceAll("\\s{2,}", " ");
+        Voucher voucher = voucherRepository.findByNameAndStatus(name, 1);
+        if (voucher != null) {
+            return false;
+        }
+        return true;
+    }
     @Override
     @Transactional
     @Scheduled(cron = "0 * * * * ?")
@@ -89,29 +102,37 @@ public class VoucherServiceImpl implements VoucherService {
         return "M"+code;
     }
     @Override
-    public Voucher add(Voucher voucher) {
-        voucher.setCreateDate(new Date());
-        voucher.setUpdateDate(new Date());
-        voucher.updateStatus();
-        voucher.setCode(generateCode());
-        return voucherRepository.save(voucher);
+    public Boolean add(Voucher voucher) {
+      if (checkName(voucher.getName())){
+          voucher.setCreateDate(new Date());
+          voucher.setUpdateDate(new Date());
+          voucher.updateStatus();
+          voucher.setCode(generateCode());
+          voucherRepository.save(voucher);
+          return true;
+      }
+      return false;
     }
 
     @Override
-    public Voucher update(Voucher voucher, Integer id) {
-        Optional<Voucher> optional = voucherRepository.findById(id);
-        if (optional.isPresent()) {
-            Voucher oldVoucher = optional.get();
-            voucher.setId(oldVoucher.getId());
-            voucher.setCode(oldVoucher.getCode());
-            voucher.setCreateDate(oldVoucher.getCreateDate());
-            voucher.setUpdateDate(new Date());
-            voucher.setStatus(oldVoucher.getStatus());
-            voucher.updateStatus();
-            return voucherRepository.save(voucher);
-        } else {
-            return null;
-        }
+    public Boolean update(Voucher voucher, Integer id) {
+       if (checkName(voucher.getName())){
+           Optional<Voucher> optional = voucherRepository.findById(id);
+           if (optional.isPresent()) {
+               Voucher oldVoucher = optional.get();
+               voucher.setId(oldVoucher.getId());
+               voucher.setCode(oldVoucher.getCode());
+               voucher.setCreateDate(oldVoucher.getCreateDate());
+               voucher.setUpdateDate(new Date());
+               voucher.setStatus(oldVoucher.getStatus());
+               voucher.updateStatus();
+               voucherRepository.save(voucher);
+               return true;
+           } else {
+               return false;
+           }
+       }
+       return false;
     }
 
     @Override

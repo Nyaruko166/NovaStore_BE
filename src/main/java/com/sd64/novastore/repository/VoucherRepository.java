@@ -1,6 +1,7 @@
 package com.sd64.novastore.repository;
 
 import com.sd64.novastore.dto.admin.thongke.VoucherSearchDTO;
+import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.Voucher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,4 +43,6 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
             @Param("status") Integer status,
             @Param("name") String name,
             Pageable pageable);
+
+    Voucher findByNameAndStatus(String name, Integer status);
 }

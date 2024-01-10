@@ -51,17 +51,25 @@ public class PromotionController {
 
     @PostMapping("/add")
     public String add(@ModelAttribute("promotion") Promotion promotion, RedirectAttributes redirectAttributes) {
-        promotionService.add(promotion);
-        redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
-        return "redirect:/nova/promotion/page";
+        if (promotionService.add(promotion)) {
+            redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công");
+            return "redirect:/nova/promotion/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên khuyến mãi đã tồn tại");
+            return "redirect:/nova/promotion/page";
+        }
     }
 
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("promotion") Promotion promotion, @PathVariable Integer id,
                          RedirectAttributes redirectAttributes) {
-        promotionService.update(promotion, id);
-        redirectAttributes.addFlashAttribute("mess", "Sửa thành công!!");
-        return "redirect:/nova/promotion/page";
+        if (promotionService.update(promotion,id)) {
+            redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+            return "redirect:/nova/promotion/page";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Tên khuyến mãi đã tồn tại");
+            return "redirect:/nova/promotion/page";
+        }
     }
 
     @PostMapping("/delete/{id}")
