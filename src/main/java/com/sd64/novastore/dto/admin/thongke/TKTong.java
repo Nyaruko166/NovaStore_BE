@@ -1,5 +1,7 @@
 package com.sd64.novastore.dto.admin.thongke;
 
+import java.math.BigDecimal;
+
 public interface TKTong {
-    Integer getSoLuong();
+    BigDecimal getSoLuong();
 }

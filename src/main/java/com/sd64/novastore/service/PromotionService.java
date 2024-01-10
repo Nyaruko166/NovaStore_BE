@@ -22,9 +22,9 @@ public interface PromotionService {
 
     Page<Promotion> getAllPT(Integer page);
 
-    Promotion add(Promotion promotion);
+    Boolean add(Promotion promotion);
 
-    Promotion update(Promotion promotion, Integer id);
+    Boolean update(Promotion promotion, Integer id);
 
     Promotion delete(Integer id);
 
@@ -42,4 +42,6 @@ public interface PromotionService {
             String name,
             int page);
     List<PromotionDetailDTO> getPromotionDetailsByPromotionId(Integer promotionId);
+
+
 }

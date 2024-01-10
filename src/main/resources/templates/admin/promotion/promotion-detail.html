@@ -10,8 +10,9 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>Promotion</strong>
+                <h5 style="font-weight: bold">KHUYẾN MÃI CHI TIẾT</h5>
             </div>
+
             <div class="card-body card-block">
                 <form id="promotionUpdate" th:object="${promotion}"
                       th:action="@{/nova/promotion/update/{id}(id=${promotion.id})}"
@@ -198,17 +199,18 @@
 
                         clickAdd = (entity, idForm) => {
                             if (validate()) {
-                                swal({
-                                    title: "Thêm dữ liệu",
-                                    text: "Bạn có muốn thêm dữ liệu không ?",
-                                    icon: "warning",
-                                    buttons: ["Không", "Có"],
-                                    dangerMode: true,
-                                    closeOnClickOutside: false,
-                                }).then((add) => {
-                                    if (add) {
-                                        document.getElementById(idForm).action = '/nova/' + entity + '/add'
-                                        document.getElementById(idForm).method = 'post'
+                                Swal.fire({
+                                    title: "Sửa dữ liệu",
+                                    text: "Bạn có muốn sửa dữ liệu không ?",
+                                    icon: "question",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#0DC149",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Có",
+                                    cancelButtonText: "Không",
+                                    allowOutsideClick: false
+                                }).then((update) => {
+                                    if (update.isConfirmed) {
                                         document.getElementById(idForm).submit()
                                     }
                                 });

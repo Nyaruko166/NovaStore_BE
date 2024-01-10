@@ -15,9 +15,9 @@ public interface VoucherService {
 
     Page<Voucher> getAll(Integer page);
 
-    Voucher add(Voucher voucher);
+    Boolean add(Voucher voucher);
 
-    Voucher update(Voucher voucher, Integer id);
+    Boolean update(Voucher voucher, Integer id);
 
     Voucher delete(Integer id);
 
