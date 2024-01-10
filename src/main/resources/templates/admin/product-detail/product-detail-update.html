@@ -170,10 +170,9 @@
                         // })
 
 
-                        // Khoi tao list detail color and size hiện tại để chuẩn bị cho việc check trùng size và color
                         var listDetail = []
 
-                        // add size và color đang có trên combobox vào listDetail
+                        // Thêm size và color đang có trên combobox vào listDetail
                         document.querySelectorAll(".form-row").forEach(item => {
                             var color = item.querySelector('.color-select').value;
                             var size = item.querySelector('.size-select').value;
@@ -306,15 +305,13 @@
                                 e.id = ''
                             })
                             // numberical++
-                            // Update the index to ensure uniqueness for the new product detail
                             var newIndex = document.querySelectorAll('.form-table').length;
 
-                            // Update the names of input fields to ensure uniqueness
                             template.querySelectorAll('input, select').forEach(function (input) {
                                 var name = input.getAttribute('name');
                                 if (name) {
                                     input.setAttribute('name', name.replace('listProductDetail[0]', 'listProductDetail[' + newIndex + ']'));
-                                    input.value = ''; // Clear input values if needed
+                                    input.value = '';
                                 }
                             });
 

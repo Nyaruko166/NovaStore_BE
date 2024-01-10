@@ -18,10 +18,6 @@
                     <div class="form-detail">
                         <div class="form-table " th:each="productDetail, iterStat : *{listProductDetail}">
                             <div class="row form-row">
-<!--                                <div class="form-group col-2">-->
-<!--                                    <label class="font-weight-bold">Số thứ tự</label>-->
-<!--                                    <input type="text" class="form-control code-select" disabled>-->
-<!--                                </div>-->
                                 <div class="form-group col-2">
                                     <label class="font-weight-bold">Số lượng</label>
                                     <input type="number" class="form-control productDetail-quantity" min="0" value="1"
@@ -158,7 +154,7 @@
                         listDetail.push(detail)
                         document.querySelector(".color-select").addEventListener('change', function (e) {
                             colorFirst = e.target.value
-                            if (colorFirst != '' && document.querySelector(".size-select").value != '') {
+                            if (colorFirst !== '' && document.querySelector(".size-select").value !== '') {
                                 listDetail[0].color = colorFirst
                                 listDetail[0].size = document.querySelector(".size-select").value
                             }
@@ -166,7 +162,7 @@
 
                         document.querySelector(".size-select").addEventListener('change', function (e) {
                             sizeFirst = e.target.value
-                            if (sizeFirst != '' && document.querySelector(".color-select").value != '') {
+                            if (sizeFirst !== '' && document.querySelector(".color-select").value !== '') {
                                 listDetail[0].color = document.querySelector(".color-select").value
                                 listDetail[0].size = sizeFirst
                             }
@@ -174,20 +170,17 @@
                         })
 
 
-                        // Thêm số thứ tự
-                        // var numberical = 1
-                        // $('.code-select').val(numberical);
-
                         function addItem() {
                             var detailId = detail.id + 1;
                             var template = document.querySelector('.form-table').cloneNode(true);
                             var formRows = template.querySelectorAll('.form-row');
                             // numberical++
-                            // Update the index to ensure uniqueness for the new product detail
+                            //
                             var newIndex = document.querySelectorAll('.form-table').length;
 
                             // Update the names of input fields to ensure uniqueness
                             template.querySelectorAll('input, select').forEach(function (input) {
+                                debugger
                                 var name = input.getAttribute('name');
                                 if (name) {
                                     input.setAttribute('name', name.replace('listProductDetail[0]', 'listProductDetail[' + newIndex + ']'));
@@ -226,7 +219,7 @@
                             var size = ''
                             template.querySelector(".color-select").addEventListener('change', function (e) {
                                 color = e.target.value
-                                if (!checkDuplicateSizeAndColor(color, size, template) && color != '' && template.querySelector(".size-select").value != '') {
+                                if (!checkDuplicateSizeAndColor(color, size, template) && color !== '' && template.querySelector(".size-select").value !== '') {
                                     listDetail.push({
                                         color: color,
                                         size: size
@@ -236,7 +229,7 @@
 
                             template.querySelector(".size-select").addEventListener('change', function (e) {
                                 size = e.target.value
-                                if (!checkDuplicateSizeAndColor(color, size, template) && size != '' && template.querySelector(".color-select").value != '') {
+                                if (!checkDuplicateSizeAndColor(color, size, template) && size !== '' && template.querySelector(".color-select").value !== '') {
                                     listDetail.push({
                                         color: color,
                                         size: size
@@ -249,8 +242,6 @@
                                 document.querySelector('.form-detail').removeChild(template)
                                 removeDetailObj(color, size)
                             }
-
-                            template.querySelector('.code-select').value = numberical
                         }
 
                         function removeDetailObj(color, size) {
