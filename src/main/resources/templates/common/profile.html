@@ -26,11 +26,11 @@
             <div class="col-md-2 pt-0">
                 <div class="list-group list-group-flush account-settings-links">
                     <a class="list-group-item list-group-item-action active title-profile" data-toggle="list"
-                       href="#account-general" >Thông tin chung</a>
+                       href="#account-general">Thông tin chung</a>
                     <a class="list-group-item list-group-item-action title-profile" data-toggle="list"
-                       href="/change-password" >Đổi mật khẩu</a>
+                       onclick=window.location.href='/change-password'>Đổi mật khẩu</a>
                     <a class="list-group-item list-group-item-action title-profile" data-toggle="list"
-                       href="#account-info" >Địa chỉ</a>
+                       href="#account-info">Địa chỉ</a>
                     <!--                    <a class="list-group-item list-group-item-action" data-toggle="list"-->
                     <!--                       href="#account-social-links">Social links</a>-->
                     <!--                    <a class="list-group-item list-group-item-action" data-toggle="list"-->
@@ -44,7 +44,8 @@
                     <div class="tab-pane fade active show" id="account-general">
                         <form th:object="${user}">
                             <div class="card-body media align-items-center">
-                                <img th:src="@{'/image/account/' + ${user.id}}" alt class="d-block " style="width: 90px; height: 90px">
+                                <img th:src="@{'/image/account/' + ${user.id}}" alt class="d-block "
+                                     style="width: 90px; height: 90px">
                                 <div class=" ml-4 d-flex align-items-start">
                                     <div class="mr-3">
                                         <label class="btn btn-outline-primary">
@@ -53,7 +54,8 @@
                                         </label>
                                     </div>
                                     <div>
-                                        <button type="button" class="btn btn-outline-primary md-btn-flat">Đặt Lại</button>
+                                        <button type="button" class="btn btn-outline-primary md-btn-flat">Đặt Lại
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +89,7 @@
                                         <div class="form-group">
                                             <label for="customerName" class="title-profile mb-1">Họ tên</label>
                                             <input type="text" class="form-control form-control"
-                                                   name="customerName" id="customerName" />
+                                                   name="customerName" id="customerName"/>
                                             <span id="nameError" class=" text-danger"></span>
                                         </div>
                                     </div>
