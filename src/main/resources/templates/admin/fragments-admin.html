@@ -72,8 +72,8 @@
             // alert('ádâdâdâdâd')
         }
 
-        function uploadFile(e) {
-            let fileName = document.getElementById("importFileProduct").value.split("\\").pop();
+        function uploadFile(e, fileId) {
+            let fileName = document.getElementById(fileId).value.split("\\").pop();
             document.querySelector(".custom-file-label").textContent = fileName;
             const files = e.target.files
             const previewImagesContainer = document.getElementById('preview-image-files');
@@ -146,12 +146,12 @@
             let fileInput = document.getElementById(idInputFile);
             let file = fileInput.files;
             if (file.length === 0) {
-                document.getElementById(errorName).innerHTML = `Vui lòng chọn file`
+                document.getElementById(errorName).innerHTML = `Vui lòng chọn ảnh`
                 return false;
             }
             for (let i = 0; i < file.length; i++) {
                 if (file[i].size > 1024 * 1024) {
-                    document.getElementById(errorName).innerHTML = `Kích thước từng file không vượt quá 1MB`
+                    document.getElementById(errorName).innerHTML = `Kích thước từng ảnh không vượt quá 1MB`
                     return false;
                 }
             }

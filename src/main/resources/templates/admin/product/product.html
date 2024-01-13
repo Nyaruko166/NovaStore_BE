@@ -160,8 +160,6 @@
                             </select>
                         </div>
                     </div>
-
-                    <br>
                     <div class="card-footer d-flex align-items-center">
                         <div class="">
                             <button onclick="clickSearch('product', 'productForm')" type="button"
@@ -199,7 +197,7 @@
     </div>
 
 
-    <!--    product add Start-->
+    <!--    Product add Start-->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -320,21 +318,21 @@
 
                     clickAddProduct = (entity, idForm) => {
                         if (validate()) {
-                            swal({
+                            Swal.fire({
                                 title: "Thêm dữ liệu",
                                 text: "Bạn có muốn thêm dữ liệu không ?",
-                                icon: "warning",
-                                buttons: ["Không", "Có"],
-                                dangerMode: true,
-                                closeOnClickOutside: false,
+                                icon: "question",
+                                showCancelButton: true,
+                                confirmButtonColor: "#0DC149",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Có",
+                                cancelButtonText: "Không",
+                                allowOutsideClick: false
                             }).then((add) => {
-                                if (add) {
+                                if (add.isConfirmed) {
                                     document.getElementById(idForm).action = '/nova/' + entity + '/add'
                                     document.getElementById(idForm).method = 'post'
                                     document.getElementById(idForm).submit()
-                                    // swal("Thêm dữ liệu thành công", {
-                                    //     icon: "success",
-                                    // })
                                 }
                             });
                         }

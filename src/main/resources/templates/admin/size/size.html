@@ -187,28 +187,28 @@
                                                    th:href="@{|/nova/size/detail/${items.id}|}">
                                                     <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
                                                 <button
-                                                        th:onclick="clickDeleted('size', 'sizeDelete', [[${items.id}]])"
+                                                        th:onclick="clickDelete('size', 'sizeDelete', [[${items.id}]])"
                                                         type="button" class="dropdown-item"><i
                                                         class="fa-solid fa-trash mr-3"></i>Xóa
                                                 </button>
-                                                <script th:inline="javascript">
-                                                    clickDeleted = (entity, idForm, idDelete) => {
-                                                        swal({
-                                                            title: "Xóa dữ liệu",
-                                                            text: "Bạn có muốn xóa dữ liệu không ?",
-                                                            icon: "warning",
-                                                            buttons: ["Không", "Có"],
-                                                            dangerMode: true,
-                                                            closeOnClickOutside: false,
-                                                        }).then((deleted) => {
-                                                            if (deleted) {
-                                                                document.getElementById(idForm).action = '/nova/' + entity + "/delete/" + idDelete
-                                                                document.getElementById(idForm).method = 'post'
-                                                                document.getElementById(idForm).submit()
-                                                            }
-                                                        });
-                                                    }
-                                                </script>
+<!--                                                <script th:inline="javascript">-->
+<!--                                                    clickDeleted = (entity, idForm, idDelete) => {-->
+<!--                                                        swal({-->
+<!--                                                            title: "Xóa dữ liệu",-->
+<!--                                                            text: "Bạn có muốn xóa dữ liệu không ?",-->
+<!--                                                            icon: "warning",-->
+<!--                                                            buttons: ["Không", "Có"],-->
+<!--                                                            dangerMode: true,-->
+<!--                                                            closeOnClickOutside: false,-->
+<!--                                                        }).then((deleted) => {-->
+<!--                                                            if (deleted) {-->
+<!--                                                                document.getElementById(idForm).action = '/nova/' + entity + "/delete/" + idDelete-->
+<!--                                                                document.getElementById(idForm).method = 'post'-->
+<!--                                                                document.getElementById(idForm).submit()-->
+<!--                                                            }-->
+<!--                                                        });-->
+<!--                                                    }-->
+<!--                                                </script>-->
                                             </div>
                                         </div>
                                     </td>

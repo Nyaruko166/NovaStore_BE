@@ -21,7 +21,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> getAll() {
-        return roleRepository.findAllByAndStatusOrderByIdDesc(1);
+        return roleRepository.findAllByAndStatusOrderByUpdateDateDesc(1);
     }
 
     @Override

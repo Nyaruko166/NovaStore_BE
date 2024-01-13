@@ -55,7 +55,7 @@ public class ShowImageController {
 
     @GetMapping("/account/{accountId}")
     public ResponseEntity<byte[]> getImageByAccountId(@PathVariable Integer accountId) {
-        byte[] imageData = accountService.get(accountId);
+        byte[] imageData = accountService.getImageByAccountId(accountId);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_PNG)

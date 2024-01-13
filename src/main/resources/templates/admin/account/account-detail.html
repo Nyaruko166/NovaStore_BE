@@ -10,90 +10,273 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>Tài Khoản</strong>
+                <h5 style="font-weight: bold">CHI TIẾT TÀI KHOẢN</h5>
             </div>
             <div class="card-body card-block">
-                <form th:object="${account}" th:action="@{/nova/account/update/{id}(id=${account.id})}"
+                <form th:object="${account}" th:action="@{/nova/account/update/{id}(id=${account.id})}" id="accountUpdate"
                       method="post" class="form-horizontal" enctype="multipart/form-data">
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="name" class=" form-control-label">Tên</label>
+<!--                    <div class="row form-group">-->
+<!--                        <div class="col col-md-3">-->
+<!--                            <label for="birthday" class=" form-control-label">Sinh Nhật</label>-->
+<!--                        </div>-->
+<!--                        <div class="col-12 col-md-9">-->
+<!--                            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker"-->
+<!--                                 inline="true">-->
+<!--                                <input placeholder="Choose your Birthday" type="date" id="birthday" class="form-control"-->
+<!--                                       name="birthday" value="" th:field="*{birthday}">-->
+<!--                                &lt;!&ndash;                                <label for="birthday">Try me...</label>&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                <i class="fas fa-calendar input-prefix"></i>&ndash;&gt;-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row form-group">-->
+<!--                        <div class="col col-md-3">-->
+<!--                            <label for="importFile" class=" form-control-label">Avatar</label>-->
+<!--                        </div>-->
+<!--                        <div class="col-12 col-md-9">-->
+<!--                            <div class="input-group mb-3">-->
+<!--                                <div class="custom-file">-->
+<!--                                    <input type="file" class="custom-file-input" id="importFile" name="avt"-->
+<!--                                           accept="image/*" onchange="setFileName()">-->
+<!--                                    <label class="custom-file-label" for="importFile">Chọn Ảnh</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash;                            <input type="text" id="avatar" name="avatar" class="form-control">&ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Họ Tên</label>
+                            <div class="" style="color: red" id="errorName"></div>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="name" th:field="*{name}" class="form-control">
+                        <input type="text" id="name" th:field="*{name}"
+                               class="form-control" oninput="onInputText('errorName')">
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Ngày sinh</label>
+                            <div class="" style="color: red" id="errorBirthday"></div>
+                        </div>
+                        <input type="date" id="birthday" th:field="*{birthday}"
+                               class="form-control" oninput="onInputText('errorBirthday')">
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Email</label>
+                            <div class="" style="color: red" id="errorEmail"></div>
+                        </div>
+                        <input type="email" id="email" th:field="*{email}"
+                               class="form-control" oninput="onInputText('errorEmail')">
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Số điện thoại</label>
+                            <div class="" style="color: red" id="errorPhoneNumber"></div>
+                        </div>
+                        <input type="text" id="phoneNumber" th:field="*{phoneNumber}" maxlength="11"
+                               class="form-control" oninput="onInputText('errorPhoneNumber')">
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Mật khẩu
+                                <span style="color: red; font-weight: lighter">(Nếu không nhập mật khẩu sẽ được giữ nguyên là mật khẩu cũ)</span>
+                            </label>
+                            <div class="" style="color: red" id="errorPassword"></div>
+                        </div>
+                        <div class="pos-relative">
+                            <input type="password" id="password" th:field="*{password}"
+                                   class="form-control" oninput="onInputText('errorPassword')">
+                            <span class="show-password-detail" id="show-password" onclick="togglePasswordVisibility()">
+                                    <i class="fa-solid fa-eye-slash"></i>
+                            </span>
+                        </div>
+
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label">Chức vụ</label>
+                        </div>
+                        <select class="form-control" name="roleId">
+                            <option th:value="${role.id}" th:each="role: ${listRole}"
+                                    th:text="${role.name}" th:selected="(*{role.id} == ${role.id})"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label class="font-weight-bold form-control-label"
+                                   for="importFile">Avatar</label>
+                            <div class="" style="color: red" id="errorFile"></div>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="importFile"
+                                   name="avt"
+                                   accept="image/png, image/jpg, image/jpeg"
+                                   multiple oninput="onInputText('errorFile')">
+                            <label class="custom-file-label" for="importFile">Chọn ảnh</label>
+                        </div>
+                        <div id="preview-image-files" class="mt-3">
+                            <img th:src="@{'/image/account/' + *{id}}" alt=""
+                                 style="width: 100px; height: 100px">
                         </div>
                     </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="password" class=" form-control-label">Mật Khẩu</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="password" id="password" th:field="*{password}" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="birthday" class=" form-control-label">Sinh Nhật</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker"
-                                 inline="true">
-                                <input placeholder="Choose your Birthday" type="date" id="birthday" class="form-control"
-                                       name="birthday" value="" th:field="*{birthday}">
-                                <!--                                <label for="birthday">Try me...</label>-->
-                                <!--                                <i class="fas fa-calendar input-prefix"></i>-->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="email" class=" form-control-label">Email</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="email" th:field="*{email}" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="phoneNumber" class=" form-control-label">Số Điện Thoại</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="importFile" class=" form-control-label">Avatar</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <div class="input-group mb-3">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="importFile" name="avt"
-                                           accept="image/*" onchange="setFileName()">
-                                    <label class="custom-file-label" for="importFile">Chọn Ảnh</label>
-                                </div>
-                            </div>
-                            <!--                            <input type="text" id="avatar" name="avatar" class="form-control">-->
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col col-md-3">
-                            <label class="form-control-label" for="roleId">Chức Vụ</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <select id="roleId" class="form-control" name="roleId">
-<!--                                <option value="">Select option</option>-->
-                                <option th:value="${x.id}" th:each="x: ${lstRole}"
-                                        th:text="${x.name}" th:selected="(*{role.id} == ${x.id})"></option>
-                            </select>
-                        </div>
-                    </div>
+
+                    <script th:inline="javascript">
+                        document.querySelector("#importFile").addEventListener("change", function (event) {
+                            uploadFile(event, "importFile");
+                        });
+
+                        const inputElement = document.getElementById('name');
+                        inputElement.addEventListener('input', function (event) {
+                            const specialCharacters = /[!@#$%^&*()_,.?":{}|'<>+\-=~`\\/\[\]]/g;
+                            const inputValue = event.target.value;
+                            if (specialCharacters.test(inputValue)) {
+                                event.target.value = inputValue.replace(specialCharacters, '');
+                            }
+                        });
+
+                        togglePasswordVisibility = () => {
+                            var passwordInput = document.getElementById("password");
+                            var showPassword = document.querySelector(".show-password-detail");
+
+                            if (passwordInput.type === "password") {
+                                passwordInput.type = "text";
+                                showPassword.innerHTML = `<i class="fa-solid fa-eye"></i>`;
+                            } else {
+                                passwordInput.type = "password";
+                                showPassword.innerHTML = `<i class="fa-solid fa-eye-slash"></i>`;
+                            }
+                        }
+
+
+                        checkName = () => {
+                            let name = document.getElementById('name').value
+                            if (name.trim() === '') {
+                                document.getElementById('errorName').innerHTML = 'Chưa nhập họ tên'
+                                return false
+                            }
+                            return true
+                        }
+
+                        checkBirthday = () => {
+                            let birthday = document.getElementById('birthday').value
+                            if (birthday.trim() === '') {
+                                document.getElementById('errorBirthday').innerHTML = 'Chưa nhập ngày sinh'
+                                return false
+                            }
+                            return true
+                        }
+
+                        checkEmail = () => {
+                            let email = document.getElementById('email').value
+                            if (email.trim() === '') {
+                                document.getElementById('errorEmail').innerHTML = 'Chưa nhập email'
+                                return false
+                            }
+
+                            let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+                            if (!regexEmail.test(email)) {
+                                document.getElementById('errorEmail').innerHTML = 'Email sai định dạng'
+                                return false
+                            }
+                            return true
+                        }
+
+                        checkPhoneNumber = () => {
+                            let regexPhoneNumber = /^(?:\+84|0)(?:\d{9}|\d{10})$/;
+                            let phoneNumber = document.getElementById('phoneNumber').value
+                            if (phoneNumber.trim() === '') {
+                                document.getElementById('errorPhoneNumber').innerHTML = 'Chưa nhập số điện thoại'
+                                return false
+                            }
+                            if (!regexPhoneNumber.test(phoneNumber)) {
+                                document.getElementById('errorPhoneNumber').innerHTML = 'Số điện thoại sai định dạng'
+                                return false
+                            }
+                            return true
+                        }
+
+                        checkPassword = () => {
+                            let password = document.getElementById('password').value
+
+
+                            if (password.length < 6 && password.trim() !== '') {
+                                document.getElementById('errorPassword').innerHTML = `Mật khẩu có ít nhất 6 kí tự`
+                                return false;
+                            }
+
+                            if (!/[A-Z]/.test(password) && password.trim() !== '') {
+                                document.getElementById('errorPassword').innerHTML = `Mật khẩu có ít nhất 1 chữ viết hoa`
+                                return false;
+                            }
+
+                            if (!/[a-z]/.test(password) && password.trim() !== '') {
+                                document.getElementById('errorPassword').innerHTML = `Mật khẩu có ít nhất 1 chữ viết thường`
+                                return false;
+                            }
+
+                            if (!/[0-9]/.test(password) && password.trim() !== '') {
+                                document.getElementById('errorPassword').innerHTML = `Mật khẩu có ít nhất 1 số`
+                                return false;
+                            }
+
+                            if (!/[!@#$%^&*]/.test(password) && password.trim() !== '') {
+                                document.getElementById('errorPassword').innerHTML = `Mật khẩu có ít nhất 1 kí tự đặc biệt`
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        checkFile = () => {
+                            let fileInput = document.getElementById('importFile');
+                            let file = fileInput.files;
+                            for (let i = 0; i < file.length; i++) {
+                                if (file[i].size > 1024 * 1024) {
+                                    document.getElementById('errorFile').innerHTML = `Kích thước từng ảnh không vượt quá 1MB`
+                                    return false;
+                                }
+                            }
+                            return true;
+                        }
+
+                        validateAccount = () => {
+                            let isName = checkName();
+                            let isBirthDay = checkBirthday();
+                            let isEmail = checkEmail();
+                            let isPhoneNumber = checkPhoneNumber();
+                            let isPassword = checkPassword();
+                            let isAvatar = checkFile();
+                            if (isName === true && isBirthDay === true && isEmail === true && isPhoneNumber === true && isPassword === true && isAvatar === true) {
+                                return true
+                            }
+                        }
+
+                        updateAccount = () => {
+                            if (validateAccount()) {
+                                Swal.fire({
+                                    title: "Sửa dữ liệu",
+                                    text: "Bạn có muốn sửa dữ liệu không ?",
+                                    icon: "question",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#0DC149",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Có",
+                                    cancelButtonText: "Không",
+                                    allowOutsideClick: false
+                                }).then((add) => {
+                                    if (add.isConfirmed) {
+                                        document.getElementById('accountUpdate').submit()
+                                    }
+                                });
+                            }
+                        }
+                    </script>
+
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-plus"></i>
-                            Cập Nhật
+                        <button th:onclick="updateAccount()" type="button" class="btn btn-dark">
+                            <i class="fa-solid fa-pen px-4"></i>
                         </button>
-                        <a href="/nova/account/page" class="btn btn-secondary">
-                            Quay Về
+                        <a href="/nova/account/page" class="btn btn-warning">
+                            <i class="fa-solid fa-circle-left px-4"></i>
                         </a>
                     </div>
                 </form>

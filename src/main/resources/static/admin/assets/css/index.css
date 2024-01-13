@@ -302,3 +302,21 @@ nav {
     position: absolute;
     top: -8px;
 }
+
+.show-password {
+    position: absolute;
+    right: 27px;
+    top: 57.1%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    caret-color: transparent;
+}
+
+.show-password-detail {
+    position: absolute;
+    right: 30px;
+    top: 53.5%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    caret-color: transparent;
+}
