@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [Nova_Store_DB]    Update: 4/1/2024 13:06 PM ******/
+/****** Object:  Database [Nova_Store_DB]    Update: 13/1/2023 16:31 AM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]
@@ -987,33 +987,33 @@ VALUES ('User', GETDATE(), GETDATE(), 1);
 SELECT * FROM Account
 
     INSERT INTO Account(Name, Email, PhoneNumber, Password, Birthday, Avatar, CreateDate, UpdateDate, Status, RoleId)
-VALUES (N'Phùng Minh Quân', 'admin@gmail.com', '0936163632',
-    '$2a$10$PHNpj3vmMEXFe.HByeH98uzXAk8pj9CLwQJUQxII3jbk/EpA/yJ4e', '2003-06-01 00:00:00.000', 'uid_1.png',
+VALUES (N'Trần Thanh Tùng', 'admin@gmail.com', '0943670235',
+    '$2a$10$PHNpj3vmMEXFe.HByeH98uzXAk8pj9CLwQJUQxII3jbk/EpA/yJ4e', '2003-06-01 00:00:00.000', 'tomiokah3j4!@dn.png',
     '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 1),
-    (N'Nguyễn Thanh Tùng', 'employee@gmail.com', '0943670235',
-    '$2a$10$nBJaDOAabttH8yE8pQUxpOXGLEXRP8/NKY8UhmxR5CP/YtGQLsKau', '1999-12-31 00:00:00.000', 'uid_2.png',
+    (N'Phùng Minh Quân', 'quanpm@gmail.com', '0936163632',
+    '$2a$10$nBJaDOAabttH8yE8pQUxpOXGLEXRP8/NKY8UhmxR5CP/YtGQLsKau', '1999-12-31 00:00:00.000', 'eren&90hnsd#.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 1),
+    (N'Lương Xuân Hùng', 'hunglx@gmail.com', '0833390195',
+    '$2a$12$UzOpuN1y3ODGkG2jCjBSf.ZT169QpOsL7nUdGFNskIscy9DV509qy', '2003-11-18 00:00:00.000', 'hinatahsjd#@#$HJ.png',
     '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 2),
-    (N'Trần Thu Dung', 'dungtt@gmail.com', '0833390195',
-    '$2a$12$UzOpuN1y3ODGkG2jCjBSf.ZT169QpOsL7nUdGFNskIscy9DV509qy', '2003-11-18 00:00:00.000', 'uid_3.png',
-    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
-    (N'Nguyễn Cẩm Linh', 'linhnc@gmail.com', '0982666189',
-    '$2a$12$cxpoRAXvIoi8Zducezc6YOAh8eTvR9ZBTzz.YksZnfEN00QTTddjy', '2003-06-23 00:00:00.000', 'uid_4.png',
-    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
+    (N'Chu Minh Tuấn', 'tuancm@gmail.com', '0982666189',
+    '$2a$12$cxpoRAXvIoi8Zducezc6YOAh8eTvR9ZBTzz.YksZnfEN00QTTddjy', '2003-06-23 00:00:00.000', 'muichiro#@$dhsjfkGHJ.png',
+    '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 2),
     (N'Nguyễn Tuấn Hiếu', 'hieunt@gmail.com', '0977572350',
-    '$2a$12$QXRS0HKa.qQiPPYrYh2cBOawwWQzHkWho1BdLQxWdHxd5rvExZopW', '2000-12-21 00:00:00.000', 'uid_5.png',
+    '$2a$12$QXRS0HKa.qQiPPYrYh2cBOawwWQzHkWho1BdLQxWdHxd5rvExZopW', '2000-12-21 00:00:00.000', 'naruto$%^&&^fdhj12SD.png',
     '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
     (N'Nguyễn Văn Tú', 'tunv@gmail.com', '0769347798',
-    '$2a$12$s/pfJpaQST110hwJfuK5KONpDc0YoAFPHhTS5u.c11dwwxurL/w7a', '1999-02-15 00:00:00.000', 'uid_6.png',
+    '$2a$12$s/pfJpaQST110hwJfuK5KONpDc0YoAFPHhTS5u.c11dwwxurL/w7a', '1999-02-15 00:00:00.000', 'nezuko@#$Dsshjk_s.png',
     '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
     (N'Lê Minh Hiếu', 'hieulm@gmail.com', '0963360843',
-    '$2a$12$WmHT5ni/SENjPvaGONRE/ORs/9Bzn0a4hJBuHLttJW3h4U6TGytSG', '1997-10-11 00:00:00.000', 'uid_7.png',
+    '$2a$12$WmHT5ni/SENjPvaGONRE/ORs/9Bzn0a4hJBuHLttJW3h4U6TGytSG', '1997-10-11 00:00:00.000', 'pain2347sjdhGHJ.png',
     '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
     (N'Nguyễn Huy Hoàng', 'hoangnh@gmail.com', '0377733070',
-    '$2a$12$wyQjo6lHWV8pX/vRFITvzuE5EWJeqBKhapYbYVvBI.w6AuQEAu9eG', '2003-06-23 00:00:00.000', 'uid_8.png',
+    '$2a$12$wyQjo6lHWV8pX/vRFITvzuE5EWJeqBKhapYbYVvBI.w6AuQEAu9eG', '2003-06-23 00:00:00.000', 'saitama@#$hsdgVBN.png',
     '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
     (N'Lê Minh Khuê', 'khuelm@gmail.com', '0588660409',
-    '$2a$12$Pr2.Rcs5YazU8xs8tql4g.eSv2kP.ddC6q5nxhw2gsrehzlGUNU9y', '2002-11-11 00:00:00.000', 'uid_9.png',
+    '$2a$12$Pr2.Rcs5YazU8xs8tql4g.eSv2kP.ddC6q5nxhw2gsrehzlGUNU9y', '2002-11-11 00:00:00.000', 'songokuEWR3647#@v.png',
     '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3),
     (N'Trần Đại Lâm', 'lamtd@gmail.com', '0982666189',
-    '$2a$12$B2Q/SPewPQhZ1prVGsl7zeBBuGWWFKmcfa/RxQTxbyN7KxBXoAZvG', '2001-07-23 00:00:00.000', 'uid_10.png',
+    '$2a$12$B2Q/SPewPQhZ1prVGsl7zeBBuGWWFKmcfa/RxQTxbyN7KxBXoAZvG', '2001-07-23 00:00:00.000', 'tanjiro#$%dshHEWD.png',
     '2023-12-17 19:18:55.303', '2023-12-17 19:18:55.303', 1, 3);

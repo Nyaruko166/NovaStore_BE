@@ -14,7 +14,7 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
 
     Role findFirstByName(String name);
 
-    List<Role> findAllByAndStatusOrderByIdDesc(Integer status);
+    List<Role> findAllByAndStatusOrderByUpdateDateDesc(Integer status);
 
     Page<Role> findAllByAndStatusOrderByIdDesc(Pageable pageable, Integer status);
 
