@@ -64,8 +64,38 @@
         </div>
     </form>
 
-    <div class="alert alert-success" role="alert" th:if="${message}">
-        <span th:text="${message}"></span>
+    <div th:if="${mess}">
+        <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>
+        <script th:inline="javascript">
+            window.onload = function () {
+                var btnSuccess = document.getElementById("btnSuccess");
+                btnSuccess.click();
+            }
+            alertSuccess = (content) => {
+                Swal.fire({
+                    title: content,
+                    icon: "success",
+                    confirmButtonColor: "#0DC149"
+                });
+            }
+        </script>
+    </div>
+    <div th:if="${error}">
+        <button hidden id="btnError" th:onclick="alertError([[${error}]])">Click Me</button>
+        <script th:inline="javascript">
+            window.onload = function () {
+                var btnError = document.getElementById("btnError");
+                btnError.click();
+            }
+            alertError = (content) => {
+                Swal.fire({
+                    title: "Lỗi",
+                    text: content,
+                    icon: "error",
+                    confirmButtonColor: "#d33"
+                });
+            }
+        </script>
     </div>
     <table class="table table-hover border my-3" style="cursor: pointer" id="billTable">
         <thead class="thead-dark">
@@ -142,9 +172,13 @@
             </td>
             <td>
                 <div class="d-flex align-items-center">
-                    <button class="btn confirm-btn bg-transparent" data-toggle="modal" data-target="#confirmModal" th:data-id="${item.id}" title="Xác nhận đơn" th:if="${item.status == 10}">
+<!--                    <button class="btn confirm-btn bg-transparent" data-toggle="modal" data-target="#confirmModal" th:data-id="${item.id}" title="Xác nhận đơn" th:if="${item.status == 10}">-->
+<!--                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 12v-2a6 6 0 1 1 12 0v2"/><path d="m15 9l3 3l3-3"/></g></svg>-->
+<!--                    </button>-->
+                    <a th:href="@{'/nova/bill/confirm-bill/' + ${item.id}}" th:if="${item.status == 10}"
+                       class="btn confirm-btn" title="Xác nhận đơn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 12v-2a6 6 0 1 1 12 0v2"/><path d="m15 9l3 3l3-3"/></g></svg>
-                    </button>
+                    </a>
                     <a th:href="@{'/nova/bill/shipping-bill/' + ${item.id}}" th:if="${item.status == 3}"
                        class="btn shipping-btn" title="Xác nhận giao hàng">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 12v-2a6 6 0 1 1 12 0v2"/><path d="m15 9l3 3l3-3"/></g></svg>
@@ -161,32 +195,32 @@
         </tbody>
     </table>
     <!-- Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="confirmForm" th:action="@{/nova/bill/confirm-bill}" method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" id="orderId" name="id">
-                        <div class="form-group">
-                            <label for="shippingFee">Phí ship</label>
-                            <input type="number" class="form-control" id="shippingFee" name="shippingFee">
-                            <small id="shippingFeeError" class="form-text text-danger"></small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary">Xác nhận</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<!--    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">-->
+<!--        <div class="modal-dialog" role="document">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn</h5>-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--                <form id="confirmForm" th:action="@{/nova/bill/confirm-bill}" method="POST">-->
+<!--                    <div class="modal-body">-->
+<!--                        <input type="hidden" id="orderId" name="id">-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="shippingFee">Phí ship</label>-->
+<!--                            <input type="number" class="form-control" id="shippingFee" name="shippingFee">-->
+<!--                            <small id="shippingFeeError" class="form-text text-danger"></small>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>-->
+<!--                        <button type="submit" class="btn btn-primary">Xác nhận</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="clearfix float-right" th:if="${items.totalPages > 0}">
         <ul class="pagination">
             <li th:classappend="${items.hasPrevious() ? '' : 'disabled'}" class="page-item">
@@ -240,6 +274,23 @@
                 Swal.fire({
                     title: "Xác nhận?",
                     text: `Bạn chắc chắn muốn hủy đơn này?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: 'Hủy',
+                    confirmButtonText: 'Xác nhận',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = $(this).attr('href');
+                    }
+                })
+            });
+
+            $('.confirm-btn').on('click', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "Xác nhận?",
+                    text: `Xác nhận đơn hàng này?`,
                     icon: "warning",
                     showCancelButton: true,
                     cancelButtonText: 'Hủy',
@@ -327,43 +378,43 @@
         }
 
     </script>
-    <script>
-        $(document).ready(function(){
-            $('.confirm-btn').on('click', function(){
-                var orderId = $(this).attr('data-id');
-                $('#orderId').val(orderId);
-                $('#shippingFee').val('');
-                $('#shippingFeeError').text('');
-            });
-        });
+<!--    <script>-->
+<!--        $(document).ready(function(){-->
+<!--            $('.confirm-btn').on('click', function(){-->
+<!--                var orderId = $(this).attr('data-id');-->
+<!--                $('#orderId').val(orderId);-->
+<!--                $('#shippingFee').val('');-->
+<!--                $('#shippingFeeError').text('');-->
+<!--            });-->
+<!--        });-->
 
-        $('#confirmForm').on('submit', function(e){
-            var shippingFee = $('#shippingFee').val();
-            var orderId = $('#orderId').val();
-            if(shippingFee === '' || shippingFee < 0){
-                e.preventDefault();
-                $('#shippingFeeError').text('Phí ship không được để trống và phải lớn hơn hoặc bằng 0');
-            } else if(orderId === ''){
-                e.preventDefault();
-            } else {
-                e.preventDefault(); // Ngăn chặn việc gửi form ngay lập tức
-                $('#shippingFeeError').text('');
-                Swal.fire({
-                    title: "Xác nhận?",
-                    text: `Bạn chắc chắn muốn xác nhận đơn này!`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    cancelButtonText: 'Hủy',
-                    confirmButtonText: 'Xác nhận',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.submit(); // Gửi form khi người dùng nhấp vào 'Xác nhận'
-                    }
-                });
-            }
-        });
-    </script>
+<!--        $('#confirmForm').on('submit', function(e){-->
+<!--            var shippingFee = $('#shippingFee').val();-->
+<!--            var orderId = $('#orderId').val();-->
+<!--            if(shippingFee === '' || shippingFee < 0){-->
+<!--                e.preventDefault();-->
+<!--                $('#shippingFeeError').text('Phí ship không được để trống và phải lớn hơn hoặc bằng 0');-->
+<!--            } else if(orderId === ''){-->
+<!--                e.preventDefault();-->
+<!--            } else {-->
+<!--                e.preventDefault(); // Ngăn chặn việc gửi form ngay lập tức-->
+<!--                $('#shippingFeeError').text('');-->
+<!--                Swal.fire({-->
+<!--                    title: "Xác nhận?",-->
+<!--                    text: `Bạn chắc chắn muốn xác nhận đơn này!`,-->
+<!--                    icon: "warning",-->
+<!--                    showCancelButton: true,-->
+<!--                    cancelButtonText: 'Hủy',-->
+<!--                    confirmButtonText: 'Xác nhận',-->
+<!--                    reverseButtons: true-->
+<!--                }).then((result) => {-->
+<!--                    if (result.isConfirmed) {-->
+<!--                        this.submit(); // Gửi form khi người dùng nhấp vào 'Xác nhận'-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
 </div>
 </body>
 </html>

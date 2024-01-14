@@ -10,8 +10,38 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="alert alert-success" role="alert" th:if="${message}">
-                    <span th:text="${message}"></span>
+                <div th:if="${mess}">
+                    <button hidden id="btnSuccess" th:onclick="alertSuccess([[${mess}]])">Click Me</button>
+                    <script th:inline="javascript">
+                        window.onload = function () {
+                            var btnSuccess = document.getElementById("btnSuccess");
+                            btnSuccess.click();
+                        }
+                        alertSuccess = (content) => {
+                            Swal.fire({
+                                title: content,
+                                icon: "success",
+                                confirmButtonColor: "#0DC149"
+                            });
+                        }
+                    </script>
+                </div>
+                <div th:if="${error}">
+                    <button hidden id="btnError" th:onclick="alertError([[${error}]])">Click Me</button>
+                    <script th:inline="javascript">
+                        window.onload = function () {
+                            var btnError = document.getElementById("btnError");
+                            btnError.click();
+                        }
+                        alertError = (content) => {
+                            Swal.fire({
+                                title: "Lỗi",
+                                text: content,
+                                icon: "error",
+                                confirmButtonColor: "#d33"
+                            });
+                        }
+                    </script>
                 </div>
                 <div class="card" style="position: relative">
                     <div class="card-body">
@@ -114,6 +144,8 @@
                                     <p th:if="${bill.phoneNumber != null}"
                                        th:text="'SĐT: ' + ${bill.phoneNumber}">
                                     </p>
+                                    <a href="#" class="change-address-btn" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"
+                                        th:if="${bill.status == 10}">Đổi địa chỉ nhận hàng</a>
                                     <h6 class="font-size-15 mb-2" th:if="${bill.employee != null}"
                                         th:text="'Nhân viên tương tác: ' + ${bill.employee.email}">
                                     </h6>
@@ -126,6 +158,14 @@
                                         <h5 class="font-size-15 mb-1">Ngày mua hàng:</h5>
                                         <p
                                                 th:text="${#dates.format(bill.orderDate, 'dd-MM-yyyy HH:mm:ss')}">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="text-muted" style="text-align: right" th:if="${bill.paymentDate != null}">
+                                    <div>
+                                        <h5 class="font-size-15 mb-1">Ngày thanh toán:</h5>
+                                        <p
+                                                th:text="${#dates.format(bill.paymentDate, 'dd-MM-yyyy HH:mm:ss')}">
                                         </p>
                                     </div>
                                 </div>
@@ -215,6 +255,7 @@
                                         <th>Giá tiền</th>
                                         <th>Số lượng</th>
                                         <th class="text-end" style="width: 120px">Thành tiền</th>
+                                        <th>Thao tác</th>
                                     </tr>
                                     </thead>
                                     <!-- end thead -->
@@ -238,16 +279,30 @@
                                         <td
                                                 th:text="'₫' + ${#numbers.formatDecimal(billDetail.price, 0, 'POINT', 0, 'COMMA')}">
                                         </td>
-                                        <td th:text="${billDetail.quantity}"></td>
-                                        <td class="text-end"
-                                            th:text="'₫' + ${#numbers.formatDecimal(billDetail.price * billDetail.quantity, 0, 'POINT', 0, 'COMMA')}">
-                                            $ 245.50
-                                        </td>
+                                        <form th:action="@{/nova/bill/update-bill-item}" method="post">
+                                            <input type="hidden" name="id" th:value="${billDetail.id}">
+                                            <td>
+                                                <input type="text" class="form-control form-control-sm text-center" name="quantity" th:value="${billDetail.quantity}">
+                                                <div class="mt-2 text-center">
+                                                    Còn: <span th:text="${billDetail.productDetail.quantity}"></span>
+                                                </div>
+                                            </td>
+                                            <td class="text-end"
+                                                th:text="'₫' + ${#numbers.formatDecimal(billDetail.price * billDetail.quantity, 0, 'POINT', 0, 'COMMA')}">
+                                                $ 245.50
+                                            </td>
+                                            <td th:if="${bill.status == 10}">
+                                                <button class="btn btn-sm btn-primary"
+                                                        type="submit" name="action" value="update" title="Sửa"><i class="fa fa-pencil"></i></button>
+                                                <button class="btn btn-sm btn-primary"
+                                                        type="submit" name="action" value="delete" title="Xoá"><i class="fa fa-times"></i></button>
+                                            </td>
+                                        </form>
                                     </tr>
                                     <!-- end tr -->
 
                                     <tr>
-                                        <th scope="row" colspan="7" style="text-align: right">
+                                        <th scope="row" colspan="8" style="text-align: right">
                                             Tổng thanh toán sản phẩm :
                                         </th>
                                         <td style="text-align: right"
@@ -257,8 +312,8 @@
                                     </tr>
                                     <!-- end tr -->
                                     <tr>
-                                        <th scope="row" colspan="7" class="border-0" style="text-align: right">
-                                            Voucher :
+                                        <th scope="row" colspan="8" class="border-0" style="text-align: right">
+                                            Voucher giảm:
                                         </th>
                                         <td class="border-0" style="text-align: right"
                                             th:text="'₫' + ${#numbers.formatDecimal(bill.discountAmount, 0, 'POINT', 0, 'COMMA')}">
@@ -267,7 +322,7 @@
                                     </tr>
                                     <!-- end tr -->
                                     <tr>
-                                        <th scope="row" colspan="7" class="border-0" style="text-align: right">
+                                        <th scope="row" colspan="8" class="border-0" style="text-align: right">
                                             Phí ship :
                                         </th>
                                         <td class="border-0" style="text-align: right"
@@ -279,7 +334,7 @@
 
                                     <!-- end tr -->
                                     <tr>
-                                        <th scope="row" colspan="7" class="border-0" style="text-align: right">
+                                        <th scope="row" colspan="8" class="border-0" style="text-align: right">
                                             Tổng thanh toán :
                                         </th>
                                         <td class="border-0" style="text-align: right">
@@ -313,9 +368,12 @@
                                         style="float: right; margin-bottom: 10px">
                                     <i class="far fa-times-circle"></i>&nbsp;Hủy đơn
                                 </a>
-                            <button class="btn btn-secondary confirm-btn text-wrap rounded" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"
+<!--                            <button class="btn btn-secondary confirm-btn text-wrap rounded" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"-->
+<!--                               th:if="${bill.status == 10}">-->
+<!--                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</button>-->
+                            <a th:href="@{'/nova/bill/detail-confirm-bill/' + ${bill.id}}" class="btn btn-primary confirm-btn text-wrap rounded"
                                th:if="${bill.status == 10}">
-                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</button>
+                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</a>
                             <a th:href="@{'/nova/bill/detail-shipping-bill/' + ${bill.id}}" class="btn btn-primary shipping-btn text-wrap rounded"
                                th:if="${bill.status == 3}">
                                             <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao hàng</a>
@@ -328,18 +386,57 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn</h5>
+                                        <h5 class="modal-title" id="confirmModalLabel">Đổi địa chỉ nhận</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form id="confirmForm" th:action="@{/nova/bill/detail-confirm-bill}" method="POST">
+                                    <form id="confirmForm" th:action="@{/nova/bill/change-bill-address}" method="POST">
                                         <div class="modal-body">
                                             <input type="hidden" id="orderId" name="id">
                                             <div class="form-group">
-                                                <label for="shippingFee">Phí ship</label>
-                                                <input type="number" class="form-control" id="shippingFee" name="shippingFee">
-                                                <small id="shippingFeeError" class="form-text text-danger"></small>
+                                                <label for="customerName">Tên người nhận</label>
+                                                <input type="text" class="form-control" th:value="${bill.customerName}" id="customerName" name="customerName">
+                                                <span id="customerNameError" class="small text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phoneNumber">SĐT</label>
+                                                <input type="text" class="form-control" th:value="${bill.phoneNumber}" id="phoneNumber" name="phoneNumber">
+                                                <span id="phoneNumberError" class="small text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="specific-address">Số nhà, đường</label>
+                                                <input type="text" class="form-control" id="specific-address" name="specificAddress">
+                                                <span id="specificAddressError" class="small text-danger"></span>
+                                            </div>
+                                            <div class="row no-gutters">
+                                                <div class="col-sm-4 pr-sm-2">
+                                                    <div class="form-group">
+                                                        <label for="city" class="small text-muted mb-1">TỈNH THÀNH</label>
+                                                        <select class="form-control form-control-sm" name="city" id="city">
+                                                            <option value="" selected>Tỉnh thành</option>
+                                                        </select>
+                                                        <span id="cityError" class="small text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 pr-sm-2">
+                                                    <div class="form-group">
+                                                        <label for="district" class="small text-muted mb-1">QUẬN HUYỆN</label>
+                                                        <select class="form-control form-control-sm" name="district" id="district">
+                                                            <option value="" selected>Quận huyện</option>
+                                                        </select>
+                                                        <span id="districtError" class="small text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="ward" class="small text-muted mb-1">PHƯỜNG XÃ</label>
+                                                        <select class="form-control form-control-sm" name="ward" id="ward">
+                                                            <option value="" selected>Phường xã</option>
+                                                        </select>
+                                                        <span id="wardError" class="small text-danger"></span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -356,12 +453,75 @@
             <!-- end col -->
         </div>
     </div>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js}"></script>
+    <script>
+        const host = "https://provinces.open-api.vn/api/";
+
+        // var defaultCity = document.getElementById('defaultCity').value;
+        // var defaultDistrict = document.getElementById('defaultDistrict').value;
+        // var defaultWard = document.getElementById('defaultWard').value;
+
+        var callAPI = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data, "city");
+                    // $("#city").val(defaultCity).change();
+                });
+        }
+        callAPI('https://provinces.open-api.vn/api/?depth=1');
+        var callApiDistrict = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.districts, "district");
+                    // $("#district").val(defaultDistrict).change();
+                });
+        }
+        var callApiWard = (api) => {
+            return axios.get(api)
+                .then((response) => {
+                    renderData(response.data.wards, "ward");
+                    // $("#ward").val(defaultWard);
+                });
+        }
+
+        var renderData = (array, select) => {
+            let row = ' <option disable value="">Chọn</option>';
+            array.forEach(element => {
+                row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`
+            });
+            document.querySelector("#" + select).innerHTML = row
+        }
+
+        $("#city").change(() => {
+            callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
+        });
+        $("#district").change(() => {
+            callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
+        });
+    </script>
     <script>
         $('.cancel-btn').on('click', function (e) {
             e.preventDefault();
             Swal.fire({
                 title: "Xác nhận?",
                 text: `Bạn chắc chắn muốn hủy đơn này?`,
+                icon: "warning",
+                showCancelButton: true,
+                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Xác nhận',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = $(this).attr('href');
+                }
+            })
+        });
+
+        $('.confirm-btn').on('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: "Xác nhận?",
+                text: `Xác nhận đơn hàng này?`,
                 icon: "warning",
                 showCancelButton: true,
                 cancelButtonText: 'Hủy',
@@ -410,28 +570,56 @@
     </script>
     <script>
         $(document).ready(function(){
-            $('.confirm-btn').on('click', function(){
+            $('.change-address-btn').on('click', function(){
                 var orderId = $(this).attr('data-id');
                 $('#orderId').val(orderId);
-                $('#shippingFee').val('');
-                $('#shippingFeeError').text('');
             });
         });
 
         $('#confirmForm').on('submit', function(e){
-            var shippingFee = $('#shippingFee').val();
+            // var shippingFee = $('#shippingFee').val();
             var orderId = $('#orderId').val();
-            if(shippingFee === '' || shippingFee < 0){
+            var customerName = $('#customerName').val();
+            var phoneNumber = $('#phoneNumber').val();
+            var specificAddress = $('#specific-address').val();
+            var city = $('#city').val();
+            var district = $('#district').val();
+            var ward = $('#ward').val();
+            var phoneRegex = /(03|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+            if(!customerName.trim() || customerName.trim().length < 2 || customerName.trim().length > 50){
                 e.preventDefault();
-                $('#shippingFeeError').text('Phí ship không được để trống và phải lớn hơn hoặc bằng 0');
-            } else if(orderId === ''){
+                $('#customerNameError').text('Tên không được trống và từ 2 đến 50 ký tự');
+            } else if(!phoneNumber.trim()){
+                e.preventDefault();
+                $('#phoneNumberError').text('SĐT không được trống');
+            } else if(!phoneRegex.test(phoneNumber.trim())){
+                e.preventDefault();
+                $('#phoneNumberError').text('SĐT không đúng định dạng');
+            } else if(!specificAddress.trim()){
+                e.preventDefault();
+                $('#specificAddressError').text('Số nhà, đường không được để trống');
+            } else if(city === ""){
+                e.preventDefault();
+                $('#cityError').text('Vui lòng chọn tỉnh thành');
+            } else if(district === ""){
+                e.preventDefault();
+                $('#districtError').text('Vui lòng chọn quận huyện');
+            } else if(ward === ""){
+                e.preventDefault();
+                $('#wardError').text('Vui lòng chọn phường xã');
+            }  else if(orderId === ''){
                 e.preventDefault();
             } else {
                 e.preventDefault(); // Ngăn chặn việc gửi form ngay lập tức
-                $('#shippingFeeError').text('');
+                $('#customerNameError').text('');
+                $('#phoneNumberError').text('');
+                $('#specificAddressError').text('');
+                $('#cityError').text('');
+                $('#districtError').text('');
+                $('#wardError').text('');
                 Swal.fire({
                     title: "Xác nhận?",
-                    text: `Bạn chắc chắn muốn xác nhận đơn này!`,
+                    text: `Xác nhận đổi địa chỉ nhận hàng?`,
                     icon: "warning",
                     showCancelButton: true,
                     cancelButtonText: 'Hủy',
