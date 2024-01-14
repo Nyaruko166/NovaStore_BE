@@ -70,7 +70,7 @@ public class SizeController {
             return "redirect:/nova/size/page";
         } else {
             redirectAttributes.addFlashAttribute("error", "Tên kích cỡ đã tồn tại");
-            return "redirect:/nova/size/page";
+            return "redirect:/nova/size/detail" + id;
         }
     }
 

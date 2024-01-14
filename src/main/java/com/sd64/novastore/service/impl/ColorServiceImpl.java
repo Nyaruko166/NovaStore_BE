@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Color;
 import com.sd64.novastore.repository.ColorRepository;
 import com.sd64.novastore.service.ColorService;
@@ -87,15 +88,27 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public Boolean update(Integer id, String name) {
         Optional<Color> optional = colorRepository.findById(id);
-        if (optional.isPresent() && checkName(name)) {
+        if (optional.isPresent()) {
             Color updateColor = optional.get();
-            updateColor.setId(id);
-            updateColor.setName(formatName(name));
-            updateColor.setUpdateDate(new Date());
-            colorRepository.save(updateColor);
-            return true;
+            if (updateColor.getName().equalsIgnoreCase(formatName(name))) {
+                updateColor.setId(id);
+                updateColor.setName(formatName(name));
+                updateColor.setUpdateDate(new Date());
+                colorRepository.save(updateColor);
+                return true;
+            } else {
+                if (checkName(name)) {
+                    updateColor.setId(id);
+                    updateColor.setName(formatName(name));
+                    updateColor.setUpdateDate(new Date());
+                    colorRepository.save(updateColor);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
-            return false;
+            return null;
         }
     }
 

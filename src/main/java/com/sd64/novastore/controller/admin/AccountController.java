@@ -79,10 +79,10 @@ public class AccountController {
             return "redirect:/nova/account/page";
         } else if (accountService.update(account, avt, roleId, id).contains("Email")) {
             redirectAttributes.addFlashAttribute("error", "Email đã tồn tại");
-            return "redirect:/nova/account/page";
+            return "redirect:/nova/account/detail" + id;
         } else {
             redirectAttributes.addFlashAttribute("error", "Số điện thoại đã tồn tại");
-            return "redirect:/nova/account/page";
+            return "redirect:/nova/account/detail" + id;
         }
     }
 
