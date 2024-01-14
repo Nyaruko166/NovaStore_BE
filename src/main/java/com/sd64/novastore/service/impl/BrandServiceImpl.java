@@ -1,6 +1,7 @@
 package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.model.Brand;
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.repository.BrandRepository;
 import com.sd64.novastore.service.BrandService;
 import com.sd64.novastore.utils.FileUtil;
@@ -88,14 +89,27 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Boolean update(Integer id, String name) {
         Optional<Brand> optional = brandRepository.findById(id);
-        if (optional.isPresent() && checkName(name)) {
+        if (optional.isPresent()) {
             Brand updateBrand = optional.get();
-            updateBrand.setName(formatName(name));
-            updateBrand.setUpdateDate(new Date());
-            brandRepository.save(updateBrand);
-            return true;
+            if (updateBrand.getName().equalsIgnoreCase(formatName(name))) {
+                updateBrand.setId(id);
+                updateBrand.setName(formatName(name));
+                updateBrand.setUpdateDate(new Date());
+                brandRepository.save(updateBrand);
+                return true;
+            } else {
+                if (checkName(name)) {
+                    updateBrand.setId(id);
+                    updateBrand.setName(formatName(name));
+                    updateBrand.setUpdateDate(new Date());
+                    brandRepository.save(updateBrand);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
-            return false;
+            return null;
         }
     }
 

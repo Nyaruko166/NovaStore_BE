@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Material;
 import com.sd64.novastore.repository.MaterialRepository;
 import com.sd64.novastore.service.MaterialService;
@@ -88,15 +89,27 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public Boolean update(Material material, Integer id) {
         Optional<Material> optional = materialRepository.findById(id);
-        if (optional.isPresent() && checkName(material.getName())) {
+        if (optional.isPresent()) {
             Material updateMaterial = optional.get();
-            updateMaterial.setId(id);
-            updateMaterial.setName(formatName(material.getName()));
-            updateMaterial.setUpdateDate(new Date());
-            materialRepository.save(updateMaterial);
-            return true;
+            if (updateMaterial.getName().equalsIgnoreCase(formatName(material.getName()))) {
+                updateMaterial.setId(id);
+                updateMaterial.setName(formatName(material.getName()));
+                updateMaterial.setUpdateDate(new Date());
+                materialRepository.save(updateMaterial);
+                return true;
+            } else {
+                if (checkName(material.getName())) {
+                    updateMaterial.setId(id);
+                    updateMaterial.setName(formatName(material.getName()));
+                    updateMaterial.setUpdateDate(new Date());
+                    materialRepository.save(updateMaterial);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
-            return false;
+            return null;
         }
     }
 

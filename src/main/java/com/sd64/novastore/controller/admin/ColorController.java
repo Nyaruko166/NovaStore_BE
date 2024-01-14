@@ -68,7 +68,7 @@ public class ColorController {
             return "redirect:/nova/color/page";
         } else {
             redirectAttributes.addFlashAttribute("error", "Tên màu sắc đã tồn tại");
-            return "redirect:/nova/color/page";
+            return "redirect:/nova/color/detail" + id;
         }
     }
 
