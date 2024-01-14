@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Category;
 import com.sd64.novastore.model.Form;
 import com.sd64.novastore.repository.FormRepository;
 import com.sd64.novastore.service.FormService;
@@ -88,15 +89,27 @@ public class FormServiceImpl implements FormService {
     @Override
     public Boolean update(Form form, Integer id) {
         Optional<Form> optional = formRepository.findById(id);
-        if (optional.isPresent() && checkName(form.getName())) {
+        if (optional.isPresent()) {
             Form updateForm = optional.get();
-            updateForm.setId(id);
-            updateForm.setName(formatName(form.getName()));
-            updateForm.setUpdateDate(new Date());
-            formRepository.save(updateForm);
-            return true;
+            if (updateForm.getName().equalsIgnoreCase(formatName(form.getName()))) {
+                updateForm.setId(id);
+                updateForm.setName(formatName(form.getName()));
+                updateForm.setUpdateDate(new Date());
+                formRepository.save(updateForm);
+                return true;
+            } else {
+                if (checkName(form.getName())) {
+                    updateForm.setId(id);
+                    updateForm.setName(formatName(form.getName()));
+                    updateForm.setUpdateDate(new Date());
+                    formRepository.save(updateForm);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
-            return false;
+            return null;
         }
     }
 

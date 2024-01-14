@@ -156,6 +156,10 @@
                                     document.getElementById('errorQuantity').innerHTML = `Số lượng phải là số nguyên`
                                     return false;
                                 }
+                                if (quantity > 1000000) {
+                                    document.getElementById('errorQuantity').innerHTML = `Số lượng tối đa là 1 triệu`
+                                    return false;
+                                }
                                 return true;
                             }
 
@@ -170,8 +174,8 @@
                                     document.getElementById('errorPrice').innerHTML = `Giá phải lớn hơn hoặc bằng 0`
                                     return false;
                                 }
-                                if (isPrice > 2147483647) {
-                                    document.getElementById('errorPrice').innerHTML = `Mức giá quá lớn vui lòng nhập lại`
+                                if (isPrice > 10000000) {
+                                    document.getElementById('errorPrice').innerHTML = `Cửa hàng chỉ kinh doanh sản phẩm nhỏ hơn hoặc bằng 10 triệu`
                                     return false;
                                 }
                                 return true;

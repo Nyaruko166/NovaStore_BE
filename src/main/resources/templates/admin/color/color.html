@@ -148,7 +148,6 @@
         </div>
     </div>
 
-    </h1>
     <div class="col">
         <div class="card">
             <div class="card">
@@ -187,28 +186,31 @@
                                                    th:href="@{|/nova/color/detail/${items.id}|}">
                                                     <i class="fa-solid fa-pen mr-3"></i>Sửa</a>
                                                 <button
-                                                        th:onclick="clickDeleted('color', 'colorDelete', [[${items.id}]])"
+                                                        th:onclick="clickDelete('color', 'colorDelete', [[${items.id}]])"
                                                         type="button" class="dropdown-item"><i
                                                         class="fa-solid fa-trash mr-3"></i>Xóa
                                                 </button>
-                                                <script th:inline="javascript">
-                                                    clickDeleted = (entity, idForm, idDelete) => {
-                                                        swal({
-                                                            title: "Xóa dữ liệu",
-                                                            text: "Bạn có muốn xóa dữ liệu không ?",
-                                                            icon: "warning",
-                                                            buttons: ["Không", "Có"],
-                                                            dangerMode: true,
-                                                            closeOnClickOutside: false,
-                                                        }).then((deleted) => {
-                                                            if (deleted) {
-                                                                document.getElementById(idForm).action = '/nova/' + entity + "/delete/" + idDelete
-                                                                document.getElementById(idForm).method = 'post'
-                                                                document.getElementById(idForm).submit()
-                                                            }
-                                                        });
-                                                    }
-                                                </script>
+<!--                                                <script th:inline="javascript">-->
+<!--                                                    clickDeleted = (entity, idForm, idDelete) => {-->
+<!--                                                        Swal.fire({-->
+<!--                                                            title: "Xóa dữ liệu",-->
+<!--                                                            text: "Bạn có muốn xóa dữ liệu không ?",-->
+<!--                                                            icon: "question",-->
+<!--                                                            showCancelButton: true,-->
+<!--                                                            confirmButtonColor: "#0DC149",-->
+<!--                                                            cancelButtonColor: "#d33",-->
+<!--                                                            confirmButtonText: "Có",-->
+<!--                                                            cancelButtonText: "Không",-->
+<!--                                                            allowOutsideClick: false-->
+<!--                                                        }).then((deleted) => {-->
+<!--                                                            if (deleted.isConfirmed) {-->
+<!--                                                                document.getElementById(idForm).action = '/nova/' + entity + "/delete/" + idDelete-->
+<!--                                                                document.getElementById(idForm).method = 'post'-->
+<!--                                                                document.getElementById(idForm).submit()-->
+<!--                                                            }-->
+<!--                                                        });-->
+<!--                                                    }-->
+<!--                                                </script>-->
                                             </div>
                                         </div>
                                     </td>

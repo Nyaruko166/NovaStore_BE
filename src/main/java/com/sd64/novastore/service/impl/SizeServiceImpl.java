@@ -1,5 +1,6 @@
 package com.sd64.novastore.service.impl;
 
+import com.sd64.novastore.model.Color;
 import com.sd64.novastore.model.Size;
 import com.sd64.novastore.repository.SizeRepository;
 import com.sd64.novastore.service.SizeService;
@@ -87,15 +88,27 @@ public class SizeServiceImpl implements SizeService {
     @Override
     public Boolean update(Integer id, String name) {
         Optional<Size> optional = sizeRepository.findById(id);
-        if (optional.isPresent() && checkName(name)) {
+        if (optional.isPresent()) {
             Size updateSize = optional.get();
-            updateSize.setId(id);
-            updateSize.setName(formatName(name));
-            updateSize.setUpdateDate(new Date());
-            sizeRepository.save(updateSize);
-            return true;
+            if (updateSize.getName().equalsIgnoreCase(formatName(name))) {
+                updateSize.setId(id);
+                updateSize.setName(formatName(name));
+                updateSize.setUpdateDate(new Date());
+                sizeRepository.save(updateSize);
+                return true;
+            } else {
+                if (checkName(name)) {
+                    updateSize.setId(id);
+                    updateSize.setName(formatName(name));
+                    updateSize.setUpdateDate(new Date());
+                    sizeRepository.save(updateSize);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
-            return false;
+            return null;
         }
     }
 

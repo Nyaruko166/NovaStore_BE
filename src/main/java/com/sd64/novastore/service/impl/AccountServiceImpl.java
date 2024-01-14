@@ -46,9 +46,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Page<Account> getAllPT(Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return accountRepository.findAllByAndStatusOrderByIdDesc(pageable, 1);
+    public Page<Account> getPage(Integer page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return accountRepository.findAllByAndStatusOrderByUpdateDateDesc(pageable, 1);
     }
 
     @Override
@@ -61,58 +61,107 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findById(id).orElse(null);
     }
 
-    @Override
-    public Account add(Account account, MultipartFile avt, Integer roleId) {
-        String fileName = StringUtils.cleanPath(avt.getOriginalFilename());
-        account.setStatus(1);
-        account.setRole(Role.builder().id(roleId).build());
-        account.setCreateDate(new java.util.Date());
-        account.setUpdateDate(new java.util.Date());
-        String rawPassword = account.getPassword();
-        account.setPassword(passwordEncoder.encode(rawPassword));
-        Account accountLasted = accountRepository.save(account);
-        String uid = "uid_" + accountLasted.getId();
-        String avtPath = FileUtil.copyFile(avt, fileName, uploadDir);
-        String anhUrl = FileUtil.rename(avtPath, uid);
-        accountLasted.setAvatar(anhUrl);
-//        System.out.println(anhUrl);
-//        System.out.println(avtPath);
-//        System.out.println(uid);
-        return accountRepository.save(accountLasted);
+    private Boolean checkEmail(String email) {
+        if (accountRepository.findByEmailAndStatus(email, 1) != null) {
+            return false;
+        }
+        return true;
+    }
+
+    private Boolean checkPhoneNumber(String phoneNumber) {
+        if (accountRepository.findByPhoneNumberAndStatus(phoneNumber, 1) != null) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public Account update(Account account, MultipartFile avt, Integer roleId, Integer id) {
+    public String add(Account account, MultipartFile avt, Integer roleId) {
+        if (checkEmail(account.getEmail()) && checkPhoneNumber(account.getPhoneNumber())) {
+            String fileName = StringUtils.cleanPath(avt.getOriginalFilename());
+            account.setStatus(1);
+            account.setRole(Role.builder().id(roleId).build());
+            account.setCreateDate(new java.util.Date());
+            account.setUpdateDate(new java.util.Date());
+            String rawPassword = account.getPassword();
+            account.setPassword(passwordEncoder.encode(rawPassword));
+            String uid = "avatar_" + new Date().getTime();
+            String avtPath = FileUtil.copyFile(avt, fileName, uploadDir);
+            String urlImage = FileUtil.rename(avtPath, uid);
+            account.setAvatar(urlImage);
+            accountRepository.save(account);
+            return "ok";
+        } else if (!checkPhoneNumber(account.getPhoneNumber())) {
+            return "Số điện thoại đã tồn tại";
+        } else {
+            return "Email đã tồn tại";
+        }
+    }
+
+    @Override
+    public String update(Account account, MultipartFile avt, Integer roleId, Integer id) {
         String fileName = StringUtils.cleanPath(avt.getOriginalFilename());
         Optional<Account> optional = accountRepository.findById(id);
         if (optional.isPresent()) {
             Account updateAccount = optional.get();
-            String oldAvt = updateAccount.getAvatar();
-            account.setId(id);
-            account.setStatus(updateAccount.getStatus());
-            if (account.getPassword().isBlank()) {
-                account.setPassword(updateAccount.getPassword());
+            if (updateAccount.getEmail().equals(account.getEmail()) || updateAccount.getPhoneNumber().equals(account.getPhoneNumber())) {
+                String oldAvt = updateAccount.getAvatar();
+                account.setId(id);
+                account.setStatus(updateAccount.getStatus());
+                if (account.getPassword().isBlank()) {
+                    account.setPassword(updateAccount.getPassword());
+                } else {
+                    String rawPassword = account.getPassword();
+                    account.setPassword(passwordEncoder.encode(rawPassword));
+                }
+                account.setRole(Role.builder().id(roleId).build());
+                account.setCreateDate(updateAccount.getCreateDate());
+                account.setUpdateDate(new Date());
+                if (!avt.isEmpty()) {
+                    File fileToDelete = new File(uploadDir + oldAvt);
+                    fileToDelete.delete();
+                    String avtPath = FileUtil.copyFile(avt, fileName, uploadDir);
+                    String urlImage = FileUtil.rename(avtPath, FileUtil.rmExt(oldAvt));
+                    account.setAvatar(urlImage);
+                } else {
+                    account.setAvatar(oldAvt);
+                }
+                accountRepository.save(account);
+                return "ok";
             } else {
-                String rawPassword = account.getPassword();
-                account.setPassword(passwordEncoder.encode(rawPassword));
+                if (checkEmail(account.getEmail()) && checkPhoneNumber(account.getPhoneNumber())) {
+                    String oldAvt = updateAccount.getAvatar();
+                    account.setId(id);
+                    account.setStatus(updateAccount.getStatus());
+                    if (account.getPassword().isBlank()) {
+                        account.setPassword(updateAccount.getPassword());
+                    } else {
+                        String rawPassword = account.getPassword();
+                        account.setPassword(passwordEncoder.encode(rawPassword));
+                    }
+                    account.setRole(Role.builder().id(roleId).build());
+                    account.setCreateDate(updateAccount.getCreateDate());
+                    account.setUpdateDate(new Date());
+                    if (!avt.isEmpty()) {
+                        File fileToDelete = new File(uploadDir + oldAvt);
+                        fileToDelete.delete();
+                        String avtPath = FileUtil.copyFile(avt, fileName, uploadDir);
+                        String urlImage = FileUtil.rename(avtPath, FileUtil.rmExt(oldAvt));
+                        account.setAvatar(urlImage);
+                    } else {
+                        account.setAvatar(oldAvt);
+                    }
+                    accountRepository.save(account);
+                    return "ok";
+                } else if (!checkPhoneNumber(account.getPhoneNumber())) {
+                    return "Số điện thoại đã tồn tại";
+                } else {
+                    return "Email đã tồn tại";
+                }
             }
-            account.setRole(Role.builder().id(roleId).build());
-            account.setCreateDate(updateAccount.getCreateDate());
-            account.setUpdateDate(new Date());
-            if (!avt.isEmpty()) {
-                File fileToDelete = new File(uploadDir + oldAvt);
-                fileToDelete.delete();
-                String avtPath = FileUtil.copyFile(avt, fileName, uploadDir);
-                String anhUrl = FileUtil.rename(avtPath, FileUtil.rmExt(oldAvt));
-                account.setAvatar(anhUrl);
-            } else {
-                account.setAvatar(oldAvt);
-            }
-            return accountRepository.save(account);
         } else {
             return null;
         }
-
     }
 
     @Override
@@ -128,9 +177,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Page<Account> search(String name, int page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return accountRepository.findAllByNameContainsAndStatusOrderByIdDesc(name, 1, pageable);
+    public Page<Account> search(String name, Date birthday, String email, String phoneNumber, Integer roleId, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return accountRepository.searchAccount(name, birthday, email, phoneNumber, roleId, 1, pageable);
     }
 
     private byte[] convert(String imagePath) throws IOException {
@@ -162,7 +211,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public byte[] get(Integer accountId) {
+    public byte[] getImageByAccountId(Integer accountId) {
         var account = accountRepository.findById(accountId).orElse(null);
         if (account == null) {
             log.info("image id = {} is not exist on DB", accountId);

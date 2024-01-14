@@ -87,15 +87,27 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Boolean update(Category category, Integer id) {
         Optional<Category> optional = categoryRepository.findById(id);
-        if (optional.isPresent() && checkName(category.getName())) {
+        if (optional.isPresent()) {
             Category updateCategory = optional.get();
-            updateCategory.setId(id);
-            updateCategory.setName(formatName(category.getName()));
-            updateCategory.setUpdateDate(new Date());
-            categoryRepository.save(updateCategory);
-            return true;
+            if (updateCategory.getName().equalsIgnoreCase(formatName(category.getName()))) {
+                updateCategory.setId(id);
+                updateCategory.setName(formatName(category.getName()));
+                updateCategory.setUpdateDate(new Date());
+                categoryRepository.save(updateCategory);
+                return true;
+            } else {
+                if (checkName(category.getName())) {
+                    updateCategory.setId(id);
+                    updateCategory.setName(formatName(category.getName()));
+                    updateCategory.setUpdateDate(new Date());
+                    categoryRepository.save(updateCategory);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
-            return false;
+            return null;
         }
     }
 
