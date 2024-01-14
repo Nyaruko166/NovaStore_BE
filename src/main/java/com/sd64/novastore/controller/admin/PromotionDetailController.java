@@ -59,7 +59,7 @@ public class PromotionDetailController {
 
         if (promotionDetail != null) {
             promotionDetailService.delete(id);
-            redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
+            redirectAttributes.addFlashAttribute("mess", "Hủy thành công!!");
         }
         return "redirect:/nova/promotion-detail/page";
     }
@@ -99,7 +99,7 @@ public class PromotionDetailController {
             promotionDetailService.add(newPromotionDetail);
         }
 
-        redirectAttributes.addFlashAttribute("mess", "Thêm thành công!!");
+        redirectAttributes.addFlashAttribute("mess", "Thêm dữ liệu thành công!!");
         return "redirect:/nova/promotion-detail/page";
     }
 }

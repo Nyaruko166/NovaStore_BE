@@ -54,13 +54,10 @@ public class VoucherController {
 
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("voucher") Voucher voucher, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        if (voucherService.update(voucher,id)) {
-            redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
-            return "redirect:/nova/voucher/page";
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Tên voucher đã tồn tại");
-            return "redirect:/nova/voucher/page";
-        }
+        voucherService.update(voucher, id);
+        redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+        return "redirect:/nova/voucher/page";
+
     }
 
     @PostMapping("/delete/{id}")
@@ -87,7 +84,7 @@ public class VoucherController {
             Model model, @RequestParam(defaultValue = "0") int page) {
 
         if ((code == null || code.isEmpty()) && status == null && (name == null || name.isEmpty()) && ngayTaoStart == null && ngayTaoEnd == null) {
-            return "redirect:/nova/promotion/page";
+            return "redirect:/nova/voucher/page";
         }
         Page<VoucherSearchDTO> voucherSearchDTOPage = voucherService.searchVoucher(code, ngayTaoStart, ngayTaoEnd, status, name, page);
         model.addAttribute("pageVoucher", voucherSearchDTOPage);
