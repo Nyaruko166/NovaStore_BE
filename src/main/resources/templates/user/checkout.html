@@ -197,6 +197,8 @@
                                         <label for="momo" class="small text-muted mb-1">Momo</label>
                                     </div>
                                     <input type="text" id="tongTienHang" th:hidden="true" th:value="${cart.totalPrice}">
+                                    <input type="text" id="phiShip" th:hidden="true" th:value="0">
+                                    <input type="text" id="soLuong" th:hidden="true" th:value="${cart.totalItems}">
                                 </div>
                             </div>
                         </div>
@@ -262,7 +264,7 @@
                                             </div>
                                             <div class="row justify-content-between">
                                                 <div class="col"><p class="mb-1"><b>Phí ship</b></p></div>
-                                                <div class="flex-sm-col col-auto"><p class="mb-1"><b>Sẽ phát sinh thêm</b>
+                                                <div class="flex-sm-col col-auto"><p class="mb-1"><b id="ship">₫0</b>
                                                 </p></div>
                                             </div>
                                             <div class="row justify-content-between">
@@ -323,6 +325,7 @@
             .then((response) => {
                 renderData(response.data.wards, "ward");
                 $("#ward").val(defaultWard);
+                getShippingFee();
             });
     }
 
@@ -340,6 +343,60 @@
     $("#district").change(() => {
         callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
     });
+
+    function getShippingFee() {
+        // Kiểm tra xem tất cả các select box đã được chọn chưa
+        var city = document.getElementById('city').value;
+        var district = document.getElementById('district').value;
+        var ward = document.getElementById('ward').value;
+        var quantity = document.getElementById('soLuong').value;
+
+        if (city && district && ward) {
+            // Gọi API để lấy phí ship
+            fetch(`/api/shipping-fee/get?city=${city}&district=${district}&ward=${ward}&quantity=${quantity}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Phí ship:', data);
+                    // Cập nhật phí ship và các ô text
+                    document.getElementById('phiShip').value = data;
+                    updateTextFields();
+                })
+                .catch(error => console.error('Có lỗi xảy ra:', error));
+        } else {
+            document.getElementById('phiShip').value = 0;
+            updateTextFields();
+        }
+    }
+
+    function updateTextFields() {
+        var tongTienHang = Number(document.querySelector('#tongTienHang').value);
+        var phiShip = Number(document.querySelector('#phiShip').value);
+        var textShip = document.querySelector('#ship');
+        var textTamTinh = document.querySelector('#tamTinh');
+        var voucherSelect = document.querySelector('#voucher');
+        var voucherValue = 0;
+
+        if(voucherSelect){
+            var selectedVoucherId = voucherSelect.value;
+            if (selectedVoucherId) {
+                fetch('/api/voucher/' + selectedVoucherId)
+                    .then(response => response.json())
+                    .then(voucher => {
+                        voucherValue = Number(voucher.value);
+                        var newTotalPrice = tongTienHang + phiShip - voucherValue;
+                        textTamTinh.innerText = '₫' + newTotalPrice.toLocaleString('en');
+                    });
+            } else {
+                var newTotalPrice = tongTienHang + phiShip;
+                textTamTinh.innerText = '₫' + newTotalPrice.toLocaleString('en');
+            }
+        } else {
+            var newTotalPrice = tongTienHang + phiShip;
+            textTamTinh.innerText = '₫' + newTotalPrice.toLocaleString('en');
+        }
+
+        textShip.innerText = '₫' + phiShip.toLocaleString('en');
+    }
 </script>
 <script>
     function validateForm() {
@@ -373,7 +430,7 @@
             hasError = true;
         } else {
             // Validate name length
-            if (name.value.length < 2 || name.value.length > 50) {
+            if (name.value.trim().length < 2 || name.value.trim().length > 50) {
                 nameError.textContent = 'Tên phải từ 2 đến 50 ký tự';
                 hasError = true;
             } else {
@@ -446,6 +503,7 @@
     document.querySelector('#voucher').addEventListener('change', function() {
         var selectedVoucherId = document.querySelector('#voucher').value;
         var tongTienHang = document.querySelector('#tongTienHang');
+        var phiShip = document.querySelector('#phiShip');
         var textGiam = document.querySelector('#giam');
         var textTamTinh = document.querySelector('#tamTinh');
 
@@ -453,14 +511,15 @@
             fetch('/api/voucher/' + selectedVoucherId)
                 .then(response => response.json())
                 .then(voucher => {
-                    var newTotalPrice = tongTienHang.value - voucher.value;
+                    var newTotalPrice = Number(tongTienHang.value) + Number(phiShip.value) - Number(voucher.value);
 
                     textGiam.innerText = '-₫' + Number(voucher.value).toLocaleString('en');
                     textTamTinh.innerText = '₫' + Number(newTotalPrice).toLocaleString('en');
                 });
         } else {
             textGiam.innerText = '-₫0';
-            textTamTinh.innerText = '₫' + Number(tongTienHang.value).toLocaleString('en');
+            var totalPrice = Number(tongTienHang.value) + Number(phiShip.value);
+            textTamTinh.innerText = '₫' + Number(totalPrice).toLocaleString('en');
         }
     });
 </script>
@@ -493,7 +552,129 @@
                     });
                 });
             });
+        getShippingFee();
     });
+
+    function getShippingFee() {
+        // Kiểm tra xem tất cả các select box đã được chọn chưa
+        var city = document.getElementById('city').value;
+        var district = document.getElementById('district').value;
+        var ward = document.getElementById('ward').value;
+        var quantity = document.getElementById('soLuong').value;
+
+        if (city && district && ward) {
+            // Gọi API để lấy phí ship
+            fetch(`/api/shipping-fee/get?city=${city}&district=${district}&ward=${ward}&quantity=${quantity}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Phí ship:', data);
+                    // Cập nhật phí ship và các ô text
+                    document.getElementById('phiShip').value = data;
+                    updateTextFields();
+                })
+                .catch(error => console.error('Có lỗi xảy ra:', error));
+        } else {
+            document.getElementById('phiShip').value = 0;
+            updateTextFields();
+        }
+    }
+
+    function updateTextFields() {
+        var tongTienHang = Number(document.querySelector('#tongTienHang').value);
+        var phiShip = Number(document.querySelector('#phiShip').value);
+        var textShip = document.querySelector('#ship');
+        var textTamTinh = document.querySelector('#tamTinh');
+        var voucherSelect = document.querySelector('#voucher');
+        var voucherValue = 0;
+
+        if(voucherSelect){
+            var selectedVoucherId = voucherSelect.value;
+            if (selectedVoucherId) {
+                fetch('/api/voucher/' + selectedVoucherId)
+                    .then(response => response.json())
+                    .then(voucher => {
+                        voucherValue = Number(voucher.value);
+                        var newTotalPrice = tongTienHang + phiShip - voucherValue;
+                        textTamTinh.innerText = '₫' + newTotalPrice.toLocaleString('en');
+                    });
+            } else {
+                var newTotalPrice = tongTienHang + phiShip;
+                textTamTinh.innerText = '₫' + newTotalPrice.toLocaleString('en');
+            }
+        } else {
+            var newTotalPrice = tongTienHang + phiShip;
+            textTamTinh.innerText = '₫' + newTotalPrice.toLocaleString('en');
+        }
+
+        textShip.innerText = '₫' + phiShip.toLocaleString('en');
+    }
+</script>
+<script>
+    // Lắng nghe sự kiện thay đổi trên các select box
+    document.getElementById('city').addEventListener('change', resetShippingFee);
+    document.getElementById('district').addEventListener('change', resetShippingFee);
+    document.getElementById('ward').addEventListener('change', getShippingFee);
+
+    function resetShippingFee() {
+        // Đặt phí ship về 0 khi city hoặc district thay đổi
+        document.getElementById('phiShip').value = 0;
+        updateTextFields();
+    }
+
+    function getShippingFee() {
+        // Kiểm tra xem tất cả các select box đã được chọn chưa
+        var city = document.getElementById('city').value;
+        var district = document.getElementById('district').value;
+        var ward = document.getElementById('ward').value;
+        var quantity = document.getElementById('soLuong').value;
+
+        if (city && district && ward) {
+            // Gọi API để lấy phí ship
+            fetch(`/api/shipping-fee/get?city=${city}&district=${district}&ward=${ward}&quantity=${quantity}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Phí ship:', data);
+                    // Cập nhật phí ship và các ô text
+                    document.getElementById('phiShip').value = data;
+                    updateTextFields();
+                })
+                .catch(error => console.error('Có lỗi xảy ra:', error));
+        } else {
+            document.getElementById('phiShip').value = 0;
+            updateTextFields();
+        }
+    }
+
+    function updateTextFields() {
+        var tongTienHang = Number(document.querySelector('#tongTienHang').value);
+        var phiShip = Number(document.querySelector('#phiShip').value);
+        var textShip = document.querySelector('#ship');
+        var textTamTinh = document.querySelector('#tamTinh');
+        var voucherSelect = document.querySelector('#voucher');
+        var voucherValue = 0;
+
+        if(voucherSelect){
+            var selectedVoucherId = voucherSelect.value;
+            if (selectedVoucherId) {
+                fetch('/api/voucher/' + selectedVoucherId)
+                    .then(response => response.json())
+                    .then(voucher => {
+                        voucherValue = Number(voucher.value);
+                        var newTotalPrice = tongTienHang + phiShip - voucherValue;
+                        textTamTinh.innerText = '₫' + newTotalPrice.toLocaleString('en');
+                    });
+            } else {
+                var newTotalPrice = tongTienHang + phiShip;
+                textTamTinh.innerText = '₫' + newTotalPrice.toLocaleString('en');
+            }
+        } else {
+            var newTotalPrice = tongTienHang + phiShip;
+            textTamTinh.innerText = '₫' + newTotalPrice.toLocaleString('en');
+        }
+
+        textShip.innerText = '₫' + phiShip.toLocaleString('en');
+    }
+
 </script>
 </body>
 

@@ -135,6 +135,7 @@ public class UserCartController {
     @RequestMapping(value = "/update-cart", method = RequestMethod.POST, params = "action=delete")
     public String deleteItem(@RequestParam("id") Integer id,
                              Principal principal,
+                             RedirectAttributes redirectAttributes,
                              HttpSession session){
         ProductDetail productDetail = userProductDetailService.getProductDetailById(id);
         if (principal == null){
@@ -147,6 +148,7 @@ public class UserCartController {
             Cart cart = cartService.removeFromCart(productDetail, email);
             session.setAttribute("totalItems", cart.getTotalItems());
         }
+        redirectAttributes.addFlashAttribute("mess","Xoá thành công");
         return "redirect:/cart";
     }
 }

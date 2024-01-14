@@ -7,6 +7,7 @@ import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.PaymentMethod;
 import com.sd64.novastore.repository.AccountRepository;
+import com.sd64.novastore.repository.BillDetailRepository;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.PaymentMethodService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -45,6 +46,9 @@ public class BillController {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private BillDetailRepository billDetailRepository;
 
     @GetMapping()
     public String getAllBills(Model model,
@@ -115,7 +119,7 @@ public class BillController {
             model.addAttribute("listPaymentMethod", listPaymentMethod);
             return "admin/bill/bill-detail";
         } else {
-            attributes.addFlashAttribute("message", "Không tìm thấy hoá đơn");
+            attributes.addFlashAttribute("error", "Không tìm thấy hoá đơn");
             return "redirect:/nova/bill";
         }
     }
@@ -128,12 +132,12 @@ public class BillController {
         if (bill != null){
             boolean check = billService.cancelOrder(id, employee);
             if (check){
-                attributes.addFlashAttribute("message", "Huỷ đơn hàng " + bill.getCode() + " thành công");
+                attributes.addFlashAttribute("mess", "Huỷ đơn hàng " + bill.getCode() + " thành công");
             } else {
-                attributes.addFlashAttribute("message", "Đơn hàng " + bill.getCode() + " đã ở trạng thái huỷ từ trước");
+                attributes.addFlashAttribute("error", "Đơn hàng " + bill.getCode() + " đã ở trạng thái huỷ từ trước");
             }
         } else {
-            attributes.addFlashAttribute("message", "Không có thông tin đơn hàng này");
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
         }
         return "redirect:/nova/bill";
     }
@@ -146,54 +150,94 @@ public class BillController {
         if (bill != null){
             boolean check = billService.cancelOrder(id, employee);
             if (check){
-                attributes.addFlashAttribute("message", "Huỷ đơn hàng " + bill.getCode() + " thành công");
+                attributes.addFlashAttribute("mess", "Huỷ đơn hàng " + bill.getCode() + " thành công");
             } else {
-                attributes.addFlashAttribute("message", "Đơn hàng " + bill.getCode() + " đã ở trạng thái huỷ từ trước");
+                attributes.addFlashAttribute("error", "Đơn hàng " + bill.getCode() + " đã ở trạng thái huỷ từ trước");
             }
             return "redirect:/nova/bill/detail/" + bill.getId();
         } else {
-            attributes.addFlashAttribute("message", "Không có thông tin đơn hàng này");
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
             return "redirect:/nova/bill";
         }
     }
 
-    @PostMapping("/confirm-bill")
+    @PostMapping("/change-bill-address")
     public String confirmBill(@RequestParam("id") Integer id,
-                               @RequestParam("shippingFee") BigDecimal shippingFee,
+                              @RequestParam("customerName") String customerName,
+                              @RequestParam("phoneNumber") String phoneNumber,
+                              @RequestParam("specificAddress") String specificAddress,
+                              @RequestParam("city") String city,
+                              @RequestParam("district") String district,
+                              @RequestParam("ward") String ward,
                               RedirectAttributes attributes, Principal principal){
         Bill bill = billService.getOneBill(id);
         String email = principal.getName();
         Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.confirmOrder(shippingFee, id, employee);
+            boolean check = billService.changeAddressOrder(id, customerName.trim(), phoneNumber.trim(), specificAddress.trim(), ward, district, city, employee);
             if (check){
-                attributes.addFlashAttribute("message", "Xác nhận đơn hàng " + bill.getCode() + " thành công");
+                attributes.addFlashAttribute("mess", "Đổi địa chỉ nhận hàng của đơn " + bill.getCode() + " thành công");
             } else {
-                attributes.addFlashAttribute("message", "Không thể xác nhận đơn có trạng thái khác chờ xác nhận");
+                attributes.addFlashAttribute("error", "Chỉ đổi được địa chỉ cho đơn hàng có trạng thái chờ xác nhận");
+            }
+            return "redirect:/nova/bill/detail/" + bill.getId();
+        } else {
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
+            return "redirect:/nova/bill";
+        }
+    }
+
+    @RequestMapping(value = "/update-bill-item", method = RequestMethod.POST, params = "action=update")
+    public String updateBillItem(@RequestParam("id") Integer id,
+                                 @RequestParam("quantity") Integer quantity,
+                                 RedirectAttributes attributes, Principal principal){
+        BillDetail billDetail = billDetailRepository.findById(id).orElse(null);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
+        boolean check = billService.updateBillItem(id, quantity, employee);
+        if (check){
+            attributes.addFlashAttribute("mess", "Sửa thành công");
+        } else {
+            attributes.addFlashAttribute("mess", "Sửa thất bại");
+        }
+        return "redirect:/nova/bill/detail/" + billDetail.getBill().getId();
+    }
+
+    @RequestMapping(value = "/confirm-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String confirmBill(@PathVariable("id") Integer id,
+                              RedirectAttributes attributes, Principal principal){
+        Bill bill = billService.getOneBill(id);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
+        if (bill != null){
+            boolean check = billService.confirmOrder(id, employee);
+            if (check){
+                attributes.addFlashAttribute("mess", "Xác nhận đơn hàng " + bill.getCode() + " thành công");
+            } else {
+                attributes.addFlashAttribute("error", "Không thể xác nhận đơn có trạng thái khác chờ xác nhận");
             }
         } else {
-            attributes.addFlashAttribute("message", "Không có thông tin đơn hàng này");
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
         }
         return "redirect:/nova/bill";
     }
 
-    @PostMapping("/detail-confirm-bill")
-    public String detailConfirmBill(@RequestParam("id") Integer id,
-                              @RequestParam("shippingFee") BigDecimal shippingFee,
+    @RequestMapping(value = "/detail-confirm-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String detailConfirmBill(@PathVariable("id") Integer id,
                               RedirectAttributes attributes, Principal principal){
         Bill bill = billService.getOneBill(id);
         String email = principal.getName();
         Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.confirmOrder(shippingFee, id, employee);
+            boolean check = billService.confirmOrder(id, employee);
             if (check){
-                attributes.addFlashAttribute("message", "Xác nhận đơn hàng " + bill.getCode() + " thành công");
+                attributes.addFlashAttribute("mess", "Xác nhận đơn hàng " + bill.getCode() + " thành công");
             } else {
-                attributes.addFlashAttribute("message", "Không thể xác nhận đơn có trạng thái khác chờ xác nhận");
+                attributes.addFlashAttribute("error", "Không thể xác nhận đơn có trạng thái khác chờ xác nhận");
             }
             return "redirect:/nova/bill/detail/" + bill.getId();
         } else {
-            attributes.addFlashAttribute("message", "Không có thông tin đơn hàng này");
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
             return "redirect:/nova/bill";
         }
     }
@@ -206,12 +250,12 @@ public class BillController {
         if (bill != null){
             boolean check = billService.shippingOrder(id, employee);
             if (check){
-                attributes.addFlashAttribute("message", "Đã xác nhận đang giao đơn hàng " + bill.getCode());
+                attributes.addFlashAttribute("mess", "Đã xác nhận đang giao đơn hàng " + bill.getCode());
             } else {
-                attributes.addFlashAttribute("message", "Không thể xác nhận đang giao cho đơn có trạng thái khác chờ giao hàng");
+                attributes.addFlashAttribute("error", "Không thể xác nhận đang giao cho đơn có trạng thái khác chờ giao hàng");
             }
         } else {
-            attributes.addFlashAttribute("message", "Không có thông tin đơn hàng này");
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
         }
         return "redirect:/nova/bill";
     }
@@ -224,13 +268,13 @@ public class BillController {
         if (bill != null){
             boolean check = billService.shippingOrder(id, employee);
             if (check){
-                attributes.addFlashAttribute("message", "Đã xác nhận đang giao đơn hàng " + bill.getCode());
+                attributes.addFlashAttribute("mess", "Đã xác nhận đang giao đơn hàng " + bill.getCode());
             } else {
-                attributes.addFlashAttribute("message", "Không thể xác nhận đang giao cho đơn có trạng thái khác chờ giao hàng");
+                attributes.addFlashAttribute("error", "Không thể xác nhận đang giao cho đơn có trạng thái khác chờ giao hàng");
             }
             return "redirect:/nova/bill/detail/" + bill.getId();
         } else {
-            attributes.addFlashAttribute("message", "Không có thông tin đơn hàng này");
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
         }
         return "redirect:/nova/bill";
     }
@@ -243,11 +287,12 @@ public class BillController {
         if (bill != null){
             boolean check = billService.completeOrder(id, employee);
             if (check){
-                attributes.addFlashAttribute("message", "Xác nhận đã giao đơn hàng " + bill.getCode() + " thành công");
+                attributes.addFlashAttribute("mess", "Xác nhận đã giao đơn hàng " + bill.getCode() + " thành công");
             } else {
+                attributes.addFlashAttribute("error", "Không thể xác nhận đã giao cho đơn có trạng thái khác đang giao hàng");
             }
         } else {
-            attributes.addFlashAttribute("message", "Không có thông tin đơn hàng này");
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
         }
         return "redirect:/nova/bill";
     }
@@ -260,13 +305,13 @@ public class BillController {
         if (bill != null){
             boolean check = billService.completeOrder(id, employee);
             if (check){
-                attributes.addFlashAttribute("message", "Xác nhận đã giao đơn hàng " + bill.getCode() + " thành công");
+                attributes.addFlashAttribute("mess", "Xác nhận đã giao đơn hàng " + bill.getCode() + " thành công");
             } else {
-                attributes.addFlashAttribute("message", "Không thể xác nhận đã giao cho đơn có trạng thái khác đang giao hàng");
+                attributes.addFlashAttribute("error", "Không thể xác nhận đã giao cho đơn có trạng thái khác đang giao hàng");
             }
             return "redirect:/nova/bill/detail/" + bill.getId();
         } else {
-            attributes.addFlashAttribute("message", "Không có thông tin đơn hàng này");
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
         }
         return "redirect:/nova/bill";
     }
