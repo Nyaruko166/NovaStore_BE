@@ -237,6 +237,12 @@
                     <td style=" text-align: left; padding: 10px;">
                         Tên Sản phẩm
                     </td>
+                    <td style=" text-align: left; padding: 10px;">
+                        Kích cỡ
+                    </td>
+                    <td style=" text-align: left; padding: 10px;">
+                        Màu
+                    </td>
                     <td style=" text-align: left; padding: 10px; ">Số
                         lượng  bán
                     </td>
@@ -254,6 +260,8 @@
                              style="width: 100px; height: 100px; display: block; margin: 0 auto;border-radius: 8px">
                     </td>
                     <td style="padding: 10px; text-align: left;" th:text="${sanPham.getName()}"></td>
+                    <td style="padding: 10px; text-align: left;" th:text="${sanPham.getSize()}"></td>
+                    <td style="padding: 10px; text-align: left;" th:text="${sanPham.getColor()}"></td>
                     <td style="padding: 10px; text-align: left;" th:text="${sanPham.getSoLuong()}"></td>
                     <td style="padding: 10px; text-align: left;"
                         th:text="${sanPham.getDoanhThu() != null ?   #numbers.formatDecimal(sanPham.getDoanhThu(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></td>
