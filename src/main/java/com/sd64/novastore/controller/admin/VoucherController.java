@@ -54,10 +54,13 @@ public class VoucherController {
 
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("voucher") Voucher voucher, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        voucherService.update(voucher, id);
-        redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
-        return "redirect:/nova/voucher/page";
-
+        if(voucherService.update(voucher, id)) {
+            redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+            return "redirect:/nova/voucher/page";
+        }else {
+            redirectAttributes.addFlashAttribute("error", "Tên voucher đã tồn tại");
+            return "redirect:/nova/voucher/page";
+        }
     }
 
     @PostMapping("/delete/{id}")

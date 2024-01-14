@@ -50,9 +50,13 @@ public class PromotionController {
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("promotion") Promotion promotion, @PathVariable Integer id,
                          RedirectAttributes redirectAttributes) {
-        promotionService.update(promotion, id);
-        redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
-        return "redirect:/nova/promotion/page";
+       if(promotionService.update(promotion,id)){
+           redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+           return "redirect:/nova/promotion/page";
+       }else{
+           redirectAttributes.addFlashAttribute("error", "Tên khuyến mãi đã tồn tại");
+           return "redirect:/nova/promotion/page";
+       }
 
     }
 

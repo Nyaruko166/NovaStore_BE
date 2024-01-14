@@ -1,6 +1,7 @@
 package com.sd64.novastore.service.impl;
 
 import com.sd64.novastore.dto.admin.thongke.VoucherSearchDTO;
+import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.Voucher;
 import com.sd64.novastore.repository.VoucherRepository;
 import com.sd64.novastore.service.VoucherService;
@@ -119,20 +120,37 @@ public class VoucherServiceImpl implements VoucherService {
     public Boolean update(Voucher voucher, Integer id) {
         Optional<Voucher> optional = voucherRepository.findById(id);
         if (optional.isPresent()) {
-            Voucher oldVoucher = optional.get();
-            voucher.setId(oldVoucher.getId());
-            voucher.setCode(oldVoucher.getCode());
-            voucher.setCreateDate(oldVoucher.getCreateDate());
-            voucher.setUpdateDate(new Date());
-            voucher.setStatus(oldVoucher.getStatus());
-            voucher.updateStatus();
-            voucherRepository.save(voucher);
-            return true;
-        } else {
-            return false;
+            Voucher updateVoucher = optional.get();
+            if (updateVoucher.getName().equalsIgnoreCase(voucher.getName())) {
+                Voucher oldVoucher = optional.get();
+                voucher.setId(oldVoucher.getId());
+                voucher.setCode(oldVoucher.getCode());
+                voucher.setCreateDate(oldVoucher.getCreateDate());
+                voucher.setUpdateDate(new Date());
+                voucher.setStatus(oldVoucher.getStatus());
+                voucher.updateStatus();
+                voucherRepository.save(voucher);
+                return true;
+            } else {
+                if (checkName(voucher.getName())) {
+                    Voucher oldVoucher = optional.get();
+                    voucher.setId(oldVoucher.getId());
+                    voucher.setCode(oldVoucher.getCode());
+                    voucher.setCreateDate(oldVoucher.getCreateDate());
+                    voucher.setUpdateDate(new Date());
+                    voucher.setStatus(oldVoucher.getStatus());
+                    voucher.updateStatus();
+                    voucherRepository.save(voucher);
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+        }else{
+                return null;
+            }
         }
 
-    }
 
     @Override
     public Voucher delete(Integer id) {
