@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [Nova_Store_DB]    Update: 13/1/2023 16:31 AM ******/
+/****** Object:  Database [Nova_Store_DB]    Update: 15/1/2023 18:16 PM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]
@@ -789,47 +789,47 @@ VALUES ('M0010', N'Cam', GETDATE(), GETDATE(), 1)
 
 SELECT * FROM Product
     INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00001', N'Áo nam thể thao YOLO logo nổi 3D 7 màu vải xuất', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
+VALUES ('SP00001', N'Áo nam thể thao NOVA logo nổi 3D 7 màu vải xuất', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 1, 1, 1);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00002', N'Quần đùi thể thao nam thun YOLO phối chữ dọc ống', N'Mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng. Không nhăn, Không biến dạng (co, rút) khi giặt, không cần ủi/là', GETDATE(), GETDATE(), 1, 2, 2, 2, 2);
+VALUES ('SP00002', N'Quần đùi thể thao nam thun NOVA phối chữ dọc ống', N'Mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng. Không nhăn, Không biến dạng (co, rút) khi giặt, không cần ủi/là', GETDATE(), GETDATE(), 1, 2, 2, 2, 2);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00003', N'Áo tay ngắn nam sọc vân', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 3, 3, 3, 3);
+VALUES ('SP00003', N'Quần đùi chạy bộ NOVA', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 3, 3, 3, 3);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP00004', N'Áo ba lỗ Tank top Nam Cotton YL Lưng Phối', N'Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động. Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,…', GETDATE(), GETDATE(), 1, 4, 4, 4, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00005', N'Quần dài thể thao nam A-CHILL TOUCH Anta',N'Chất liệu vải cao cấp, mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. ' , GETDATE(), GETDATE(), 1, 5, 5, 5, 5);
+VALUES ('SP00005', N'Quần đùi thể thao nam A-CHILL TOUCH Anta',N'Chất liệu vải cao cấp, mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. ' , GETDATE(), GETDATE(), 1, 5, 5, 5, 5);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00006', N'Quần dài thể thao nam A-CHILL TOUCH Anta', N'Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Tạo cảm giác thoải mái khi vận động. ', GETDATE(), GETDATE(), 1, 6, 6, 6, 6);
+VALUES ('SP00006', N'Quần dài thể thao nam NOVA', N'Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Tạo cảm giác thoải mái khi vận động. ', GETDATE(), GETDATE(), 1, 6, 6, 6, 6);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP00007', N'Quần dài thể thao nam Anta', N'Quần dài thể thao nam Anta được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi, form vừa vặn, giúp bạn vừa thể hiện phong cách thời trang của mình, vừa thoải mái trong mọi hoạt động, mang lại sự tự tin trước những người xung quanh.', GETDATE(), GETDATE(), 1, 7, 7, 7, 7);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP00008', N'Áo thể thao nam Cross-training A-CHILL TOUCH Anta', N'Áo thể thao nam Cross-training A-CHILL TOUCH Anta với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi.', GETDATE(), GETDATE(), 1, 8, 8, 8, 8);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00009', N'Áo thể thao nam Running A-DRY FAST Anta', N'với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi. Chất liệu vải cao cấp, giữ ấm tốt, mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Tạo cảm giác thoải mái khi vận động. Sản phẩm ôm sát cơ thể nhưng mềm mịn và ôm sát nhẹ nhàng vào cơ thể nên bạn vẫn cảm thấy rất dễ thở khi tập luyện.', GETDATE(), GETDATE(), 1, 9, 9, 9, 9);
+VALUES ('SP00009', N'Áo dài tay thể thao nam Running A-DRY FAST Anta', N'với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi. Chất liệu vải cao cấp, giữ ấm tốt, mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Tạo cảm giác thoải mái khi vận động. Sản phẩm ôm sát cơ thể nhưng mềm mịn và ôm sát nhẹ nhàng vào cơ thể nên bạn vẫn cảm thấy rất dễ thở khi tập luyện.', GETDATE(), GETDATE(), 1, 9, 9, 9, 9);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00010', N'Áo thể thao nam Running A-COOL', N'với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi. Chất liệu vải cao cấp mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Sản phẩm ôm sát cơ thể nhưng mềm mịn và ôm sát nhẹ nhàng vào cơ thể nên bạn vẫn cảm thấy rất dễ thở khi tập luyện.', GETDATE(), GETDATE(), 1, 10, 10, 10, 10);
+VALUES ('SP00010', N'Quần đùi thể thao nam Running A-COOL', N'với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi. Chất liệu vải cao cấp mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Sản phẩm ôm sát cơ thể nhưng mềm mịn và ôm sát nhẹ nhàng vào cơ thể nên bạn vẫn cảm thấy rất dễ thở khi tập luyện.', GETDATE(), GETDATE(), 1, 10, 10, 10, 10);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP00011', N'Áo ba lỗ thể thao nam A-COOL', N'với chất liệu vải cao cấp được thiết kế chuyên biệt cho các hoạt động thể thao, dã ngoại, đi chơi. Chất liệu vải cao cấp, mang lại cảm giác thoải mái cho bạn trong suốt quá trình hoạt động. Sản phẩm luôn căng mịn, không nhăn và chảy xệ giúp tôn vinh đường nét của cơ thể. Tạo cảm giác thoải mái khi vận động. Dễ dàng phối hợp với nhiều trang phục và phụ kiện tạo nên cho bạn một phong thời trang thật trẻ trung, năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00012', N'Áo nam thể thao lưới kim logo ngực lưng YL', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động. Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,…', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00012', N'Áo ba lỗ thể thao lưới kim logo ngực lưng YL', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động. Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,…', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP00013', N'Áo tay dài nam giữ nhiệt Body UV', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP00014', N'Áo thun thể thao nam Yolo vạch PQ tay thoáng khí', N'Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,… Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00015', N'BỘ ĐỒ THU ĐÔNG NAM KWIN', N'Áo kéo khóa, cổ bản 6cm, túi xẻ không khóa kéo, dệt bo gấu áo gọn gàng. Quần cạp chun dây rút co giãn thoải mái và túi xẻ 2 bên tiện lợi. Dệt terry nỉ xéo giúp sản phẩm có độ mềm mại, đồng thời vẫn dày dặn, đứng dáng. Thiết kế basic, màu sắc nam tính kết hợp hiệu ứng màu melange cho vẻ ngoài thu hút.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00015', N'Áo thể thao nam Marvel', N'Áo kéo khóa, cổ bản 6cm, túi xẻ không khóa kéo, dệt bo gấu áo gọn gàng. Quần cạp chun dây rút co giãn thoải mái và túi xẻ 2 bên tiện lợi. Dệt terry nỉ xéo giúp sản phẩm có độ mềm mại, đồng thời vẫn dày dặn, đứng dáng. Thiết kế basic, màu sắc nam tính kết hợp hiệu ứng màu melange cho vẻ ngoài thu hút.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00016', N'BỘ ĐỒ THU ĐÔNG KWIN', N'Thiết kế Thiết kế áo cổ trụ có khóa kéo, bo viền cổ tay và gấu áo, quần cạp chun dễ chịu, gấu quần bo nhẹ tạo nét khỏe khoắn và nam tính.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00016', N'Áo khoác thu đông thể thao NOVA', N'Thiết kế Thiết kế áo cổ trụ có khóa kéo, bo viền cổ tay và gấu áo, quần cạp chun dễ chịu, gấu quần bo nhẹ tạo nét khỏe khoắn và nam tính.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00017', N'QUẦN RỜI THU ĐÔNG KWIN', N'Thiết kế basic với túi xẻ hai bên cạp chun co giãn dễ chịu thoải mái với người mặc. Màu sắc nam tính, dễ kết hợp trang phục.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00017', N'Quần dài thu đông Nova', N'Thiết kế basic với túi xẻ hai bên cạp chun co giãn dễ chịu thoải mái với người mặc. Màu sắc nam tính, dễ kết hợp trang phục.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00018', N'Shorts thể thao 7" New Ultra', N'Nhanh khô do ứng dụng công nghệ Quickdry giúp tạo cảm giác khô ráo, thoáng khí khi vận động. Đặc điểm này cũng rất hữu ích vào những ngày mưa nhiều hoặc những ngày nồm ẩm đặc trưng của miền Bắc.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00018', N'Quần Shorts thể thao 7" New Ultra', N'Nhanh khô do ứng dụng công nghệ Quickdry giúp tạo cảm giác khô ráo, thoáng khí khi vận động. Đặc điểm này cũng rất hữu ích vào những ngày mưa nhiều hoặc những ngày nồm ẩm đặc trưng của miền Bắc.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00019', N'Set đồ thể thao Pro Active', N'Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động. Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00019', N'Áo khoác thể thao form mỏng', N'Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động. Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00020', N'Bộ Quần Áo Thể Thao Nam Tay In Phản Quang', N'Bộ đồ nam thể thao - nam tính, năng động, thoải mái Hạn chế nhăn nhàu, giữ form tốt, chống tĩnh điện', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00020', N'Áo khoác thể thao nam in phản quang', N'Bộ đồ nam thể thao - nam tính, năng động, thoải mái Hạn chế nhăn nhàu, giữ form tốt, chống tĩnh điện', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00021', N'Bộ Đồ Thể Thao Nam Nỉ Cổ Dựng In Sườn', N'Xốp nhẹ và giữ ấm: Cấu trúc double face được thiết kế như chiếc bánh sandwich với lớp giữa mềm xốp chứa đựng không khí tĩnh. Tăng cường khả năng giữ ấm cơ thể Giữ phom - Không bai dão: Cấu trúc với 4 hệ sợi liên kết chặt chẽ giúp bề mặt ổn định về kết cấu, không làm biến dạng trong quá trình sử dụng', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00021', N'Áo khoác thể thao nam nỉ cổ dựng in sườn', N'Xốp nhẹ và giữ ấm: Cấu trúc double face được thiết kế như chiếc bánh sandwich với lớp giữa mềm xốp chứa đựng không khí tĩnh. Tăng cường khả năng giữ ấm cơ thể Giữ phom - Không bai dão: Cấu trúc với 4 hệ sợi liên kết chặt chẽ giúp bề mặt ổn định về kết cấu, không làm biến dạng trong quá trình sử dụng', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP00022', N'Áo Tanktop Thể Thao Nam Sát Nách Form Regular', N'Áo Tanktop Thể Thao Nam Sát Nách Form Regular là một item có tính chất mỏng nhẹ, thoáng mát nên rất thích hợp cho các hoạt động thể thao. Mang form dáng rộng rãi, thoải mái kết hợp chất liệu bền đẹp, chống nhăn, chống khuẩn tốt. Thân trước được thiết kế trơn, phía sau được thêm vào họa tiết in cá tính, là chiếc áo thun đáp ứng đầy đủ các tiêu chí để tập luyện thể thao.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
@@ -839,15 +839,20 @@ VALUES ('SP00024', N'Áo Thun Thể Thao Nam Tay Ngắn Phối Màu Form Slim', 
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP00025', N'Áo Hoodie Thể Thao Tay Ngắn Có Nón Form Regular', N'Áo Hoodie Thể Thao Tay Ngắn Có Nón Form Regular với phong cách thiết kế phá cách, mới lạ với form rộng, tay ngắn, có nón giúp cho người mặc tự tin phối nhiều style trang phục khác nhau. Chất vải pha Nylon Spandex kết hợp với kiểu dáng cổ điển, suông thẳng, vừa vặn vào phần cơ thể mang đến sự nhẹ nhàng, thoáng mát và dễ chịu cho người mặc. Áo hoodie form regular không chỉ đem đến sự thoải mái khi hoạt động mà còn giữ ấm trong thời tiết tập luyện lạnh.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00026', N'QUẦN SHORT TẬP GYM NAM 2 LỚP NAVY BB619', N'Quần short tập gym nam 2 lớp Navy là một sản phẩm thời trang dành cho những người yêu thích thể hình và sức khỏe. Quần có thiết kế đơn giản nhưng hiện đại, với 2 lớp vải chất lượng cao, thoáng mát và co giãn tốt. Quần có nhiều màu sắc và kích cỡ để bạn lựa chọn, phù hợp với mọi phong cách và dáng người. Quần short tập gym nam 2 lớp Navy không chỉ giúp bạn thoải mái khi tập luyện, mà còn tôn lên vẻ đẹp nam tính và khỏe khoắn của bạn. Quần cũng rất dễ phối đồ bạn có thể kết hợp với áo thun, áo sơ mi hay áo khoác… Để tạo nên những bộ trang phục năng động và cá tính.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00026', N'Quần Short tập Gym nam 2 lớp NOVA', N'Quần short tập gym nam 2 lớp Navy là một sản phẩm thời trang dành cho những người yêu thích thể hình và sức khỏe. Quần có thiết kế đơn giản nhưng hiện đại, với 2 lớp vải chất lượng cao, thoáng mát và co giãn tốt. Quần có nhiều màu sắc và kích cỡ để bạn lựa chọn, phù hợp với mọi phong cách và dáng người. Quần short tập gym nam 2 lớp Navy không chỉ giúp bạn thoải mái khi tập luyện, mà còn tôn lên vẻ đẹp nam tính và khỏe khoắn của bạn. Quần cũng rất dễ phối đồ bạn có thể kết hợp với áo thun, áo sơ mi hay áo khoác… Để tạo nên những bộ trang phục năng động và cá tính.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
 VALUES ('SP00027', N'Quần Short Thể Thao Xẻ Lai Dây Rút Form Regular', N'Quần Short Thể Thao Xẻ Lai Dây Rút Form Regular là thiết kế dành riêng cho các chàng trai đam mê thể thao. Với chất vải nhẹ co giãn, không thấm nước và kỹ thuật in chuyển nhiệt mang lại chất lượng sắc nét, bền màu hơn, quần short in chuyển nhiệt có thể giặt và ủi trực tiếp mà không ảnh hưởng đến màu săc, chất lượng. Form quần rộng rãi, ống suống thẳng đứng từ trên xuống cho người mặc thoải mái vận động, chi tiết xẻ lai ngắn ở ống quần tạo điểm nhấn riêng biệt hơn.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00028', N'Áo thể thao nam YOLO Powerfit logo chìm', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động. Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,…', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00028', N'Áo thể thao nam NOVA Powerfit logo chìm', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động. Bạn có thể mặc khi chơi thể thao, đi chơi, đi làm, ở nhà,…', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00029', N'Áo nam thể thao siêu thoáng lỗ kim YOLO CoolFit Tech', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động.  Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00029', N'Quần đùi thể thao siêu thoáng lỗ kim NOVA CoolFit Tech', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động.  Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
 INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
-VALUES ('SP00030', N'Áo tay ngắn nam sọc vân', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+VALUES ('SP00030', N'Quần dài thể thao không nhăn', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00031', N'Áo khoác thể thao chạy bộ NOVA CoolFit Tech', N'Chất vải mỏng nhẹ, thấm hút mồ hôi nhanh, luôn khô thoáng ngay cả khi bạn đang vận động.  Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+INSERT INTO Product (code, name, Description, CreateDate, UpdateDate, Status, BrandId, CategoryId, FormId, MaterialId)
+VALUES ('SP00032', N'Áo khoác thu đông thể thao', N'Không nhăn, không co rút khi giặt, không cần ủi trước khi mặc. Phom tiêu chuẩn dễ mặc, thích hợp với mọi vóc dáng, phong cách năng động.', GETDATE(), GETDATE(), 1, 1, 2,3, 4);
+
 USE Nova_Store_DB
 SELECT * FROM Product
 
@@ -972,6 +977,221 @@ INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, Upd
 VALUES ('CT00059', 38, 5500000, 5500000, GETDATE(), GETDATE(), 1, 30, 3, 9);
 INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
 VALUES ('CT00060', 38, 5600000, 5600000, GETDATE(), GETDATE(), 1, 9, 3, 9);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00061', 73, 900000, 900000, GETDATE(), GETDATE(), 1, 31, 2, 2);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00062', 28, 230000, 230000, GETDATE(), GETDATE(), 1, 31, 5, 1);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00063', 38, 5500000, 5500000, GETDATE(), GETDATE(), 1, 32, 3, 9);
+INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
+VALUES ('CT00064', 38, 5600000, 5600000, GETDATE(), GETDATE(), 1, 32, 3, 9);
+
+
+SELECT * FROM Image
+    INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308249328.png', GETDATE(), GETDATE(), 1, 1);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308249331.png', GETDATE(), GETDATE(), 1, 1);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308058778.png', GETDATE(), GETDATE(), 1, 2);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308058786.png', GETDATE(), GETDATE(), 1, 2);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308058788.png', GETDATE(), GETDATE(), 1, 2);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308037329.png', GETDATE(), GETDATE(), 1, 3);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308037332.png', GETDATE(), GETDATE(), 1, 3);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308016053.png', GETDATE(), GETDATE(), 1, 4);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308016061.png', GETDATE(), GETDATE(), 1, 4);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308016063.png', GETDATE(), GETDATE(), 1, 4);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308118425.png', GETDATE(), GETDATE(), 1, 5);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308118428.png', GETDATE(), GETDATE(), 1, 5);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308118431.png', GETDATE(), GETDATE(), 1, 5);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308118432.png', GETDATE(), GETDATE(), 1, 5);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308118434.png', GETDATE(), GETDATE(), 1, 5);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308118437.png', GETDATE(), GETDATE(), 1, 5);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307928294.png', GETDATE(), GETDATE(), 1, 6);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307928296.png', GETDATE(), GETDATE(), 1, 6);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307928296.png', GETDATE(), GETDATE(), 1, 6);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308084680.png', GETDATE(), GETDATE(), 1, 7);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308084683.png', GETDATE(), GETDATE(), 1, 7);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307897284.png', GETDATE(), GETDATE(), 1, 8);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307897286.png', GETDATE(), GETDATE(), 1, 8);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307897288.png', GETDATE(), GETDATE(), 1, 8);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307897291.png', GETDATE(), GETDATE(), 1, 8);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307859901.png', GETDATE(), GETDATE(), 1, 9);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307859904.png', GETDATE(), GETDATE(), 1, 9);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307859907.png', GETDATE(), GETDATE(), 1, 9);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307835651.png', GETDATE(), GETDATE(), 1, 10);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307835654.png', GETDATE(), GETDATE(), 1, 10);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307835656.png', GETDATE(), GETDATE(), 1, 10);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307800132.png', GETDATE(), GETDATE(), 1, 11);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307800136.png', GETDATE(), GETDATE(), 1, 11);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307800137.png', GETDATE(), GETDATE(), 1, 11);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307770601.png', GETDATE(), GETDATE(), 1, 12);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307770604.png', GETDATE(), GETDATE(), 1, 12);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307770606.png', GETDATE(), GETDATE(), 1, 12);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307770608.png', GETDATE(), GETDATE(), 1, 12);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307770611.png', GETDATE(), GETDATE(), 1, 12);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307745200.png', GETDATE(), GETDATE(), 1, 13);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307745202.png', GETDATE(), GETDATE(), 1, 13);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307745204.png', GETDATE(), GETDATE(), 1, 13);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307745207.png', GETDATE(), GETDATE(), 1, 13);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307745209.png', GETDATE(), GETDATE(), 1, 13);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307706699.png', GETDATE(), GETDATE(), 1, 14);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307706701.png', GETDATE(), GETDATE(), 1, 14);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307706705.png', GETDATE(), GETDATE(), 1, 14);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307662348.png', GETDATE(), GETDATE(), 1, 15);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307662352.png', GETDATE(), GETDATE(), 1, 15);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307639492.png', GETDATE(), GETDATE(), 1, 16);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307639495.png', GETDATE(), GETDATE(), 1, 16);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307639497.png', GETDATE(), GETDATE(), 1, 16);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307619794.png', GETDATE(), GETDATE(), 1, 17);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307600459.png', GETDATE(), GETDATE(), 1, 18);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307600460.png', GETDATE(), GETDATE(), 1, 18);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307600461.png', GETDATE(), GETDATE(), 1, 18);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307600463.png', GETDATE(), GETDATE(), 1, 18);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308515739.png', GETDATE(), GETDATE(), 1, 19);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308515743.png', GETDATE(), GETDATE(), 1, 19);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307553550.png', GETDATE(), GETDATE(), 1, 20);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307553552.png', GETDATE(), GETDATE(), 1, 20);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307531702.png', GETDATE(), GETDATE(), 1, 21);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307531705.png', GETDATE(), GETDATE(), 1, 21);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307531708.png', GETDATE(), GETDATE(), 1, 21);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307531712.png', GETDATE(), GETDATE(), 1, 21);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307531715.png', GETDATE(), GETDATE(), 1, 21);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307507441.png', GETDATE(), GETDATE(), 1, 22);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307507445.png', GETDATE(), GETDATE(), 1, 22);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307507446.png', GETDATE(), GETDATE(), 1, 22);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307507448.png', GETDATE(), GETDATE(), 1, 22);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307507451.png', GETDATE(), GETDATE(), 1, 22);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307487414.png', GETDATE(), GETDATE(), 1, 23);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307487418.png', GETDATE(), GETDATE(), 1, 23);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307487418.png', GETDATE(), GETDATE(), 1, 23);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307467916.png', GETDATE(), GETDATE(), 1, 24);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307467918.png', GETDATE(), GETDATE(), 1, 24);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307467919.png', GETDATE(), GETDATE(), 1, 24);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307467922.png', GETDATE(), GETDATE(), 1, 24);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307433258.png', GETDATE(), GETDATE(), 1, 25);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307433260.png', GETDATE(), GETDATE(), 1, 25);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307409796.png', GETDATE(), GETDATE(), 1, 26);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307409799.png', GETDATE(), GETDATE(), 1, 26);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307409800.png', GETDATE(), GETDATE(), 1, 26);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307409802.png', GETDATE(), GETDATE(), 1, 26);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307380969.png', GETDATE(), GETDATE(), 1, 27);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307380972.png', GETDATE(), GETDATE(), 1, 27);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307380974.png', GETDATE(), GETDATE(), 1, 27);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307351073.png', GETDATE(), GETDATE(), 1, 28);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307351075.png', GETDATE(), GETDATE(), 1, 29);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307351077.png', GETDATE(), GETDATE(), 1, 28);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307351079.png', GETDATE(), GETDATE(), 1, 28);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307244798.png', GETDATE(), GETDATE(), 1, 29);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307244808.png', GETDATE(), GETDATE(), 1, 29);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705307244811.png', GETDATE(), GETDATE(), 1, 29);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308137313.png', GETDATE(), GETDATE(), 1, 30);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308137315.png', GETDATE(), GETDATE(), 1, 30);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308229169.png', GETDATE(), GETDATE(), 1, 31);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308229172.png', GETDATE(), GETDATE(), 1, 31);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308182123.png', GETDATE(), GETDATE(), 1, 32);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308182126.png', GETDATE(), GETDATE(), 1, 32);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308182128.png', GETDATE(), GETDATE(), 1, 32);
+INSERT INTO Image (name, CreateDate, UpdateDate, Status, ProductId)
+VALUES ('product_1705308182131.png', GETDATE(), GETDATE(), 1, 32);
 
 
 

@@ -245,17 +245,15 @@
                                     document.getElementById('price-bottom').innerText = '₫' + discountPriceFormatted
                                 }
 
-
                                 if (document.getElementById('price-top-discount') != null) {
                                     document.getElementById('price-top-discount').innerText = '₫' + formattedPriceTop
                                 }
 
-
                                 colorSelected = id;
                                 return id;
                             }
-
                         }
+
                     </script>
                     <span id="error-message" style="color: red;"></span>
                     <div class="d-flex align-items-center mb-4 pt-2">
@@ -265,7 +263,19 @@
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <input type="text" class="form-control bg-secondary text-center" value="1" name="quantity" readonly>
+                            <input type="text" class="form-control bg-secondary text-center" id="quantityBuy" value="1" name="quantity" >
+                            <script th:inline="javascript">
+                                const quantityBuy = document.getElementById('quantityBuy');
+
+                                quantityBuy.addEventListener('input', function(event) {
+                                    const inputValue = event.target.value;
+                                    event.target.value = inputValue.replace(/\D/g, '');
+                                    if (event.target.value.trim() === '') {
+                                        event.target.value = '1';
+                                    }
+                                });
+
+                            </script>
                             <div class="input-group-btn">
                                 <button class="btn btn-primary btn-plus" type="button">
                                     <i class="fa fa-plus"></i>

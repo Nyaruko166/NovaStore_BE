@@ -17,8 +17,9 @@ public interface productPromotion extends JpaRepository<Product, Integer> {
             " MIN(PD.price) AS minProductPrice," +
             " MAX(PD.price) AS maxProductPrice" +
             " FROM Product P" +
-            " JOIN ProductDetail PD ON P.id = PD.product.id" +
-            " WHERE P.status = 1 AND PD.status = 1" +
+            " JOIN ProductDetail PD ON P.id = PD.product.id " +
+            " INNER JOIN Image i ON i.product.id = P.id" +
+            " WHERE P.status = 1 AND PD.status = 1 AND i.status = 1" +
             " GROUP BY P.id, P.code, P.name,P.createDate"+
             " ORDER BY P.createDate DESC"
     )
