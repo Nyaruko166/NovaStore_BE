@@ -42,7 +42,17 @@ function onScanSuccess(decodedText) {
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        }).then(updateOutput);
+        }).then(function (response) {
+            if (response.status === 418) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Vui lòng kiểm tra lại số lượng",
+                    text: "Số lượng tồn kho không đủ!",
+                });
+            } else {
+                updateOutput();
+            }
+        });
     }
 }
 
