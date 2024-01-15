@@ -54,7 +54,7 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             "GROUP BY pr.value", nativeQuery = true)
     Float getValueDiscountByProductId(Integer productId);
 
-    @Query(value = "SELECT p.id as productId, " +
+    @Query(value = "SELECT TOP 10 p.id as productId, " +
             "p.name as productName, " +
             "pd.price as price, " +
             "pd.priceDiscount as priceDiscount, " +
