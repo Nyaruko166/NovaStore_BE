@@ -128,6 +128,11 @@
                         </div>
                     </div>
                     <script th:inline="javascript">
+                        /*<![CDATA[*/
+
+                        var numberImage = /*[[${numberImage}]]*/ 'default';
+
+                        /*]]>*/
 
                         // Không cho nhập dấu trừ
                         function onlyAllowNumberInput(e) {
@@ -220,6 +225,8 @@
                             }
                         });
 
+
+
                         // Check trùng màu và size
                         function checkDuplidateExists(color, size) {
                             var isdup = false
@@ -262,6 +269,7 @@
                             $('.delete-img-btn').on('click', function () {
                                 const selectedImageEle = $(this).closest('.selected-file')
                                 removeImageId.push(selectedImageEle.find('.exists-image').attr("data-image"))
+                                numberImage--
                                 selectedImageEle.remove()
                             })
                         }
@@ -458,6 +466,7 @@
                                         const fileName = file.name
                                         if (!selectedFileNames.has(fileName)) {
                                             fileSend.push(file);
+                                            numberImage++
                                             console.log('fileSend', fileSend)
                                             const reader = new FileReader();
 
@@ -485,7 +494,8 @@
                                                     const lastModified = file.lastModified
                                                     let theIndex = -1;
                                                     selectedImagesContainer.removeChild(imageDiv);
-                                                    sizeImageRemove++;
+                                                    // sizeImageRemove++;
+                                                    numberImage--
                                                     for (let j = 0; j < fileSend.length; j++) {
                                                         if (fileSend[j].lastModified === lastModified) {
                                                             theIndex = j;
@@ -523,7 +533,7 @@
                             //     document.getElementById('errorImage').innerHTML = 'Vui lòng chọn nhất 1 ảnh'
                             //     return
                             // }
-                            if (fileSend.length < 1 || fileSend.length === sizeImageRemove) {
+                            if (numberImage <= 0) {
                                 // Swal.fire('Lỗi', "Vui lòng chọn ít nhất một hình ảnh", "error")
                                 const Toast = Swal.mixin({
                                     toast: true,

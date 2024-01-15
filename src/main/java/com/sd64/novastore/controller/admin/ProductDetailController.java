@@ -126,6 +126,7 @@ public class ProductDetailController {
         createProductDetails.setListProductDetail(listProductDetailNoDeleteResponse);
         model.addAttribute("createProductDetailForm", createProductDetails);
         model.addAttribute("listImage", imageService.getImageResponse(product.getListImage()));
+        model.addAttribute("numberImage", imageService.getImageResponse(product.getListImage()).size());
         model.addAttribute("listSize", listSize);
         model.addAttribute("listColor", listColor);
         return "admin/product-detail/product-detail-update";
