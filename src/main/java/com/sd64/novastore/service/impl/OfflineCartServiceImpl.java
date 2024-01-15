@@ -41,10 +41,13 @@ public class OfflineCartServiceImpl implements OfflineCartService {
         List<OfflineCart> cart = getBillById(billId).getLstDetailProduct();
         for (OfflineCart x : cart) {
             if (x.getDetailProductId().equals(detailProductId)) {
-                Integer slHienTai = x.getQty();
-                x.setQty(slHienTai + qty);
+                Integer slMoi = x.getQty() + qty;
+                if (checkQty(detailProductId, slMoi)) {
+                    x.setQty(slMoi);
+                    return cart;
+                }
+                return null;
 //                System.out.println("update cart");
-                return cart;
             }
         }
         cart.add(new OfflineCart(detailProductId, qty));
@@ -155,21 +158,6 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     @Override
     public TempBill checkout(TempBill tempBill, RedirectAttributes redirectAttributes) {
 
-        List<OfflineCart> lstOC = tempBill.getLstDetailProduct();
-        List<ProductDetail> lstProd = productDetailRepository.findAll();
-
-        for (OfflineCart x : lstOC) {
-            for (ProductDetail y : lstProd) {
-                if (x.getDetailProductId().equals(y.getCode())) {
-                    if (x.getQty() > y.getQuantity()) {
-                        redirectAttributes.addFlashAttribute("err", "Số lượng sản phẩm "
-                                + x.getDetailProductId() + " trong giỏ vượt quá trong kho!!");
-                        return null;
-                    }
-                }
-            }
-        }
-
         Bill bill = billService.addBillPos(convertToBill(tempBill));
         List<OfflineCartView> lstItems = getCart(tempBill.getLstDetailProduct());
         for (OfflineCartView x : lstItems) {
@@ -250,4 +238,33 @@ public class OfflineCartServiceImpl implements OfflineCartService {
                 .build();
     }
 
+    @Override
+    public List<OfflineCart> updateCart(Integer billId, String codeCTSP, Integer qty) {
+        List<OfflineCart> cart = getBillById(billId).getLstDetailProduct();
+        if (checkQty(codeCTSP, qty)) {
+            for (OfflineCart x : cart) {
+                if (x.getDetailProductId().equals(codeCTSP)) {
+                    x.setQty(qty);
+//                    System.out.println("update qty cart");
+                    return cart;
+                }
+            }
+        }
+        return null;
+        //        System.out.println("thêm mới vào cart");
+    }
+
+    private Boolean checkQty(String codeCTSP, Integer qty) {
+
+        List<ProductDetail> lstProd = productDetailRepository.findAll();
+
+        for (ProductDetail y : lstProd) {
+            if (codeCTSP.equals(y.getCode())) {
+                if (qty > y.getQuantity()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

@@ -41,6 +41,9 @@ public class RestOfflineCartController {
     public ResponseEntity<?> addToCart(@RequestBody QrRespone response, HttpSession session) {
 //        System.out.println(response.getBillId());
         List<OfflineCart> cart = offlineCartService.addToCart(response.getBillId(), response.getData(), response.getQty());
+        if (cart == null) {
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+        }
         BigDecimal total = offlineCartService.calCartPrice(offlineCartService.getCart(cart));
         TempBill tempBill1 = (TempBill) session.getAttribute("posBill");
         tempBill1.setTotalCartPrice(total);
@@ -55,19 +58,20 @@ public class RestOfflineCartController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping("/customerNumber")
-//    public List<CustomerResponse> getCustomer() {
-//        List<CustomerResponse> lstCst = new ArrayList<>();
-//        List<Account> lstAcc = accountService.getAll();
-//        for (Account x : lstAcc) {
-//            lstCst.add(CustomerResponse.builder()
-//                    .customerEmail(x.getEmail())
-//                    .customerName(x.getName())
-//                    .id(x.getId())
-//                    .phoneNumber(x.getPhoneNumber())
-//                    .build());
-//        }
-//        return lstCst;
-//    }
+    @PostMapping("/update")
+    public ResponseEntity<?> updateCart(@RequestBody QrRespone response, HttpSession session) {
 
+        List<OfflineCart> cart = offlineCartService.updateCart(response.getBillId(), response.getData(), response.getQty());
+        if (cart == null) {
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+        }
+        BigDecimal total = offlineCartService.calCartPrice(offlineCartService.getCart(cart));
+        TempBill tempBill1 = (TempBill) session.getAttribute("posBill");
+        tempBill1.setTotalCartPrice(total);
+        tempBill1.setLstDetailProduct(cart);
+        offlineCartService.addToLstBill(tempBill1);
+        TempBill tempBill = offlineCartService.getBillById(response.getBillId());
+        session.setAttribute("posBill", tempBill);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
