@@ -12,38 +12,26 @@
             <div class="card-header">
                 <h5 style="font-weight: bold">CHI TIẾT TÀI KHOẢN</h5>
             </div>
+            <div th:if="${error}">
+                <button hidden id="btnError" th:onclick="alertError([[${error}]])">Click Me</button>
+                <script th:inline="javascript">
+                    window.onload = function () {
+                        var btnError = document.getElementById("btnError");
+                        btnError.click();
+                    }
+                    alertError = (content) => {
+                        Swal.fire({
+                            title: "Sửa dữ liệu thất bại",
+                            text: content,
+                            icon: "error",
+                            confirmButtonColor: "#d33"
+                        });
+                    }
+                </script>
+            </div>
             <div class="card-body card-block">
                 <form th:object="${account}" th:action="@{/nova/account/update/{id}(id=${account.id})}" id="accountUpdate"
                       method="post" class="form-horizontal" enctype="multipart/form-data">
-<!--                    <div class="row form-group">-->
-<!--                        <div class="col col-md-3">-->
-<!--                            <label for="birthday" class=" form-control-label">Sinh Nhật</label>-->
-<!--                        </div>-->
-<!--                        <div class="col-12 col-md-9">-->
-<!--                            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker"-->
-<!--                                 inline="true">-->
-<!--                                <input placeholder="Choose your Birthday" type="date" id="birthday" class="form-control"-->
-<!--                                       name="birthday" value="" th:field="*{birthday}">-->
-<!--                                &lt;!&ndash;                                <label for="birthday">Try me...</label>&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                <i class="fas fa-calendar input-prefix"></i>&ndash;&gt;-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="row form-group">-->
-<!--                        <div class="col col-md-3">-->
-<!--                            <label for="importFile" class=" form-control-label">Avatar</label>-->
-<!--                        </div>-->
-<!--                        <div class="col-12 col-md-9">-->
-<!--                            <div class="input-group mb-3">-->
-<!--                                <div class="custom-file">-->
-<!--                                    <input type="file" class="custom-file-input" id="importFile" name="avt"-->
-<!--                                           accept="image/*" onchange="setFileName()">-->
-<!--                                    <label class="custom-file-label" for="importFile">Chọn Ảnh</label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            &lt;!&ndash;                            <input type="text" id="avatar" name="avatar" class="form-control">&ndash;&gt;-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <div class="mb-3">
                         <div class="d-flex justify-content-between">
                             <label class="font-weight-bold form-control-label">Họ Tên</label>

@@ -485,6 +485,7 @@
                                                     const lastModified = file.lastModified
                                                     let theIndex = -1;
                                                     selectedImagesContainer.removeChild(imageDiv);
+                                                    sizeImageRemove++;
                                                     for (let j = 0; j < fileSend.length; j++) {
                                                         if (fileSend[j].lastModified === lastModified) {
                                                             theIndex = j;
@@ -493,7 +494,6 @@
                                                     if (theIndex !== -1) {
                                                         fileSend.splice(theIndex, 1)
                                                     }
-                                                    console.log(fileSend)
                                                 };
                                                 const fileDetailsDiv = document.createElement('div');
                                                 fileDetailsDiv.className = 'file-details';
@@ -504,7 +504,6 @@
 
                                                 // Append the image div to the selectedImagesContainer
                                                 selectedImagesContainer.appendChild(imageDiv);
-                                                sizeImageRemove++
                                             };
 
                                             reader.readAsDataURL(file);
@@ -518,11 +517,39 @@
 
                         document.getElementById("productDetailUpdate").addEventListener('submit', async function (e) {
                             e.preventDefault()
+                            debugger
                             // if (fileSend.length < 1) {
                             //     // Swal.fire('Lỗi', "Vui lòng chọn ít nhất một hình ảnh", "error")
                             //     document.getElementById('errorImage').innerHTML = 'Vui lòng chọn nhất 1 ảnh'
                             //     return
                             // }
+                            if (fileSend.length < 1 || fileSend.length === sizeImageRemove) {
+                                // Swal.fire('Lỗi', "Vui lòng chọn ít nhất một hình ảnh", "error")
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    },
+                                    customClass: {
+                                        popup: 'swal2-popup-error', // Lớp CSS tùy chỉnh cho hộp thoại
+                                        title: 'swal2-title-error', // Lớp CSS tùy chỉnh cho tiêu đề
+                                        icon: 'swal2-icon-error', // Lớp CSS tùy chỉnh icon
+                                        timerProgressBar: 'swal2-timer-progress-bar-error' //Lớp CSS tùy chỉnh thời gian chạy
+                                    }
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Vui lòng chọn ít nhất 1 ảnh cho sản phẩm !"
+                                });
+                                return false
+                                // document.getElementById('errorImage').innerHTML = 'Vui lòng chọn nhất 1 ảnh'
+                                // return
+                            }
                             var canAdd = true
                             $('.productDetail-price').each(function (index, item) {
                                 console.log($(item).val())
