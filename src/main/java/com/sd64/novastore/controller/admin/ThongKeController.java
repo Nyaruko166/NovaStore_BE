@@ -58,10 +58,10 @@ public class ThongKeController {
         List<TKTrangThaiHoaDon> tkTrangThaiHoaDonList = thongKeService.getTKTrangThaiHoaDon();
         model.addAttribute("tkTrangThaiHoaDonList", tkTrangThaiHoaDonList);
         if (tungay == null || tungay.isEmpty()) {
-            tungay = "2023-01-01";
+            tungay = "2024-01-01";
         }
         if (denngay == null || denngay.isEmpty()) {
-            denngay = "2023-12-31";
+            denngay = "2024-12-31";
         }
         model.addAttribute("tungay", tungay);
         model.addAttribute("denngay", denngay);

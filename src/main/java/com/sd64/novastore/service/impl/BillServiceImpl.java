@@ -26,6 +26,7 @@ import com.sd64.novastore.repository.RoleRepository;
 import com.sd64.novastore.repository.VoucherRepository;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.CartService;
+import com.sd64.novastore.utils.GHNUtil;
 import com.sd64.novastore.utils.MailUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.common.usermodel.HyperlinkType;
@@ -93,6 +94,9 @@ public class BillServiceImpl implements BillService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private GHNUtil ghnUtil;
 
     MailConfig mailConfig = new MailConfig();
 
@@ -189,13 +193,15 @@ public class BillServiceImpl implements BillService {
         bill.setPhoneNumber(phoneNumber);
         bill.setOrderDate(new Date());
         bill.setPrice(cart.getTotalPrice());
+        BigDecimal shippingFee = ghnUtil.calculateShippingFee(city, district, ward, cart.getTotalItems());
+        bill.setShippingFee(shippingFee);
         if (voucher == null) {
             bill.setDiscountAmount(BigDecimal.ZERO);
-            bill.setTotalPrice(cart.getTotalPrice());
+            bill.setTotalPrice(cart.getTotalPrice().add(shippingFee));
         } else {
             Voucher uuDai = voucherRepository.findById(voucher).orElse(null);
             bill.setDiscountAmount(uuDai.getValue());
-            bill.setTotalPrice(cart.getTotalPrice().subtract(uuDai.getValue()));
+            bill.setTotalPrice(cart.getTotalPrice().add(shippingFee).subtract(uuDai.getValue()));
             bill.setVoucher(uuDai);
             uuDai.setQuantity(uuDai.getQuantity() - 1);
             if (uuDai.getQuantity() == 0) {
@@ -203,13 +209,15 @@ public class BillServiceImpl implements BillService {
             }
             voucherRepository.save(uuDai);
         }
-        bill.setShippingFee(BigDecimal.ZERO);
         bill.setCreateDate(new Date());
         bill.setUpdateDate(new Date());
         if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")) {
             bill.setPaymentDate(new Date());
+            bill.setConfirmationDate(new Date());
+            bill.setStatus(3);
+        } else {
+            bill.setStatus(10);
         }
-        bill.setStatus(10);
         bill.setCustomer(cart.getCustomer());
         List<Address> listAccountAddress = addressRepository.findAllAccountAddress(cart.getCustomer().getId());
         if (listAccountAddress.isEmpty()) {
@@ -273,13 +281,15 @@ public class BillServiceImpl implements BillService {
         bill.setPhoneNumber(phoneNumber);
         bill.setOrderDate(new Date());
         bill.setPrice(cart.getTotalPrice());
+        BigDecimal shippingFee = ghnUtil.calculateShippingFee(city, district, ward, cart.getTotalItems());
+        bill.setShippingFee(shippingFee);
         if (voucher == null) {
             bill.setDiscountAmount(BigDecimal.ZERO);
-            bill.setTotalPrice(cart.getTotalPrice());
+            bill.setTotalPrice(cart.getTotalPrice().add(shippingFee));
         } else {
             Voucher uuDai = voucherRepository.findById(voucher).orElse(null);
             bill.setDiscountAmount(uuDai.getValue());
-            bill.setTotalPrice(cart.getTotalPrice().subtract(uuDai.getValue()));
+            bill.setTotalPrice(cart.getTotalPrice().add(shippingFee).subtract(uuDai.getValue()));
             bill.setVoucher(uuDai);
             uuDai.setQuantity(uuDai.getQuantity() - 1);
             if (uuDai.getQuantity() == 0) {
@@ -287,13 +297,15 @@ public class BillServiceImpl implements BillService {
             }
             voucherRepository.save(uuDai);
         }
-        bill.setShippingFee(BigDecimal.ZERO);
         bill.setCreateDate(new Date());
         bill.setUpdateDate(new Date());
         if (payment.equals("Thanh toán qua VNPAY") || payment.equals("Thanh toán qua Momo") || payment.equals("Thanh toán qua ZaloPay")) {
             bill.setPaymentDate(new Date());
+            bill.setConfirmationDate(new Date());
+            bill.setStatus(3);
+        } else {
+            bill.setStatus(10);
         }
-        bill.setStatus(10);
         Customer customer = customerRepository.findByEmail(email);
         String body;
         if (customer == null) {
@@ -410,29 +422,29 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public boolean confirmOrder(BigDecimal shippingFee, Integer id, Account account) {
+    public boolean confirmOrder(Integer id, Account account) {
         Bill bill = billRepository.findById(id).orElse(null);
         if (bill.getStatus() != 10) {
             return false;
         } else {
             bill.setStatus(3);
             bill.setConfirmationDate(new Date());
-            bill.setShippingFee(shippingFee);
-            bill.setTotalPrice(bill.getPrice().subtract(bill.getDiscountAmount()).add(shippingFee));
+//            bill.setShippingFee(shippingFee);
+//            bill.setTotalPrice(bill.getPrice().subtract(bill.getDiscountAmount()).add(shippingFee));
             bill.setEmployee(account);
-            PaymentMethod paymentMethod = paymentMethodRepository.findByStatusAndBillId(10, id);
-            if (paymentMethod != null) {
-                paymentMethod.setMoney(bill.getTotalPrice());
-                paymentMethodRepository.save(paymentMethod);
-            } else if (shippingFee.compareTo(BigDecimal.ZERO) != 0) {
-                PaymentMethod newPaymentMethod = new PaymentMethod();
-                newPaymentMethod.setName("Thanh toán khi nhận hàng");
-                newPaymentMethod.setMoney(shippingFee);
-                newPaymentMethod.setDescription("Thanh toán khi nhận hàng");
-                newPaymentMethod.setStatus(10);
-                newPaymentMethod.setBill(bill);
-                paymentMethodRepository.save(newPaymentMethod);
-            }
+//            PaymentMethod paymentMethod = paymentMethodRepository.findByStatusAndBillId(10, id);
+//            if (paymentMethod != null) {
+//                paymentMethod.setMoney(bill.getTotalPrice());
+//                paymentMethodRepository.save(paymentMethod);
+//            } else if (shippingFee.compareTo(BigDecimal.ZERO) != 0) {
+//                PaymentMethod newPaymentMethod = new PaymentMethod();
+//                newPaymentMethod.setName("Thanh toán khi nhận hàng");
+//                newPaymentMethod.setMoney(shippingFee);
+//                newPaymentMethod.setDescription("Thanh toán khi nhận hàng");
+//                newPaymentMethod.setStatus(10);
+//                newPaymentMethod.setBill(bill);
+//                paymentMethodRepository.save(newPaymentMethod);
+//            }
             billRepository.save(bill);
             return true;
         }
@@ -475,6 +487,96 @@ public class BillServiceImpl implements BillService {
             return true;
         }
     }
+
+    @Override
+    public boolean changeAddressOrder(Integer billId, String name, String phoneNumber, String specificAddress, String ward, String district, String city, Account account) {
+        Bill bill = billRepository.findById(billId).orElse(null);
+        if (bill.getStatus() != 10){
+            return false;
+        } else {
+            String address = specificAddress + ", " + ward + ", " + district + ", " + city;
+            bill.setCustomerName(name);
+            bill.setAddress(address);
+            List<BillDetail> billDetails = billDetailRepository.findAllByBill_Id(billId);
+            int totalQuantity = billDetails.stream()
+                    .mapToInt(BillDetail::getQuantity)
+                    .sum();
+            BigDecimal newShippingFee = ghnUtil.calculateShippingFee(city, district, ward, totalQuantity);
+            bill.setShippingFee(newShippingFee);
+            bill.setTotalPrice(bill.getPrice().add(newShippingFee).subtract(bill.getDiscountAmount()));
+            bill.setUpdateDate(new Date());
+            bill.setEmployee(account);
+            List<PaymentMethod> listPaymentMethod = paymentMethodRepository.findAllByBillIdOrderById(billId);
+            for (PaymentMethod paymentMethod : listPaymentMethod) {
+                if (paymentMethod.getStatus() == 10) {
+                    paymentMethod.setMoney(bill.getTotalPrice());
+                    paymentMethodRepository.save(paymentMethod);
+                }
+            }
+            billRepository.save(bill);
+            return true;
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean updateBillItem(Integer itemId, Integer quantity, Account account) {
+        BillDetail billDetail = billDetailRepository.findById(itemId).orElse(null);
+        Integer quantityGap = quantity - billDetail.getQuantity();
+        ProductDetail productDetail = productDetailRepository.findById(billDetail.getProductDetail().getId()).orElse(null);
+        if (quantity <= productDetail.getQuantity() + billDetail.getQuantity()){
+            billDetail.setQuantity(quantity);
+            billDetailRepository.save(billDetail);
+            productDetail.setQuantity(productDetail.getQuantity() - quantityGap);
+            if (productDetail.getQuantity() == 0){
+                productDetail.setStatus(0);
+            } else if (productDetail.getQuantity() > 0){
+                productDetail.setStatus(1);
+            }
+            productDetailRepository.save(productDetail);
+            Bill bill = billRepository.findById(billDetail.getBill().getId()).orElse(null);
+            List<BillDetail> billDetailList = billDetailRepository.findAllByBill_Id(bill.getId());
+            BigDecimal newPrice = BigDecimal.ZERO;
+            for (BillDetail item : billDetailList){
+                BigDecimal price = item.getPrice();
+                BigDecimal qtt = BigDecimal.valueOf(item.getQuantity());
+                BigDecimal subTotal = price.multiply(qtt);
+                newPrice = newPrice.add(subTotal);
+            }
+            bill.setPrice(newPrice);
+            String address = bill.getAddress();
+            String[] parts = address.split(", ");
+            String ward = parts[1];
+            String district = parts[2];
+            String city = parts[3];
+            int totalQuantity = billDetailList.stream()
+                    .mapToInt(BillDetail::getQuantity)
+                    .sum();
+            BigDecimal newShippingFee = ghnUtil.calculateShippingFee(city, district, ward, totalQuantity);
+            bill.setShippingFee(newShippingFee);
+            bill.setTotalPrice(newPrice.add(newShippingFee).subtract(bill.getDiscountAmount()));
+            bill.setUpdateDate(new Date());
+            bill.setEmployee(account);
+
+            List<PaymentMethod> listPaymentMethod = paymentMethodRepository.findAllByBillIdOrderById(bill.getId());
+            for (PaymentMethod paymentMethod : listPaymentMethod) {
+                if (paymentMethod.getStatus() == 10) {
+                    paymentMethod.setMoney(bill.getTotalPrice());
+                    paymentMethodRepository.save(paymentMethod);
+                }
+            }
+            billRepository.save(bill);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteBillItem(Integer itemId, Account account) {
+        return false;
+    }
+
 
     @Override
     @Transactional

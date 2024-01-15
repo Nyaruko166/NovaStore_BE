@@ -5,6 +5,10 @@ import java.math.BigDecimal;
 public interface TKSanPham {
     Integer getSoLuong();
 
+    String getSize();
+
+    String getColor();
+
     BigDecimal getDoanhThu();
 
     String getName();

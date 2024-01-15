@@ -50,13 +50,19 @@ public interface BillService {
 
     boolean userCancelOrder(Integer billId);
 
-    boolean confirmOrder(BigDecimal shippingFee, Integer billId, Account account);
+    boolean confirmOrder(Integer billId, Account account);
 
     boolean cancelOrder(Integer billId, Account account);
 
     boolean shippingOrder(Integer id, Account account);
 
     boolean completeOrder(Integer id, Account account);
+
+    boolean changeAddressOrder(Integer billId, String name, String phoneNumber, String specificAddress, String ward, String district, String city, Account account);
+
+    boolean updateBillItem(Integer itemId, Integer quantity, Account account);
+
+    boolean deleteBillItem(Integer itemId, Account account);
 
     Page<BillDto> findAll(Pageable pageable);
 

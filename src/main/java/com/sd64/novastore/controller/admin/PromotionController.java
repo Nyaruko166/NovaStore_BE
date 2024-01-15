@@ -1,22 +1,11 @@
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.dto.admin.ProductDto;
 import com.sd64.novastore.dto.admin.PromotionDetailDTO;
 import com.sd64.novastore.dto.admin.thongke.PromotionSearchDTO;
-import com.sd64.novastore.dto.admin.thongke.TKKhoangNgay;
-import com.sd64.novastore.dto.admin.thongke.TKNam;
-import com.sd64.novastore.dto.admin.thongke.TKNgay;
-import com.sd64.novastore.dto.admin.thongke.TKSanPham;
-import com.sd64.novastore.dto.admin.thongke.TKThang;
-import com.sd64.novastore.dto.admin.thongke.TKTrangThaiHoaDon;
-import com.sd64.novastore.dto.admin.thongke.TKTuan;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -63,13 +50,14 @@ public class PromotionController {
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("promotion") Promotion promotion, @PathVariable Integer id,
                          RedirectAttributes redirectAttributes) {
-        if (promotionService.update(promotion,id)) {
-            redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
-            return "redirect:/nova/promotion/page";
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Tên khuyến mãi đã tồn tại");
-            return "redirect:/nova/promotion/page";
-        }
+       if(promotionService.update(promotion,id)){
+           redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+           return "redirect:/nova/promotion/page";
+       }else{
+           redirectAttributes.addFlashAttribute("error", "Tên khuyến mãi đã tồn tại");
+           return "redirect:/nova/promotion/page";
+       }
+
     }
 
     @PostMapping("/delete/{id}")
@@ -109,8 +97,8 @@ public class PromotionController {
         if ((code == null || code.isEmpty()) && status == null && (name == null || name.isEmpty()) && ngayTaoStart == null && ngayTaoEnd == null) {
             return "redirect:/nova/promotion/page";
         }
-            Page<PromotionSearchDTO> promotionSearchDTOPage = promotionService.searchPromotion(code, ngayTaoStart, ngayTaoEnd, status, name, page);
-            model.addAttribute("pagePromotion", promotionSearchDTOPage);
+        Page<PromotionSearchDTO> promotionSearchDTOPage = promotionService.searchPromotion(code, ngayTaoStart, ngayTaoEnd, status, name, page);
+        model.addAttribute("pagePromotion", promotionSearchDTOPage);
         model.addAttribute("code", code);
         model.addAttribute("status", status);
         model.addAttribute("name", name);

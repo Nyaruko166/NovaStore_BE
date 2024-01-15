@@ -67,8 +67,15 @@
                                                             class="font-weight-bold d-block"></span><span
                                             class="spec" th:text="${x.fieldCombine()}"></span></div>
                                 </div>
-                                <div class="d-flex flex-row align-items-center"><span id="qtyInCart" th:text="${x.qty}"
-                                                                                      class="d-block"></span><span
+                                <div class="d-flex flex-row align-items-center"><input
+                                        style="width: 40px; box-sizing: border-box;border: none;border-bottom: 2px solid grey;
+text-align: right"
+                                        type="number"
+                                        th:value="${x.qty}"
+                                        th:id="${x.codeCtsp}"
+                                        th:name="${x.qty}"
+                                        onfocusout="updateCart(this)"
+                                        class="d-block"></input><span
                                         th:text="${x.calTotalPrice() + ' VNĐ'}"
                                         class="d-block ml-5 font-weight-bold"></span>
                                     <a th:href="@{'/nova/pos/remove/' + ${x.codeCtsp}}" class="trash"><i
@@ -223,8 +230,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <!--                    <button type="button" class="btn btn-primary">Save changes</button>-->
                 </div>
             </div>
         </div>
@@ -258,8 +265,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <!--                    <button type="button" class="btn btn-primary">Save changes</button>-->
                 </div>
             </div>
         </div>

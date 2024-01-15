@@ -19,6 +19,7 @@ import com.sd64.novastore.service.CustomerService;
 import com.sd64.novastore.service.PaymentMethodService;
 import com.sd64.novastore.service.PaymentService;
 import com.sd64.novastore.service.VoucherService;
+import com.sd64.novastore.utils.GHNUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,9 @@ public class UserBillController {
 
     @Autowired
     private PaymentMethodService paymentMethodService;
+
+    @Autowired
+    private GHNUtil ghnUtil;
 
     JsonObject jsonData = new JsonObject();
 
@@ -219,9 +223,11 @@ public class UserBillController {
                 return "redirect:/cart";
             }
             if (payment.equals("VNPAY")){
+                BigDecimal shippingFee = ghnUtil.calculateShippingFee(city, district, ward, sessionCart.getTotalItems());
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.vnpayCreate(request, sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
+                    BigDecimal totalPrice = sessionCart.getTotalPrice().add(shippingFee);
+                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
@@ -232,15 +238,17 @@ public class UserBillController {
                         attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
-                    BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
+                    BigDecimal totalPrice = sessionCart.getTotalPrice().add(shippingFee).subtract(uuDai.getValue());
                     jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
             if (payment.equals("Momo")){
+                BigDecimal shippingFee = ghnUtil.calculateShippingFee(city, district, ward, sessionCart.getTotalItems());
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.MomoPayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
+                    BigDecimal totalPrice = sessionCart.getTotalPrice().add(shippingFee);
+                    jsonData = paymentService.MomoPayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
@@ -251,15 +259,17 @@ public class UserBillController {
                         attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
-                    BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
+                    BigDecimal totalPrice = sessionCart.getTotalPrice().add(shippingFee).subtract(uuDai.getValue());
                     jsonData = paymentService.MomoPayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
             if (payment.equals("ZaloPay")){
+                BigDecimal shippingFee = ghnUtil.calculateShippingFee(city, district, ward, sessionCart.getTotalItems());
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.zalopayCreate(sessionCart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
+                    BigDecimal totalPrice = sessionCart.getTotalPrice().add(shippingFee);
+                    jsonData = paymentService.zalopayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
@@ -270,7 +280,7 @@ public class UserBillController {
                         attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
-                    BigDecimal totalPrice = sessionCart.getTotalPrice().subtract(uuDai.getValue());
+                    BigDecimal totalPrice = sessionCart.getTotalPrice().add(shippingFee).subtract(uuDai.getValue());
                     jsonData = paymentService.zalopayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
@@ -294,9 +304,11 @@ public class UserBillController {
                 return "redirect:/cart";
             }
             if (payment.equals("VNPAY")){
+                BigDecimal shippingFee = ghnUtil.calculateShippingFee(city, district, ward, cart.getTotalItems());
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.vnpayCreate(request, cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
+                    BigDecimal totalPrice = cart.getTotalPrice().add(shippingFee);
+                    jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
@@ -307,15 +319,17 @@ public class UserBillController {
                         attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
-                    BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
+                    BigDecimal totalPrice = cart.getTotalPrice().add(shippingFee).subtract(uuDai.getValue());
                     jsonData = paymentService.vnpayCreate(request, totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
             if (payment.equals("Momo")){
+                BigDecimal shippingFee = ghnUtil.calculateShippingFee(city, district, ward, cart.getTotalItems());
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.MomoPayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
+                    BigDecimal totalPrice = cart.getTotalPrice().add(shippingFee);
+                    jsonData = paymentService.MomoPayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
@@ -326,15 +340,17 @@ public class UserBillController {
                         attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
-                    BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
+                    BigDecimal totalPrice = cart.getTotalPrice().add(shippingFee).subtract(uuDai.getValue());
                     jsonData = paymentService.MomoPayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");
             }
             if (payment.equals("ZaloPay")){
+                BigDecimal shippingFee = ghnUtil.calculateShippingFee(city, district, ward, cart.getTotalItems());
                 //Long dok
                 if (voucher == null){
-                    jsonData = paymentService.zalopayCreate(cart.getTotalPrice().longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
+                    BigDecimal totalPrice = cart.getTotalPrice().add(shippingFee);
+                    jsonData = paymentService.zalopayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, null);
                 } else {
                     Voucher uuDai = voucherService.getVoucherById(voucher);
                     if (uuDai.getStatus() != 1){
@@ -345,7 +361,7 @@ public class UserBillController {
                         attributes.addFlashAttribute("error", "Đơn hàng không đủ giá tối thiểu của voucher");
                         return "redirect:/checkout";
                     }
-                    BigDecimal totalPrice = cart.getTotalPrice().subtract(uuDai.getValue());
+                    BigDecimal totalPrice = cart.getTotalPrice().add(shippingFee).subtract(uuDai.getValue());
                     jsonData = paymentService.zalopayCreate(totalPrice.longValue(), specificAddress, ward, district, city, name, phoneNumber, email, String.valueOf(voucher));
                 }
                 return "redirect:" + jsonData.get("payUrl").toString().replaceAll("\"", "");

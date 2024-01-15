@@ -33,10 +33,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Component
 public class GHNUtil {
@@ -69,8 +71,12 @@ public class GHNUtil {
         List<Province> lstProvince = gson.fromJson(resultArray, new TypeToken<List<Province>>() {
         }.getType());
 
+        String normalized = removeAccent(Province).toLowerCase();
         for (Province x : lstProvince) {
-            if (Province.contains(x.getProvinceName())) {
+//            if (Province.contains(x.getProvinceName())) {
+//                return x.getProvinceID();
+//            }
+            if (normalized.contains(removeAccent(x.getProvinceName()).toLowerCase())) {
                 return x.getProvinceID();
             }
         }
@@ -81,9 +87,13 @@ public class GHNUtil {
         JsonArray resultArray = sendRequest(GHNConfig.apiDistricts + provinceID);
         List<District> lstDistrict = gson.fromJson(resultArray, new TypeToken<List<District>>() {
         }.getType());
+        String normalized = removeAccent(province).toLowerCase();
 
         for (District x : lstDistrict) {
-            if (province.contains(x.getDistrictName())) {
+//            if (province.contains(x.getDistrictName())) {
+//                return x.getDistrictID();
+//            }
+            if (normalized.contains(removeAccent(x.getDistrictName()).toLowerCase())) {
                 return x.getDistrictID();
             }
         }
@@ -96,9 +106,13 @@ public class GHNUtil {
         JsonArray resultArray = sendRequest(GHNConfig.apiWard + districtID);
         List<Ward> lstWard = gson.fromJson(resultArray, new TypeToken<List<Ward>>() {
         }.getType());
+        String normalized = removeAccent(ward).toLowerCase();
 
         for (Ward x : lstWard) {
-            if (ward.contains(x.getWardName())) {
+//            if (ward.contains(x.getWardName())) {
+//                return x.getWardCode();
+//            }
+            if (normalized.contains(removeAccent(x.getWardName()).toLowerCase())) {
                 return x.getWardCode();
             }
         }
@@ -137,11 +151,11 @@ public class GHNUtil {
         return gson.toJson(jsonElement);
     }
 
-    public BigDecimal calculateShippingFee(Address address, Integer quantity) {
+    public BigDecimal calculateShippingFee(String city, String district, String ward, Integer quantity) {
 
-        Integer provinceID = getProvinces(address.getCity());
-        Integer districtID = getDistricts(provinceID, address.getDistrict());
-        String wardID = getWard(districtID, address.getWard());
+        Integer provinceID = getProvinces(city);
+        Integer districtID = getDistricts(provinceID, district);
+        String wardID = getWard(districtID, ward);
 
         GHNRequest ghnRequest = GHNRequest.builder()
                 .service_type_id(2).weight(500 * quantity)
@@ -169,7 +183,7 @@ public class GHNUtil {
             throw new RuntimeException(e);
         }
 
-        return BigDecimal.valueOf(resultObject.get("data").getAsJsonObject().get("total").getAsLong());
+        return resultObject.get("data").getAsJsonObject().get("total").getAsBigDecimal();
     }
 
 //    public static void main(String[] args) {
@@ -191,5 +205,11 @@ public class GHNUtil {
 
 
 //    }
+
+    public static String removeAccent(String s) {
+        String nfdNormalizedString = Normalizer.normalize(s, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
+    }
 
 }

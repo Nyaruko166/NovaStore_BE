@@ -42,7 +42,17 @@ function onScanSuccess(decodedText) {
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        }).then(updateOutput);
+        }).then(function (response) {
+            if (response.status === 418) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Vui lòng kiểm tra lại số lượng",
+                    text: "Số lượng tồn kho không đủ!",
+                });
+            } else {
+                updateOutput();
+            }
+        });
     }
 }
 
@@ -126,7 +136,17 @@ async function addItems(obj) {
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        }).then(updateOutput);
+        }).then(function (response) {
+            if (response.status === 418) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Vui lòng kiểm tra lại số lượng",
+                    text: "Số lượng tồn kho không đủ!",
+                });
+            } else {
+                updateOutput();
+            }
+        });
     }
 }
 
@@ -249,4 +269,54 @@ function closeImagePopup() {
     // Hide the popup and overlay
     popup.style.display = "none";
     overlay.style.display = "none";
+}
+
+function updateCart(obj) {
+    let productCode = obj.id;
+    let qty = obj.value;
+    let defaultQty = obj.name;
+
+    if (qty <= 0) {
+        Swal.fire({
+            icon: "error",
+            title: "Vui lòng kiểm tra lại số lượng",
+            text: "Vui lòng nhập số nguyên dương!",
+        });
+        document.getElementById(productCode).value = defaultQty;
+    } else {
+        let queryString = window.location.search;
+        let urlParam = new URLSearchParams(queryString);
+        let billId;
+        if (!urlParam.has('billId')) {
+            billId = 0;
+        } else {
+            billId = urlParam.get('billId');
+        }
+
+        fetch("/nova/pos/update", {
+            method: "POST",
+            body: JSON.stringify({
+                billId: billId,
+                data: productCode,
+                qty: qty
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then(function (response) {
+            if (response.status === 418) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Vui lòng kiểm tra lại số lượng",
+                    text: "Số lượng tồn kho không đủ!",
+                });
+                document.getElementById(productCode).value = defaultQty;
+            } else {
+                updateOutput();
+            }
+        });
+    }
+
+    // console.log(productCode);
+    // console.log(qty);
 }

@@ -30,8 +30,8 @@ public interface PromotionDetailRepository extends JpaRepository<PromotionDetail
             "JOIN Promotion PR ON PD.promotion.id = PR.id " +
             "JOIN ProductDetail PD2 ON P.id = PD2.product.id " +
             "WHERE PD.status = 1 " +
-            "GROUP BY PD.id, PR.name, P.name, P.code, PR.startDate, PR.endDate, PR.value,P.id,P.createDate"+
-            " ORDER BY P.createDate DESC"
+            "GROUP BY PD.id, PR.name, P.name, P.code, PR.startDate, PR.endDate, PR.value,P.id,PD.createDate"+
+            " ORDER BY PD.createDate DESC"
     )
     Page<PromotionDetailDTO> All(Pageable pageable);
 }
