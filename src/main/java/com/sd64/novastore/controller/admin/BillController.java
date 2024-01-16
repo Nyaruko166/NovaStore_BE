@@ -6,10 +6,12 @@ import com.sd64.novastore.model.Bill;
 import com.sd64.novastore.model.BillDetail;
 import com.sd64.novastore.model.Customer;
 import com.sd64.novastore.model.PaymentMethod;
+import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.repository.AccountRepository;
 import com.sd64.novastore.repository.BillDetailRepository;
 import com.sd64.novastore.service.BillService;
 import com.sd64.novastore.service.PaymentMethodService;
+import com.sd64.novastore.service.ProductDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,6 +45,9 @@ public class BillController {
 
     @Autowired
     private PaymentMethodService paymentMethodService;
+
+    @Autowired
+    private ProductDetailService productDetailService;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -110,12 +115,14 @@ public class BillController {
 
     @GetMapping("/detail/{id}")
     public String getBillDetail(Model model, @PathVariable("id") Integer id, RedirectAttributes attributes) {
+        List<ProductDetail> listProductDetail = productDetailService.findAllActive();
         Bill bill = billService.getOneBill(id);
         if (bill != null){
             List<BillDetail> lstBillDetails = billService.getLstDetailByBillId(id);
             List<PaymentMethod> listPaymentMethod = paymentMethodService.getAllBillPaymentMethod(id);
             model.addAttribute("bill", bill);
             model.addAttribute("lstBillDetails", lstBillDetails);
+            model.addAttribute("listProductDetail", listProductDetail);
             model.addAttribute("listPaymentMethod", listPaymentMethod);
             return "admin/bill/bill-detail";
         } else {
@@ -187,6 +194,28 @@ public class BillController {
         }
     }
 
+    @PostMapping("/add-bill-item")
+    public String addBillItem(@RequestParam("billId") Integer billId,
+                              @RequestParam("productDetailId") Integer productDetailId,
+                              @RequestParam("productDetailQuantity") Integer quantity,
+                              RedirectAttributes attributes, Principal principal){
+        Bill bill = billService.getOneBill(billId);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
+        if (bill != null){
+            boolean check = billService.addBillItem(billId, productDetailId, quantity, employee);
+            if (check){
+                attributes.addFlashAttribute("mess", "Thêm sản phẩm cho đơn hàng thành công");
+            } else {
+                attributes.addFlashAttribute("error", "Không thể thêm vì số lượng vượt quá số lượng tồn của sản phẩm");
+            }
+            return "redirect:/nova/bill/detail/" + bill.getId();
+        } else {
+            attributes.addFlashAttribute("error", "Không có thông tin đơn hàng này");
+            return "redirect:/nova/bill";
+        }
+    }
+
     @RequestMapping(value = "/update-bill-item", method = RequestMethod.POST, params = "action=update")
     public String updateBillItem(@RequestParam("id") Integer id,
                                  @RequestParam("quantity") Integer quantity,
@@ -198,7 +227,22 @@ public class BillController {
         if (check){
             attributes.addFlashAttribute("mess", "Sửa thành công");
         } else {
-            attributes.addFlashAttribute("mess", "Sửa thất bại");
+            attributes.addFlashAttribute("error", "Sửa thất bại");
+        }
+        return "redirect:/nova/bill/detail/" + billDetail.getBill().getId();
+    }
+
+    @RequestMapping(value = "/update-bill-item", method = RequestMethod.POST, params = "action=delete")
+    public String deleteBillItem(@RequestParam("id") Integer id,
+                                 RedirectAttributes attributes, Principal principal){
+        BillDetail billDetail = billDetailRepository.findById(id).orElse(null);
+        String email = principal.getName();
+        Account employee = accountRepository.findFirstByEmail(email);
+        boolean check = billService.deleteBillItem(id, employee);
+        if (check){
+            attributes.addFlashAttribute("mess", "Xoá thành công");
+        } else {
+            attributes.addFlashAttribute("error", "Không thể xoá do hoá đơn cần có ít nhất 1 sản phẩm");
         }
         return "redirect:/nova/bill/detail/" + billDetail.getBill().getId();
     }

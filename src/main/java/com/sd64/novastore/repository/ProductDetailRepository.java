@@ -139,4 +139,6 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             "AND pd.status = 0\n " +
             "ORDER BY pd.updateDate DESC")
     List<ProductDetailDto> getProductByPriceAndSizeIdAndColorIdDeleted(Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId);
+
+    List<ProductDetail> findAllByStatusOrderByIdDesc(Integer status);
 }

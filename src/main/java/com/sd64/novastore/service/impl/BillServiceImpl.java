@@ -248,9 +248,6 @@ public class BillServiceImpl implements BillService {
             billDetailList.add(billDetail);
             ProductDetail productDetail = productDetailRepository.findById(item.getProductDetail().getId()).orElse(null);
             productDetail.setQuantity(productDetail.getQuantity() - item.getQuantity());
-            if (productDetail.getQuantity() == 0) {
-                productDetail.setStatus(0);
-            }
             productDetailRepository.save(productDetail);
         }
         cartService.deleteCartById(cart.getId());
@@ -355,9 +352,6 @@ public class BillServiceImpl implements BillService {
             billDetailRepository.save(billDetail);
             billDetailList.add(billDetail);
             productDetail.setQuantity(productDetail.getQuantity() - item.getQuantity());
-            if (productDetail.getQuantity() == 0) {
-                productDetail.setStatus(0);
-            }
             productDetailRepository.save(productDetail);
         }
         cart.clear();
@@ -397,7 +391,7 @@ public class BillServiceImpl implements BillService {
             bill.setCancellationDate(new Date());
             if (bill.getVoucher() != null) {
                 Voucher voucher = bill.getVoucher();
-                if (voucher.getStatus() == 10) {
+                if (voucher.getStatus() == 10 || voucher.getStatus() == 1) {
                     voucher.setQuantity(voucher.getQuantity() + 1);
                     voucher.setStatus(1);
                 }
@@ -413,7 +407,6 @@ public class BillServiceImpl implements BillService {
                 billDetailRepository.save(billDetail);
                 ProductDetail productDetail = productDetailRepository.findById(billDetail.getProductDetail().getId()).orElse(null);
                 productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity());
-                productDetail.setStatus(1);
                 productDetailRepository.save(productDetail);
             }
             billRepository.save(bill);
@@ -528,11 +521,6 @@ public class BillServiceImpl implements BillService {
             billDetail.setQuantity(quantity);
             billDetailRepository.save(billDetail);
             productDetail.setQuantity(productDetail.getQuantity() - quantityGap);
-            if (productDetail.getQuantity() == 0){
-                productDetail.setStatus(0);
-            } else if (productDetail.getQuantity() > 0){
-                productDetail.setStatus(1);
-            }
             productDetailRepository.save(productDetail);
             Bill bill = billRepository.findById(billDetail.getBill().getId()).orElse(null);
             List<BillDetail> billDetailList = billDetailRepository.findAllByBill_Id(bill.getId());
@@ -554,6 +542,14 @@ public class BillServiceImpl implements BillService {
                     .sum();
             BigDecimal newShippingFee = ghnUtil.calculateShippingFee(city, district, ward, totalQuantity);
             bill.setShippingFee(newShippingFee);
+            Voucher voucher = bill.getVoucher();
+            if (voucher != null){
+                if (newPrice.compareTo(voucher.getMinimumPrice()) < 0){
+                    bill.setDiscountAmount(BigDecimal.ZERO);
+                } else {
+                    bill.setDiscountAmount(voucher.getValue());
+                }
+            }
             bill.setTotalPrice(newPrice.add(newShippingFee).subtract(bill.getDiscountAmount()));
             bill.setUpdateDate(new Date());
             bill.setEmployee(account);
@@ -574,9 +570,123 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public boolean deleteBillItem(Integer itemId, Account account) {
-        return false;
+        BillDetail billDetail = billDetailRepository.findById(itemId).orElse(null);
+        Bill bill = billRepository.findById(billDetail.getBill().getId()).orElse(null);
+        List<BillDetail> billDetailList = billDetailRepository.findAllByBill_Id(bill.getId());
+        ProductDetail productDetail = productDetailRepository.findById(billDetail.getProductDetail().getId()).orElse(null);
+        if (billDetailList.size() > 1){
+            productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity());
+            productDetailRepository.save(productDetail);
+            billDetail.setProductDetail(null);
+            billDetailRepository.delete(billDetail);
+            BigDecimal newPrice = BigDecimal.ZERO;
+            List<BillDetail> billDetailList2 = billDetailRepository.findAllByBill_Id(bill.getId());
+            for (BillDetail item : billDetailList2){
+                BigDecimal price = item.getPrice();
+                BigDecimal qtt = BigDecimal.valueOf(item.getQuantity());
+                BigDecimal subTotal = price.multiply(qtt);
+                newPrice = newPrice.add(subTotal);
+            }
+            bill.setPrice(newPrice);
+            String address = bill.getAddress();
+            String[] parts = address.split(", ");
+            String ward = parts[1];
+            String district = parts[2];
+            String city = parts[3];
+            int totalQuantity = billDetailList2.stream()
+                    .mapToInt(BillDetail::getQuantity)
+                    .sum();
+            BigDecimal newShippingFee = ghnUtil.calculateShippingFee(city, district, ward, totalQuantity);
+            bill.setShippingFee(newShippingFee);
+            Voucher voucher = bill.getVoucher();
+            if (voucher != null){
+                if (newPrice.compareTo(voucher.getMinimumPrice()) < 0){
+                    bill.setDiscountAmount(BigDecimal.ZERO);
+                } else {
+                    bill.setDiscountAmount(voucher.getValue());
+                }
+            }
+            bill.setTotalPrice(newPrice.add(newShippingFee).subtract(bill.getDiscountAmount()));
+            bill.setUpdateDate(new Date());
+            bill.setEmployee(account);
+
+            List<PaymentMethod> listPaymentMethod = paymentMethodRepository.findAllByBillIdOrderById(bill.getId());
+            for (PaymentMethod paymentMethod : listPaymentMethod) {
+                if (paymentMethod.getStatus() == 10) {
+                    paymentMethod.setMoney(bill.getTotalPrice());
+                    paymentMethodRepository.save(paymentMethod);
+                }
+            }
+            billRepository.save(bill);
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    @Override
+    public boolean addBillItem(Integer billId, Integer productDetailId, Integer quantity, Account account) {
+        ProductDetail productDetail = productDetailRepository.findById(productDetailId).orElse(null);
+        if (quantity <= productDetail.getQuantity()){
+            BillDetail billDetail = billDetailRepository.findByBill_IdAndProductDetail_Id(billId, productDetailId);
+            Bill bill = billRepository.findById(billId).orElse(null);
+            if (billDetail == null){
+                billDetail = new BillDetail();
+                billDetail.setProductDetail(productDetail);
+                billDetail.setPrice(productDetail.getPriceDiscount());
+                billDetail.setQuantity(quantity);
+                billDetail.setBill(bill);
+                billDetailRepository.save(billDetail);
+            } else {
+                billDetail.setQuantity(billDetail.getQuantity() + quantity);
+                billDetailRepository.save(billDetail);
+            }
+            productDetail.setQuantity(productDetail.getQuantity() - quantity);
+            productDetailRepository.save(productDetail);
+            List<BillDetail> billDetailList = billDetailRepository.findAllByBill_Id(billId);
+            BigDecimal newPrice = BigDecimal.ZERO;
+            for (BillDetail item : billDetailList){
+                BigDecimal price = item.getPrice();
+                BigDecimal qtt = BigDecimal.valueOf(item.getQuantity());
+                BigDecimal subTotal = price.multiply(qtt);
+                newPrice = newPrice.add(subTotal);
+            }
+            bill.setPrice(newPrice);
+            String address = bill.getAddress();
+            String[] parts = address.split(", ");
+            String ward = parts[1];
+            String district = parts[2];
+            String city = parts[3];
+            int totalQuantity = billDetailList.stream()
+                    .mapToInt(BillDetail::getQuantity)
+                    .sum();
+            BigDecimal newShippingFee = ghnUtil.calculateShippingFee(city, district, ward, totalQuantity);
+            bill.setShippingFee(newShippingFee);
+            Voucher voucher = bill.getVoucher();
+            if (voucher != null){
+                if (newPrice.compareTo(voucher.getMinimumPrice()) < 0){
+                    bill.setDiscountAmount(BigDecimal.ZERO);
+                } else {
+                    bill.setDiscountAmount(voucher.getValue());
+                }
+            }
+            bill.setTotalPrice(newPrice.add(newShippingFee).subtract(bill.getDiscountAmount()));
+            bill.setUpdateDate(new Date());
+            bill.setEmployee(account);
+
+            List<PaymentMethod> listPaymentMethod = paymentMethodRepository.findAllByBillIdOrderById(bill.getId());
+            for (PaymentMethod paymentMethod : listPaymentMethod) {
+                if (paymentMethod.getStatus() == 10) {
+                    paymentMethod.setMoney(bill.getTotalPrice());
+                    paymentMethodRepository.save(paymentMethod);
+                }
+            }
+            billRepository.save(bill);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     @Transactional
@@ -589,7 +699,7 @@ public class BillServiceImpl implements BillService {
             bill.setCancellationDate(new Date());
             if (bill.getVoucher() != null) {
                 Voucher voucher = bill.getVoucher();
-                if (voucher.getStatus() == 10) {
+                if (voucher.getStatus() == 10 || voucher.getStatus() == 1) {
                     voucher.setQuantity(voucher.getQuantity() + 1);
                     voucher.setStatus(1);
                 }
@@ -607,7 +717,6 @@ public class BillServiceImpl implements BillService {
                 billDetailRepository.save(billDetail);
                 ProductDetail productDetail = productDetailRepository.findById(billDetail.getProductDetail().getId()).orElse(null);
                 productDetail.setQuantity(productDetail.getQuantity() + billDetail.getQuantity());
-                productDetail.setStatus(1);
                 productDetailRepository.save(productDetail);
             }
             billRepository.save(bill);
