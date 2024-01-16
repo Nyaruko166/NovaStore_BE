@@ -68,7 +68,7 @@
                     <thead class="bg-secondary text-dark">
                         <tr>
                             <th></th>
-                            <th>Mã sản phẩm</th>
+                            <th>Mã</th>
                             <th>Tên sản phẩm</th>
                             <th>Phân loại sản phẩm</th>
                             <th>Đơn giá</th>
@@ -159,7 +159,7 @@
             // Chỉ cho phép số dương và không cho phép để trống hoặc dấu cách
             e.target.value = value.replace(/[^0-9]| /g, '');
             // Kiểm tra nếu giá trị là chuỗi rỗng
-            if (e.target.value.trim() === '') {
+            if (e.target.value.trim() === '' || e.target.value.trim() == 0) {
                 e.target.value = '1';
             }
         });

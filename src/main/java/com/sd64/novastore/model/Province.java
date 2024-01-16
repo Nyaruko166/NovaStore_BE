@@ -10,6 +10,8 @@ package com.sd64.novastore.model;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,4 +23,5 @@ public class Province {
 
     private String ProvinceName;
 
+    private List<String> NameExtension;
 }

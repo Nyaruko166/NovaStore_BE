@@ -118,7 +118,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-4">
+                            <div class="mb-4" style="padding-top: 20px">
                                 <h2 class="mb-1 text-muted" th:text="'Mã hoá đơn: ' + ${bill.code}">
                                 </h2>
                                 <div th:if="${bill.status == 0}" th:text="'ĐÃ HUỶ - NGÀY HUỶ: ' + ${#dates.format(bill.cancellationDate, 'dd-MM-yyyy HH:mm:ss')}" class="text-danger font-weight-bold border rounded p-2 border-danger">
@@ -144,8 +144,8 @@
                                     <p th:if="${bill.phoneNumber != null}"
                                        th:text="'SĐT: ' + ${bill.phoneNumber}">
                                     </p>
-                                    <a href="#" class="change-address-btn" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"
-                                        th:if="${bill.status == 10}">Đổi địa chỉ nhận hàng</a>
+                                    <button type="button" class="btn btn-primary change-address-btn" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"
+                                        th:if="${bill.status == 10}">Đổi địa chỉ nhận hàng</button>
                                     <h6 class="font-size-15 mb-2" th:if="${bill.employee != null}"
                                         th:text="'Nhân viên tương tác: ' + ${bill.employee.email}">
                                     </h6>
@@ -241,7 +241,105 @@
                             </div>
                         </div>
                         <div class="py-2">
-                            <h5 class="font-size-15">Danh sách đơn hàng</h5>
+                            <div class="row">
+                                <div class="col-6">
+                                    <h5 class="font-size-15">Danh sách đơn hàng</h5>
+                                </div>
+                                <div class="col-6" th:if="${bill.status == 10}">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#productModal" style="float: right">
+                                        Thêm sản phẩm
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Product Modal -->
+                            <div th:if="${bill.status == 10}" class="modal fade" id="productModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="productModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="productModalLabel">
+                                                <i class="fas fa-shopping-bag"></i> Danh sách sản phẩm
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <div class="form-row">
+                                                <div class="col-md-8 mb-3">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="searchInput"
+                                                               placeholder="Nhập mã, tên sản phẩm">
+                                                        <div class="input-group-append">
+                                                        <span class="input-group-text"><i
+                                                                class="fas fa-search"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table id="productTable" class="table">
+                                                <thead class="thead-dark">
+                                                <tr>
+                                                    <th class="form-control-label">Ảnh</th>
+                                                    <th class="form-control-label">Mã</th>
+                                                    <th class="form-control-label">Tên</th>
+                                                    <th class="form-control-label">Kích cỡ</th>
+                                                    <th class="form-control-label">Màu</th>
+                                                    <th class="form-control-label">Số lượng tồn</th>
+                                                    <th class="form-control-label">Giá</th>
+                                                    <th class="form-control-label"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="pd : ${listProductDetail}" class="visible-row">
+                                                    <td style="padding: 10px;">
+                                                        <img th:src="@{'/image/product/' + ${pd.product.id}}"
+                                                             style="width: 50px; height: 50px; display: block; margin: 0 auto; border-radius: 8px">
+                                                    </td>
+                                                    <td th:text="${pd.code}"></td>
+                                                    <td th:text="${pd.product.name}"></td>
+                                                    <td th:text="${pd.size.name}"></td>
+                                                    <td th:text="${pd.color.name}"></td>
+                                                    <td th:text="${pd.quantity}"></td>
+                                                    <td th:text="${'₫' + #numbers.formatDecimal(pd.priceDiscount, 0, 'COMMA', 0, 'POINT')}"></td>
+                                                    <td>
+                                                        <button class="btn add-btn btn-primary" data-toggle="modal" data-target="#quantityModal" th:data-id="${pd.id}">+</button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div th:if="${bill.status == 10}" class="modal fade" id="quantityModal" tabindex="-1" role="dialog" aria-labelledby="quantityModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <form th:action="@{/nova/bill/add-bill-item}" method="post" id="quantityForm">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="quantityModalLabel">Nhập số lượng</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="hidden" name="billId" th:value="${bill.id}">
+                                                <input type="hidden" id="pdId" name="productDetailId">
+                                                <input type="text" id="productDetailQuantity" name="productDetailQuantity" class="form-control" value="1">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                                                <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="table-responsive">
                                 <table class="table align-middle table-nowrap table-centered mb-0">
@@ -281,11 +379,13 @@
                                         </td>
                                         <form th:action="@{/nova/bill/update-bill-item}" method="post">
                                             <input type="hidden" name="id" th:value="${billDetail.id}">
-                                            <td>
+                                            <td th:if="${bill.status == 10}">
                                                 <input type="text" class="form-control form-control-sm text-center" name="quantity" th:value="${billDetail.quantity}">
                                                 <div class="mt-2 text-center">
                                                     Còn: <span th:text="${billDetail.productDetail.quantity}"></span>
                                                 </div>
+                                            </td>
+                                            <td th:if="${bill.status != 10}" th:text="${billDetail.quantity}">
                                             </td>
                                             <td class="text-end"
                                                 th:text="'₫' + ${#numbers.formatDecimal(billDetail.price * billDetail.quantity, 0, 'POINT', 0, 'COMMA')}">
@@ -631,6 +731,38 @@
                     }
                 });
             }
+        });
+    </script>
+    <script>
+        document.querySelector('input[name="quantity"]').addEventListener('input', function(e) {
+            let value = e.target.value;
+            // Chỉ cho phép số dương và không cho phép để trống hoặc dấu cách
+            e.target.value = value.replace(/[^0-9]| /g, '');
+            // Kiểm tra nếu giá trị là chuỗi rỗng
+            if (e.target.value.trim() === '' || e.target.value.trim() == 0) {
+                e.target.value = '1';
+            }
+        });
+
+    </script>
+    <script>
+        document.querySelector('input[name="productDetailQuantity"]').addEventListener('input', function(e) {
+            let value = e.target.value;
+            // Chỉ cho phép số dương và không cho phép để trống hoặc dấu cách
+            e.target.value = value.replace(/[^0-9]| /g, '');
+            // Kiểm tra nếu giá trị là chuỗi rỗng
+            if (e.target.value.trim() === '' || e.target.value.trim() == 0) {
+                e.target.value = '1';
+            }
+        });
+
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.add-btn').on('click', function(){
+                var pdId = $(this).attr('data-id');
+                $('#pdId').val(pdId);
+            });
         });
     </script>
 </div>

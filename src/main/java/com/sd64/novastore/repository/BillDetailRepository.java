@@ -15,4 +15,6 @@ public interface BillDetailRepository extends JpaRepository<BillDetail, Integer>
     List<BillDetail> findAllByBill_Id(Integer id);
 
     Page<BillDetail> findAllByStatus(Pageable pageable, Integer status);
+
+    BillDetail findByBill_IdAndProductDetail_Id(Integer billId, Integer productDetailId);
 }
