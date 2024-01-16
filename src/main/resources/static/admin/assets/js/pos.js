@@ -203,21 +203,23 @@ function thanhToan() {
         let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
         let khachDua = document.getElementById('khachDua').value;
 
-        // let queryString = window.location.search;
-        // let urlParam = new URLSearchParams(queryString);
-        // let check;
-        // if (!urlParam.has('check')) {
-        //     check = 0;
-        // } else {
-        //     check = urlParam.get('check');
-        // }
-
         if (Number(khachDua) >= Number(khachPhaiTra[0])) {
-            Swal.fire({
-                title: "Thanh toán thành công!",
-                text: "Bạn đã thanh toán thành công!",
-                icon: "success"
-            }).then(openPopUp);
+            fetch("/nova/pos/check-legit")
+                .then(function (response) {
+                    if (response.status === 418) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi!!",
+                            text: "Giỏ hàng đang trống!",
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Thanh toán thành công!",
+                            text: "Bạn đã thanh toán thành công!",
+                            icon: "success"
+                        }).then(openPopUp);
+                    }
+                });
         } else {
             Swal.fire({
                 icon: "error",
