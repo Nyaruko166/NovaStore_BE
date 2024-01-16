@@ -11,12 +11,12 @@ public interface ThongkeACountRepository extends JpaRepository<Account, Integer>
     @Query(value = "SELECT COUNT(*) AS SoLuong\n" +
             "            FROM Account AS A\n" +
             "            JOIN Role AS R ON A.RoleId = R.Id\n" +
-            "            WHERE  R.Status = 1 AND R.Name='User'",nativeQuery = true)
+            "            WHERE  R.Status = 1 AND R.Name='Employee'",nativeQuery = true)
     public TKTong getTKNhanVien();
 
     @Query(value = "SELECT COUNT(*) AS SoLuong\n" +
             "            FROM Account AS A\n" +
             "            JOIN Role AS R ON A.RoleId = R.Id\n" +
-            "            WHERE  R.Status = 1 AND R.Name='Employee'",nativeQuery = true)
+            "            WHERE  R.Status = 1 AND R.Name='User'",nativeQuery = true)
     public TKTong getTKKhachHang();
 }
