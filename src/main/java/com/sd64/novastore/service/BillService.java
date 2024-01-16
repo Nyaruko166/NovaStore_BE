@@ -64,6 +64,8 @@ public interface BillService {
 
     boolean deleteBillItem(Integer itemId, Account account);
 
+    boolean addBillItem(Integer billId, Integer productDetailId, Integer quantity, Account account);
+
     Page<BillDto> findAll(Pageable pageable);
 
     Page<BillDto> searchListBill(String code,

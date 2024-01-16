@@ -36,8 +36,15 @@ function validateReg() {
 
     emailError.textContent = '';
 
+    const phoneNumberRegex = /^(0[1-9]|84[1-9]|\\+84[1-9])[0-9]{8}$/;
+
     if (sdtInput.value.trim() === '') {
         sdtError.textContent = 'Vui lòng nhập số điện thoại.';
+        return false;
+    }
+
+    if (!phoneNumberRegex.test(sdtInput.value.trim())) {
+        sdtError.textContent = 'Vui lòng nhập đúng số điện thoại.';
         return false;
     }
 

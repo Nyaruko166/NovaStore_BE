@@ -125,7 +125,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-4">
+                        <div class="mb-4" style="padding-top: 20px">
                             <h2 class="mb-1 text-muted" th:text="'Mã hoá đơn: ' + ${order.code}">
                             </h2>
                             <div th:if="${order.status == 0}" th:text="'ĐÃ HUỶ - NGÀY HUỶ: ' + ${#dates.format(order.cancellationDate, 'dd-MM-yyyy HH:mm:ss')}" class="text-danger font-weight-bold border rounded p-2 border-danger">
@@ -157,6 +157,14 @@
                                     <h5 class="font-size-15 mb-1">Ngày mua hàng:</h5>
                                     <p
                                             th:text="${#dates.format(order.orderDate, 'dd-MM-yyyy HH:mm:ss')}">
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-muted" style="text-align: right" th:if="${order.paymentDate != null}">
+                                <div>
+                                    <h5 class="font-size-15 mb-1">Ngày thanh toán:</h5>
+                                    <p
+                                            th:text="${#dates.format(order.paymentDate, 'dd-MM-yyyy HH:mm:ss')}">
                                     </p>
                                 </div>
                             </div>

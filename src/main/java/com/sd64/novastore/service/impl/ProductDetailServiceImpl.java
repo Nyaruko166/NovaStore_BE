@@ -285,4 +285,9 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     public BigInteger getTotalQuantityByProductId(Integer productId) {
         return productDetailRepository.getTotalQuantityById(1, productId);
     }
+
+    @Override
+    public List<ProductDetail> findAllActive(){
+        return productDetailRepository.findAllByStatusOrderByIdDesc(1);
+    }
 }

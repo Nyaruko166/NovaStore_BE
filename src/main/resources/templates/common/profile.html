@@ -221,12 +221,22 @@
             return false;
         }
 
+        const phoneNumberRegex = /^(0[1-9]|84[1-9]|\\+84[1-9])[0-9]{8}$/;
         let phoneNum = document.getElementById("phone-number");
         if (phoneNum.value.trim() === '') {
             Swal.fire({
                 icon: "error",
                 title: "Lỗi!",
                 text: "Vui lòng nhập số điện thoại!",
+            });
+            return false;
+        }
+
+        if (!phoneNumberRegex.test(phoneNum.value.trim())) {
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: "Vui lòng nhập đúng số điện thoại!",
             });
             return false;
         }
