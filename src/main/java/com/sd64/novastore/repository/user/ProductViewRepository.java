@@ -31,27 +31,27 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
             "ORDER BY p.updateDate DESC ")
     List<ProductHomeDto> getAllProductResponseHome();
 
-    @Query(value = "SELECT p.id as productId, " +
-            "p.name as productName, " +
-            "pd.price as price, " +
-            "pd.priceDiscount as priceDiscount, " +
-            "pr.value as value " +
+    @Query(value = "SELECT p.id as productId,\n" +
+            "       p.name as productName,\n" +
+            "       pd.price as price,\n" +
+            "       pd.priceDiscount as priceDiscount,\n" +
+            "       CASE WHEN prd.status = 0 THEN NULL ELSE pr.value END as value\n" +
             "FROM Product p\n" +
-            "INNER JOIN ProductDetail pd ON pd.product.id = p.id\n" +
-            "INNER JOIN Image i ON i.product.id = p.id\n" +
-            "LEFT JOIN PromotionDetail prd ON prd.product.id = p.id\n" +
-            "LEFT JOIN Promotion pr ON pr.id = prd.promotion.id\n" +
-            "WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1\n  " +
-            "ORDER BY p.updateDate DESC ")
+            "INNER JOIN ProductDetail pd ON pd.productid = p.id\n" +
+            "INNER JOIN Image i ON i.productid = p.id\n" +
+            "LEFT JOIN PromotionDetail prd ON prd.productid = p.id\n" +
+            "LEFT JOIN Promotion pr ON pr.id = prd.promotionid\n" +
+            "WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1\n" +
+            "ORDER BY p.updateDate DESC ", nativeQuery = true)
     List<ProductDiscountHomeDto> getAllProductAndDiscountResponseHome();
 
-    @Query(value = "SELECT pr.value FROM Product p\n" +
-            "LEFT JOIN PromotionDetail prd ON prd.ProductId = p.id\n" +
-            "LEFT JOIN Promotion pr ON pr.Id = prd.PromotionId\n" +
-            "INNER JOIN Image i ON i.ProductId = p.Id\n" +
-            "INNER JOIN ProductDetail pd ON pd.ProductId = p.id\n" +
-            "WHERE p.status IN (1,2) AND i.Status = 1 AND p.id =:productId\n" +
-            "GROUP BY pr.value", nativeQuery = true)
+    @Query(value = "SELECT CASE WHEN prd.status = 0 THEN NULL ELSE pr.value END as value FROM Product p\n" +
+            "            LEFT JOIN PromotionDetail prd ON prd.ProductId = p.id\n" +
+            "            LEFT JOIN Promotion pr ON pr.Id = prd.PromotionId\n" +
+            "            INNER JOIN Image i ON i.ProductId = p.Id\n" +
+            "            INNER JOIN ProductDetail pd ON pd.ProductId = p.id\n" +
+            "            WHERE p.status IN (1,2) AND i.Status = 1 AND p.id =:productId\n" +
+            "            GROUP BY pr.value, prd.status", nativeQuery = true)
     Float getValueDiscountByProductId(Integer productId);
 
     @Query(value = "SELECT TOP 10 p.id as productId, " +
@@ -98,15 +98,15 @@ public interface ProductViewRepository extends JpaRepository<Product, Integer> {
     List<ProductDiscountHomeDto> getAllProductAndProductDiscountDiscountShopResponse();
 
 
-        @Query(value = "SELECT pr.value as value, " +
-            "p.id as productId " +
-            "FROM Product p\n" +
-            "INNER JOIN ProductDetail pd ON pd.product.id = p.id\n" +
-            "INNER JOIN Image i ON i.product.id = p.id\n" +
-            "LEFT JOIN PromotionDetail prd ON prd.product.id = p.id\n" +
-            "LEFT JOIN Promotion pr ON pr.id = prd.promotion.id\n" +
-            "WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1 AND p.id =:productId \n  " +
-            "GROUP BY p.id, pr.value")
+        @Query(value = "SELECT CASE WHEN prd.status = 0 THEN NULL ELSE pr.value END as value,\n" +
+                "       p.id as productId\n" +
+                "FROM Product p\n" +
+                "INNER JOIN ProductDetail pd ON pd.productid = p.id\n" +
+                "INNER JOIN Image i ON i.productid = p.id\n" +
+                "LEFT JOIN PromotionDetail prd ON prd.productid = p.id\n" +
+                "LEFT JOIN Promotion pr ON pr.id = prd.promotionid\n" +
+                "WHERE p.status IN (1,2) AND i.status = 1 AND pd.status = 1 AND p.id =:productId\n" +
+                "GROUP BY p.id, pr.value, prd.status", nativeQuery = true)
     ProductAndValueDiscountDto getProductDetailDto(Integer productId);
 
 
