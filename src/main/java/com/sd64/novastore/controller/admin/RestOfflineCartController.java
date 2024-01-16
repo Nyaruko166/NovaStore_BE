@@ -74,4 +74,14 @@ public class RestOfflineCartController {
         session.setAttribute("posBill", tempBill);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/check-legit")
+    public ResponseEntity<?> checkLegit(HttpSession session) {
+        TempBill tempBill = (TempBill) session.getAttribute("posBill");
+        List<OfflineCart> lstCheck = tempBill.getLstDetailProduct();
+        if (lstCheck.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

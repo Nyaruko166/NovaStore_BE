@@ -33,7 +33,7 @@ public interface OfflineCartService {
 
     TempBill getBillById(Integer id);
 
-    TempBill checkout(TempBill tempBill, RedirectAttributes redirectAttributes);
+    TempBill checkout(TempBill tempBill);
 
     String genBillCode();
 

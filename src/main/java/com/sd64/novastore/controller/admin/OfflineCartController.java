@@ -111,17 +111,12 @@ public class OfflineCartController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String checkout(Model model, HttpSession session) {
         TempBill tempBill = getSession(session);
-        TempBill returnBill = offlineCartService.checkout(tempBill, redirectAttributes);
-        if (returnBill == null) {
-            return "redirect:/nova/pos?billId=" + tempBill.getBillId() + "&check=0";
-        }
-//        if (check == 1) {
-            model.addAttribute("tempBill", returnBill);
-            model.addAttribute("lstItem", offlineCartService.getCart(returnBill.getLstDetailProduct()));
-            return "/admin/bill/invoice";
-//        }
+        TempBill returnBill = offlineCartService.checkout(tempBill);
+        model.addAttribute("tempBill", returnBill);
+        model.addAttribute("lstItem", offlineCartService.getCart(returnBill.getLstDetailProduct()));
+        return "/admin/bill/invoice";
     }
 
     @PostMapping("/api/productFilter")

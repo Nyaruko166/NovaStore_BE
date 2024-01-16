@@ -156,7 +156,7 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     }
 
     @Override
-    public TempBill checkout(TempBill tempBill, RedirectAttributes redirectAttributes) {
+    public TempBill checkout(TempBill tempBill) {
 
         Bill bill = billService.addBillPos(convertToBill(tempBill));
         List<OfflineCartView> lstItems = getCart(tempBill.getLstDetailProduct());
