@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [Nova_Store_DB]    Update: 15/1/2023 18:16 PM ******/
+/****** Object:  Database [Nova_Store_DB]    Update: 13/1/2023 16:31 AM ******/
 CREATE DATABASE [Nova_Store_DB]
 GO
 USE [Nova_Store_DB]
@@ -982,7 +982,7 @@ VALUES ('CT00061', 73, 900000, 900000, GETDATE(), GETDATE(), 1, 31, 2, 2);
 INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
 VALUES ('CT00062', 28, 230000, 230000, GETDATE(), GETDATE(), 1, 31, 5, 1);
 INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
-VALUES ('CT00063', 38, 5500000, 5500000, GETDATE(), GETDATE(), 1, 32, 3, 9);
+VALUES ('CT00063', 38, 5500000, 5500000, GETDATE(), GETDATE(), 1, 32, 1, 7);
 INSERT INTO ProductDetail (code, quantity, Price, PriceDiscount, CreateDate, UpdateDate, Status, ProductId, SizeId, ColorId)
 VALUES ('CT00064', 38, 5600000, 5600000, GETDATE(), GETDATE(), 1, 32, 3, 9);
 
