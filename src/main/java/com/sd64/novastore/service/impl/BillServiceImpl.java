@@ -636,6 +636,7 @@ public class BillServiceImpl implements BillService {
                 billDetail.setPrice(productDetail.getPriceDiscount());
                 billDetail.setQuantity(quantity);
                 billDetail.setBill(bill);
+                billDetail.setStatus(1);
                 billDetailRepository.save(billDetail);
             } else {
                 billDetail.setQuantity(billDetail.getQuantity() + quantity);
