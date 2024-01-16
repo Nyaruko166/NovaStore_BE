@@ -76,8 +76,10 @@ public class GHNUtil {
 //            if (Province.contains(x.getProvinceName())) {
 //                return x.getProvinceID();
 //            }
-            if (normalized.contains(removeAccent(x.getProvinceName()).toLowerCase())) {
-                return x.getProvinceID();
+            for (String nameExtension : x.getNameExtension()) {
+                if (normalized.contains(removeAccent(nameExtension.toLowerCase()))) {
+                    return x.getProvinceID();
+                }
             }
         }
         return null;
@@ -93,8 +95,10 @@ public class GHNUtil {
 //            if (province.contains(x.getDistrictName())) {
 //                return x.getDistrictID();
 //            }
-            if (normalized.contains(removeAccent(x.getDistrictName()).toLowerCase())) {
-                return x.getDistrictID();
+            for (String nameExtension : x.getNameExtension()) {
+                if (normalized.contains(removeAccent(nameExtension.toLowerCase()))) {
+                    return x.getDistrictID();
+                }
             }
         }
 
@@ -112,9 +116,14 @@ public class GHNUtil {
 //            if (ward.contains(x.getWardName())) {
 //                return x.getWardCode();
 //            }
-            if (normalized.contains(removeAccent(x.getWardName()).toLowerCase())) {
-                return x.getWardCode();
+            for (String nameExtension : x.getNameExtension()) {
+                if (normalized.contains(removeAccent(nameExtension.toLowerCase()))) {
+                    return x.getWardCode();
+                }
             }
+//            if (normalized.contains(removeAccent(x.getWardName()).toLowerCase())) {
+//                return x.getWardCode();
+//            }
         }
 
         return null;
