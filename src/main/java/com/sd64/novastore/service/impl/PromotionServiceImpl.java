@@ -64,8 +64,6 @@ public class PromotionServiceImpl implements PromotionService {
     public void processExpiredPromotion(Promotion promotion) {
         List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(promotion.getId());
         for (PromotionDetail promotionDetail : promotionDetails) {
-            promotionDetail.setStatus(0);
-            promotionDetailRepository.save(promotionDetail);
             Product product = promotionDetail.getProduct();
             product.setStatus(1);
             List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
@@ -73,6 +71,8 @@ public class PromotionServiceImpl implements PromotionService {
                 productDetail.setPriceDiscount(productDetail.getPrice());
                 productDetailRepository.save(productDetail);
             }
+            //            promotionDetail.setStatus(0);
+            promotionDetailRepository.delete(promotionDetail);
         }
         promotion.setStatus(0);
 
@@ -244,8 +244,6 @@ public class PromotionServiceImpl implements PromotionService {
             Promotion promotion = optional.get();
             List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
             for (PromotionDetail promotionDetail : promotionDetails) {
-                promotionDetail.setStatus(0);
-                promotionDetailRepository.save(promotionDetail);
                 Product product = promotionDetail.getProduct();
                 product.setStatus(1);
                 List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
@@ -253,6 +251,8 @@ public class PromotionServiceImpl implements PromotionService {
                     productDetail.setPriceDiscount(productDetail.getPrice());
                     productDetailRepository.save(productDetail);
                 }
+//                promotionDetail.setStatus(0);
+                promotionDetailRepository.delete(promotionDetail);
             }
             promotion.setStatus(0);
             return promotionRepository.save(promotion);
