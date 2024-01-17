@@ -71,7 +71,7 @@ public class OfflineCartServiceImpl implements OfflineCartService {
                             .idCtsp(y.getId())
                             .codeCtsp(y.getCode())
                             .qty(x.getQty())
-                            .price(y.getPrice())
+                            .price(y.getPriceDiscount())
                             .color(y.getColor().getName())
                             .size(y.getSize().getName())
                             .build());
