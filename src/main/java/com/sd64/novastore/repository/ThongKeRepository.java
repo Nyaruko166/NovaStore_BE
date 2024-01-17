@@ -36,12 +36,12 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
 
 
     @Query(value = "SELECT\n" +
-            "\t\t\tSUM(CASE WHEN b.Status <> 0 AND b.PaymentDate IS NOT NULL AND CONVERT(DATE, b.PaymentDate) = CONVERT(DATE, GETDATE()) THEN bd.Quantity ELSE 0 END) AS SoSanPham\n" +
+            "\t\t\tSUM(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL AND CONVERT(DATE, b.PaymentDate) = CONVERT(DATE, GETDATE()) THEN bd.Quantity ELSE 0 END) AS SoSanPham\n" +
             "\t\t\tFROM\n" +
             "                Bill b\n" +
             "\t\t\tLEFT JOIN\n" +
             "            BillDetail bd ON b.Id = bd.BillId\n" +
-            "\t\t\twhere (b.Status <> 0 AND b.PaymentDate IS NOT NULL AND CONVERT(DATE, b.PaymentDate) = CONVERT(DATE, GETDATE()))", nativeQuery = true)
+            "\t\t\twhere (b.Status = 1 AND b.CompletionDate IS NOT NULL AND CONVERT(DATE, b.PaymentDate) = CONVERT(DATE, GETDATE()))", nativeQuery = true)
     public SosanPhamBanDuoc getThongKeSanPhamBanDuocNgay();
 
     @Query(value = "SET DATEFIRST 1;\r\n"
@@ -71,13 +71,13 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
             + "SET @CurrentWeek = DATEPART(WEEK, GETDATE());\r\n"
             + "\r\n"
             + "SELECT\r\n"
-            + "	   SUM(CASE WHEN b.Status <> 0 AND b.PaymentDate IS NOT NULL AND YEAR(b.PaymentDate) = @CurrentYear AND DATEPART(WEEK,  b.PaymentDate) = @CurrentWeek THEN (bd.Quantity) END) AS SoSanPham\r\n"
+            + "	   SUM(CASE WHEN b.Status = 1 AND b.CompletionDate IS NOT NULL AND YEAR(b.PaymentDate) = @CurrentYear AND DATEPART(WEEK,  b.PaymentDate) = @CurrentWeek THEN (bd.Quantity) END) AS SoSanPham\r\n"
             + "FROM\r\n"
             + "    Bill b\r\n"
             + "LEFT JOIN\r\n"
             + "    BillDetail bd ON b.Id = bd.BillId\r\n"
             + "WHERE\r\n" +
-            "    (b.Status <> 0 AND b.PaymentDate IS NOT NULL AND YEAR(b.PaymentDate) = @CurrentYear AND DATEPART(WEEK, b.PaymentDate) = @CurrentWeek)\n"
+            "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND YEAR(b.PaymentDate) = @CurrentYear AND DATEPART(WEEK, b.PaymentDate) = @CurrentWeek)\n"
             , nativeQuery = true)
     public SosanPhamBanDuoc getThongKeSosanPhamBanDuocTuan();
 
@@ -97,13 +97,13 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
     public TKThang getThongKeThang();
 
     @Query(value = "SELECT\r\n"
-            + "    SUM(CASE WHEN b.Status <> 0 AND MONTH(b.PaymentDate) = MONTH(GETDATE()) THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
+            + "    SUM(CASE WHEN b.Status = 1 AND MONTH(b.CompletionDate) = MONTH(GETDATE()) THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
             + "FROM\r\n"
             + "    Bill b\r\n"
             + "LEFT JOIN\r\n"
             + "    BillDetail bd ON b.Id = bd.BillId\r\n"
             + "WHERE\r\n"
-            + "    (b.Status <> 0 AND b.PaymentDate IS NOT NULL AND MONTH(b.PaymentDate) = MONTH(GETDATE()))\r\n"
+            + "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND MONTH(b.PaymentDate) = MONTH(GETDATE()))\r\n"
            , nativeQuery = true)
     public SosanPhamBanDuoc getThongKeSosanPhamBanDuocThang();
 
@@ -123,17 +123,14 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
     public TKNam getThongKeNam();
 
     @Query(value = "SELECT\r\n"
-            + "    SUM( CASE WHEN b.Status <> 0 AND YEAR(b.PaymentDate) = YEAR(GETDATE()) THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
+            + "    SUM( CASE WHEN b.Status = 1 AND YEAR(b.CompletionDate) = YEAR(GETDATE()) THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
             + "FROM\r\n"
             + "    Bill b\r\n"
             + "LEFT JOIN\r\n"
             + "    BillDetail bd ON b.Id = bd.BillId\r\n"
             + "WHERE\r\n"
             + "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND YEAR(b.CompletionDate) = YEAR(GETDATE()))\r\n"
-            + "    OR\r\n"
-            + "    (b.Status <> 0 AND b.PaymentDate IS NOT NULL AND YEAR(b.PaymentDate) = YEAR(GETDATE()))\r\n"
-            + "    OR\r\n"
-            + "    (b.Status = 0 AND b.CancellationDate IS NOT NULL AND YEAR(b.CancellationDate) = YEAR(GETDATE()));", nativeQuery = true)
+            , nativeQuery = true)
     public SosanPhamBanDuoc getThongKeSosanPhamBanDuocNam();
 
 
@@ -161,15 +158,14 @@ public interface ThongKeRepository extends JpaRepository<Bill, Integer> {
             + "DECLARE @EndDate DATE = :denngay\r\n"
             + "\r\n"
             + "SELECT\r\n"
-            + "    SUM(CASE WHEN b.Status <> 0 AND CONVERT(DATE, b.PaymentDate) BETWEEN @StartDate AND @EndDate THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
+            + "    SUM(CASE WHEN b.Status = 1 AND CONVERT(DATE, b.CompletionDate) BETWEEN @StartDate AND @EndDate THEN bd.Quantity ELSE 0 END) AS SoSanPham\r\n"
             + "FROM\r\n"
             + "    Bill b\r\n"
             + "LEFT JOIN\r\n"
             + "    BillDetail bd ON b.Id = bd.BillId\r\n"
             + "WHERE\r\n"
-            + "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND CONVERT(DATE, b.CompletionDate) BETWEEN @StartDate AND @EndDate) OR\r\n"
-            + "    (b.Status <> 0 AND b.PaymentDate IS NOT NULL AND CONVERT(DATE, b.PaymentDate) BETWEEN @StartDate AND @EndDate) OR\r\n"
-            + "    (b.Status = 0 AND b.CancellationDate IS NOT NULL AND CONVERT(DATE, b.CancellationDate) BETWEEN @StartDate AND @EndDate);", nativeQuery = true)
+            + "    (b.Status = 1 AND b.CompletionDate IS NOT NULL AND CONVERT(DATE, b.CompletionDate) BETWEEN @StartDate AND @EndDate) \r\n"
+           , nativeQuery = true)
     public List<SosanPhamBanDuoc> getTKSosanPhamBanKhoangNgay(@Param("tungay") String tungay, @Param("denngay") String denngay);
 
     @Query(value = "WITH DateTable AS (\n" +
