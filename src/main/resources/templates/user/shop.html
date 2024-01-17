@@ -154,11 +154,11 @@
                             <div class="price-input">
                                 <div class="price-field">
                                     <span>Từ</span>
-                                    <input type="number" id="priceMin" name="priceMin" th:value="${priceMin}" class="min-input">
+                                    <input type="number" min="0" id="priceMin" name="priceMin" th:value="${priceMin}" class="min-input">
                                 </div>
                                 <div class="price-field">
                                     <span>Đến</span>
-                                    <input type="number" id="priceMax" name="priceMax" th:value="${priceMax}" class="max-input"/>
+                                    <input type="number" max="10000000" id="priceMax" name="priceMax" th:value="${priceMax}" class="max-input"/>
                                 </div>
                             </div>
                             <div class="slider-container">
@@ -193,6 +193,17 @@
                                     // Phân tích các giá trị tối thiểu và tối đa của phạm vi đầu vào
                                     let minp = parseInt(priceInputvalue[0].value);
                                     let maxp = parseInt(priceInputvalue[1].value);
+
+                                    if (isNaN(minp)) {
+                                        priceInputvalue[0].value = 0
+                                        minp = 0;
+                                    }
+
+                                    if (isNaN(maxp)) {
+                                        priceInputvalue[1].value = 0;
+                                        maxp = 0;
+                                    }
+
                                     let diff = maxp - minp
 
                                     if (minp < 0) {

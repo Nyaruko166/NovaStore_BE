@@ -40,7 +40,7 @@ public class ProductDetailController {
     public String getProductDetail(@PathVariable Integer productId, Model model, @RequestParam(defaultValue = "0") int page) {
         List<Size> listSize = sizeService.getAll();
         List<Color> listColor = colorService.getAll();
-        var pageProductDetail = productDetailService.getProductByPriceAndSizeIdAndColorId(page, productId, BigDecimal.valueOf(0), BigDecimal.valueOf(Integer.MAX_VALUE), null, null);
+        var pageProductDetail = productDetailService.getProductByPriceAndSizeIdAndColorId(page, productId, BigDecimal.valueOf(0), BigDecimal.valueOf(10000000), null, null);
 //                .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
         model.addAttribute("pageProductDetail", pageProductDetail);
         List<Image> listImage = imageService.getAllImageByProductId(productId);
@@ -231,32 +231,32 @@ public class ProductDetailController {
     public String search(@PathVariable Integer productId,
                          Model model,
                          @RequestParam(defaultValue = "0") int page,
-                         @RequestParam(required = false) BigDecimal priceMin,
-                         @RequestParam(required = false) BigDecimal priceMax,
+                         @RequestParam(required = false) BigDecimal priceMinDiscount,
+                         @RequestParam(required = false) BigDecimal priceMaxDiscount,
                          @RequestParam(required = false) Integer sizeId,
                          @RequestParam(required = false) Integer colorId) {
 
-        if (priceMin == null && priceMax == null && sizeId == null && colorId == null) {
+        if (priceMinDiscount == null && priceMaxDiscount == null && sizeId == null && colorId == null) {
             return "redirect:/nova/product/" + productId + "/product-detail";
         }
 
-        if (priceMin == null) {
-            priceMin = BigDecimal.valueOf(0);
+        if (priceMinDiscount == null) {
+            priceMinDiscount = BigDecimal.valueOf(0);
         }
-        if (priceMax == null) {
-            priceMax = BigDecimal.valueOf(Integer.MAX_VALUE);
+        if (priceMaxDiscount == null) {
+            priceMaxDiscount = BigDecimal.valueOf(Integer.MAX_VALUE);
         }
         List<Size> listSize = sizeService.getAll();
         List<Color> listColor = colorService.getAll();
 
-        Page<ProductDetailSearchResponse> productDetailSearchResponses = productDetailService.getProductByPriceAndSizeIdAndColorId(page, productId, priceMin, priceMax, sizeId, colorId);
-        int totalPage = productDetailService.getTotalPage(page, productId, priceMin, priceMax, sizeId, colorId);
+        Page<ProductDetailSearchResponse> productDetailSearchResponses = productDetailService.getProductByPriceAndSizeIdAndColorId(page, productId, priceMinDiscount, priceMaxDiscount, sizeId, colorId);
+//        int totalPage = productDetailService.getTotalPage(page, productId, priceMinDiscount, priceMaxDiscount, sizeId, colorId);
         model.addAttribute("pageProductDetail", productDetailSearchResponses);
         List<Image> listImage = imageService.getAllImageByProductId(productId);
         BigInteger totalQuantity = productDetailService.getTotalQuantityByProductId(productId);
         model.addAttribute("totalQuantity", totalQuantity);
         model.addAttribute("listImage", listImage);
-        model.addAttribute("totalPage", totalPage);
+//        model.addAttribute("totalPage", totalPage);
         Product product = productService.getOne(productId);
         model.addAttribute("productId", productId);
         model.addAttribute("product", product);
@@ -264,8 +264,8 @@ public class ProductDetailController {
         model.addAttribute("listColor", listColor);
         model.addAttribute("sizeId", sizeId);
         model.addAttribute("colorId", colorId);
-        model.addAttribute("priceMin", priceMin);
-        model.addAttribute("priceMax", priceMax);
+        model.addAttribute("priceMinDiscount", priceMinDiscount);
+        model.addAttribute("priceMaxDiscount", priceMaxDiscount);
         return "admin/product-detail/product-detail";
     }
 

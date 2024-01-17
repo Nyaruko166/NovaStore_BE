@@ -12,6 +12,8 @@ public interface ProductDetailDto {
 
     BigDecimal getPrice();
 
+    BigDecimal getPriceDiscount();
+
     String getSizeName();
 
     String getColorName();

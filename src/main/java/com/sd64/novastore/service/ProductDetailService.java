@@ -27,11 +27,11 @@ public interface ProductDetailService {
     ProductDetail getOne(Integer id);
 
 
-    Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorId(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId);
+    Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorId(int page, Integer productId, BigDecimal priceMinDiscount, BigDecimal priceMaxDiscount, Integer sizeId, Integer colorId);
 
     String importExcelProduct(MultipartFile file, Integer productId) throws IOException;
 
-    int getTotalPage(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId);
+//    int getTotalPage(int page, Integer productId, BigDecimal priceMinDiscount, BigDecimal priceMaxDiscount, Integer sizeId, Integer colorId);
 
     Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorIdDeleted(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId);
 

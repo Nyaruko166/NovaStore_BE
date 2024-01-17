@@ -432,7 +432,7 @@ public class ProductViewServiceImpl implements ProductViewService {
 
     @Override
     public List<ProductDiscountHomeResponse> searchProductAndProductDiscountAscShopResponse(List<Integer> listBrandId, List<Integer> listCategoryId, List<Integer> listFormId, List<Integer> listMaterialId, List<Integer> listSizeId, List<Integer> listColorId, String productNameSearch, BigDecimal priceMax, BigDecimal priceMin, Integer status) {
-        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchProductAndProductDiscountAscResponse(listBrandId, listCategoryId, listFormId, listMaterialId, listSizeId, listColorId, productNameSearch, priceMax, priceMin, status)
+        List<ProductDiscountHomeDtoImpl> productDiscountHomeResponseDtoList = productViewRepository.searchProductAndProductDiscountAscResponse(listBrandId, listCategoryId, listFormId, listMaterialId, listSizeId, listColorId, productNameSearch, priceMax, priceMin, getStatusProductAndProductDiscount(status))
                 .stream().map(ProductDiscountHomeDtoImpl::toData).toList();
         List<ProductDiscountHomeResponse> productDiscountHomeResponses = new ArrayList<>();
         for (int index = 0; index < productDiscountHomeResponseDtoList.size(); index++) {

@@ -9,6 +9,7 @@ public class ProductDetailDtoImpl {
                 .id(dto.getId())
                 .code(dto.getCode())
                 .price(dto.getPrice())
+                .priceDiscount(dto.getPriceDiscount())
                 .sizeName(dto.getSizeName())
                 .colorName(dto.getColorName())
                 .quantity(dto.getQuantity())

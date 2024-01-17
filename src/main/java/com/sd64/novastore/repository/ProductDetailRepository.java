@@ -71,6 +71,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             " pd.code as code, " +
             " pd.quantity as quantity," +
             " pd.price as price," +
+            " pd.priceDiscount as priceDiscount," +
             " s.name as sizeName," +
             " c.name as colorName" +
             " FROM ProductDetail pd \n" +
@@ -78,12 +79,12 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             "INNER JOIN Color c ON c.id = pd.color.id \n " +
             "INNER JOIN Product p ON p.id = pd.product.id \n" +
             "WHERE p.id =:productId \n" +
-            "AND (pd.price >= :priceMin AND pd.price <= :priceMax)" +
+            "AND (pd.priceDiscount >= :priceMinDiscount AND pd.priceDiscount <= :priceMaxDiscount)" +
             "AND ( s.id =:sizeId OR :sizeId IS NULL )\n" +
             "AND ( c.id =:colorId OR :colorId IS NULL)\n" +
             "AND pd.status = 1\n " +
             "ORDER BY pd.updateDate DESC")
-    Page<ProductDetailDto> getProductByPriceAndSizeIdAndColorId(Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId, Pageable pageable);
+    List<ProductDetailDto> getProductDetailByPriceAndSizeIdAndColorId(Integer productId, BigDecimal priceMinDiscount, BigDecimal priceMaxDiscount, Integer sizeId, Integer colorId);
 
 
     @Query(value = "SELECT pd.id as id," +

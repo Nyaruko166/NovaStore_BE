@@ -7,6 +7,7 @@ import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Size;
 import com.sd64.novastore.repository.ProductDetailRepository;
 import com.sd64.novastore.response.ProductDetailSearchResponse;
+import com.sd64.novastore.response.ProductDiscountHomeResponse;
 import com.sd64.novastore.response.ProductHomeResponse;
 import com.sd64.novastore.service.ProductDetailService;
 import com.sd64.novastore.utils.FileUtil;
@@ -159,9 +160,9 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorId(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId) {
+    public Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorId(int page, Integer productId, BigDecimal priceMinDiscount, BigDecimal priceMaxDiscount, Integer sizeId, Integer colorId) {
         Pageable pageable = PageRequest.of(page, 10);
-        var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMin, priceMax, sizeId, colorId, pageable)
+        var pageProductDetailDto = productDetailRepository.getProductDetailByPriceAndSizeIdAndColorId(productId, priceMinDiscount, priceMaxDiscount, sizeId, colorId)
                 .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), pageProductDetailDto.size());
@@ -177,19 +178,19 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return totalPage;
     }
 
-    @Override
-    public int getTotalPage(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId) {
-        Pageable pageable = PageRequest.of(page, 5);
-        var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMin, priceMax, sizeId, colorId, pageable)
-                .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
-        int totalElemets = pageProductDetailDto.size();
-        int elementsPerpage = 5;
-        int totalPage = totalElemets / elementsPerpage;
-        if (totalElemets % elementsPerpage != 0) {
-            totalPage++;
-        }
-        return totalPage;
-    }
+//    @Override
+//    public int getTotalPage(int page, Integer productId, BigDecimal priceMinDiscount, BigDecimal priceMaxDiscount, Integer sizeId, Integer colorId) {
+//        Pageable pageable = PageRequest.of(page, 5);
+//        var pageProductDetailDto = productDetailRepository.getProductByPriceAndSizeIdAndColorId(productId, priceMinDiscount, priceMaxDiscount, sizeId, colorId, pageable)
+//                .stream().map(ProductDetailDtoImpl::toProductSearchResponse).collect(Collectors.toList());
+//        int totalElemets = pageProductDetailDto.size();
+//        int elementsPerpage = 5;
+//        int totalPage = totalElemets / elementsPerpage;
+//        if (totalElemets % elementsPerpage != 0) {
+//            totalPage++;
+//        }
+//        return totalPage;
+//    }
 
     @Override
     public Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorIdDeleted(int page, Integer productId, BigDecimal priceMin, BigDecimal priceMax, Integer sizeId, Integer colorId) {
