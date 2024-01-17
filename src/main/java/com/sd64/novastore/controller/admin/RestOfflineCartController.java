@@ -8,10 +8,7 @@
 
 package com.sd64.novastore.controller.admin;
 
-import com.sd64.novastore.model.Account;
-import com.sd64.novastore.model.OfflineCart;
-import com.sd64.novastore.model.OfflineCartView;
-import com.sd64.novastore.model.TempBill;
+import com.sd64.novastore.model.*;
 import com.sd64.novastore.response.CustomerResponse;
 import com.sd64.novastore.response.QrRespone;
 import com.sd64.novastore.service.AccountService;
@@ -33,9 +30,6 @@ public class RestOfflineCartController {
 
     @Autowired
     private OfflineCartService offlineCartService;
-
-    @Autowired
-    private AccountService accountService;
 
     @PostMapping("/add")
     public ResponseEntity<?> addToCart(@RequestBody QrRespone response, HttpSession session) {
@@ -62,9 +56,11 @@ public class RestOfflineCartController {
     public ResponseEntity<?> updateCart(@RequestBody QrRespone response, HttpSession session) {
 
         List<OfflineCart> cart = offlineCartService.updateCart(response.getBillId(), response.getData(), response.getQty());
+
         if (cart == null) {
             return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         }
+
         BigDecimal total = offlineCartService.calCartPrice(offlineCartService.getCart(cart));
         TempBill tempBill1 = (TempBill) session.getAttribute("posBill");
         tempBill1.setTotalCartPrice(total);
@@ -82,6 +78,11 @@ public class RestOfflineCartController {
         if (lstCheck.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         }
+
+        if (!offlineCartService.checkSlTon(lstCheck)) {
+            return new ResponseEntity<>(HttpStatus.INSUFFICIENT_SPACE_ON_RESOURCE);
+        }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

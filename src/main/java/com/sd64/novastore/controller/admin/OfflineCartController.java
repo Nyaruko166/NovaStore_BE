@@ -127,7 +127,7 @@ public class OfflineCartController {
             model.addAttribute("lstPro", null);
             return "/admin/cart/offline-cart-fragment :: product_frag";
         }
-        List<ProductDetail> lstPro = productDetailService.findAllByProductNameAndStatus(keywordProduct, 1, pageable).getContent();
+        List<ProductDetail> lstPro = productDetailService.findAllByProductNameAndStatus(keywordProduct, 1, 0, pageable).getContent();
         model.addAttribute("lstPro", lstPro);
         model.addAttribute("keywordProduct", keywordProduct);
 

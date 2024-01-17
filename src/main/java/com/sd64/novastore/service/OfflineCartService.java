@@ -38,4 +38,6 @@ public interface OfflineCartService {
     String genBillCode();
 
     List<OfflineCart> updateCart(Integer billId, String codeCTSP, Integer qty);
+
+    Boolean checkSlTon(List<OfflineCart> lstCart);
 }

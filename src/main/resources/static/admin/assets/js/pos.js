@@ -212,6 +212,12 @@ function thanhToan() {
                             title: "Lỗi!!",
                             text: "Giỏ hàng đang trống!",
                         });
+                    } else if (response.status === 419) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Sản phẩm đã bán hết!!",
+                            text: "Vui lòng loại bỏ sản phẩm!",
+                        });
                     } else {
                         Swal.fire({
                             title: "Thanh toán thành công!",

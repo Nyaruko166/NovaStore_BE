@@ -272,8 +272,8 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public Page<ProductDetail> findAllByProductNameAndStatus(String name, Integer status, Pageable pageable) {
-        return productDetailRepository.searchAllByProductNameAndStatus(name, status, pageable);
+    public Page<ProductDetail> findAllByProductNameAndStatus(String name, Integer status, Integer qty, Pageable pageable) {
+        return productDetailRepository.searchAllByProductNameAndStatus(name, status, qty, pageable);
     }
 
     @Override
@@ -287,7 +287,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public List<ProductDetail> findAllActive(){
+    public List<ProductDetail> findAllActive() {
         return productDetailRepository.findAllByStatusOrderByIdDesc(1);
     }
 }

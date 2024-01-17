@@ -43,7 +43,7 @@ public interface ProductDetailService {
 
     List<ProductDetail> getProductDetailNoDeleteResponse(List<ProductDetail> listProductDetail);
 
-    Page<ProductDetail> findAllByProductNameAndStatus(String name, Integer status, Pageable pageable);
+    Page<ProductDetail> findAllByProductNameAndStatus(String name, Integer status, Integer qty, Pageable pageable);
 
     List<ProductDetail> findAllActive();
 }

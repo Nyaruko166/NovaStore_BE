@@ -34,6 +34,9 @@ public class OfflineCartServiceImpl implements OfflineCartService {
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
+    @Autowired
+    private PaymentMethodRepository paymentMethodRepository;
+
     //    List<OfflineCart> testCart = new ArrayList<>();
 
     @Override
@@ -164,11 +167,9 @@ public class OfflineCartServiceImpl implements OfflineCartService {
             billService.addBillDetailPos(convertToBillDetail(x, bill));
             ProductDetail productDetail = productDetailRepository.findById(x.getIdCtsp()).orElse(null);
             productDetail.setQuantity(productDetail.getQuantity() - x.getQty());
-            if (productDetail.getQuantity() == 0) {
-                productDetail.setStatus(0);
-            }
             productDetailRepository.save(productDetail);
         }
+        paymentMethodRepository.save(new PaymentMethod(null, "Bán tại quầy", bill.getTotalPrice(), "Bán tại quầy", 1, bill));
         removeFromLstBill(tempBill);
         return tempBill;
     }
@@ -265,6 +266,24 @@ public class OfflineCartServiceImpl implements OfflineCartService {
                 }
             }
         }
+        return true;
+    }
+
+    @Override
+    public Boolean checkSlTon(List<OfflineCart> lstCart) {
+
+        List<ProductDetail> lstProd = productDetailRepository.findAll();
+
+        for (OfflineCart x : lstCart) {
+            for (ProductDetail y : lstProd) {
+                if (x.getDetailProductId().equals(y.getCode())) {
+                    if (y.getQuantity() <= 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+
         return true;
     }
 }
