@@ -118,7 +118,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .app_user("Nyaruko166")
                 .amount(amount)
                 .description("NovaStore - Thanh Toán Đơn Hàng #" + random_id)
-                .bank_code("zalopayapp")
+                .bank_code("")
                 .item("[]")
                 .embed_data(embed_data.toString())
                 .build();
