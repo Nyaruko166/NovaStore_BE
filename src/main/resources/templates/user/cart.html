@@ -96,7 +96,7 @@
                                                 <i class="fa fa-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" class="form-control form-control-sm bg-secondary text-center" name="quantity" th:value="${cartItem.quantity}">
+                                        <input type="number" class="form-control form-control-sm bg-secondary text-center" max="1000000" name="quantity" th:value="${cartItem.quantity}">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-primary btn-plus" type="button">
                                                 <i class="fa fa-plus"></i>
@@ -159,9 +159,12 @@
             // Chỉ cho phép số dương và không cho phép để trống hoặc dấu cách
             e.target.value = value.replace(/[^0-9]| /g, '');
             // Kiểm tra nếu giá trị là chuỗi rỗng
-            if (e.target.value.trim() === '' || e.target.value.trim() == 0) {
+            if (e.target.value.trim() === '' || e.target.value.trim() === 0 ) {
                 e.target.value = '1';
+            } else if (e.target.value.trim() > 1000000) {
+                e.target.value = '1000000';
             }
+
         });
 
     </script>
