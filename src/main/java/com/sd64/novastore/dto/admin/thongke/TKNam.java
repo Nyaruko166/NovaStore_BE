@@ -13,5 +13,4 @@ public interface TKNam {
 
     Integer getSoLuongHuy();
 
-    Integer getSoSanPham();
 }

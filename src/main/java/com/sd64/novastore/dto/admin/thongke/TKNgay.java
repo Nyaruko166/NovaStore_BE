@@ -9,5 +9,5 @@ public interface TKNgay {
 
     Integer getSoLuongHuy();
 
-    Integer getSoSanPham();
+
 }

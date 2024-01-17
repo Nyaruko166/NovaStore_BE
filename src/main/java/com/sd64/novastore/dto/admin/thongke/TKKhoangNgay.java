@@ -12,5 +12,4 @@ public interface TKKhoangNgay {
 
     Integer getSoLuongHuy();
 
-    Integer getSoSanPham();
 }

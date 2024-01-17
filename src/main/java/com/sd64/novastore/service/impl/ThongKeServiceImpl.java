@@ -1,6 +1,7 @@
 package com.sd64.novastore.service.impl;
 
 
+import com.sd64.novastore.dto.admin.thongke.SosanPhamBanDuoc;
 import com.sd64.novastore.dto.admin.thongke.TKKhoangNgay;
 import com.sd64.novastore.dto.admin.thongke.TKNam;
 import com.sd64.novastore.dto.admin.thongke.TKNgay;
@@ -37,16 +38,36 @@ public class ThongKeServiceImpl implements ThongKeService {
         return thongKeRepository.getThongKeNgay();
     }
 
+    @Override
+    public SosanPhamBanDuoc getThongKeSanPhamBanDuocNgay() {
+        return thongKeRepository.getThongKeSanPhamBanDuocNgay();
+    }
+
     public TKTuan getTKTuan() {
         return thongKeRepository.getThongKeTuan();
+    }
+
+    @Override
+    public SosanPhamBanDuoc getThongKeSosanPhamBanDuocTuan() {
+        return thongKeRepository.getThongKeSosanPhamBanDuocTuan();
     }
 
     public TKThang getTKThang() {
         return thongKeRepository.getThongKeThang();
     }
 
+    @Override
+    public SosanPhamBanDuoc getThongKeSosanPhamBanDuocThang() {
+        return thongKeRepository.getThongKeSosanPhamBanDuocThang();
+    }
+
     public TKNam getTKNam() {
         return thongKeRepository.getThongKeNam();
+    }
+
+    @Override
+    public SosanPhamBanDuoc getThongKeSosanPhamBanDuocNam() {
+        return thongKeRepository.getThongKeSosanPhamBanDuocNam();
     }
 
     public TKSLThang getTKSLThang() {
@@ -55,6 +76,11 @@ public class ThongKeServiceImpl implements ThongKeService {
 
     public List<TKKhoangNgay> getTKSoLuongHD(String tungay, String denngay) {
         return thongKeRepository.getTKKhoangNgay(tungay, denngay);
+    }
+
+    @Override
+    public List<SosanPhamBanDuoc> getTKSosanPhamBanKhoangNgay(String tungay, String denngay) {
+        return thongKeRepository.getTKSosanPhamBanKhoangNgay(tungay,denngay);
     }
 
     public List<TKSoLuongSanPham> getTKSoLuongSanPham(String tungay, String denngay) {
