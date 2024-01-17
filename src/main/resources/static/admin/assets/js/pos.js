@@ -154,13 +154,10 @@ function calCashBack() {
 
     let khachDua = document.getElementById('khachDua').value;
 
-    document.getElementById("khachDua").value = khachDua.replace(/[^0-9]/g, "");
+    document.getElementById('khachDua').value = khachDua.replace(/[^0-9]/g, "");
 
     let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
-
-    if (isNumeric(khachDua)) {
-        document.getElementById('tienThua').innerText = khachDua - khachPhaiTra + ' VNĐ'
-    }
+    document.getElementById('tienThua').innerText = khachDua - khachPhaiTra + ' VNĐ'
 }
 
 function thanhToan() {
@@ -200,7 +197,6 @@ function thanhToan() {
 
         let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
         let khachDua = document.getElementById('khachDua').value;
-
         if (Number(khachDua) >= Number(khachPhaiTra[0])) {
             fetch("/nova/pos/check-legit")
                 .then(function (response) {
@@ -233,10 +229,6 @@ function thanhToan() {
         }
     }
 
-}
-
-function reloadPage() {
-    location.href = '/nova/pos';
 }
 
 function openPopUp() {
@@ -329,8 +321,4 @@ function updateCart(obj) {
 function keepOnlyNumbers(event) {
     let inputText = event.target.value;
     event.target.value = inputText.replace(/[^0-9]/g, "");
-}
-
-function isNumeric(input) {
-    return /^\d+$/.test(input);
 }
