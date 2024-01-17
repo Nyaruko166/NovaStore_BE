@@ -116,8 +116,8 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
                 productDetail.setPriceDiscount(productDetail.getPrice());
                 productDetailRepository.save(productDetail);
             }
-            promotionDetail.setStatus(0);
-            promotionDetailRepository.save(promotionDetail);
+//            promotionDetail.setStatus(0);
+            promotionDetailRepository.delete(promotionDetail);
             return promotionDetail;
         }).orElse(null);
     }
