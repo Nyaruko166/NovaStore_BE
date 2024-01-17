@@ -28,13 +28,14 @@
                 <div class="ml-2"><span th:text="${x.name}" class="font-weight-bold d-block"></span><span
                         class="spec" th:text="${x.fieldCombine()}"></span></div>
             </div>
-            <div class="d-flex flex-row align-items-center"><input type="number"
+            <div class="d-flex flex-row align-items-center"><input type="text"
                                                                    style="width: 40px; box-sizing: border-box;border: none;border-bottom: 2px solid grey;
                                                                     text-align: right"
                                                                    th:id="${x.codeCtsp}"
                                                                    th:name="${x.qty}"
                                                                    th:value="${x.qty}"
                                                                    onfocusout="updateCart(this)"
+                                                                   oninput="keepOnlyNumbers(event)"
                                                                    class="d-block"></input><span
                     th:text="${x.calTotalPrice() + ' VNĐ'}" class="d-block ml-5 font-weight-bold"></span>
                 <a th:href="@{'/nova/pos/remove/' + ${x.codeCtsp}}" class="trash"><i

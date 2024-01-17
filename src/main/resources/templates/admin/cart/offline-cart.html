@@ -73,11 +73,12 @@
                                 <div class="d-flex flex-row align-items-center"><input
                                         style="width: 40px; box-sizing: border-box;border: none;border-bottom: 2px solid grey;
 text-align: right"
-                                        type="number"
+                                        type="text"
                                         th:value="${x.qty}"
                                         th:id="${x.codeCtsp}"
                                         th:name="${x.qty}"
                                         onfocusout="updateCart(this)"
+                                        oninput="keepOnlyNumbers(event)"
                                         class="d-block"></input><span
                                         th:text="${x.calTotalPrice() + ' VNĐ'}"
                                         class="d-block ml-5 font-weight-bold"></span>

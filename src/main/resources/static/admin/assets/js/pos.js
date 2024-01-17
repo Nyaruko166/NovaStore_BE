@@ -150,19 +150,17 @@ async function addItems(obj) {
     }
 }
 
-function isNumeric(str) {
-    if (typeof str != "string") return false // we only process strings!
-    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
-}
-
 function calCashBack() {
-
-    let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
 
     let khachDua = document.getElementById('khachDua').value;
 
-    document.getElementById('tienThua').innerText = khachDua - khachPhaiTra + ' VNĐ'
+    document.getElementById("khachDua").value = khachDua.replace(/[^0-9]/g, "");
+
+    let khachPhaiTra = document.getElementById('khachPhaiTra').innerText.match(/\d+/);
+
+    if (isNumeric(khachDua)) {
+        document.getElementById('tienThua').innerText = khachDua - khachPhaiTra + ' VNĐ'
+    }
 }
 
 function thanhToan() {
@@ -324,7 +322,15 @@ function updateCart(obj) {
             }
         });
     }
-
     // console.log(productCode);
     // console.log(qty);
+}
+
+function keepOnlyNumbers(event) {
+    let inputText = event.target.value;
+    event.target.value = inputText.replace(/[^0-9]/g, "");
+}
+
+function isNumeric(input) {
+    return /^\d+$/.test(input);
 }
