@@ -40,4 +40,6 @@ public interface PromotionDetailService {
     List<ProductDetail> findByProductId(Integer productId);
 
     List<ProductPromotionDTO> getAllProductPromotionDTO();
+
+    PromotionDetail findByProductIdAndPromotionId(Integer productId, Integer promotionId);
 }
