@@ -168,11 +168,11 @@
                         //     onlyAllowNumberInput2(e)
                         // })
 
-                        // $('.productDetail-price').on('focusout', function (e) {
-                        //     if ($(this).val() == "") {
-                        //         $(this).val(0)
-                        //     }
-                        // })
+                        $('.productDetail-price').on('focusout', function (e) {
+                            if ($(this).val() === "") {
+                                $(this).val(1000)
+                            }
+                        })
 
 
                         var listDetail = []

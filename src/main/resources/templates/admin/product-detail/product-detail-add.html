@@ -126,7 +126,7 @@
                             }
                         })
                         $('.productDetail-quantity').on('focusout', function (e) {
-                            if ($(this).val() == "") {
+                            if ($(this).val() === "") {
                                 $(this).val(0)
                             }
                         })
@@ -135,12 +135,12 @@
                         // $('.productDetail-price').on('keydown', function (e) {
                         //     onlyAllowNumberInput2(e)
                         // })
-                        //
-                        // $('.productDetail-price').on('focusout', function (e) {
-                        //     if ($(this).val() == "") {
-                        //         $(this).val(0)
-                        //     }
-                        // })
+
+                        $('.productDetail-price').on('focusout', function (e) {
+                            if ($(this).val() === "") {
+                                $(this).val(1000)
+                            }
+                        })
 
                         //Tạo dòng chi tiết sản phẩm đầu tiên
                         document.querySelector('.productDetail-price').value = 1000
