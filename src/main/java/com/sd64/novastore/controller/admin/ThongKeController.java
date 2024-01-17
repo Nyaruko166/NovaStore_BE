@@ -1,5 +1,6 @@
 package com.sd64.novastore.controller.admin;
 
+import com.sd64.novastore.dto.admin.thongke.SosanPhamBanDuoc;
 import com.sd64.novastore.dto.admin.thongke.TKKhoangNgay;
 import com.sd64.novastore.dto.admin.thongke.TKNam;
 import com.sd64.novastore.dto.admin.thongke.TKNgay;
@@ -30,13 +31,23 @@ public class ThongKeController {
                               @RequestParam(name = "denngay", required = false) String denngay) {
         TKNgay tkNgay = thongKeService.getTKNgay();
         model.addAttribute("tkNgay", tkNgay);
+        SosanPhamBanDuoc sosanPhamBanDuoc = thongKeService.getThongKeSanPhamBanDuocNgay();
+        model.addAttribute("tksanphambanduocNgay", sosanPhamBanDuoc);
         TKTuan tkTuan = thongKeService.getTKTuan();
         model.addAttribute("tkTuan", tkTuan);
+        SosanPhamBanDuoc sosanPhamBanDuocTuan = thongKeService.getThongKeSosanPhamBanDuocTuan();
+        model.addAttribute("sosanPhamBanDuocTuan", sosanPhamBanDuocTuan);
 
         TKThang tkThang = thongKeService.getTKThang();
         model.addAttribute("tkThang", tkThang);
+        SosanPhamBanDuoc sosanPhamBanDuocThang = thongKeService.getThongKeSosanPhamBanDuocThang();
+        model.addAttribute("sosanPhamBanDuocThang", sosanPhamBanDuocThang);
+
         TKNam tkNam = thongKeService.getTKNam();
         model.addAttribute("tkNam", tkNam);
+        SosanPhamBanDuoc sosanPhamBanDuocNam = thongKeService.getThongKeSosanPhamBanDuocNam();
+        model.addAttribute("sosanPhamBanDuocNam", sosanPhamBanDuocNam);
+
         List<TKSanPham> tkSanPhamList = thongKeService.getTKSanPham();
         model.addAttribute("tkSanPhamList", tkSanPhamList);
 
@@ -68,6 +79,8 @@ public class ThongKeController {
 
         List<TKKhoangNgay> thongKeKhoangNgayList = thongKeService.getTKSoLuongHD(tungay, denngay);
         model.addAttribute("thongKeKhoangNgayList", thongKeKhoangNgayList);
+        List<SosanPhamBanDuoc> thongKeSanPhamBanDuocKhoangNgayList = thongKeService.getTKSosanPhamBanKhoangNgay(tungay, denngay);
+        model.addAttribute("thongKeSanPhamBanDuocKhoangNgayList", thongKeSanPhamBanDuocKhoangNgayList);
         return "admin/statistic/statistic";
     }
 

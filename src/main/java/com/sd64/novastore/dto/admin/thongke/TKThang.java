@@ -13,5 +13,4 @@ public interface TKThang {
 
     Integer getSoLuongHuy();
 
-    Integer getSoSanPham();
 }

@@ -10,5 +10,4 @@ public interface TKTuan {
 
     Integer getSoLuongHuy();
 
-    Integer getSoSanPham();
 }

@@ -18,11 +18,12 @@
             </div>
         </div>
     </div>
-<div class="row">
+    <div class="row">
         <div class="col">
             <div class="card" style=" border-radius: 20px;background-color:#00CCCC;">
                 <div class="card-body">
-                    <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh thu:
+                    <p class="card-text" style="color: black"><i class="fas fa-dollar-sign"
+                                                                 style="padding-right: 8px;"></i>Doanh thu:
                         <span th:text="${tkTongDoanhThu != null ? #numbers.formatDecimal(tkTongDoanhThu.getSoLuong(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
                     </p>
                 </div>
@@ -32,9 +33,10 @@
             <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
                 <div class="card-body">
                     <p class="card-text" style="color: black"><i class="fas fa-user"
-                                                                 style="padding-right: 8px;"></i>Tổng số khách hàng hoạt động:
+                                                                 style="padding-right: 8px;"></i>Tổng số khách hàng hoạt
+                        động:
                         <span
-                            th:text="${tkTong.getSoLuong() == null ? 0 : tkTong.getSoLuong()}"></span>
+                                th:text="${tkTong.getSoLuong() == null ? 0 : tkTong.getSoLuong()}"></span>
                     </p>
                 </div>
             </div>
@@ -44,9 +46,10 @@
             <div class="card" style=" border-radius: 20px;background-color: #00CCCC;">
                 <div class="card-body">
                     <p class="card-text" style="color: black"><i class="fas fa-user"
-                                                                 style="padding-right: 8px;"></i>Tổng số nhân viên hoạt động:
+                                                                 style="padding-right: 8px;"></i>Tổng số nhân viên hoạt
+                        động:
                         <span
-                            th:text="${tkTongNV.getSoLuong() == null ? 0 : tkTongNV.getSoLuong()}"></span>
+                                th:text="${tkTongNV.getSoLuong() == null ? 0 : tkTongNV.getSoLuong()}"></span>
                     </p>
                 </div>
             </div>
@@ -79,7 +82,7 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 
     <div class="col-md-3">
         <div class="card" style=" border-radius: 20px;background-color: #33FFCC;">
@@ -97,7 +100,8 @@
                 </p>
                 <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
                                                              style="padding-right: 8px;"></i><span
-                        th:text="${tkNgay.getSoSanPham() == null ? 0 : tkNgay.getSoSanPham()}"></span> sản phẩm được bán
+                        th:text="${tksanphambanduocNgay?.getSoSanPham() == null ? 0 : tksanphambanduocNgay.getSoSanPham()}"></span>
+                    sản phẩm được bán
                 </p>
             </div>
         </div>
@@ -119,7 +123,8 @@
                 </p>
                 <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
                                                              style="padding-right: 8px;"></i><span
-                        th:text="${tkTuan.getSoSanPham() == null ? 0 : tkTuan.getSoSanPham()}"></span> sản phẩm được bán
+                        th:text="${sosanPhamBanDuocTuan?.getSoSanPham() == null ? 0 : sosanPhamBanDuocTuan.getSoSanPham()}"></span>
+                    sản phẩm được bán
                 </p>
             </div>
         </div>
@@ -143,7 +148,8 @@
                 </p>
                 <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
                                                              style="padding-right: 8px;"></i><span
-                        th:text="${tkThang.getSoSanPham() == null ? 0 : tkThang.getSoSanPham()}"></span> sản phẩm được
+                        th:text="${sosanPhamBanDuocThang?.getSoSanPham() == null ? 0 : sosanPhamBanDuocThang.getSoSanPham()}"></span>
+                    sản phẩm được
                     bán
                 </p>
             </div>
@@ -166,7 +172,8 @@
                 </p>
                 <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
                                                              style="padding-right: 8px;"></i><span
-                        th:text="${tkNam.getSoSanPham() == null ? 0 : tkNam.getSoSanPham()}"></span> sản phẩm được bán
+                        th:text="${sosanPhamBanDuocNam?.getSoSanPham() == null ? 0 : sosanPhamBanDuocNam.getSoSanPham()}"></span>
+                    sản phẩm được bán
                 </p>
             </div>
         </div>
@@ -200,17 +207,21 @@
                 <h6 class="card-title" style="font-weight: bold">Doanh số theo khoảng ngày</h6>
                 <p class="card-text" style="color: black"><i class="fas fa-dollar-sign" style="padding-right: 8px;"></i>Doanh
                     thu: <span
-                            th:text="${thongKeItem.doanhThu != null ?   #numbers.formatDecimal(thongKeItem.doanhThu, 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
+                            th:text="${thongKeItem.getDoanhThu() != null ?   #numbers.formatDecimal(thongKeItem.getDoanhThu(), 0, 'COMMA', 0, 'POINT') + '₫' : '0'}"></span>
                 </p>
                 <p class="card-text" style="color: black"><i class="fas fa-check" style="padding-right: 8px;"></i><span
-                        th:text="${thongKeItem.soLuongThanhCong == null ? 0 : thongKeItem.soLuongThanhCong}"></span> đơn
+                        th:text="${thongKeItem.getSoLuongThanhCong() == null ? 0 : thongKeItem.getSoLuongThanhCong()}"></span>
+                    đơn
                     hàng thành công</p>
                 <p class="card-text" style="color: black"><i class="fas fa-times" style="padding-right: 8px;"></i><span
-                        th:text="${thongKeItem.soLuongHuy == null ? 0 : thongKeItem.soLuongHuy}"></span> đơn hàng bị hủy
+                        th:text="${thongKeItem.getSoLuongHuy() == null ? 0 : thongKeItem.getSoLuongHuy()}"></span> đơn
+                    hàng bị hủy
                 </p>
-                <p class="card-text" style="color: black"><i class="fas fa-shopping-bag "
-                                                             style="padding-right: 8px;"></i><span
-                        th:text="${thongKeItem.soSanPham == null ? 0 : thongKeItem.soSanPham}"></span> sản phẩm được bán
+                <p th:each="thongKeItem1 : ${thongKeSanPhamBanDuocKhoangNgayList}" class="card-text" style="color: black"><i
+                        class="fas fa-shopping-bag "
+                        style="padding-right: 8px;"></i><span
+                        th:text="${thongKeItem1?.getSoSanPham() == null ? 0 : thongKeItem1.getSoSanPham()}"></span> sản phẩm
+                    được bán
                 </p>
             </div>
         </div>
@@ -244,7 +255,7 @@
                         Màu
                     </td>
                     <td style=" text-align: left; padding: 10px; ">Số
-                        lượng  bán
+                        lượng bán
                     </td>
                     <td style=" text-align: left; padding: 10px; ">Tổng tiền
                     </td>

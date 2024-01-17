@@ -1,5 +1,6 @@
 package com.sd64.novastore.service;
 
+import com.sd64.novastore.dto.admin.thongke.SosanPhamBanDuoc;
 import com.sd64.novastore.dto.admin.thongke.TKKhoangNgay;
 import com.sd64.novastore.dto.admin.thongke.TKNam;
 import com.sd64.novastore.dto.admin.thongke.TKNgay;
@@ -16,16 +17,21 @@ import java.util.List;
 
 public interface ThongKeService {
     public TKNgay getTKNgay();
+    public SosanPhamBanDuoc getThongKeSanPhamBanDuocNgay();
 
     public TKTuan getTKTuan();
+    public SosanPhamBanDuoc getThongKeSosanPhamBanDuocTuan();
 
     public TKThang getTKThang();
+    public SosanPhamBanDuoc getThongKeSosanPhamBanDuocThang();
 
     public TKNam getTKNam();
+    public SosanPhamBanDuoc getThongKeSosanPhamBanDuocNam();
 
     public TKSLThang getTKSLThang();
 
     public List<TKKhoangNgay> getTKSoLuongHD(String tungay, String denngay);
+    public List<SosanPhamBanDuoc> getTKSosanPhamBanKhoangNgay(String tungay, String denngay);
 
     public List<TKSoLuongSanPham> getTKSoLuongSanPham(String tungay, String denngay);
 
