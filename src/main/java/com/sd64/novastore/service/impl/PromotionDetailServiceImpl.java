@@ -164,5 +164,10 @@ public class PromotionDetailServiceImpl implements PromotionDetailService {
         return productPromotion.getAllProductPromotionDTO();
     }
 
+    @Override
+    public PromotionDetail findByProductIdAndPromotionId(Integer productId, Integer promotionId) {
+        return promotionDetailRepository.findByProductIdAndPromotionId(productId, promotionId);
+    }
+
 
 }

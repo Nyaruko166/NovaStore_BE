@@ -34,4 +34,7 @@ public interface PromotionDetailRepository extends JpaRepository<PromotionDetail
             " ORDER BY PD.createDate DESC"
     )
     Page<PromotionDetailDTO> All(Pageable pageable);
+
+
+    PromotionDetail findByProductIdAndPromotionId(Integer productId, Integer promotionId);
 }

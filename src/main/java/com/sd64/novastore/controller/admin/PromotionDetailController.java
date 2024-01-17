@@ -6,6 +6,7 @@ import com.sd64.novastore.model.Product;
 import com.sd64.novastore.model.ProductDetail;
 import com.sd64.novastore.model.Promotion;
 import com.sd64.novastore.model.PromotionDetail;
+import com.sd64.novastore.repository.PromotionDetailRepository;
 import com.sd64.novastore.service.ProductService;
 import com.sd64.novastore.service.PromotionDetailService;
 import com.sd64.novastore.service.PromotionService;
@@ -93,7 +94,10 @@ public class PromotionDetailController {
             product.setUpdateDate(new Date());
             promotionDetailService.save(product);
 
-            PromotionDetail newPromotionDetail = new PromotionDetail();
+            PromotionDetail newPromotionDetail = promotionDetailService.findByProductIdAndPromotionId(productId, promotionId);
+            if (newPromotionDetail == null) {
+                newPromotionDetail = new PromotionDetail();
+            }
             newPromotionDetail.setProduct(product);
             newPromotionDetail.setPromotion(promotion);
             promotionDetailService.add(newPromotionDetail);

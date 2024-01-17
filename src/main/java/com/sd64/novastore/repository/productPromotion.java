@@ -20,8 +20,8 @@ public interface productPromotion extends JpaRepository<Product, Integer> {
             " JOIN ProductDetail PD ON P.id = PD.product.id " +
             " INNER JOIN Image i ON i.product.id = P.id" +
             " WHERE P.status = 1 AND PD.status = 1 AND i.status = 1" +
-            " GROUP BY P.id, P.code, P.name,P.createDate"+
-            " ORDER BY P.createDate DESC"
+            " GROUP BY P.id, P.code, P.name,P.updateDate"+
+            " ORDER BY P.updateDate DESC"
     )
     List<ProductPromotionDTO> getAllProductPromotionDTO();
 
