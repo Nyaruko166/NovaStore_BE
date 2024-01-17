@@ -29,7 +29,7 @@ public interface PromotionDetailRepository extends JpaRepository<PromotionDetail
             "JOIN Product P ON PD.product.id = P.id " +
             "JOIN Promotion PR ON PD.promotion.id = PR.id " +
             "JOIN ProductDetail PD2 ON P.id = PD2.product.id " +
-            "WHERE PD.status = 1 " +
+            "WHERE PD.status = 1 and P.status=2 " +
             "GROUP BY PD.id, PR.name, P.name, P.code, PR.startDate, PR.endDate, PR.value,P.id,PD.createDate"+
             " ORDER BY PD.createDate DESC"
     )

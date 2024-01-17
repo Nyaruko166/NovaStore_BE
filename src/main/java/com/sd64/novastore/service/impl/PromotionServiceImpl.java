@@ -22,6 +22,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -156,9 +157,26 @@ public class PromotionServiceImpl implements PromotionService {
                         for (ProductDetail productDetail : productDetails) {
                             productDetail.setPriceDiscount(productDetail.getPrice());
                             productDetailRepository.save(productDetail);
-                            List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
-                            promotionDetailRepository.deleteAll(promotionDetails);
                         }
+                        List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
+                        promotionDetailRepository.deleteAll(promotionDetails);
+                    }
+                }
+            }else {
+                for (PromotionDetail promotionDetail : oldPromotion.getPromotionDetails()) {
+                    Product product = promotionDetail.getProduct();
+                    if (product.getStatus() == 2) {
+                        List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
+                        BigDecimal promotionValue = BigDecimal.valueOf(promotion.getValue());
+                        for (ProductDetail productDetail : productDetails) {
+                            BigDecimal price = productDetail.getPrice();
+                            BigDecimal discount = price.multiply(promotionValue.divide(BigDecimal.valueOf(100)));
+                            BigDecimal discountedPrice = price.subtract(discount);
+                            productDetail.setPriceDiscount(discountedPrice);
+                            productDetailRepository.save(productDetail);
+                        }
+                        List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
+                        promotionDetailRepository.saveAll(promotionDetails);
                     }
                 }
             }
@@ -186,6 +204,23 @@ public class PromotionServiceImpl implements PromotionService {
                                     List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
                                     promotionDetailRepository.deleteAll(promotionDetails);
                                 }
+                            }
+                        }
+                    }else {
+                        for (PromotionDetail promotionDetail : oldPromotion.getPromotionDetails()) {
+                            Product product = promotionDetail.getProduct();
+                            if (product.getStatus() == 2) {
+                                List<ProductDetail> productDetails = giamGiaRepository.findByProductId(product.getId());
+                                BigDecimal promotionValue = BigDecimal.valueOf(promotion.getValue());
+                                for (ProductDetail productDetail : productDetails) {
+                                    BigDecimal price = productDetail.getPrice();
+                                    BigDecimal discount = price.multiply(promotionValue.divide(BigDecimal.valueOf(100)));
+                                    BigDecimal discountedPrice = price.subtract(discount);
+                                    productDetail.setPriceDiscount(discountedPrice);
+                                    productDetailRepository.save(productDetail);
+                                }
+                                List<PromotionDetail> promotionDetails = promotionDetailRepository.findByPromotionId(id);
+                                promotionDetailRepository.saveAll(promotionDetails);
                             }
                         }
                     }
