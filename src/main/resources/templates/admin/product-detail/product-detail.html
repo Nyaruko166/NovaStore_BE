@@ -467,7 +467,7 @@
             <form id="productDetailSearch" class="card-body card-block">
                 <div class="d-flex justify-content-between">
                     <div class="title-name-product">
-                        Tìm kiếm
+                        Tìm kiếm <span style="color: red; font-weight: lighter; font-size: 15px">(Nếu sản phẩm giảm giá sẽ tìm kiếm theo giá giảm)</span>
                     </div>
                     <div style="color: red; margin-top: 10px;" id="error">
 
@@ -477,14 +477,14 @@
                 <div class="row">
                     <div class="form-group col-3">
                         <label class="font-weight-bold">Giá bắt đầu</label>
-                        <input type="number" class="form-control" id="priceMin"
-                               th:name="priceMin" th:value="${priceMin == 0 ? '' : priceMin}"
+                        <input type="number" class="form-control" id="priceMinDiscount"
+                               th:name="priceMinDiscount" th:value="${priceMinDiscount == 0 ? '' : priceMinDiscount}"
                                oninput="onInputText('error')">
                     </div>
                     <div class="form-group col-3">
                         <label class="font-weight-bold">Giá kết thúc</label>
-                        <input type="number" class="form-control" id="priceMax"
-                               th:name="priceMax" th:value="${priceMax == 2147483647 ? '' : priceMax}">
+                        <input type="number" class="form-control" id="priceMaxDiscount"
+                               th:name="priceMaxDiscount" th:value="${priceMaxDiscount == 2147483647 ? '' : priceMaxDiscount}">
                     </div>
                     <div class="form-group col-3">
                         <label class="font-weight-bold">Màu sắc</label>
@@ -539,13 +539,13 @@
                 </div>
                 <script th:inline="javascript">
                     checkPrice = () => {
-                        let priceMin = document.getElementById('priceMin').value
-                        let priceMax = document.getElementById('priceMax').value
-                        if (priceMin < 0 || priceMax < 0) {
+                        let priceMinDiscount = document.getElementById('priceMinDiscount').value
+                        let priceMaxDiscount = document.getElementById('priceMaxDiscount').value
+                        if (priceMinDiscount < 0 || priceMaxDiscount < 0) {
                             document.getElementById('error').innerHTML = `Giá phải là số dương`
                             return false;
                         }
-                        if (Number(priceMax) < Number(priceMin)) {
+                        if (Number(priceMaxDiscount) < Number(priceMinDiscount)) {
                             document.getElementById('error').innerHTML = `Giá bắt đầu phải nhỏ hơn giá kết thúc`
                             return false;
                         }
@@ -585,7 +585,6 @@
     </div>
     <!-- End modal description -->
 
-    </h1>
     <div class="col">
         <div class="card">
             <div class="card-header" th:if="${pageProductDetail.isEmpty()}">
@@ -605,6 +604,7 @@
                                 <th scope="col">Mã chi tiết</th>
                                 <th scope="col">Số lượng</th>
                                 <th scope="col">Giá</th>
+                                <th scope="col" th:if="${product.status == 2}">Giá giảm</th>
                                 <th scope="col">Màu sắc</th>
                                 <th scope="col">Kích cỡ</th>
                                 <th scope="col">Mã QR</th>
@@ -616,6 +616,9 @@
                                 <td th:text="${items.code}"></td>
                                 <td th:text="${items.quantity}"></td>
                                 <td th:text="${'₫'+#numbers.formatDecimal(items.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                                <div th:if="${product.status == 2}">
+                                    <td th:text="${'₫'+#numbers.formatDecimal(items.priceDiscount, 0, 'COMMA', 0, 'POINT')}"></td>
+                                </div>
                                 <td th:text="${items.colorName}"></td>
                                 <td th:text="${items.sizeName}"></td>
                                 <td>
@@ -746,11 +749,11 @@
                     <!--                                Pagination-->
                     <div class="d-flex justify-content-center align-items-center">
                         <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=0&productId=${productId == null ? '' : productId}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                            <a th:href="@{|?page=0&productId=${productId == null ? '' : productId}&priceMinDiscount=${priceMinDiscount == null ? '' : priceMinDiscount}&priceMaxDiscount=${priceMaxDiscount == null ? '' : priceMaxDiscount}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
                                 </i><i style="color: white" class="fa-solid fa-backward-fast"></i></a>
                         </div>
                         <div th:if="${pageProductDetail.getNumber() + 1 > 1}" class="btn btn-dark mr-1">
-                            <a th:href="@{|?page=${pageProductDetail.getNumber() - 1}&productId=${productId == null ? '' : productId}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                            <a th:href="@{|?page=${pageProductDetail.getNumber() - 1}&productId=${productId == null ? '' : productId}&priceMinDiscount=${priceMinDiscount == null ? '' : priceMinDiscount}&priceMaxDiscount=${priceMaxDiscount == null ? '' : priceMaxDiscount}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
                                 <i style="color: white" class="fa-solid fa-left-long"></i></a>
                         </div>
                         <div class="btn btn-dark d-flex">
@@ -760,12 +763,12 @@
                         </div>
                         <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"
                              class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageProductDetail.getNumber()+1}&productId=${productId == null ? '' : productId}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                            <a th:href="@{|?page=${pageProductDetail.getNumber()+1}&productId=${productId == null ? '' : productId}&priceMinDiscount=${priceMinDiscount == null ? '' : priceMinDiscount}&priceMaxDiscount=${priceMaxDiscount == null ? '' : priceMaxDiscount}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
                                 <i style="color: white" class="fa-solid fa-left-long fa-rotate-180"></i></a>
                         </div>
                         <div th:if="${pageProductDetail.getNumber() + 1 lt pageProductDetail.getTotalPages()}"
                              class="btn btn-dark ml-1">
-                            <a th:href="@{|?page=${pageProductDetail.getTotalPages() - 1}&productId=${productId == null ? '' : productId}&priceMin=${priceMin == null ? '' : priceMin}&priceMax=${priceMax == null ? '' : priceMax}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
+                            <a th:href="@{|?page=${pageProductDetail.getTotalPages() - 1}&productId=${productId == null ? '' : productId}&priceMinDiscount=${priceMinDiscount == null ? '' : priceMinDiscount}&priceMaxDiscount=${priceMaxDiscount == null ? '' : priceMaxDiscount}&sizeId=${sizeId == null ? '' : sizeId}&colorId=${colorId == null ? '' : colorId}|}">
                                 <i style="color: white" class="fa-solid fa-forward-fast"></i></a>
                         </div>
                     </div>
