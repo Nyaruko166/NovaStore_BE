@@ -233,6 +233,10 @@
                                     document.getElementById('errorName').innerHTML = 'Chưa nhập họ tên'
                                     return false
                                 }
+                                if (name.length < 2) {
+                                    document.getElementById('errorName').innerHTML = 'Họ tên có ít nhất 2 kí tự'
+                                    return false
+                                }
                                 return true
                             }
 
@@ -265,6 +269,10 @@
                                 let phoneNumber = document.getElementById('phoneNumber').value
                                 if (phoneNumber.trim() === '') {
                                     document.getElementById('errorPhoneNumber').innerHTML = 'Chưa nhập số điện thoại'
+                                    return false
+                                }
+                                if (phoneNumber.length < 10) {
+                                    document.getElementById('errorPhoneNumber').innerHTML = 'Số điện thoại có ít nhất 10 số'
                                     return false
                                 }
                                 if (!regexPhoneNumber.test(phoneNumber)) {
