@@ -277,7 +277,7 @@ public class OfflineCartServiceImpl implements OfflineCartService {
         for (OfflineCart x : lstCart) {
             for (ProductDetail y : lstProd) {
                 if (x.getDetailProductId().equals(y.getCode())) {
-                    if (y.getQuantity() <= 0) {
+                    if (y.getQuantity() <= 0 || x.getQty()>y.getQuantity()) {
                         return false;
                     }
                 }
